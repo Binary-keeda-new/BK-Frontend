@@ -1,6 +1,52 @@
-/* ═══════════════════════════════════════════
-   AUTH PAGES — SHARED LAYOUT
-═══════════════════════════════════════════ */
+:root {
+  --clr-bg: #0a0b0f;
+  --clr-surface: #13141a;
+  --clr-surface2: #1a1b23;
+  --clr-surface3: #22232e;
+  --clr-border: rgba(255,255,255,0.06);
+  --clr-border2: rgba(255,255,255,0.1);
+  --clr-text: #f0f0f4;
+  --clr-text2: #a0a0b0;
+  --clr-text3: #606070;
+  --clr-accent: #f15a22;
+  --clr-accent2: #ff9a5c;
+  --clr-accent3: rgba(241,90,34,0.1);
+  --clr-accent4: rgba(241,90,34,0.3);
+  --nav-h: 62px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --space-2: 6px;
+  --space-3: 10px;
+  --space-4: 14px;
+  --space-5: 18px;
+  --space-6: 24px;
+  --text-xs: 11.5px;
+  --text-sm: 13.5px;
+  --text-base: 15px;
+  --text-lg: 18px;
+  --text-xl: 22px;
+  --text-2xl: 28px;
+  --t-fast: 0.18s;
+  --ease-out: cubic-bezier(0.22,1,0.36,1);
+  --ease-spring: cubic-bezier(0.34,1.56,0.64,1);
+}
+.light {
+  --clr-bg: #f0f2f5;
+  --clr-surface: #ffffff;
+  --clr-surface2: #f7f8fa;
+  --clr-surface3: #eef0f3;
+  --clr-border: rgba(0,0,0,0.08);
+  --clr-border2: rgba(0,0,0,0.12);
+  --clr-text: #1a1a2e;
+  --clr-text2: #4a4a6a;
+  --clr-text3: #9a9ab0;
+  --clr-accent3: rgba(241,90,34,0.08);
+  --clr-accent4: rgba(241,90,34,0.2);
+}
+
+
 
 .auth-root {
   min-height: 100vh;

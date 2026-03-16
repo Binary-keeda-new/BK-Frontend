@@ -199,6 +199,7 @@ import { useDescope, useSession } from '@descope/nextjs-sdk/client'
 import AuthLayout from '@/view/auth/components/AuthLayout'
 import '@/view/auth/auth.css'
 
+
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [email, setEmail] = useState('')
