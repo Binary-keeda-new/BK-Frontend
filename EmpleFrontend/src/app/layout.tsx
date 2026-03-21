@@ -24,7 +24,7 @@
 
 
 import type { Metadata } from "next";
-import "../app/globals.css";
+import "./globals.css";
 import { ThemeProvider } from "../view/user/contexts/ThemeContext";
 import { AuthProvider } from '@descope/nextjs-sdk';
 

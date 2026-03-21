@@ -1,0 +1,56 @@
+[27:18:47.282] Server  ERROR   ⨯ Error: Cannot find module 'next/dist/client/components/builtin/global-not-found'
+Require stack:
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/dev/on-demand-entry-handler.js
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/dev/hot-reloader-turbopack.js
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/lib/router-server.js
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/lib/start-server.js
+[27:18:47.302] Server  ERROR   Error: Cannot find module 'next/dist/pages/_error'
+Require stack:
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/dev/on-demand-entry-handler.js
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/dev/hot-reloader-turbopack.js
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/lib/router-server.js
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/lib/start-server.js
+[27:18:47.314] Server  ERROR   ⨯ Error: Cannot find module 'next/dist/pages/_error'
+Require stack:
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/dev/on-demand-entry-handler.js
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/dev/hot-reloader-turbopack.js
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/lib/router-server.js
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/lib/start-server.js
+[27:18:47.336] Server  ERROR   Error: Cannot find module 'next/dist/pages/_error'
+Require stack:
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/dev/on-demand-entry-handler.js
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/dev/hot-reloader-turbopack.js
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/lib/router-server.js
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/lib/start-server.js
+[27:18:47.393] Server  ERROR   ⨯ Error: Cannot find module 'next/dist/client/components/builtin/global-not-found'
+Require stack:
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/dev/on-demand-entry-handler.js
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/dev/hot-reloader-turbopack.js
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/lib/router-server.js
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/lib/start-server.js
+[27:18:47.423] Server  ERROR   Error: Cannot find module 'next/dist/pages/_error'
+Require stack:
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/dev/on-demand-entry-handler.js
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/dev/hot-reloader-turbopack.js
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/lib/router-server.js
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/lib/start-server.js
+[27:18:47.447] Server  ERROR   ⨯ Error: Cannot find module 'next/dist/pages/_error'
+Require stack:
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/dev/on-demand-entry-handler.js
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/dev/hot-reloader-turbopack.js
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/lib/router-server.js
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/lib/start-server.js
+[27:18:47.494] Server  ERROR   Error: Cannot find module 'next/dist/pages/_error'
+Require stack:
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/dev/on-demand-entry-handler.js
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/dev/hot-reloader-turbopack.js
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/lib/router-server.js
+- /Users/alishamac/Desktop/B.Tech/Skills/Full Stack/EMPLE WORK/EMPLE MAIN/Emple/Shashank_Frontend/node_modules/next/dist/server/lib/start-server.js
