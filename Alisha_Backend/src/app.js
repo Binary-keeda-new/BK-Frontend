@@ -1,9 +1,16 @@
 import express from 'express';
+import cors from 'cors';
 import routes from './routes/index.js';
 import notFound from './middleware/notFound.js';
 import errorHandler from './middleware/errorHandler.js';
 
 const app = express();
+
+// CORS
+app.use(cors({
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  credentials: true,
+}));
 
 // Body parsers
 app.use(express.json());

@@ -70,7 +70,7 @@ export default function Navbar() {
                 {isDark ? '☀️' : '🌙'}
               </button>
               <Link className="btn-outline" href="/auth/login">Login</Link>
-            <Link className="btn-cta" href="/auth/signup">Sign In</Link>
+            <Link className="btn-cta" href="/auth/signup">Sign Up</Link>
               <button
                 ref={hamburgerRef}
                 className="btn-hamburger"

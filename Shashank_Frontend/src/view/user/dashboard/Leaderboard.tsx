@@ -1,11 +1,22 @@
 "use client";
 
 import { useState } from "react";
+import { useSession } from "@descope/nextjs-sdk/client";
 
 type Tab = "University" | "Global";
 
 export default function Leaderboard() {
   const [active, setActive] = useState<Tab>("University");
+  // const { session } = useSession();
+  const { session } = useSession() as any;
+
+  const userName = session?.token?.name || session?.token?.email || "User";
+  const initials = userName
+    .split(" ")
+    .map((n: string) => n[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 1);
 
   return (
     <div className="animated-border">
@@ -73,11 +84,11 @@ export default function Leaderboard() {
                 boxShadow: "0 2px 8px rgba(241,90,34,0.35)",
               }}
             >
-              S
+              {initials}
             </div>
             <div className="flex-1">
               <div className="text-[13px] font-semibold" style={{ color: "var(--text)" }}>
-                shashank dubey
+                {userName}
               </div>
               <div className="text-[11px]" style={{ color: "var(--muted)" }}>
                 Others

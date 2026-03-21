@@ -1,10 +1,16 @@
+
+
+
+
+
+
 'use client'
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { useDescope } from '@descope/nextjs-sdk/client'
 import AuthLayout from '@/view/auth/components/AuthLayout'
 import '@/view/auth/auth.css'
-
 
 export default function ForgotPasswordPage() {
   const [email, setEmail]     = useState('')
@@ -12,6 +18,18 @@ export default function ForgotPasswordPage() {
   const [sent, setSent]       = useState(false)
   const [error, setError]     = useState('')
   const [resendTimer, setResendTimer] = useState(0)
+
+  const sdk = useDescope()
+
+  const startResendTimer = () => {
+    setResendTimer(30)
+    const interval = setInterval(() => {
+      setResendTimer((t) => {
+        if (t <= 1) { clearInterval(interval); return 0 }
+        return t - 1
+      })
+    }, 1000)
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -23,32 +41,44 @@ export default function ForgotPasswordPage() {
     }
 
     setLoading(true)
-    await new Promise((r) => setTimeout(r, 1400))
-    setLoading(false)
-    setSent(true)
+    try {
+      const resp = await sdk.password.sendReset(
+        email,
+        `${window.location.origin}/auth/reset-password`
+      )
 
-    // Start 30-second resend cooldown
-    setResendTimer(30)
-    const interval = setInterval(() => {
-      setResendTimer((t) => {
-        if (t <= 1) { clearInterval(interval); return 0 }
-        return t - 1
-      })
-    }, 1000)
+      if (resp.ok) {
+        setSent(true)
+        startResendTimer()
+      } else {
+        setError('Email not found. Please check and try again.')
+      }
+    } catch {
+      setError('Something went wrong. Please try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   const handleResend = async () => {
     if (resendTimer > 0) return
     setLoading(true)
-    await new Promise((r) => setTimeout(r, 1000))
-    setLoading(false)
-    setResendTimer(30)
-    const interval = setInterval(() => {
-      setResendTimer((t) => {
-        if (t <= 1) { clearInterval(interval); return 0 }
-        return t - 1
-      })
-    }, 1000)
+    try {
+      const resp = await sdk.password.sendReset(
+        email,
+        `${window.location.origin}/auth/reset-password`
+      )
+
+      if (resp.ok) {
+        startResendTimer()
+      } else {
+        setError('Failed to resend. Please try again.')
+      }
+    } catch {
+      setError('Something went wrong. Please try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -141,7 +171,7 @@ export default function ForgotPasswordPage() {
 
               <p className="auth-redirect">
                 Remember your password?{' '}
-                <Link href="/login" className="auth-link">Back to Sign In →</Link>
+                <Link href="/auth/login" className="auth-link">Back to Sign In →</Link>
               </p>
             </>
           ) : (
@@ -156,7 +186,7 @@ export default function ForgotPasswordPage() {
                   {' '}Click the link in the email to reset your password.
                 </p>
 
-                {/* Animated email illustration */}
+                {/* Email illustration */}
                 <div style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -215,7 +245,7 @@ export default function ForgotPasswordPage() {
                 </div>
 
                 <Link
-                  href="/login"
+                  href="/auth/login"
                   className="auth-submit"
                   style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8, textDecoration: 'none', borderRadius: 50 }}
                 >
