@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import "./landing/landing.css";
-import { ThemeProvider } from "../view/user/contexts/ThemeContext";
+import { ThemeProvider } from "../providers/ThemeContext";
 import { AuthProvider } from "@descope/nextjs-sdk";
 
 export const metadata: Metadata = {

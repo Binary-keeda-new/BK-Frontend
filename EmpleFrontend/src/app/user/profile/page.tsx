@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useState } from "react";
-import { useTheme } from "@/view/user/contexts/ThemeContext";
+import { useTheme } from "@/providers/ThemeContext";
 import {
   User, Calendar, Phone, Mail, MapPin, GraduationCap,
   BookOpen, Github, Linkedin, Code2, FileText, Wrench,

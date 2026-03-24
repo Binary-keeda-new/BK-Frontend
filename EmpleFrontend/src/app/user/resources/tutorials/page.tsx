@@ -1,4 +1,4 @@
-import TutorialsHome from "@/view/user/resources/TutorialsHome";
+import TutorialsHome from "@/features/user/resources/pages/TutorialsHome";
 
 export default function TutorialsPage() {
   return <TutorialsHome />;

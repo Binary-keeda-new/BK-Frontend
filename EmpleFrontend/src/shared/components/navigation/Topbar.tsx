@@ -257,7 +257,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { useTheme } from "@/view/user/contexts/ThemeContext";
+import { useTheme } from "@/providers/ThemeContext";
 import { Clapperboard, Sparkles, Bell, User, LogOut } from "lucide-react";
 import { useDescope, useSession } from "@descope/nextjs-sdk/client";
 import { useRouter } from "next/navigation";

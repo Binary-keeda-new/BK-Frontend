@@ -1,4 +1,4 @@
-import BlogsHome from "@/view/user/resources/BlogsHome";
+import BlogsHome from "@/features/user/blog/BlogsPage";
 
 export default function BlogsPage() {
   return <BlogsHome />;

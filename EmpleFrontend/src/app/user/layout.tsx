@@ -15,8 +15,8 @@
 //   );
 // }
 
-import Sidebar from "@/view/user/components/Sidebar";
-import Topbar from "@/view/user/components/Topbar";
+import Sidebar from "@/shared/components/navigation/Sidebar";
+import Topbar from "@/shared/components/navigation/Topbar";
 
 export default function UserLayout({ children }: { children: React.ReactNode }) {
   return (

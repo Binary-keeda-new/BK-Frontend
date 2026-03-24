@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useTheme } from "@/view/user/contexts/ThemeContext";
+import { useTheme } from "@/providers/ThemeContext";
 
 const NAV_ITEMS = [
   {
