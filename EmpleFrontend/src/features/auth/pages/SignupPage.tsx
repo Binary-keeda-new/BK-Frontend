@@ -30,29 +30,33 @@ export default function SignupPage() {
   const [error, setError] = useState('')
   const router = useRouter()
   const sdk = useDescope()
-  const { session, isSessionLoading } = useSession() as any
+ const { isAuthenticated, isSessionLoading } = useSession()
 
   const strength = getPasswordStrength(form.password)
 
-  useEffect(() => {
-    console.log({ isSessionLoading, session })
-    if (!isSessionLoading && session?.token) {
-      router.replace('/user/dashboard')
-    }
-  }, [session, isSessionLoading])
+
+useEffect(() => {
+  if (!isSessionLoading && isAuthenticated) {
+    router.replace('/user/dashboard')
+  }
+}, [isAuthenticated, isSessionLoading, router])
 
   const update = useCallback((field: string, value: string) => {
     setForm((f) => ({ ...f, [field]: value }))
   }, [])
 
-  if (isSessionLoading) {
+if (isSessionLoading) {
   return <div>Loading signup page...</div>
+}
+
+if (isAuthenticated) {
+  return null
 }
 
   const handleSocialLogin = async (provider: 'google' | 'github' | 'microsoft') => {
     try {
       const redirectUrl = `${window.location.origin}/auth/callback`
-      const result = await sdk.oauth.start(provider, redirectUrl + '?prompt=select_account')
+      const result = await sdk.oauth.start(provider, redirectUrl)
       if (result.ok && result.data?.url) {
         window.location.href = result.data.url
       }
@@ -62,39 +66,52 @@ export default function SignupPage() {
     }
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError('')
-    if (!form.name || !form.email || !form.password || !form.confirm) {
-      setError('Please fill in all required fields.')
-      return
-    }
-    if (form.password !== form.confirm) {
-      setError("Passwords don't match.")
-      return
-    }
-    if (!agreed) {
-      setError('Please accept the Terms of Service to continue.')
-      return
-    }
-    if (strength.level < 2) {
-      setError('Please choose a stronger password.')
-      return
-    }
-    setLoading(true)
-    try {
-      const resp = await sdk.password.signUp(form.email, form.password, { name: form.name })
-      if (resp.ok) {
-        router.replace('/user/dashboard')
-      } else {
-        setError('Signup failed. Email may already be registered.')
-      }
-    } catch {
-      setError('Something went wrong. Please try again.')
-    } finally {
-      setLoading(false)
-    }
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault()
+  setError('')
+
+  if (!form.name || !form.email || !form.password || !form.confirm) {
+    setError('Please fill in all required fields.')
+    return
   }
+
+  if (form.password !== form.confirm) {
+    setError("Passwords don't match.")
+    return
+  }
+
+  if (!agreed) {
+    setError('Please accept the Terms of Service to continue.')
+    return
+  }
+
+  if (strength.level < 2) {
+    setError('Please choose a stronger password.')
+    return
+  }
+
+  setLoading(true)
+
+  try {
+    const resp = await sdk.password.signUp(form.email, form.password, {
+      name: form.name,
+      email: form.email,
+    })
+
+    if (!resp.ok) {
+      setError('Signup failed. Email may already be registered.')
+      return
+    }
+
+    // Do not manually router.replace here.
+    // Let useSession() redirect when auth state is ready.
+  } catch (err) {
+    console.error(err)
+    setError('Something went wrong. Please try again.')
+  } finally {
+    setLoading(false)
+  }
+}
 
   return (
     <AuthLayout>

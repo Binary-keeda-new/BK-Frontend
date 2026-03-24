@@ -1,4 +1,3 @@
-
 'use client'
 
 import { Fragment, useState, useEffect } from 'react'
@@ -8,7 +7,6 @@ import { useDescope, useSession } from '@descope/nextjs-sdk/client'
 import AuthLayout from '@/features/auth/layouts/AuthLayout'
 import '@/features/auth/auth.css'
 
-
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [email, setEmail] = useState('')
@@ -16,24 +14,24 @@ export default function LoginPage() {
   const [remember, setRemember] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+
   const router = useRouter()
   const sdk = useDescope()
-  const { session, isSessionLoading } = useSession() as any
+  const { isAuthenticated, isSessionLoading } = useSession()
 
-  // Agar already logged in hai toh dashboard pe bhejo
   useEffect(() => {
-    if (!isSessionLoading && session?.token) {
+    if (!isSessionLoading && isAuthenticated) {
       router.replace('/user/dashboard')
     }
-  }, [session, isSessionLoading])
+  }, [isAuthenticated, isSessionLoading, router])
 
-  // Session load hone tak kuch render mat karo
   if (isSessionLoading) return null
+  if (isAuthenticated) return null
 
   const handleSocialLogin = async (provider: 'google' | 'github' | 'microsoft') => {
     try {
       const redirectUrl = `${window.location.origin}/auth/callback`
-      const result = await sdk.oauth.start(provider, redirectUrl + '?prompt=select_account')
+      const result = await sdk.oauth.start(provider, redirectUrl)
       if (result.ok && result.data?.url) {
         window.location.href = result.data.url
       }
@@ -46,27 +44,25 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
+
     if (!email || !password) {
       setError('Please fill in all fields.')
       return
     }
+
     setLoading(true)
+
     try {
-      const response = await fetch('https://api.descope.com/v1/auth/signin/password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          loginId: email,
-          password,
-          projectId: process.env.NEXT_PUBLIC_DESCOPE_PROJECT_ID,
-        }),
-      })
-      if (response.ok) {
-        router.replace('/user/dashboard')
-      } else {
+      const resp = await sdk.password.signIn(email, password)
+
+      if (!resp.ok) {
         setError('Invalid email or password. Please try again.')
+        return
       }
-    } catch {
+
+      // Let useSession() update and redirect via useEffect
+    } catch (err) {
+      console.error(err)
       setError('Something went wrong. Please try again.')
     } finally {
       setLoading(false)
