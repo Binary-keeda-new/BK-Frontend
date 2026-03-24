@@ -53,8 +53,7 @@
 
 import type { Metadata } from 'next'
 
-import '../globals.css'
-import './landing.css'
+
 
 export const metadata: Metadata = {
   title: 'Emple – Land Your Dream Job',
@@ -69,11 +68,11 @@ export default function LandingLayout({
 }) {
   return (
     <>
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      {/* <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link
         href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
         rel="stylesheet"
-      />
+      /> */}
       {children}
     </>
   )
