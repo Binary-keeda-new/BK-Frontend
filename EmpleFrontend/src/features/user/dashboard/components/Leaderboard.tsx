@@ -19,8 +19,8 @@ export default function Leaderboard() {
     .slice(0, 1);
 
   return (
-    <div className="animated-border">
-      <div className="animated-border-inner p-[22px] overflow-hidden">
+    <div className="animated-border h-full">
+      <div className="animated-border-inner p-[22px] overflow-hidden h-full flex flex-col">
 
         <div className="font-syne text-[15px] font-bold mb-[14px]" style={{ color: "var(--text)" }}>
           Leaderboards
@@ -62,7 +62,7 @@ export default function Leaderboard() {
 
         {/* Your rank */}
         <div
-          className="rounded-[14px] overflow-hidden"
+          className="rounded-[14px] overflow-hidden mt-auto"
           style={{ border: "1px solid var(--orange)", background: "rgba(241,90,34,0.04)" }}
         >
           <div

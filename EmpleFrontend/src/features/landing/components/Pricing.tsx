@@ -21,7 +21,7 @@ const plans = [
     cta: 'Get Started Free',
   },
   {
-    name: 'Pro',
+    name: 'Paid',
     tagline: 'For serious job seekers who want every possible advantage.',
     price: '499',
     period: 'per month, billed monthly',
@@ -38,9 +38,9 @@ const plans = [
     cta: 'Upgrade to Pro',
   },
   {
-    name: 'Teams',
+    name: 'Interprice',
     tagline: 'For universities, bootcamps, and placement cells.',
-    price: null,
+    price: 1500,
     period: 'contact us for pricing',
     featured: false,
     badge: null,

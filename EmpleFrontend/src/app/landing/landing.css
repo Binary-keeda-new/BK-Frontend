@@ -48,7 +48,7 @@
   --shadow-glow:  0 0 40px rgba(241,90,34,0.22);
 }
 
-[data-theme="light"] {
+/*[data-theme="light"] {
   --clr-bg:       #f4f5f9;
   --clr-bg2:      #eef0f6;
   --clr-surface:  #ffffff;
@@ -67,7 +67,7 @@
   --nav-bg:       rgba(244,245,249,0.88);
   --shadow-card:  0 2px 16px rgba(0,0,0,0.10);
   --shadow-glow:  0 0 40px rgba(241,90,34,0.12);
-}
+}*/
 
 /* ═══════════════════════════════════════════
    RESET & BASE
@@ -90,7 +90,10 @@ img, svg { display: block; max-width: 100%; }
 /* ═══════════════════════════════════════════
    UTILITY
 ═══════════════════════════════════════════ */
-.container { width: 100%; max-width: var(--max-w); margin: 0 auto; padding: 0 clamp(20px, 5vw, 48px); }
+.container {
+  width: 100%;
+  padding: 0 clamp(20px, 5vw, 48px);
+}
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
 
 /* ═══════════════════════════════════════════
@@ -105,7 +108,7 @@ img, svg { display: block; max-width: 100%; }
   border-bottom: 1px solid var(--clr-border);
   transition: background var(--t-base), border-color var(--t-base);
 }
-.nav-inner { height: 100%; display: flex; align-items: center; gap: var(--space-8); }
+.nav-inner { height: 100%; display: flex; align-items: center;  }
 .nav-brand { display: flex; align-items: center; gap: var(--space-3); flex-shrink: 0; }
 .nav-logo-box {
   width: 36px; height: 36px; border-radius: var(--radius-sm);
@@ -118,11 +121,17 @@ img, svg { display: block; max-width: 100%; }
 .nav-logo-box span { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 17px; color: #fff; font-style: italic; }
 .nav-wordmark { font-family: 'Nunito', sans-serif; font-size: 20px; font-weight: 900; letter-spacing: -0.5px; color: var(--clr-text); }
 .nav-wordmark em { color: var(--clr-accent); font-style: normal; }
-.nav-links { display: flex; align-items: center; gap: var(--space-1); flex: 1; }
+.nav-links { display: flex; align-items: center; gap: var(--space-4); }
 .nav-link {
   padding: 7px 14px; border-radius: var(--radius-sm);
   font-size: var(--text-sm); font-weight: 600; color: var(--clr-text2);
   transition: background var(--t-fast), color var(--t-fast);
+}
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  margin-left: auto; 
 }
 .nav-link:hover { background: var(--clr-accent3); color: var(--clr-accent); }
 .nav-actions { display: flex; align-items: center; gap: var(--space-3); }
@@ -446,7 +455,8 @@ img, svg { display: block; max-width: 100%; }
 .pricing-head { text-align: center; margin-bottom: clamp(40px,6vw,64px); }
 .pricing-head .section-tag { justify-content: center; }
 .pricing-head .section-lead { margin: 0 auto; }
-.pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: clamp(14px, 2vw, 20px); align-items: start; }
+.pricing-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(14px, 2vw, 20px); align-items: start; }
+
 .plan {
   background: var(--clr-surface); border: 1.5px solid var(--clr-border);
   border-radius: var(--radius-xl); padding: clamp(22px, 3vw, 32px);
@@ -641,4 +651,58 @@ img, svg { display: block; max-width: 100%; }
   .footer-top { grid-template-columns: 1fr; }
   .footer-top > :first-child { grid-column: auto; }
   .step-card { flex-direction: column; gap: var(--space-3); }
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+/* 🔥 THIS is the main fix */
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  margin-left: auto; /* pushes everything to the right */
+}
+
+.nav-links {
+  display: flex;
+  gap: 24px;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Hamburger hidden on desktop */
+.btn-hamburger {
+  display: none;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+
+  .btn-hamburger {
+    display: block;
+  }
+}
+
+.pricing-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+}
+
+.plan {
+  width: auto !important;
+}
+
+.reveal {
+  opacity: 1 !important;
+  transform: none !important;
 }
