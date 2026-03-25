@@ -53,20 +53,44 @@ export default function LoginPage() {
     setLoading(true)
 
     try {
-      const resp = await sdk.password.signIn(email, password)
+  const resp = await sdk.password.signIn(email, password)
 
-      if (!resp.ok) {
-        setError('Invalid email or password. Please try again.')
-        return
-      }
+  console.log("login resp:", resp)
 
-      // Let useSession() update and redirect via useEffect
-    } catch (err) {
-      console.error(err)
-      setError('Something went wrong. Please try again.')
-    } finally {
-      setLoading(false)
-    }
+  if (!resp.ok) {
+    setError('Invalid email or password. Please try again.')
+    return
+  }
+
+  const token = resp.data?.sessionJwt
+
+  if (!token) {
+    setError('No session token received.')
+    return
+  }
+
+  const syncRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/sync`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  })
+
+  if (!syncRes.ok) {
+    const errorText = await syncRes.text()
+    console.error('Sync API failed:', errorText)
+    setError('Login succeeded, but user sync failed.')
+    return
+  }
+
+  window.location.replace('/user/dashboard')
+} catch (err) {
+  console.error(err)
+  setError('Something went wrong. Please try again.')
+} finally {
+  setLoading(false)
+}
   }
 
   return (

@@ -93,24 +93,52 @@ const handleSubmit = async (e: React.FormEvent) => {
   setLoading(true)
 
   try {
-    const resp = await sdk.password.signUp(form.email, form.password, {
-      name: form.name,
-      email: form.email,
-    })
+  const resp = await sdk.password.signUp(form.email, form.password, {
+    name: form.name,
+    email: form.email,
+  });
 
-    if (!resp.ok) {
-      setError('Signup failed. Email may already be registered.')
-      return
-    }
+  console.log("resp:", resp);
 
-    // Do not manually router.replace here.
-    // Let useSession() redirect when auth state is ready.
-  } catch (err) {
-    console.error(err)
-    setError('Something went wrong. Please try again.')
-  } finally {
-    setLoading(false)
+  if (!resp.ok) {
+    console.log("Status Code:", resp.code);
+    console.log("Error Code:", resp.error?.errorCode);
+    console.log("Error Description:", resp.error?.errorDescription);
+    console.log("Error Message:", resp.error?.errorMessage);
+
+    setError(resp.error?.errorDescription || "Signup failed");
+    return;
   }
+
+  const token = resp.data?.sessionJwt;
+
+  if (!token) {
+    setError("No session token received.");
+    return;
+  }
+
+  const syncRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/sync`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!syncRes.ok) {
+    const errorText = await syncRes.text();
+    console.error("Sync failed:", errorText);
+    setError("Signup succeeded, but user sync failed.");
+    return;
+  }
+
+  window.location.replace("/user/dashboard");
+} catch (err) {
+  console.error("signup exception:", err);
+  setError("Something went wrong. Please try again.");
+} finally {
+  setLoading(false);
+}
 }
 
   return (
