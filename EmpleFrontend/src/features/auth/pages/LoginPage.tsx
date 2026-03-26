@@ -19,14 +19,11 @@ export default function LoginPage() {
   const sdk = useDescope()
   const { isAuthenticated, isSessionLoading } = useSession()
 
-  useEffect(() => {
-    if (!isSessionLoading && isAuthenticated) {
-      router.replace('/user/dashboard')
-    }
-  }, [isAuthenticated, isSessionLoading, router])
-
-  if (isSessionLoading) return null
-  if (isAuthenticated) return null
+useEffect(() => {
+  if (!isSessionLoading && isAuthenticated) {
+    router.replace('/user/dashboard')
+  }
+}, [isAuthenticated, isSessionLoading, router])
 
   const handleSocialLogin = async (provider: 'google' | 'github' | 'microsoft') => {
     try {
@@ -41,6 +38,7 @@ export default function LoginPage() {
     }
   }
 
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
@@ -69,6 +67,7 @@ export default function LoginPage() {
     return
   }
 
+  console.log("BEFORE SYNC CALL")
   const syncRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/sync`, {
     method: 'POST',
     headers: {
@@ -76,7 +75,7 @@ export default function LoginPage() {
       'Content-Type': 'application/json',
     },
   })
-
+  console.log("AFTER SYNC CALL", syncRes.status)
   if (!syncRes.ok) {
     const errorText = await syncRes.text()
     console.error('Sync API failed:', errorText)

@@ -106,7 +106,7 @@ const handleSubmit = async (e: React.FormEvent) => {
     console.log("Error Description:", resp.error?.errorDescription);
     console.log("Error Message:", resp.error?.errorMessage);
 
-    setError(resp.error?.errorDescription || "Signup failed");
+    setError(resp.error?.errorMessage || "Signup failed");
     return;
   }
 
