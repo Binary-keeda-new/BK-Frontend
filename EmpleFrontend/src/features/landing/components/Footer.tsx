@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 
 const footerCols = [
   {
@@ -21,13 +22,16 @@ export default function Footer() {
       <div className="container">
         <div className="footer-top">
           <div>
-            <div className="footer-brand-wrap">
-              <div className="nav-logo-box" style={{ width: 32, height: 32 }}>
-                <span style={{ fontSize: 15 }}>e</span>
-              </div>
-              <span className="nav-wordmark"><em>e</em>mple</span>
-            </div>
-            <p className="footer-desc">
+            {/* Logo */}
+          <div className="flex items-center">
+            <img
+              src="/logo-final.png"
+              alt="emple"
+              className="h-[75px] w-auto"
+              style={{ objectFit: "contain" }}
+            />
+          </div>
+              <p className="footer-desc">
               The all-in-one career development platform for the next generation of tech talent.
             </p>
             <div className="footer-socials">

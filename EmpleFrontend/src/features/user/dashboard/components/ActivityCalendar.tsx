@@ -44,8 +44,8 @@ const NavBtn = ({ children }: { children: string }) => (
 
 export default function ActivityCalendar() {
   return (
-    <div className="animated-border">
-      <div className="animated-border-inner p-[22px] overflow-hidden">
+    <div className="animated-border h-full">
+      <div className="animated-border-inner p-[22px] overflow-hidden h-full flex flex-col">
 
         {/* Header */}
         <div className="flex justify-between items-start mb-[14px]">
@@ -76,71 +76,73 @@ export default function ActivityCalendar() {
         </div>
 
         {/* Grid */}
-        <div className="grid grid-cols-7 gap-[3px] text-center">
-          {/* Day names */}
-          {DAYS.map((d, i) => (
-            <div
-              key={d}
-              className="text-[9.5px] font-bold uppercase tracking-[0.05em] py-1"
-              style={{ color: i >= 5 ? "rgba(241,90,34,0.7)" : "var(--muted)" }}
-            >
-              {d}
-            </div>
-          ))}
+        <div className="flex-1 flex items-center justify-center">
+          <div className="grid grid-cols-7 gap-[3px] text-center w-full">
 
-          {/* Days */}
-          {WEEKS.map((week, wi) =>
-            week.map((cell, ci) => {
-              const isWeekend = ci >= 5;
-              const baseColor = cell.isToday
-                ? "#fff"
-                : cell.otherMonth
-                ? "var(--muted)"
-                : isWeekend
-                ? "rgba(241,90,34,0.85)"
-                : "var(--text)";
+            {/* Day names */}
+            {DAYS.map((d, i) => (
+              <div
+                key={d}
+                className="text-[9.5px] font-bold uppercase tracking-[0.05em] py-1"
+                style={{ color: i >= 5 ? "rgba(241,90,34,0.7)" : "var(--muted)" }}
+              >
+                {d}
+              </div>
+            ))}
 
-              return (
-                <div
-                  key={`${wi}-${ci}`}
-                  className="relative text-[12px] py-[6px] rounded-[8px] cursor-pointer
-                             transition-all duration-150"
-                  style={{
-                    color: baseColor,
-                    opacity: cell.otherMonth ? 0.4 : 1,
-                    background: cell.isToday ? "var(--orange)" : "transparent",
-                    fontWeight: cell.isToday ? 700 : 400,
-                    boxShadow: cell.isToday ? "0 3px 10px rgba(241,90,34,0.4)" : "none",
-                  }}
-                  onMouseEnter={e => {
-                    if (!cell.isToday) {
-                      const el = e.currentTarget as HTMLElement;
-                      el.style.background = "var(--orange-dim)";
-                      el.style.color = "var(--orange)";
-                      el.style.transform = "scale(1.08)";
-                    }
-                  }}
-                  onMouseLeave={e => {
-                    if (!cell.isToday) {
-                      const el = e.currentTarget as HTMLElement;
-                      el.style.background = "transparent";
-                      el.style.color = baseColor;
-                      el.style.transform = "";
-                    }
-                  }}
-                >
-                  {cell.day}
-                  {cell.hasDot && (
-                    <span
-                      className="absolute bottom-[2px] left-1/2 -translate-x-1/2
-                                 w-1 h-1 rounded-full block"
-                      style={{ background: cell.isToday ? "rgba(255,255,255,0.8)" : "var(--orange)" }}
-                    />
-                  )}
-                </div>
-              );
-            })
-          )}
+            {/* Days */}
+            {WEEKS.map((week, wi) =>
+              week.map((cell, ci) => {
+                const isWeekend = ci >= 5;
+                const baseColor = cell.isToday
+                  ? "#fff"
+                  : cell.otherMonth
+                  ? "var(--muted)"
+                  : isWeekend
+                  ? "rgba(241,90,34,0.85)"
+                  : "var(--text)";
+
+                return (
+                  <div
+                    key={`${wi}-${ci}`}
+                    className="relative text-[12px] py-[6px] rounded-[8px] cursor-pointer transition-all duration-150"
+                    style={{
+                      color: baseColor,
+                      opacity: cell.otherMonth ? 0.4 : 1,
+                      background: cell.isToday ? "var(--orange)" : "transparent",
+                      fontWeight: cell.isToday ? 700 : 400,
+                      boxShadow: cell.isToday ? "0 3px 10px rgba(241,90,34,0.4)" : "none",
+                    }}
+                    onMouseEnter={e => {
+                      if (!cell.isToday) {
+                        const el = e.currentTarget as HTMLElement;
+                        el.style.background = "var(--orange-dim)";
+                        el.style.color = "var(--orange)";
+                        el.style.transform = "scale(1.08)";
+                      }
+                    }}
+                    onMouseLeave={e => {
+                      if (!cell.isToday) {
+                        const el = e.currentTarget as HTMLElement;
+                        el.style.background = "transparent";
+                        el.style.color = baseColor;
+                        el.style.transform = "";
+                      }
+                    }}
+                  >
+                    {cell.day}
+                    {cell.hasDot && (
+                      <span
+                        className="absolute bottom-[2px] left-1/2 -translate-x-1/2 w-1 h-1 rounded-full block"
+                        style={{ background: cell.isToday ? "rgba(255,255,255,0.8)" : "var(--orange)" }}
+                      />
+                    )}
+                  </div>
+                );
+              })
+            )}
+
+          </div>
         </div>
 
       </div>

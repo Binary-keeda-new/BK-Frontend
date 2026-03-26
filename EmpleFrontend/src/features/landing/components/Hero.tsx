@@ -267,9 +267,9 @@ export default function Hero() {
     }
   }
 
-  const scrollTo = (id: string) => {
+  /*const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
-  }
+  }*/
 
   return (
     <section
@@ -299,30 +299,29 @@ export default function Hero() {
           </h1>
 
           <p className="hero-desc">
-            Your AI-powered Placement Preparation Ecosystem — practice coding interviews,
+            Your AI-powered Placement Preparation Ecosystem- practice coding interviews,
             score your resume against ATS, track applications, and follow expert career
             roadmaps, all in one platform built for ambitious job seekers.
           </p>
 
           <div className="hero-btns">
-            <Link className="hero-btn-primary" href="#">
+            <Link className="hero-btn-primary" href="/auth/signup">
               Start for Free
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
               </svg>
             </Link>
-            <button className="hero-btn-secondary" onClick={() => scrollTo('how')}>
+            {/*<button className="hero-btn-secondary" onClick={() => scrollTo('how')}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="12" r="10" /><polygon points="10 8 16 12 10 16 10 8" />
               </svg>
               See How It Works
-            </button>
+            </button>*/}
           </div>
 
           <div className="hero-stats">
             {[
               { num: '50', suffix: 'K+', label: 'Active Users' },
-              { num: '12', suffix: 'K+', label: 'Jobs Landed' },
               { num: '98', suffix: '%', label: 'Satisfaction' },
               { num: '4.9', suffix: '★', label: 'Avg Rating' },
             ].map((stat, i) => (
