@@ -68,7 +68,8 @@ useEffect(() => {
   }
 
   console.log("BEFORE SYNC CALL")
-  const syncRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/sync`, {
+  console.log("TOKEN BEFORE SYNC:", token);
+  const syncRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/sync`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${token}`,
