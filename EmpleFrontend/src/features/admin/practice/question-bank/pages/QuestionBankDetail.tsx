@@ -142,6 +142,9 @@ export default function QuestionBankDetailPage() {
 
   const fileInputRef = useRef<HTMLInputElement>(null)
 
+  const [parsedQuestions, setParsedQuestions] = useState<NewQuestion[]>([])
+const [selectedFileName, setSelectedFileName] = useState('')
+
   const addToast = (message: string, type: Toast['type'] = 'success') => {
     const id = ++toastId.current
     setToasts((prev) => [...prev, { id, message, type }])
@@ -289,11 +292,32 @@ export default function QuestionBankDetailPage() {
     submitQuestions([clean])
   }
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFileError('')
-    const file = e.target.files?.[0]
-    if (!file) return
+ const clearUploadState = () => {
+  setFileError('')
+  setParsedQuestions([])
+  setSelectedFileName('')
+  if (fileInputRef.current) fileInputRef.current.value = ''
+}
+const handleImportParsedQuestions = async () => {
+  if (parsedQuestions.length === 0) {
+    addToast('No parsed questions to import', 'error')
+    return
+  }
 
+  await submitQuestions(parsedQuestions)
+}
+   
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  setFileError('')
+setParsedQuestions([])
+setSelectedFileName('')
+
+  const file = e.target.files?.[0]
+  if (!file) return
+
+  setSelectedFileName(file.name)
+
+  try {
     const text = await file.text()
     let parsed: NewQuestion[] = []
 
@@ -303,7 +327,7 @@ export default function QuestionBankDetailPage() {
       parsed = parseJSON(text)
     } else if (addMode === 'excel') {
       setFileError(
-        'Excel parsing requires xlsx library — implement with SheetJS on your server or client.'
+        'Excel parsing requires xlsx library. We can add that next.'
       )
       return
     }
@@ -318,16 +342,27 @@ export default function QuestionBankDetailPage() {
       questionType: q.correctOptions.length > 1 ? 'MSQ' : 'MCQ',
     }))
 
-    await submitQuestions(parsed)
-  }
+    setParsedQuestions(parsed)
+    addToast(
+      `${parsed.length} question${parsed.length !== 1 ? 's' : ''} detected`,
+      'success'
+    )
 
-  const closeAddModal = () => {
-    setIsAddOpen(false)
-    setNewQ(EMPTY_QUESTION)
-    setAddMode('manual')
-    setFileError('')
+  } catch (err) {
+    setFileError('Failed to read the uploaded file.')
+    setSelectedFileName('')
+    setParsedQuestions([])
+  } finally {
     if (fileInputRef.current) fileInputRef.current.value = ''
   }
+}
+
+ const closeAddModal = () => {
+  setIsAddOpen(false)
+  setNewQ(EMPTY_QUESTION)
+  setAddMode('manual')
+  clearUploadState()
+}
 
   const openEditModal = (q: Question) => {
     setEditingQuestion(q)
@@ -458,6 +493,7 @@ export default function QuestionBankDetailPage() {
       </div>
 
       <AddQuestionModal
+      clearUploadState={clearUploadState}
         isOpen={isAddOpen}
         addMode={addMode}
         setAddMode={setAddMode}
@@ -470,7 +506,10 @@ export default function QuestionBankDetailPage() {
         onAddQuestion={handleAddQuestion}
         onFileUpload={handleFileUpload}
         setFileError={setFileError}
-      />
+        parsedQuestions={parsedQuestions}
+        selectedFileName={selectedFileName}
+        onImportParsedQuestions={handleImportParsedQuestions}
+        />
 
       <EditQuestionModal
         isOpen={isEditOpen}
