@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
 import CreateQuestionBank from '../components/createQuestionBank'
 import DeleteConfirmationModal from '../components/DeleteConfirmation'
 import ToastContainer from '../components/ToastContainer'
@@ -22,8 +21,13 @@ type GetQuestionBanksResponse = {
 
 const API_BASE = 'http://localhost:5000/api/v1/admin/question-banks'
 
-export default function QuestionBankPage() {
-  const router = useRouter()
+type QuestionBankPageProps = {
+  onEditQuestionBank: (id: string) => void
+}
+
+export default function QuestionBankPage({
+  onEditQuestionBank,
+}: QuestionBankPageProps) {
 
   const [questionBanks, setQuestionBanks] = useState<QuestionBank[]>([])
   const [loading, setLoading] = useState(true)
@@ -110,9 +114,6 @@ const handleDelete = async () => {
       <div className="mx-auto max-w-6xl">
         <div className="mb-10 flex items-center justify-between">
           <div>
-            <p className="mb-2 inline-block rounded-full bg-[rgb(19,20,27)] px-4 py-1 text-sm text-[rgb(241,90,34)]">
-              Admin Portal
-            </p>
             <h1 className="text-3xl font-bold">Question Banks</h1>
           </div>
 
@@ -123,7 +124,6 @@ const handleDelete = async () => {
             + Create New
           </button>
         </div>
-
         {loading ? (
           <div className="flex h-40 items-center justify-center">
             <div className="h-8 w-8 animate-spin rounded-full border-4 border-[rgb(241,90,34)] border-t-transparent"></div>
@@ -147,7 +147,7 @@ const handleDelete = async () => {
 
                 <div className="mt-6 flex gap-3">
                   <button
-                    onClick={() => router.push(`/practice/question-bank/${item._id}`)}
+                    onClick={() => onEditQuestionBank(item._id)}
                     className="rounded-xl border border-white/10 px-4 py-2 text-sm font-medium transition-colors hover:bg-white/5"
                   >
                     Edit

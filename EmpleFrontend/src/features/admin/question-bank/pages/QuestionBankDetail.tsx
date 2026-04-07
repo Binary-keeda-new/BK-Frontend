@@ -1,6 +1,5 @@
 'use client'
-
-import { useParams, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import AddQuestionModal from '../components/AddQuestionModal'
 import DeleteQuestionModal from '../components/DeleteQuestionModal'
@@ -204,10 +203,16 @@ function parseExcel(rows: Record<string, any>[]): NewQuestion[] {
   return parsed
 }
 
-export default function QuestionBankDetailPage() {
-  const params = useParams()
+type QuestionBankDetailPageProps = {
+  id: string
+  onBackToQuestionBanks?: () => void
+}
+
+export default function QuestionBankDetailPage({
+  id,
+  onBackToQuestionBanks,
+}: QuestionBankDetailPageProps) {
   const router = useRouter()
-  const id = params.id as string
 
   const [questionBank, setQuestionBank] = useState<QuestionBank | null>(null)
   const [editTitle, setEditTitle] = useState('')
@@ -600,7 +605,13 @@ export default function QuestionBankDetailPage() {
         <div className="text-center">
           <p className="mb-4 text-white/50">Question bank not found.</p>
           <button
-            onClick={() => router.back()}
+            onClick={() => {
+  if (onBackToQuestionBanks) {
+    onBackToQuestionBanks()
+  } else {
+    router.back()
+  }
+}}
             className="rounded-2xl bg-[rgb(241,90,34)] px-5 py-2 text-sm"
           >
             Go Back
@@ -618,7 +629,13 @@ export default function QuestionBankDetailPage() {
         <QuestionBankHeader
           title={questionBank.title}
           questionCount={questions.length}
-          onBack={() => router.back()}
+         onBack={() => {
+  if (onBackToQuestionBanks) {
+    onBackToQuestionBanks()
+  } else {
+    router.back()
+  }
+}}
         />
 
         <QuestionBankMetaForm
