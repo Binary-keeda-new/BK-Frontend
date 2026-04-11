@@ -26,34 +26,37 @@ export default function ForgotPasswordPage() {
     }, 1000)
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError('')
+ const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault()
+  setError('')
 
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setError('Please enter a valid email address.')
-      return
-    }
-
-    setLoading(true)
-    try {
-      const resp = await sdk.password.sendReset(
-        email,
-        `${window.location.origin}/auth/reset-password`
-      )
-
-      if (resp.ok) {
-        setSent(true)
-        startResendTimer()
-      } else {
-        setError('Email not found. Please check and try again.')
-      }
-    } catch {
-      setError('Something went wrong. Please try again.')
-    } finally {
-      setLoading(false)
-    }
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    setError('Please enter a valid email address.')
+    return
   }
+
+  setLoading(true)
+  try {
+    console.log('calling sendReset...')
+    const resp = await sdk.password.sendReset(
+      email,
+      `${window.location.origin}/auth/reset-password`
+    )
+    console.log('sendReset resp:', resp)
+
+    if (resp?.ok === true || !resp?.error) {
+      setSent(true)
+      startResendTimer()
+    } else {
+      setError(resp.error?.errorMessage || 'Failed to send reset email.')
+    }
+  } catch (err) {
+    console.error('sendReset exception:', err)
+    setError('Something went wrong. Please try again.')
+  } finally {
+    setLoading(false)
+  }
+}
 
   const handleResend = async () => {
     if (resendTimer > 0) return
