@@ -13,7 +13,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning data-theme="dark" data-scroll-behavior="smooth">
       <body>
-        <AuthProvider projectId={process.env.NEXT_PUBLIC_DESCOPE_PROJECT_ID || ""}>
+        <AuthProvider 
+          projectId={process.env.NEXT_PUBLIC_DESCOPE_PROJECT_ID || ""}
+          
+          sessionTokenViaCookie={{
+            secure: process.env.NODE_ENV !== 'development',
+            sameSite: 'Lax'
+          }}
+        >
           <ThemeProvider>{children}</ThemeProvider>
         </AuthProvider>
       </body>
