@@ -6,7 +6,7 @@ import Topbar from './topbar';
 import DashboardContent from './dashboardContent';
 import QuestionBankPage from '@/features/admin/question-bank/pages/QuestionBankPage';
 import QuestionBankDetailPage from '@/features/admin/question-bank/pages/QuestionBankDetail';
-
+import AdminJobsPage from "@/features/admin/jobs/pages/AdminJobsPage";
 export default function AppShell() {
   const [mobileOpen, setMobileOpen] = useState<boolean>(false);
   const [activeSection, setActiveSection] =
@@ -104,6 +104,8 @@ export default function AppShell() {
             Coding problems content goes here.
           </div>
         );
+        case 'jobs':
+        return <AdminJobsPage />;
 
       default:
         return (

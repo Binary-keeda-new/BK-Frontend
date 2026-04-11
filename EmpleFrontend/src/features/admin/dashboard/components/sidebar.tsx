@@ -10,7 +10,8 @@ export type AdminSection =
   | 'tests'
   | 'question-bank'
   | 'question-bank-detail'
-  | 'coding-problems';
+  | 'coding-problems'
+  | 'jobs';
 
 const NAV_ITEMS: {
   label: string;
@@ -105,6 +106,23 @@ const NAV_ITEMS: {
       </svg>
     ),
   },
+  {
+  label: 'Jobs',
+  key: 'jobs',
+  icon: (
+    <svg
+      width="17"
+      height="17"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
+      <rect x="2" y="7" width="20" height="14" rx="2" />
+      <path d="M16 3v4M8 3v4M3 11h18" />
+    </svg>
+  ),
+},
 ];
 
 type SidebarProps = {
