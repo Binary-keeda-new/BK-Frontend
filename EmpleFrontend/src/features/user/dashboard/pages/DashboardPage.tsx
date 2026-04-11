@@ -21,7 +21,7 @@ export default function DashboardPage() {
     }
 
     // ✅ Logged in → fetch user
-    const fetchUser = async () => {
+    /*const fetchUser = async () => {
       const token = sessionToken;
       if (!token) return;
 
@@ -38,7 +38,38 @@ export default function DashboardPage() {
       console.log("USER DATA:", data);
 
       setUser(data.user);
-    };
+    };*/
+    const fetchUser = async () => {
+  const token = sessionToken;
+  if (!token) return;
+
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/me`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (!res.ok) throw new Error("API error");
+
+    const data = await res.json();
+    console.log("USER DATA:", data);
+
+    setUser(data.user);
+
+  } catch (err) {
+    console.error("Fetch failed:", err);
+
+    // ✅ fallback user (IMPORTANT)
+    setUser({
+      name: "User",
+      email: "user@example.com",
+    });
+  }
+};
 
     if (isAuthenticated) {
       fetchUser();
@@ -46,46 +77,59 @@ export default function DashboardPage() {
   }, [sessionToken, isAuthenticated, isSessionLoading, router]);
 
   // ⏳ Loading state
-  if (isSessionLoading || !user) {
+  /*if (isSessionLoading || !user) {
     return <div className="p-6">Loading dashboard...</div>;
-  }
+  }*/
+
+    if (isSessionLoading) {
+  return <div className="p-6">Loading dashboard...</div>;
+}
 
   // display name
-  const displayName =
+  /*const displayName =
   user.name ||
   user.email.split("@")[0].charAt(0).toUpperCase() +
-    user.email.split("@")[0].slice(1);
+    user.email.split("@")[0].slice(1);*/
+
+    const displayName =
+  user?.name ||
+  (user?.email
+    ? user.email.split("@")[0].charAt(0).toUpperCase() +
+      user.email.split("@")[0].slice(1)
+    : "User");
 
   return (
-    
-  <div className="flex-1 overflow-y-auto p-[22px_24px]">
-    
-    {/* Welcome text */}
-   <h2 className="text-white text-lg font-medium drop-shadow-[0_0_8px_rgba(255,255,255,0.5)] mb-4">
-  Welcome, <span className="underline decoration-orange-500 underline-offset-4">{displayName}</span>
-</h2>
+  <main className="flex-1 overflow-y-auto p-4 sm:p-[22px_24px]">
 
-    {/* Grid layout */}
-    <main
-      className="grid gap-[18px]"
-      style={{
-        gridTemplateColumns: "1fr 1fr 300px",
-        gridTemplateRows: "auto auto",
-        alignContent: "start",
-      }}
+    {/* ✅ Welcome text (from develop) */}
+    <h2 className="text-white text-lg font-medium drop-shadow-[0_0_8px_rgba(255,255,255,0.5)] mb-4">
+      Welcome,{" "}
+      <span className="underline decoration-orange-500 underline-offset-4">
+        {displayName}
+      </span>
+    </h2>
+
+    {/* ✅ YOUR responsive layout (unchanged) */}
+    <div
+      className="grid gap-[18px]
+      grid-cols-1
+      md:grid-cols-2
+      xl:grid-cols-[1fr_1fr_300px]"
     >
-      {/* Row 1 */}
       <ActivityCalendar />
       <Leaderboard />
-      <div style={{ gridColumn: 3, gridRow: 1 }}>
+
+      {/* Sidebar card */}
+      <div className="md:col-span-2 xl:col-span-1">
         <PromoCard />
       </div>
 
-      {/* Row 2 — full width */}
-      <div style={{ gridColumn: "1 / -1", gridRow: 2 }} className="mt-[16px]">
+      {/* Full width */}
+      <div className="col-span-1 md:col-span-2 xl:col-span-3">
         <SubmissionsPanel />
       </div>
-    </main>
-  </div>
+    </div>
+
+  </main>
 );
 }

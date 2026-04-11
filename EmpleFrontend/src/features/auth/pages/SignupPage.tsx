@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation'
 import { useSession, useDescope } from '@descope/nextjs-sdk/client'
 import AuthLayout from '@/features/auth/layouts/AuthLayout'
 import '@/features/auth/auth.css'
+import Image from 'next/image'
+import { Eye, EyeOff } from "lucide-react";
 
 function getPasswordStrength(pwd: string): { level: number; label: string; color: string } {
   let score = 0
@@ -144,17 +146,26 @@ const handleSubmit = async (e: React.FormEvent) => {
 
   return (
     <AuthLayout>
-      <div className="auth-card-wrap" style={{ maxWidth: 480 }}>
+      <div className="auth-card-wrap" style={{ maxWidth: 600 }}>
         <div className="auth-card">
           <div className="auth-header">
-            <div className="auth-logo-badge"><span>e</span></div>
+            <div className="auth-logo-badge">
+              <Image
+                src="/logo-isolated.png"
+                alt="logo"
+                width={100}
+                height={100}
+                className="object-contain"
+              />
+            </div>
+
             <h1 className="auth-title">Join <em>Emple</em></h1>
             <p className="auth-subtitle">Your AI-powered placement journey starts here</p>
           </div>
 
           {error && (
             <div className="auth-alert error" style={{ marginBottom: 20 }}>
-              <span className="auth-alert-icon">⚠️</span>
+              
               <span>{error}</span>
             </div>
           )}
@@ -189,7 +200,7 @@ const handleSubmit = async (e: React.FormEvent) => {
             <div className="auth-field">
               <label className="auth-label">Full Name <span style={{ color: 'var(--clr-accent)' }}>*</span></label>
               <div className="auth-input-wrap">
-                <span className="auth-input-icon">👤</span>
+                
                 <input className="auth-input" type="text" placeholder="Arjun Kapoor"
                   value={form.name} onChange={(e) => update('name', e.target.value)} autoComplete="name" />
               </div>
@@ -198,7 +209,7 @@ const handleSubmit = async (e: React.FormEvent) => {
             <div className="auth-field">
               <label className="auth-label">Email Address <span style={{ color: 'var(--clr-accent)' }}>*</span></label>
               <div className="auth-input-wrap">
-                <span className="auth-input-icon">✉️</span>
+                
                 <input className="auth-input" type="email" placeholder="you@college.edu"
                   value={form.email} onChange={(e) => update('email', e.target.value)} autoComplete="email" />
               </div>
@@ -207,7 +218,7 @@ const handleSubmit = async (e: React.FormEvent) => {
             <div className="auth-field">
               <label className="auth-label">College / University</label>
               <div className="auth-input-wrap">
-                <span className="auth-input-icon">🎓</span>
+                
                 <input className="auth-input" type="text" placeholder="IIT Delhi, VIT Vellore…"
                   value={form.college} onChange={(e) => update('college', e.target.value)} />
               </div>
@@ -216,13 +227,17 @@ const handleSubmit = async (e: React.FormEvent) => {
             <div className="auth-field">
               <label className="auth-label">Password <span style={{ color: 'var(--clr-accent)' }}>*</span></label>
               <div className="auth-input-wrap">
-                <span className="auth-input-icon">🔒</span>
+                
                 <input className="auth-input has-toggle" type={showPassword ? 'text' : 'password'}
                   placeholder="Min. 8 characters" value={form.password}
                   onChange={(e) => update('password', e.target.value)} autoComplete="new-password" />
                 <button type="button" className="auth-input-toggle"
                   onClick={() => setShowPassword(!showPassword)} aria-label="Toggle password">
-                  {showPassword ? '🙈' : '👁️'}
+                  {showPassword ? (
+                       <EyeOff size={18} strokeWidth={1.5} />
+                     ) : (
+                       <Eye size={18} strokeWidth={1.5} />
+                     )}
                 </button>
               </div>
               {form.password && (
@@ -246,14 +261,18 @@ const handleSubmit = async (e: React.FormEvent) => {
             <div className="auth-field">
               <label className="auth-label">Confirm Password <span style={{ color: 'var(--clr-accent)' }}>*</span></label>
               <div className="auth-input-wrap">
-                <span className="auth-input-icon">🔐</span>
+                
                 <input className="auth-input has-toggle" type={showConfirm ? 'text' : 'password'}
                   placeholder="Re-enter your password" value={form.confirm}
                   onChange={(e) => update('confirm', e.target.value)} autoComplete="new-password"
                   style={{ borderColor: form.confirm ? form.confirm === form.password ? 'rgba(34,197,94,0.5)' : 'rgba(239,68,68,0.5)' : undefined }} />
                 <button type="button" className="auth-input-toggle"
                   onClick={() => setShowConfirm(!showConfirm)} aria-label="Toggle confirm password">
-                  {showConfirm ? '🙈' : '👁️'}
+                  {showConfirm ? (
+                       <EyeOff size={18} strokeWidth={1.5} />
+                     ) : (
+                       <Eye size={18} strokeWidth={1.5} />
+                     )}
                 </button>
               </div>
               {form.confirm && form.confirm !== form.password && (
@@ -282,7 +301,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                   </svg>
                   Creating your account…
                 </>
-              ) : <>🚀 Create My Free Account</>}
+              ) : <>Create My Free Account</>}
             </button>
           </form>
 

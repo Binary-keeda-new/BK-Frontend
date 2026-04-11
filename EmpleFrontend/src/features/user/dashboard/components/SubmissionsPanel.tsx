@@ -42,12 +42,22 @@ export default function SubmissionsPanel() {
 
   return (
     <div
-      className="p-[22px] rounded-[16px]"
-      style={{ background: "var(--surface)", border: "1px solid var(--border)" }}
+      className="rounded-[16px]"
+      style={{
+        padding: "clamp(14px, 4vw, 22px)",
+        background: "var(--surface)",
+        border: "1px solid var(--border)",
+      }}
     >
       {/* Header row: title + toggle */}
-      <div className="flex items-center justify-between mb-[18px]">
-        <div className="font-syne text-[15px] font-bold" style={{ color: "var(--text)" }}>
+      <div
+        className="flex items-center justify-between flex-wrap gap-y-3"
+        style={{ marginBottom: "clamp(12px, 3vw, 18px)" }}
+      >
+        <div
+          className="font-syne font-bold"
+          style={{ fontSize: "clamp(13px, 3.5vw, 15px)", color: "var(--text)" }}
+        >
           Submissions
         </div>
 
@@ -60,8 +70,10 @@ export default function SubmissionsPanel() {
             <button
               key={tab}
               onClick={() => handleTabChange(tab)}
-              className="px-[18px] py-[6px] rounded-[22px] text-[12.5px] font-medium cursor-pointer border-none transition-all duration-200"
+              className="rounded-[22px] font-medium cursor-pointer border-none transition-all duration-200"
               style={{
+                padding: "clamp(4px, 1.2vw, 6px) clamp(10px, 3vw, 18px)",
+                fontSize: "clamp(10px, 2.5vw, 12.5px)",
                 background: active === tab ? "var(--orange)" : "transparent",
                 color: active === tab ? "#fff" : "var(--muted2)",
                 boxShadow: active === tab ? "0 2px 10px rgba(241,90,34,0.35)" : "none",
@@ -73,11 +85,12 @@ export default function SubmissionsPanel() {
         </div>
       </div>
 
-      {/* Table header */}
+      {/* Table header — hidden on very small screens, shown from sm up */}
       <div
-        className="grid text-[10.5px] font-bold uppercase tracking-[0.06em] px-[14px] py-[8px] rounded-[8px] mb-[6px]"
+        className="hidden sm:grid text-[10.5px] font-bold uppercase tracking-[0.06em] rounded-[8px] mb-[6px]"
         style={{
-          gridTemplateColumns: "1fr 120px 100px 100px",
+          gridTemplateColumns: "1fr 100px 80px 80px",
+          padding: "clamp(6px, 1.5vw, 8px) clamp(10px, 3vw, 14px)",
           color: "var(--muted)",
           background: "var(--surface2)",
         }}
@@ -93,9 +106,9 @@ export default function SubmissionsPanel() {
         {MOCK_DATA[active].slice(0, visibleCount).map((item, i) => (
           <div
             key={i}
-            className="grid items-center px-[14px] py-[10px] rounded-[10px] transition-all duration-150"
+            className="rounded-[10px] transition-all duration-150"
             style={{
-              gridTemplateColumns: "1fr 120px 100px 100px",
+              padding: "clamp(8px, 2vw, 10px) clamp(10px, 3vw, 14px)",
               background: "var(--surface2)",
               border: "1px solid var(--border)",
             }}
@@ -106,40 +119,95 @@ export default function SubmissionsPanel() {
               (e.currentTarget as HTMLElement).style.borderColor = "var(--border)";
             }}
           >
-            {/* Title */}
-            <div>
-              <div className="text-[13px] font-semibold" style={{ color: "var(--text)" }}>
-                {item.title}
+            {/* Desktop layout: grid */}
+            <div
+              className="hidden sm:grid items-center"
+              style={{ gridTemplateColumns: "1fr 100px 80px 80px" }}
+            >
+              <div>
+                <div
+                  className="font-semibold"
+                  style={{ fontSize: "clamp(11px, 2.8vw, 13px)", color: "var(--text)" }}
+                >
+                  {item.title}
+                </div>
+                <div style={{ fontSize: "clamp(9px, 2.2vw, 11px)", color: "var(--muted)" }}>
+                  {item.date}
+                </div>
               </div>
-              <div className="text-[11px]" style={{ color: "var(--muted)" }}>
-                {item.date}
-              </div>
-            </div>
 
-            {/* Score */}
-            <div className="text-center text-[13px] font-bold" style={{ color: "#ff9a5c" }}>
-              {item.score}
-            </div>
-
-            {/* Rank */}
-            <div className="text-center">
-              <span
-                className="text-[12px] font-bold px-[10px] py-[3px] rounded-[20px]"
-                style={{
-                  background: "rgba(241,90,34,0.1)",
-                  color: "var(--orange)",
-                  border: "1px solid rgba(241,90,34,0.2)",
-                }}
+              <div
+                className="text-center font-bold"
+                style={{ fontSize: "clamp(11px, 2.8vw, 13px)", color: "#ff9a5c" }}
               >
-                {item.rank}
-              </span>
+                {item.score}
+              </div>
+
+              <div className="text-center">
+                <span
+                  className="font-bold rounded-[20px]"
+                  style={{
+                    fontSize: "clamp(10px, 2.5vw, 12px)",
+                    padding: "3px clamp(7px, 2vw, 10px)",
+                    background: "rgba(241,90,34,0.1)",
+                    color: "var(--orange)",
+                    border: "1px solid rgba(241,90,34,0.2)",
+                  }}
+                >
+                  {item.rank}
+                </span>
+              </div>
+
+              <div className="text-center">
+                <button
+                  className="font-semibold rounded-[20px] cursor-pointer transition-all duration-150 hover:-translate-y-[1px]"
+                  style={{
+                    fontSize: "clamp(10px, 2.5vw, 11.5px)",
+                    padding: "4px clamp(8px, 2vw, 12px)",
+                    background: "var(--surface)",
+                    color: "var(--muted2)",
+                    border: "1px solid var(--border)",
+                  }}
+                >
+                  View →
+                </button>
+              </div>
             </div>
 
-            {/* Preview */}
-            <div className="text-center">
+            {/* Mobile layout: stacked */}
+            <div className="flex sm:hidden items-start justify-between gap-3">
+              <div className="flex-1 min-w-0">
+                <div
+                  className="font-semibold truncate"
+                  style={{ fontSize: "clamp(11px, 3.5vw, 13px)", color: "var(--text)" }}
+                >
+                  {item.title}
+                </div>
+                <div
+                  className="flex items-center gap-2 mt-[4px] flex-wrap"
+                  style={{ fontSize: "clamp(9px, 2.5vw, 11px)", color: "var(--muted)" }}
+                >
+                  <span>{item.date}</span>
+                  <span style={{ color: "#ff9a5c", fontWeight: 700 }}>{item.score}</span>
+                  <span
+                    className="font-bold rounded-[20px]"
+                    style={{
+                      fontSize: "10px",
+                      padding: "2px 7px",
+                      background: "rgba(241,90,34,0.1)",
+                      color: "var(--orange)",
+                      border: "1px solid rgba(241,90,34,0.2)",
+                    }}
+                  >
+                    {item.rank}
+                  </span>
+                </div>
+              </div>
               <button
-                className="text-[11.5px] font-semibold px-[12px] py-[4px] rounded-[20px] cursor-pointer transition-all duration-150 hover:-translate-y-[1px]"
+                className="font-semibold rounded-[20px] cursor-pointer transition-all duration-150 flex-shrink-0"
                 style={{
+                  fontSize: "11px",
+                  padding: "4px 10px",
                   background: "var(--surface)",
                   color: "var(--muted2)",
                   border: "1px solid var(--border)",
@@ -154,11 +222,13 @@ export default function SubmissionsPanel() {
 
       {/* View More */}
       {visibleCount < MOCK_DATA[active].length && (
-        <div className="mt-[14px]">
+        <div style={{ marginTop: "clamp(10px, 2.5vw, 14px)" }}>
           <button
             onClick={() => setVisibleCount(prev => prev + 5)}
-            className="px-5 py-[8px] rounded-[20px] text-[12px] font-semibold cursor-pointer transition-all duration-[180ms] hover:-translate-y-[1px]"
+            className="rounded-[20px] font-semibold cursor-pointer transition-all duration-[180ms] hover:-translate-y-[1px]"
             style={{
+              fontSize: "clamp(10px, 2.5vw, 12px)",
+              padding: "clamp(6px, 1.5vw, 8px) clamp(14px, 3.5vw, 20px)",
               background: "var(--surface2)",
               color: "var(--muted2)",
               border: "1.5px solid var(--border)",

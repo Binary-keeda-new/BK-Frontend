@@ -58,6 +58,8 @@ import Pricing from '@/features/landing/components/Pricing'
 import Testimonials from '@/features/landing/components/Testimonials'
 import CTABand from '@/features/landing/components/CTABand'
 import Footer from '@/features/landing/components/Footer'
+import AboutUs from '@/features/landing/components/AboutUs'
+import FAQ from '@/features/landing/components/FAQ'
 
 export default function LandingPage() {
   const { session, isSessionLoading } = useSession() as any
@@ -79,11 +81,13 @@ export default function LandingPage() {
       <Navbar />
       <main>
         <Hero />
+        <AboutUs />
         <Marquee />
         <Features />
         <HowItWorks />
         <Pricing />
         <Testimonials />
+        <FAQ />
         <CTABand />
       </main>
       <Footer />

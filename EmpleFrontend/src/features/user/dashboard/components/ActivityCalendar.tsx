@@ -23,7 +23,7 @@ const WEEKS: CalDay[][] = [
 
 const NavBtn = ({ children }: { children: string }) => (
   <button
-    className="px-2 py-[3px] rounded-[7px] text-[13px] cursor-pointer transition-all duration-150"
+    className="px-[clamp(6px,2vw,8px)] py-[clamp(2px,0.8vw,3px)] rounded-[7px] text-[clamp(11px,3vw,13px)] cursor-pointer transition-all duration-150"
     style={{ background: "var(--surface2)", border: "1px solid var(--border)", color: "var(--muted2)" }}
     onMouseEnter={e => {
       const el = e.currentTarget as HTMLButtonElement;
@@ -45,31 +45,45 @@ const NavBtn = ({ children }: { children: string }) => (
 export default function ActivityCalendar() {
   return (
     <div className="animated-border h-full">
-      <div className="animated-border-inner p-[22px] overflow-hidden h-full flex flex-col">
+      <div className="animated-border-inner overflow-hidden h-full flex flex-col"
+        style={{ padding: "clamp(14px, 4vw, 22px)" }}
+      >
 
         {/* Header */}
-        <div className="flex justify-between items-start mb-[14px]">
-          <div className="font-syne text-[15px] font-bold" style={{ color: "var(--text)" }}>
+        <div className="flex justify-between items-start" style={{ marginBottom: "clamp(10px, 3vw, 14px)" }}>
+          <div
+            className="font-syne font-bold"
+            style={{ fontSize: "clamp(13px, 3.5vw, 15px)", color: "var(--text)" }}
+          >
             Activity Calendar
           </div>
           <div className="text-right">
-            <div className="text-[11px] font-semibold flex items-center gap-1 justify-end" style={{ color: "var(--muted2)" }}>
+            <div
+              className="font-semibold flex items-center gap-1 justify-end"
+              style={{ fontSize: "clamp(9px, 2.5vw, 11px)", color: "var(--muted2)" }}
+            >
               🔥 Streak
             </div>
-            <div className="font-syne text-[20px] font-extrabold" style={{ color: "var(--orange)" }}>
+            <div
+              className="font-syne font-extrabold"
+              style={{ fontSize: "clamp(17px, 4.5vw, 20px)", color: "var(--orange)", lineHeight: 1.1 }}
+            >
               5 days
             </div>
           </div>
         </div>
 
         {/* Month nav */}
-        <div className="relative flex items-center gap-[6px] mb-[14px]">
+        <div className="relative flex items-center" style={{ gap: "clamp(4px, 1.5vw, 6px)", marginBottom: "clamp(10px, 3vw, 14px)" }}>
           <NavBtn>«</NavBtn>
           <NavBtn>‹</NavBtn>
-          <div className="absolute left-1/2 -translate-x-1/2 text-[13px] font-semibold" style={{ color: "var(--text)" }}>
+          <div
+            className="absolute left-1/2 -translate-x-1/2 font-semibold whitespace-nowrap"
+            style={{ fontSize: "clamp(12px, 3vw, 13px)", color: "var(--text)" }}
+          >
             February 2026
           </div>
-          <div className="flex gap-[6px] ml-auto">
+          <div className="flex ml-auto" style={{ gap: "clamp(4px, 1.5vw, 6px)" }}>
             <NavBtn>›</NavBtn>
             <NavBtn>»</NavBtn>
           </div>
@@ -77,14 +91,21 @@ export default function ActivityCalendar() {
 
         {/* Grid */}
         <div className="flex-1 flex items-center justify-center">
-          <div className="grid grid-cols-7 gap-[3px] text-center w-full">
+          <div
+            className="grid grid-cols-7 text-center w-full"
+            style={{ gap: "clamp(2px, 0.8vw, 3px)" }}
+          >
 
             {/* Day names */}
             {DAYS.map((d, i) => (
               <div
                 key={d}
-                className="text-[9.5px] font-bold uppercase tracking-[0.05em] py-1"
-                style={{ color: i >= 5 ? "rgba(241,90,34,0.7)" : "var(--muted)" }}
+                className="font-bold uppercase tracking-[0.05em]"
+                style={{
+                  fontSize: "clamp(7px, 2vw, 9.5px)",
+                  padding: "clamp(3px, 1vw, 4px) 0",
+                  color: i >= 5 ? "rgba(241,90,34,0.7)" : "var(--muted)",
+                }}
               >
                 {d}
               </div>
@@ -105,8 +126,10 @@ export default function ActivityCalendar() {
                 return (
                   <div
                     key={`${wi}-${ci}`}
-                    className="relative text-[12px] py-[6px] rounded-[8px] cursor-pointer transition-all duration-150"
+                    className="relative rounded-[8px] cursor-pointer transition-all duration-150"
                     style={{
+                      fontSize: "clamp(10px, 2.8vw, 12px)",
+                      padding: "clamp(4px, 1.5vw, 6px) 0",
                       color: baseColor,
                       opacity: cell.otherMonth ? 0.4 : 1,
                       background: cell.isToday ? "var(--orange)" : "transparent",
@@ -133,8 +156,13 @@ export default function ActivityCalendar() {
                     {cell.day}
                     {cell.hasDot && (
                       <span
-                        className="absolute bottom-[2px] left-1/2 -translate-x-1/2 w-1 h-1 rounded-full block"
-                        style={{ background: cell.isToday ? "rgba(255,255,255,0.8)" : "var(--orange)" }}
+                        className="absolute left-1/2 -translate-x-1/2 rounded-full block"
+                        style={{
+                          bottom: "2px",
+                          width: "clamp(3px, 0.9vw, 4px)",
+                          height: "clamp(3px, 0.9vw, 4px)",
+                          background: cell.isToday ? "rgba(255,255,255,0.8)" : "var(--orange)",
+                        }}
                       />
                     )}
                   </div>

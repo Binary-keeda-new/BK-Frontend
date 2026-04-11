@@ -46,15 +46,23 @@ export default function HowItWorks() {
 
   return (
     <section className="section how" id="how" ref={sectionRef}>
+      
+
       <div className="container">
+        <div style={{ marginBottom: 'clamp(32px, 5vw, 56px)' }}>
+          <div style={{ textAlign: 'center' }}>
+            <div className="section-tag">How It Works</div>
+          </div>
+          <h2 className="section-h2" style={{ textAlign: 'center' }}>
+            From zero to <em>offer letter</em>
+          </h2>
+          <p className="section-lead" style={{ margin: '0 auto', textAlign: 'center' }}>
+            Our platform guides you through every phase of your career journey — not just interview prep, but the whole picture.
+          </p>
+        </div>
         <div className="how-inner">
           <div>
-            <div className="section-tag reveal">How It Works</div>
-            <h2 className="section-h2 reveal">From zero to <em>offer letter</em></h2>
-            <p className="section-lead reveal" style={{ marginBottom: 36 }}>
-              Our platform guides you through every phase of your career journey — not just interview prep, but the whole picture.
-            </p>
-
+            
             <div className="how-steps">
               {steps.map((step, i) => (
                 <div key={step.n} className={`step-card reveal reveal-d${i + 1}`}>

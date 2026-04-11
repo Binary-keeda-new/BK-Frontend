@@ -4,13 +4,14 @@
 import Link from 'next/link'
 import { ReactNode, useEffect, useState } from 'react'
 import '@/features/auth/auth.css'
+import Image from 'next/image'
 
 interface AuthLayoutProps {
   children: ReactNode
 }
 
 export default function AuthLayout({ children }: AuthLayoutProps) {
-  const [dark, setDark] = useState(true)
+  /*const [dark, setDark] = useState(true)
 
   useEffect(() => {
     const saved = localStorage.getItem('theme')
@@ -33,7 +34,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
       document.documentElement.classList.add('light')
       localStorage.setItem('theme', 'light')
     }
-  }
+  }*/
 
   return (
     <div className="auth-root">
@@ -51,13 +52,20 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
 
       {/* Navbar */}
       <nav className="auth-nav" style={{ justifyContent: 'space-between' }}>
-        <Link href="/" className="nav-brand">
-          <div className="nav-logo-box"><span>e</span></div>
-          <span className="nav-wordmark"><em>e</em>mple</span>
-        </Link>
+                    
+            
+            <Link href="/" className="nav-brand">
+              <Image
+                src="/logo-final.png"
+                alt="logo"
+                width={100}
+                height={100}
+              />
+              
+            </Link>
 
         {/* Dark/Light Toggle Button */}
-        <button
+        {/*<button
           onClick={toggleTheme}
           aria-label="Toggle theme"
           style={{
@@ -78,7 +86,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
         >
           <span style={{ fontSize: '16px' }}>{dark ? '☀️' : '🌙'}</span>
           {dark ? 'Light' : 'Dark'}
-        </button>
+        </button>*/}
       </nav>
 
       {/* Main content */}
