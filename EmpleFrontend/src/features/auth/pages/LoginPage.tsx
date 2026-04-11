@@ -1,11 +1,14 @@
 'use client'
 
 import { Fragment, useState, useEffect } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useDescope, useSession } from '@descope/nextjs-sdk/client'
 import AuthLayout from '@/features/auth/layouts/AuthLayout'
 import '@/features/auth/auth.css'
+import { Eye, EyeOff } from "lucide-react";
+
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
@@ -97,7 +100,18 @@ useEffect(() => {
       <div className="auth-card-wrap">
         <div className="auth-card">
           <div className="auth-header">
-            <div className="auth-logo-badge"><span>e</span></div>
+            {/*<div className="auth-logo-badge"><span>e</span></div>*/}
+          
+          
+          <div className="auth-logo-badge">
+            <Image
+              src="/logo-isolated.png"
+              alt="logo"
+              width={100}
+              height={100}
+              className="object-contain"
+            />
+          </div>
             <h1 className="auth-title">Welcome <em>back</em></h1>
             <p className="auth-subtitle">Sign in to continue your placement journey</p>
           </div>
@@ -141,7 +155,7 @@ useEffect(() => {
             <div className="auth-field">
               <label className="auth-label">Email Address</label>
               <div className="auth-input-wrap">
-                <span className="auth-input-icon">✉️</span>
+                
                 <input className="auth-input" type="email" placeholder="you@example.com"
                   value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" />
               </div>
@@ -155,7 +169,7 @@ useEffect(() => {
                 </Link>
               </div>
               <div className="auth-input-wrap">
-                <span className="auth-input-icon">🔒</span>
+                
                 <input className="auth-input has-toggle"
                   type={showPassword ? 'text' : 'password'}
                   placeholder="Enter your password"
@@ -163,7 +177,11 @@ useEffect(() => {
                   autoComplete="current-password" />
                 <button type="button" className="auth-input-toggle"
                   onClick={() => setShowPassword(!showPassword)} aria-label="Toggle password visibility">
-                  {showPassword ? '🙈' : '👁️'}
+                  {showPassword ? (
+                      <EyeOff size={18} strokeWidth={1.5} />
+                    ) : (
+                      <Eye size={18} strokeWidth={1.5} />
+                    )}
                 </button>
               </div>
             </div>

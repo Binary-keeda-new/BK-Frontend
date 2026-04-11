@@ -86,7 +86,7 @@ export default function ForgotPasswordPage() {
             <>
               <div className="auth-header">
                 <div className="auth-logo-badge" style={{ background: 'var(--clr-surface2)', border: '1.5px solid var(--clr-border2)', boxShadow: 'none' }}>
-                  <span style={{ fontSize: 22 }}>🔑</span>
+                  
                 </div>
                 <h1 className="auth-title">Forgot your <em>password?</em></h1>
                 <p className="auth-subtitle">
@@ -105,7 +105,7 @@ export default function ForgotPasswordPage() {
                 <div className="auth-field">
                   <label className="auth-label">Email Address</label>
                   <div className="auth-input-wrap">
-                    <span className="auth-input-icon">✉️</span>
+                    
                     <input
                       className="auth-input"
                       type="email"
@@ -150,7 +150,7 @@ export default function ForgotPasswordPage() {
                 zIndex: 1,
               }}>
                 <div style={{ fontSize: 'var(--text-xs)', fontWeight: 700, color: 'var(--clr-text2)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 10 }}>
-                  💡 Tips
+                   Tips
                 </div>
                 {[
                   'Check your spam or junk folder',

@@ -592,6 +592,12 @@ export default function Topbar() {
           background-color: rgba(249,115,22,0.1) !important;
           color: #f97316 !important;
         }
+        /* Hide less critical icon buttons on small screens */
+        @media (max-width: 480px) {
+          .nav-icon-btn.hide-mobile { display: none; }
+          .coin-badge { padding: 4px 8px; }
+          .coin-badge .coin-label { display: none; }
+        }
         .user-avatar {
           border: 2px solid var(--border);
           box-shadow: 0 2px 8px rgba(241,90,34,0.3);
@@ -629,7 +635,7 @@ export default function Topbar() {
       `}</style>
 
       <header className="relative h-[62px]">
-        <nav className="enhanced-navbar fixed left-0 h-[62px] flex items-center pr-8 pl-6 justify-between z-40 w-full top-0">
+        <nav className="enhanced-navbar fixed left-0 h-[62px] flex items-center pr-4 pl-3 sm:pr-8 sm:pl-6 justify-between z-40 w-full top-0">
 
           {/* Logo */}
           <div className="flex items-center">
@@ -642,7 +648,7 @@ export default function Topbar() {
           </div>
 
           {/* Right Side */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1 sm:gap-3">
 
             {/* Coin Badge */}
             <div className="coin-badge flex gap-2 rounded-full items-center px-3 py-1.5 cursor-pointer">
@@ -650,12 +656,16 @@ export default function Topbar() {
                 style={{ background: "#fdd835", color: "#6d4c00" }}>
                 E
               </span>
-              <span className="text-xs font-semibold">100</span>
+              <span className="coin-label text-xs font-semibold">100</span>
             </div>
 
-            {/* Icon Buttons */}
+            {/* Icon Buttons — hide Clapperboard on mobile */}
             {iconBtns.map(({ title, icon }) => (
-              <button key={title} title={title} className="nav-icon-btn">
+              <button
+                key={title}
+                title={title}
+                className={`nav-icon-btn${title === "Media - Coming Soon" ? " hide-mobile" : ""}`}
+              >
                 {icon}
               </button>
             ))}

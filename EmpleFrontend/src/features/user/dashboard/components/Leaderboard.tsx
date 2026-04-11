@@ -7,7 +7,6 @@ type Tab = "University" | "Global";
 
 export default function Leaderboard() {
   const [active, setActive] = useState<Tab>("University");
-  // const { session } = useSession();
   const { session } = useSession() as any;
 
   const userName = session?.token?.name || session?.token?.email || "User";
@@ -20,9 +19,15 @@ export default function Leaderboard() {
 
   return (
     <div className="animated-border h-full">
-      <div className="animated-border-inner p-[22px] overflow-hidden h-full flex flex-col">
+      <div
+        className="animated-border-inner overflow-hidden h-full flex flex-col"
+        style={{ padding: "clamp(14px, 4vw, 22px)" }}
+      >
 
-        <div className="font-syne text-[15px] font-bold mb-[14px]" style={{ color: "var(--text)" }}>
+        <div
+          className="font-syne font-bold"
+          style={{ fontSize: "clamp(13px, 3.5vw, 15px)", color: "var(--text)", marginBottom: "clamp(10px, 3vw, 14px)" }}
+        >
           Leaderboards
         </div>
 
@@ -35,9 +40,10 @@ export default function Leaderboard() {
             <button
               key={tab}
               onClick={() => setActive(tab)}
-              className="px-[18px] py-[6px] rounded-[22px] text-[12.5px] font-medium
-                         cursor-pointer border-none transition-all duration-200"
+              className="rounded-[22px] font-medium cursor-pointer border-none transition-all duration-200"
               style={{
+                padding: "clamp(4px, 1.2vw, 6px) clamp(12px, 3.5vw, 18px)",
+                fontSize: "clamp(11px, 2.8vw, 12.5px)",
                 background: active === tab ? "var(--orange)" : "transparent",
                 color: active === tab ? "#fff" : "var(--muted2)",
                 boxShadow: active === tab ? "0 2px 10px rgba(241,90,34,0.35)" : "none",
@@ -50,8 +56,10 @@ export default function Leaderboard() {
 
         {/* Empty state */}
         <div
-          className="text-center text-[13px] py-4 rounded-[12px] mb-3"
+          className="text-center rounded-[12px] mb-3"
           style={{
+            fontSize: "clamp(11px, 2.8vw, 13px)",
+            padding: "clamp(10px, 2.5vw, 16px) 0",
             color: "var(--muted)",
             border: "1px dashed var(--border)",
             background: "var(--surface2)",
@@ -66,8 +74,10 @@ export default function Leaderboard() {
           style={{ border: "1px solid var(--orange)", background: "rgba(241,90,34,0.04)" }}
         >
           <div
-            className="text-[10.5px] font-bold px-[14px] py-2 uppercase tracking-[0.06em]"
+            className="font-bold uppercase tracking-[0.06em]"
             style={{
+              fontSize: "clamp(9px, 2.2vw, 10.5px)",
+              padding: "clamp(6px, 1.5vw, 8px) clamp(10px, 3vw, 14px)",
               color: "#ff9a5c",
               background: "rgba(241,90,34,0.08)",
               borderBottom: "1px solid rgba(241,90,34,0.15)",
@@ -75,26 +85,37 @@ export default function Leaderboard() {
           >
             ⭐ Your Rank
           </div>
-          <div className="flex items-center gap-3 px-[14px] py-3">
+          <div
+            className="flex items-center"
+            style={{ gap: "clamp(8px, 2.5vw, 12px)", padding: "clamp(8px, 2vw, 12px) clamp(10px, 3vw, 14px)" }}
+          >
             <div
-              className="w-[34px] h-[34px] rounded-full flex items-center justify-center
-                         font-bold text-[13px] text-white flex-shrink-0"
+              className="rounded-full flex items-center justify-center font-bold text-white flex-shrink-0"
               style={{
+                width: "clamp(28px, 7vw, 34px)",
+                height: "clamp(28px, 7vw, 34px)",
+                fontSize: "clamp(11px, 2.8vw, 13px)",
                 background: "linear-gradient(135deg, #f15a22, #ff9a5c)",
                 boxShadow: "0 2px 8px rgba(241,90,34,0.35)",
               }}
             >
               {initials}
             </div>
-            <div className="flex-1">
-              <div className="text-[13px] font-semibold" style={{ color: "var(--text)" }}>
+            <div className="flex-1 min-w-0">
+              <div
+                className="font-semibold truncate"
+                style={{ fontSize: "clamp(11px, 2.8vw, 13px)", color: "var(--text)" }}
+              >
                 {userName}
               </div>
-              <div className="text-[11px]" style={{ color: "var(--muted)" }}>
+              <div style={{ fontSize: "clamp(9px, 2.2vw, 11px)", color: "var(--muted)" }}>
                 Others
               </div>
             </div>
-            <div className="text-[13px] font-bold" style={{ color: "#ff9a5c" }}>
+            <div
+              className="font-bold flex-shrink-0"
+              style={{ fontSize: "clamp(11px, 2.8vw, 13px)", color: "#ff9a5c" }}
+            >
               0 pts
             </div>
           </div>

@@ -210,8 +210,8 @@
 ═══════════════════════════════════════════ */
 
 .auth-card-wrap {
-  width: 100%;
-  max-width: 460px;
+  width: 92%;
+  max-width: 600px;
   animation: authCardIn 0.5s var(--ease-out) both;
 }
 
@@ -224,7 +224,7 @@
   background: var(--clr-surface);
   border: 1px solid var(--clr-border2);
   border-radius: var(--radius-xl);
-  padding: clamp(28px, 4vw, 40px);
+  padding: clamp(20px, 2vw, 20px);
   box-shadow:
     0 0 0 1px rgba(241, 90, 34, 0.04),
     0 24px 80px rgba(0, 0, 0, 0.5),
@@ -257,6 +257,26 @@
   pointer-events: none;
 }
 
+/* Tablet */
+@media (max-width: 768px) {
+  .auth-card-wrap {
+    max-width: 520px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .auth-card-wrap {
+    width: 95%;
+    max-width: 100%;
+  }
+
+  .auth-card {
+    padding: 18px;
+    border-radius: 16px;
+  }
+}
+
 /* ── Card header ── */
 .auth-header {
   text-align: center;
@@ -269,10 +289,11 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 52px;
-  height: 52px;
+  width: 60px;
+  height: 60px;
+  padding :8 px;
   border-radius: var(--radius-md);
-  background: var(--clr-accent);
+  background: #000;
   box-shadow: 0 6px 24px rgba(241, 90, 34, 0.4);
   margin-bottom: var(--space-5);
   animation: logoBounce 0.6s 0.1s var(--ease-spring) both;

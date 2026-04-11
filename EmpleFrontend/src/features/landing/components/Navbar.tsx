@@ -42,7 +42,10 @@ export default function Navbar() {
     <>
       <nav
         className="nav"
-        style={{ boxShadow: scrolled ? '0 4px 24px rgba(0,0,0,0.2)' : '' }}
+        style={{ boxShadow: scrolled ? '0 4px 24px rgba(0,0,0,0.2)' : '',
+          backgroundColor: scrolled ? '#000' : 'transparent',
+          transition: 'background-color 0.3s ease, box-shadow 0.3s ease'
+         }}
       >
         <div className="nav-inner container">
 
@@ -61,7 +64,7 @@ export default function Navbar() {
 
             {/* NAV LINKS */}
             <div className="nav-links">
-              {['features', 'how', 'pricing', 'testimonials'].map((id) => (
+              {['about', 'features', 'how', 'pricing', 'testimonials', 'faq'].map((id) => (
                 <button key={id} className="nav-link" onClick={() => scrollTo(id)}>
                   {id === 'how'
                     ? 'How It Works'
@@ -95,7 +98,7 @@ export default function Navbar() {
 
       {/* MOBILE DRAWER */}
       <div ref={drawerRef} className={`nav-drawer${drawerOpen ? ' open' : ''}`}>
-        {['features', 'how', 'pricing', 'testimonials'].map((id) => (
+        {['about', 'features', 'how', 'pricing', 'testimonials', 'faq'].map((id) => (
           <button key={id} className="nav-link" onClick={() => scrollTo(id)}>
             {id === 'how'
               ? 'How It Works'
