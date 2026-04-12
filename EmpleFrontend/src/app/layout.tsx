@@ -17,7 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           projectId={process.env.NEXT_PUBLIC_DESCOPE_PROJECT_ID || ""}
           
           sessionTokenViaCookie={{
-            secure: process.env.NODE_ENV !== 'development',
+            secure: process.env.NODE_ENV === 'production',
             sameSite: 'Lax'
           }}
         >

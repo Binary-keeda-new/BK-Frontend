@@ -35,66 +35,58 @@ useEffect(() => {
       if (result.ok && result.data?.url) {
         window.location.href = result.data.url
       }
-    } catch (err) {
-      console.error('OAuth error:', err)
-      setError('Failed to start social login. Please try again.')
-    }
+    } catch {
+  setError('Failed to start social login. Please try again.')
+}
   }
 
   
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError('')
+  e.preventDefault()
+  setError('')
 
-    if (!email || !password) {
-      setError('Please fill in all fields.')
+  if (!email || !password) {
+    setError('Please fill in all fields.')
+    return
+  }
+
+  setLoading(true)
+
+  try {
+    const resp = await sdk.password.signIn(email, password)
+
+    if (!resp?.ok) {
+      setError('Invalid email or password.')
       return
     }
 
-    setLoading(true)
+    const token = resp.data?.sessionJwt
+    if (!token) {
+      setError('Authentication failed.')
+      return
+    }
 
-    try {
-  const resp = await sdk.password.signIn(email, password)
+    const syncRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/sync`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    })
 
-  console.log("login resp:", resp)
+    if (!syncRes.ok) {
+      setError('Login succeeded, but something went wrong.')
+      return
+    }
 
-  if (!resp.ok) {
-    setError('Invalid email or password. Please try again.')
-    return
+    window.location.replace('/user/dashboard')
+
+  } catch {
+    setError('Something went wrong. Please try again.')
+  } finally {
+    setLoading(false)
   }
-
-  const token = resp.data?.sessionJwt
-
-  if (!token) {
-    setError('No session token received.')
-    return
-  }
-
-  console.log("BEFORE SYNC CALL")
-  console.log("TOKEN BEFORE SYNC:", token);
-  const syncRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/sync`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-  })
-  console.log("AFTER SYNC CALL", syncRes.status)
-  if (!syncRes.ok) {
-    const errorText = await syncRes.text()
-    console.error('Sync API failed:', errorText)
-    setError('Login succeeded, but user sync failed.')
-    return
-  }
-
-  window.location.replace('/user/dashboard')
-} catch (err) {
-  console.error(err)
-  setError('Something went wrong. Please try again.')
-} finally {
-  setLoading(false)
 }
-  }
 
   return (
     <AuthLayout>
