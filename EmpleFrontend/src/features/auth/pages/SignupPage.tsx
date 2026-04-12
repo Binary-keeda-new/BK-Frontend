@@ -61,7 +61,6 @@ if (isAuthenticated) {
         window.location.href = result.data.url
       }
     } catch (err) {
-      console.error('OAuth error:', err)
       setError('Failed to start social login. Please try again.')
     }
   }
@@ -98,17 +97,10 @@ const handleSubmit = async (e: React.FormEvent) => {
     email: form.email,
   });
 
-  console.log("resp:", resp);
-
-  if (!resp.ok) {
-    console.log("Status Code:", resp.code);
-    console.log("Error Code:", resp.error?.errorCode);
-    console.log("Error Description:", resp.error?.errorDescription);
-    console.log("Error Message:", resp.error?.errorMessage);
-
-    setError(resp.error?.errorMessage || "Signup failed");
-    return;
-  }
+ if (!resp?.ok) {
+  setError("Signup failed. Please try again.")
+  return
+}
 
   const token = resp.data?.sessionJwt;
 
@@ -117,7 +109,6 @@ const handleSubmit = async (e: React.FormEvent) => {
     return;
   }
 
-  console.log("TOKEN BEFORE SYNC:", token);
   const syncRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/sync`, {
     method: "POST",
     headers: {
@@ -127,15 +118,12 @@ const handleSubmit = async (e: React.FormEvent) => {
   });
 
   if (!syncRes.ok) {
-    const errorText = await syncRes.text();
-    console.error("Sync failed:", errorText);
     setError("Signup succeeded, but user sync failed.");
     return;
   }
 
   window.location.replace("/user/dashboard");
 } catch (err) {
-  console.error("signup exception:", err);
   setError("Something went wrong. Please try again.");
 } finally {
   setLoading(false);

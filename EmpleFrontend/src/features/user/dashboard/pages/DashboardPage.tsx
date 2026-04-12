@@ -34,10 +34,13 @@ export default function DashboardPage() {
         }
       );
 
-      const data = await res.json();
-      console.log("USER DATA:", data);
+      if (!res.ok) {
+  router.replace("/auth/login")
+  return
+}
 
-      setUser(data.user);
+const data = await res.json()
+setUser(data.user)
     };
 
     if (isAuthenticated) {
