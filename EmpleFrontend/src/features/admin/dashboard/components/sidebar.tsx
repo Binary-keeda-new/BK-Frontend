@@ -11,7 +11,9 @@ export type AdminSection =
   | 'question-bank'
   | 'question-bank-detail'
   | 'coding-problems'
-  | 'jobs';
+  | 'jobs'
+  | 'quiz-preview'
+  | 'quiz-edit';
 
 const NAV_ITEMS: {
   label: string;
@@ -107,22 +109,22 @@ const NAV_ITEMS: {
     ),
   },
   {
-  label: 'Jobs',
-  key: 'jobs',
-  icon: (
-    <svg
-      width="17"
-      height="17"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-    >
-      <rect x="2" y="7" width="20" height="14" rx="2" />
-      <path d="M16 3v4M8 3v4M3 11h18" />
-    </svg>
-  ),
-},
+    label: 'Jobs',
+    key: 'jobs',
+    icon: (
+      <svg
+        width="17"
+        height="17"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+      >
+        <rect x="2" y="7" width="20" height="14" rx="2" />
+        <path d="M16 3v4M8 3v4M3 11h18" />
+      </svg>
+    ),
+  },
 ];
 
 type SidebarProps = {
@@ -138,49 +140,44 @@ export default function Sidebar({
 
   return (
     <aside
-      className={`
-        relative z-20
-        h-screen
-        flex-shrink-0
-        transition-all duration-300
-        ${collapsed ? 'w-[66px]' : 'w-[220px]'}
-        bg-[var(--clr-surface)]
-        border-r border-[var(--clr-border)]
-        overflow-hidden
-      `}
+      className={[
+        'sticky top-0 z-20 h-screen flex-shrink-0 border-r border-[var(--clr-border)]',
+        'bg-[var(--clr-surface)] transition-all duration-300',
+        collapsed ? 'w-[66px]' : 'w-[220px]',
+      ].join(' ')}
     >
-      <div className="flex h-full w-[220px] flex-col">
-        <div className="flex h-16 items-center gap-2 overflow-hidden border-b border-[var(--clr-border)] px-4">
-          <div
-            className={`relative h-[60px] transition-all duration-300 ${collapsed ? 'w-[80px]' : 'w-[200px]'}`}
-          >
-            <Image
-              src="/logo-final.png"
-              alt="Logo"
-              fill
-              className={`object-contain transition-opacity duration-300 ${collapsed ? 'opacity-0' : 'opacity-100'}`}
-            />
-
-            <Image
-              src="/logo-isolated.png"
-              alt="Logo icon"
-              fill
-              className={`object-contain transition-opacity duration-300 ${collapsed ? 'opacity-100' : 'opacity-0'}`}
-            />
+      <div className="relative flex h-full flex-col overflow-hidden">
+        <div className="relative flex h-16 items-center border-b border-[var(--clr-border)] px-4">
+          <div className="relative h-[42px] flex-1">
+            {!collapsed ? (
+              <Image
+                src="/logo-final.png"
+                alt="Logo"
+                fill
+                className="object-contain object-left"
+                priority
+              />
+            ) : (
+              <Image
+                src="/logo-isolated.png"
+                alt="Logo icon"
+                fill
+                className="object-contain object-left"
+                priority
+              />
+            )}
           </div>
 
           <button
+            type="button"
             onClick={() => setCollapsed((c) => !c)}
-            className={`
-              fixed top-8 z-[200]
-              flex h-6 w-6 items-center justify-center
-              rounded-full border border-[var(--clr-border2)]
-              bg-[var(--clr-surface2)]
-              text-[var(--clr-text3)]
-              shadow-md transition-all duration-300
-              hover:bg-[var(--clr-accent)] hover:text-white
-              ${collapsed ? 'left-[53px]' : 'left-[207px]'}
-            `}
+            className={[
+              'absolute -right-3 top-1/2 z-30 flex h-7 w-7 -translate-y-1/2 items-center justify-center',
+              'rounded-full border border-[var(--clr-border2)] bg-[var(--clr-surface2)]',
+              'text-[var(--clr-text3)] shadow-md transition-all duration-300',
+              'hover:bg-[var(--clr-accent)] hover:text-white',
+            ].join(' ')}
+            aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
           >
             <svg
               width="11"
@@ -188,46 +185,45 @@ export default function Sidebar({
               viewBox="0 0 12 12"
               stroke="currentColor"
               strokeWidth="2"
-              className={`transition-transform duration-300 ${collapsed ? 'scale-x-[-1]' : ''}`}
+              className={`transition-transform duration-300 ${
+                collapsed ? 'scale-x-[-1]' : ''
+              }`}
             >
               <polyline points="8,2 4,6 8,10" />
             </svg>
           </button>
         </div>
 
-        <nav className="flex flex-1 flex-col gap-1 overflow-y-auto px-2 py-3">
-          {NAV_ITEMS.map(({ label, key, icon }) => {
-            const isActive = activeSection === key;
+        <nav className="flex-1 overflow-y-auto px-2 py-3">
+          <div className="flex flex-col gap-1">
+            {NAV_ITEMS.map(({ label, key, icon }) => {
+              const isActive = activeSection === key;
 
-            return (
-              <button
-                key={key}
-                type="button"
-                onClick={() => onSectionChange(key)}
-                title={collapsed ? label : undefined}
-                className={`
-                  flex items-center gap-3 rounded-lg px-2.5 py-2
-                  text-left text-sm font-medium transition-all
-                  ${isActive
-                    ? 'bg-[var(--clr-accent)] text-white shadow-md'
-                    : 'text-[var(--clr-text2)] hover:bg-[var(--clr-accent3)] hover:text-[var(--clr-accent)]'}
-                `}
-              >
-                <span className="flex h-7 w-7 items-center justify-center">
-                  {icon}
-                </span>
-
-                <span
-                  className={`
-                    whitespace-nowrap transition-all duration-300
-                    ${collapsed ? 'w-0 opacity-0' : 'opacity-100'}
-                  `}
+              return (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => onSectionChange(key)}
+                  title={collapsed ? label : undefined}
+                  className={[
+                    'flex items-center rounded-lg px-2.5 py-2 text-left text-sm font-medium transition-all',
+                    isActive
+                      ? 'bg-[var(--clr-accent)] text-white shadow-md'
+                      : 'text-[var(--clr-text2)] hover:bg-[var(--clr-accent3)] hover:text-[var(--clr-accent)]',
+                    collapsed ? 'justify-center' : 'gap-3',
+                  ].join(' ')}
                 >
-                  {label}
-                </span>
-              </button>
-            );
-          })}
+                  <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center">
+                    {icon}
+                  </span>
+
+                  {!collapsed && (
+                    <span className="truncate whitespace-nowrap">{label}</span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
         </nav>
       </div>
     </aside>

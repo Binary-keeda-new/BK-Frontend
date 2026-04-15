@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import ActionCard from './actionCard';
+import QuizForm from '../../quiz/components/QuizForm';
 
 type CreateQuestionBankResponse = {
   success: boolean;
@@ -25,13 +26,17 @@ export default function DashboardContent({
   const [isQuestionBankOpen, setIsQuestionBankOpen] = useState(false);
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isQuizFormOpen, setIsQuizFormOpen] = useState(false);
 
   const [formData, setFormData] = useState({
     title: '',
     description: '',
   });
 
-  const handleCreateQuiz = (): void => console.log('Create Quiz');
+  const handleCreateQuiz = (): void => {
+    setIsQuizFormOpen(true);
+  };
+
   const handleCreateTest = (): void => console.log('Create Test');
   const handleCodingProblems = (): void => console.log('Coding Problems');
 
@@ -99,6 +104,14 @@ export default function DashboardContent({
       setLoading(false);
     }
   };
+
+  if (isQuizFormOpen) {
+    return (
+      <div className="w-full max-w-[1100px] px-4 py-6 sm:px-6 sm:py-8 lg:px-10 lg:py-10">
+        <QuizForm theme="dark" onClose={() => setIsQuizFormOpen(false)} />
+      </div>
+    );
+  }
 
   return (
     <>
