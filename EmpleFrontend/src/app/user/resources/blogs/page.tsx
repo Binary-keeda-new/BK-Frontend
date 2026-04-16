@@ -1,5 +1,5 @@
-import BlogsHome from "@/features/user/blog/BlogsPage";
+import UserBlogsPage from "@/features/user/blog/pages/UserBlogsPage";
 
-export default function BlogsPage() {
-  return <BlogsHome />;
+export default function Page() {
+  return <UserBlogsPage />;
 }
