@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Syne:wght@700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Dark / Light theme variables ── */
+:root {
+  --orange: #f15a22;
+  --orange-hover: #e04d18;
+  --orange-dim: rgba(241, 90, 34, 0.12);
+  --bg: #0e0f13;
+  --surface: #161820;
+  --surface2: #1e2028;
+  --border: rgba(255, 255, 255, 0.07);
+  --text: #f0f0f4;
+  --muted: #666;
+  --muted2: #8a8a9a;
+}
+
+.light {
+  --orange: #f15a22;
+  --orange-hover: #e04d18;
+  --orange-dim: rgba(241, 90, 34, 0.08);
+  --bg: #f0f2f5;
+  --surface: #ffffff;
+  --surface2: #f7f8fa;
+  --border: #e2e4e9;
+  --text: #1a1a2e;
+  --muted: #9a9aaa;
+  --muted2: #777;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  transition: background 0.3s, color 0.3s;
+}
+
+/* ── Animated rotating border ── */
+.animated-border {
+  position: relative;
+  border-radius: 22px;
+  padding: 2px;
+  overflow: hidden;
+  box-shadow: 0 0 30px rgba(241, 90, 34, 0.18), 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.animated-border::before {
+  content: '';
+  position: absolute;
+  inset: -60%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    #f15a22 60deg,
+    #ff9a5c 90deg,
+    #ffcc88 120deg,
+    transparent 180deg,
+    transparent 270deg,
+    #f15a22 330deg,
+    transparent 360deg
+  );
+  animation: rotateBorder 3s linear infinite;
+  border-radius: 50%;
+}
+
+@keyframes rotateBorder {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.animated-border-inner {
+  position: relative;
+  z-index: 1;
+  border-radius: 20px;
+  background: var(--surface);
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+
+/* ── Tooltip for collapsed sidebar ── */
+.sidebar-collapsed .has-tip:hover::after {
+  content: attr(data-tip);
+  position: absolute;
+  left: calc(100% + 12px);
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--surface2);
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 5px 10px;
+  border-radius: 7px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 100;
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  animation: ttIn 0.15s 0.15s both;
+}
+
+@keyframes ttIn {
+  from { opacity: 0; transform: translateY(-50%) translateX(-4px); }
+  to   { opacity: 1; transform: translateY(-50%) translateX(0); }
+}
