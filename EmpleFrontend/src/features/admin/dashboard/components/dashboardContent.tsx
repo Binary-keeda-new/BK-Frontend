@@ -118,7 +118,7 @@ export default function DashboardContent({
   if (isQuizFormOpen) {
     return (
       <div className="w-full max-w-[1100px] px-4 py-6 sm:px-6 sm:py-8 lg:px-10 lg:py-10">
-        <QuizForm theme="dark" onClose={() => setIsQuizFormOpen(false)} onSuccess={handleQuizCreated} />
+        <QuizForm onClose={() => setIsQuizFormOpen(false)} onSuccess={handleQuizCreated} />
       </div>
     );
   }

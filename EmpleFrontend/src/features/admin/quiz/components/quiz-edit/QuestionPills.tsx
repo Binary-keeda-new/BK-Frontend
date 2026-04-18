@@ -47,7 +47,7 @@ export default function QuestionPills({
             </span>
 
             <span className="max-w-20 overflow-hidden text-ellipsis whitespace-nowrap">
-              {q.text || "Untitled"}
+              {q.question || "Untitled"}
             </span>
 
             {q.correct.length > 0 && (

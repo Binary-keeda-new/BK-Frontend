@@ -16,7 +16,6 @@ interface FormState {
 interface QuizFormProps {
   onClose: () => void
   onSuccess?: () => void
-  theme?: ThemeKey
 }
 
 const categories = {
@@ -48,7 +47,6 @@ const categories = {
 
 export default function QuizForm({
   onClose,
-  theme = 'dark',
   onSuccess,
 }: QuizFormProps) {
   const [form, setForm] = useState<FormState>({
@@ -98,9 +96,15 @@ const addToast = (message: string, type: 'success' | 'error' = 'success') => {
     }))
   }
 
- const handleSubmit = async (status: 'draft' | 'published') => {
-  if (filledCount < 5) {
-    addToast('Please fill all required fields.')
+const handleSubmit = async (status: 'draft' | 'published') => {
+  if (
+    !form.title.trim() ||
+    !form.description.trim() ||
+    !form.marks.trim() ||
+    !form.category ||
+    !form.subcategory
+  ) {
+    addToast('Please fill all required fields.', 'error')
     return
   }
 
@@ -108,15 +112,13 @@ const addToast = (message: string, type: 'success' | 'error' = 'success') => {
     setLoading(true)
 
     const payload = {
-  title: form.title,
-  description: form.description,
-  marks: form.marks,
-  category: form.category,
-  subcategory: form.subcategory,
-  status,
-}
-
-    console.log('Submitting quiz payload:', payload)
+      title: form.title,
+      description: form.description,
+      marks: form.marks,
+      category: form.category,
+      subcategory: form.subcategory,
+      status,
+    }
 
     const response = await fetch('http://localhost:5000/api/v1/admin/quizzes', {
       method: 'POST',
@@ -130,18 +132,21 @@ const addToast = (message: string, type: 'success' | 'error' = 'success') => {
       throw new Error(data.message || 'Failed to save quiz')
     }
 
-    onSuccess?.();
-
     addToast(
       status === 'published'
         ? 'Quiz published successfully!'
-        : 'Quiz saved as draft successfully!'
+        : 'Quiz saved as draft successfully!',
+      'success'
     )
 
+    onSuccess?.()
     onClose()
   } catch (error) {
     console.error('Failed to save quiz:', error)
-    alert(error instanceof Error ? error.message : 'Server connection failed.')
+    addToast(
+      error instanceof Error ? error.message : 'Server connection failed.',
+      'error'
+    )
   } finally {
     setLoading(false)
   }
@@ -349,6 +354,15 @@ const addToast = (message: string, type: 'success' | 'error' = 'success') => {
               >
                 Cancel
               </button>
+
+              <button
+              type="button"
+              onClick={() => handleSubmit('draft')}
+              disabled={loading}
+              className="rounded-2xl bg-[var(--clr-bg,#0a0b0e)] px-5 py-3 text-sm font-medium text-[var(--clr-text)] ring-1 ring-white/10 transition hover:text-[var(--clr-text)] disabled:cursor-not-allowed disabled:opacity-60 sm:min-w-[180px]"
+            >
+              {loading ? 'Saving...' : 'Save as Draft'}
+            </button>
 
               <button
                 type="button"

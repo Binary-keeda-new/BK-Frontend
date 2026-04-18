@@ -8,7 +8,8 @@ type Props = {
   aqIdx: number;
   questions: Question[];
   t: ThemeTokens;
-  setShowImport: (value: boolean) => void;
+  onOpenQuestionBankImport: () => void;
+  onOpenFileImport: () => void;
   deleteQuestion: (id: string) => void;
   updateQ: (id: string, patch: Partial<Question>) => void;
   updateOpt: (qid: string, oid: string, patch: Partial<Option>) => void;
@@ -24,7 +25,8 @@ export default function QuestionEditorCard({
   aqIdx,
   questions,
   t,
-  setShowImport,
+  onOpenQuestionBankImport,
+  onOpenFileImport,
   deleteQuestion,
   updateQ,
   updateOpt,
@@ -60,9 +62,9 @@ export default function QuestionEditorCard({
           </h2>
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <button
-            onClick={() => setShowImport(true)}
+            onClick={onOpenQuestionBankImport}
             className="flex items-center gap-1.5 rounded-[10px] border px-[14px] py-2 text-xs font-semibold transition-all hover:border-[var(--clr-accent)] hover:text-[var(--clr-accent)]"
             style={{
               borderColor: t.cardBorder,
@@ -79,7 +81,28 @@ export default function QuestionEditorCard({
                 strokeLinejoin="round"
               />
             </svg>
-            Import
+            Import Bank
+          </button>
+
+          <button
+            onClick={onOpenFileImport}
+            className="flex items-center gap-1.5 rounded-[10px] border px-[14px] py-2 text-xs font-semibold transition-all hover:border-[var(--clr-accent)] hover:text-[var(--clr-accent)]"
+            style={{
+              borderColor: t.cardBorder,
+              background: t.inputBg,
+              color: t.labelColor,
+            }}
+          >
+            <svg width="13" height="13" fill="none" viewBox="0 0 24 24">
+              <path
+                d="M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9m-6-6l6 6m-6-6v6h6"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            Import File
           </button>
 
           {questions.length > 1 && (
@@ -112,8 +135,8 @@ export default function QuestionEditorCard({
         <textarea
           rows={3}
           placeholder="Type your question here…"
-          value={aq.text}
-          onChange={(e) => updateQ(aq.id, { text: e.target.value })}
+          value={aq.question}
+          onChange={(e) => updateQ(aq.id, { question: e.target.value })}
           className="qph w-full resize-none rounded-[10px] border px-4 py-3 outline-none transition-all focus:border-[var(--clr-accent)] focus:shadow-[0_0_0_3px_rgba(241,90,34,0.12)]"
           style={{
             background: t.inputBg,
@@ -123,50 +146,70 @@ export default function QuestionEditorCard({
         />
       </div>
 
-      <div className="mb-6">
-        <div className="mb-3 flex items-center justify-between">
-          <QuizEditFieldLabel color={t.labelColor}>Options</QuizEditFieldLabel>
-          <span className="text-[11px]" style={{ color: t.subText }}>
-            Tap letter to mark correct ✓
-          </span>
-        </div>
+      {aq.type !== "NAT" && (
+        <div className="mb-6">
+          <div className="mb-3 flex items-center justify-between">
+            <QuizEditFieldLabel color={t.labelColor}>Options</QuizEditFieldLabel>
+            <span className="text-[11px]" style={{ color: t.subText }}>
+              Tap letter to mark correct ✓
+            </span>
+          </div>
 
-        <div className="flex flex-col gap-2.5">
-          {aq.options.map((opt, oi) => (
-            <QuestionOptionRow
-              key={opt.id}
-              qid={aq.id}
-              opt={opt}
-              oi={oi}
-              optionCount={aq.options.length}
-              isCorrect={aq.correct.includes(opt.id)}
-              t={t}
-              toggleCorrect={toggleCorrect}
-              updateOpt={updateOpt}
-              removeOption={removeOption}
-            />
-          ))}
-        </div>
+          <div className="flex flex-col gap-2.5">
+            {aq.options.map((opt, oi) => (
+              <QuestionOptionRow
+                key={opt.id}
+                qid={aq.id}
+                opt={opt}
+                oi={oi}
+                optionCount={aq.options.length}
+                isCorrect={aq.correct.includes(opt.id)}
+                t={t}
+                toggleCorrect={toggleCorrect}
+                updateOpt={updateOpt}
+                removeOption={removeOption}
+              />
+            ))}
+          </div>
 
-        <button
-          onClick={() => addOption(aq.id)}
-          className="mt-3 w-full rounded-[10px] border border-dashed bg-transparent p-[9px] text-xs font-semibold transition-all hover:border-[var(--clr-accent)] hover:text-[var(--clr-accent)]"
-          style={{
-            borderColor: t.inputBorder,
-            color: t.labelColor,
-          }}
-        >
-          + Add Option
-        </button>
-      </div>
+          <button
+            onClick={() => addOption(aq.id)}
+            className="mt-3 w-full rounded-[10px] border border-dashed bg-transparent p-[9px] text-xs font-semibold transition-all hover:border-[var(--clr-accent)] hover:text-[var(--clr-accent)]"
+            style={{
+              borderColor: t.inputBorder,
+              color: t.labelColor,
+            }}
+          >
+            + Add Option
+          </button>
+        </div>
+      )}
+
+      {aq.type === "NAT" && (
+        <div className="mb-6">
+          <QuizEditFieldLabel color={t.labelColor}>Correct Answer *</QuizEditFieldLabel>
+          <input
+            type="text"
+            placeholder="Enter correct answer"
+            value={aq.natAnswer || ""}
+            onChange={(e) => updateQ(aq.id, { natAnswer: e.target.value })}
+            className="qph w-full rounded-[10px] border px-4 py-3 outline-none transition-all focus:border-[var(--clr-accent)] focus:shadow-[0_0_0_3px_rgba(241,90,34,0.12)]"
+            style={{
+              background: t.inputBg,
+              borderColor: t.inputBorder,
+              color: t.inputText,
+            }}
+          />
+        </div>
+      )}
 
       <div className="mb-6">
         <QuizEditFieldLabel color={t.labelColor}>Marks</QuizEditFieldLabel>
 
         <div className="grid grid-cols-1 gap-[14px] sm:grid-cols-2">
           {([
-            ["Correct (+)", "posMarks", "#22c55e"],
-            ["Wrong (−)", "negMarks", "#f87171"],
+            ["Correct (+)", "positiveMarks", "#22c55e"],
+            ["Wrong (−)", "negativeMarks", "#f87171"],
           ] as const).map(([label, key, color]) => (
             <div key={key}>
               <div
@@ -181,7 +224,7 @@ export default function QuestionEditorCard({
                 type="number"
                 step="0.5"
                 value={aq[key]}
-                onChange={(e) => updateQ(aq.id, { [key]: e.target.value })}
+                onChange={(e) => updateQ(aq.id, { [key]: Number(e.target.value) })}
                 className="qph w-full rounded-[10px] border px-4 py-3 outline-none transition-all focus:border-[var(--clr-accent)] focus:shadow-[0_0_0_3px_rgba(241,90,34,0.12)]"
                 style={{
                   background: t.inputBg,

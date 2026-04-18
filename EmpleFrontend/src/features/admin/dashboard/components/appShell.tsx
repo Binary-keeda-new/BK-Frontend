@@ -14,7 +14,7 @@ import QuizForm from '../../quiz/components/QuizForm';
 
 interface AppShellProps {
   initialSection?: AdminSection;
-  quizId?: number;
+  quizId?: string;
 }
 
 export default function AppShell({
@@ -62,26 +62,13 @@ export default function AppShell({
   };
 
   const renderContent = () => {
-    switch (activeSection) {
-      case 'quiz-preview':
-        return <QuizPreviewContent quizId={quizId || 0} />;
+  switch (activeSection) {
 
-case 'quizzes':
-  return (
-    <QuizzesContent
-      onCreateQuiz={() => setActiveSection('quiz-create')}
-      onEditQuiz={(id) => {
-        setSelectedQuizId(id);
-        setActiveSection('quiz-edit');
-      }}
-    />
-  );
-
-  case 'quiz-edit':
+    case 'quiz-preview':
   return selectedQuizId ? (
-    <QuizEdit
+    <QuizPreviewContent
       quizId={selectedQuizId}
-      onClose={() => setActiveSection('quizzes')}
+      onBack={() => setActiveSection('quizzes')}
     />
   ) : (
     <QuizzesContent
@@ -90,14 +77,48 @@ case 'quizzes':
         setSelectedQuizId(id);
         setActiveSection('quiz-edit');
       }}
+      onPreviewQuiz={(id) => {
+        setSelectedQuizId(id);
+        setActiveSection('quiz-preview');
+      }}
     />
   );
-  
-  case 'quiz-create':
+
+      case 'quizzes':
+        return (
+          <QuizzesContent
+            onCreateQuiz={() => setActiveSection('quiz-create')}
+            onEditQuiz={(id) => {
+              setSelectedQuizId(id);
+              setActiveSection('quiz-edit');
+            }}
+            onPreviewQuiz={(id) => {
+              setSelectedQuizId(id);
+              setActiveSection('quiz-preview');
+            }}
+          />
+        );
+
+        case 'quiz-edit':
+        return selectedQuizId ? (
+          <QuizEdit
+            quizId={selectedQuizId}
+            onClose={() => setActiveSection('quizzes')}
+          />
+        ) : (
+          <QuizzesContent
+            onCreateQuiz={() => setActiveSection('quiz-create')}
+            onEditQuiz={(id) => {
+              setSelectedQuizId(id);
+              setActiveSection('quiz-edit');
+            }}
+          />
+        );
+case 'quiz-create':
   return (
     <QuizForm
-      theme="dark"
       onClose={() => setActiveSection('quizzes')}
+      onSuccess={() => setActiveSection('quizzes')}
     />
   );
 

@@ -1,6 +1,6 @@
 import { Option, Question } from "./quizEdit.types";
 
-export const mkId = (): string => Math.random().toString(36).slice(2, 8);
+export const mkId = (): string => Math.random().toString(36).slice(2, 10);
 
 export const blankOption = (): Option => ({
   id: mkId(),
@@ -11,9 +11,13 @@ export const blankOption = (): Option => ({
 
 export const blankQuestion = (): Question => ({
   id: mkId(),
-  text: "",
-  options: [blankOption(), blankOption(), blankOption(), blankOption()],
+  question: "",
+  type: "MCQ",
+  options: [blankOption(), blankOption()],
   correct: [],
-  posMarks: "1",
-  negMarks: "0",
+  natAnswer: "",
+  positiveMarks: 4,
+  negativeMarks: 1,
+  imageUrl: "",
+  isPersisted: false,
 });

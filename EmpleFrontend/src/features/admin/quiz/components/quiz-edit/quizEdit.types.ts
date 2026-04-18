@@ -31,20 +31,26 @@ export type ThemeTokens = {
   deleteText: string;
 };
 
+export type QuestionType = "MCQ" | "MSQ" | "NAT";
+
 export type Option = {
   id: string;
   text: string;
-  isImage: boolean;
-  imageUrl: string;
+  isImage?: boolean;
+  imageUrl?: string;
 };
 
 export type Question = {
   id: string;
-  text: string;
+  question: string;
+  type: QuestionType;
   options: Option[];
   correct: string[];
-  posMarks: string;
-  negMarks: string;
+  natAnswer?: string;
+  positiveMarks: number;
+  negativeMarks: number;
+  imageUrl?: string;
+  isPersisted?: boolean;
 };
 
 export type QuizEditProps = {

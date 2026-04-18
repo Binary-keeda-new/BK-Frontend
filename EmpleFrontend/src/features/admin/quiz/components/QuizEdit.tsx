@@ -9,6 +9,7 @@ import QuizDurationCard from "./quiz-edit/QuizDurationCard";
 import QuestionPills from "./quiz-edit/QuestionPills";
 import QuestionEditorCard from "./quiz-edit/QuestionEditorCard";
 import QuizPublishBar from "./quiz-edit/QuizPublishBar";
+import ImportQuestionBank from "./quiz-edit/ImportQuestionBank";
 import ImportQuestionsModal from "./quiz-edit/ImportQuestionsModal";
 
 export default function QuizEdit({ quizId, onClose }: QuizEditProps) {
@@ -16,8 +17,9 @@ export default function QuizEdit({ quizId, onClose }: QuizEditProps) {
   const [hours, setHours] = useState("0");
   const [minutes, setMinutes] = useState("30");
   const [importTab, setImportTab] = useState<"aiken" | "excel" | "json">("aiken");
-  const [showImport, setShowImport] = useState(false);
   const [importText, setImportText] = useState("");
+  const [showQuestionBankImport, setShowQuestionBankImport] = useState(false);
+  const [showFileImport, setShowFileImport] = useState(false);
 
   const fileRef = useRef<HTMLInputElement>(null);
   const aikenFileRef = useRef<HTMLInputElement>(null);
@@ -31,6 +33,8 @@ export default function QuizEdit({ quizId, onClose }: QuizEditProps) {
     setActiveQ,
     aq,
     aqIdx,
+    loading,
+    saving,
     updateQ,
     updateOpt,
     addOption,
@@ -38,7 +42,17 @@ export default function QuizEdit({ quizId, onClose }: QuizEditProps) {
     toggleCorrect,
     addQuestion,
     deleteQuestion,
-  } = useQuizEditor();
+    saveQuestion,
+    loadQuiz,
+  } = useQuizEditor(quizId);
+
+  if (loading) {
+    return (
+      <div className="p-6 text-sm text-[var(--clr-text2)]">
+        Loading quiz...
+      </div>
+    );
+  }
 
   return (
     <div
@@ -74,27 +88,46 @@ export default function QuizEdit({ quizId, onClose }: QuizEditProps) {
           t={t}
         />
 
-        <QuestionEditorCard
-          aq={aq}
-          aqIdx={aqIdx}
-          questions={questions}
+        {aq && (
+          <QuestionEditorCard
+            aq={aq}
+            aqIdx={aqIdx}
+            questions={questions}
+            t={t}
+            onOpenQuestionBankImport={() => setShowQuestionBankImport(true)}
+            onOpenFileImport={() => setShowFileImport(true)}
+            deleteQuestion={deleteQuestion}
+            updateQ={updateQ}
+            updateOpt={updateOpt}
+            toggleCorrect={toggleCorrect}
+            removeOption={removeOption}
+            addOption={addOption}
+            setActiveQ={setActiveQ}
+            addQuestion={addQuestion}
+          />
+        )}
+
+        <QuizPublishBar
           t={t}
-          setShowImport={setShowImport}
-          deleteQuestion={deleteQuestion}
-          updateQ={updateQ}
-          updateOpt={updateOpt}
-          toggleCorrect={toggleCorrect}
-          removeOption={removeOption}
-          addOption={addOption}
-          setActiveQ={setActiveQ}
-          addQuestion={addQuestion}
+          saving={saving}
+          onSaveDraft={() => aq && saveQuestion(aq)}
+          onPublish={() => aq && saveQuestion(aq)}
         />
 
-        <QuizPublishBar t={t} />
+        <ImportQuestionBank
+          open={showQuestionBankImport}
+          onClose={() => setShowQuestionBankImport(false)}
+          t={t}
+          quizId={quizId}
+          onImported={() => {
+            setShowQuestionBankImport(false);
+            loadQuiz();
+          }}
+        />
 
         <ImportQuestionsModal
-          open={showImport}
-          onClose={() => setShowImport(false)}
+          open={showFileImport}
+          onClose={() => setShowFileImport(false)}
           importTab={importTab}
           setImportTab={setImportTab}
           importText={importText}

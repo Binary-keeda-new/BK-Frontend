@@ -14,6 +14,8 @@ type Props = {
   fileRef: RefObject<HTMLInputElement | null>;
   aikenFileRef: RefObject<HTMLInputElement | null>;
   jsonFileRef: RefObject<HTMLInputElement | null>;
+  onImport?: () => void;
+  importing?: boolean;
 };
 
 export default function ImportQuestionsModal({
@@ -27,6 +29,8 @@ export default function ImportQuestionsModal({
   fileRef,
   aikenFileRef,
   jsonFileRef,
+  onImport,
+  importing = false,
 }: Props) {
   if (!open) return null;
 
@@ -36,7 +40,7 @@ export default function ImportQuestionsModal({
       className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 p-5"
     >
       <div
-        className="w-full max-w-[560px] overflow-hidden rounded-[18px] border"
+        className="w-full max-w-[560px] overflow-hidden rounded-[18px] border shadow-2xl"
         style={{
           background: t.cardBg,
           borderColor: t.cardBorder,
@@ -46,19 +50,24 @@ export default function ImportQuestionsModal({
 
         <div className="px-7 py-6">
           <div className="mb-5 flex items-center justify-between">
-            <h3
-              className="text-lg font-extrabold"
-              style={{
-                fontFamily: "'Nunito',sans-serif",
-                color: t.headingColor,
-              }}
-            >
-              Import Questions
-            </h3>
+            <div>
+              <h3
+                className="text-lg font-extrabold"
+                style={{
+                  fontFamily: "'Nunito',sans-serif",
+                  color: t.headingColor,
+                }}
+              >
+                Import Questions
+              </h3>
+              <p className="mt-1 text-xs" style={{ color: t.subText }}>
+                Paste or upload question data in one of the supported formats.
+              </p>
+            </div>
 
             <button
               onClick={onClose}
-              className="flex h-[30px] w-[30px] items-center justify-center rounded-lg border"
+              className="flex h-[30px] w-[30px] items-center justify-center rounded-lg border transition-all hover:opacity-90"
               style={{
                 borderColor: t.cardBorder,
                 background: t.inputBg,
@@ -76,8 +85,17 @@ export default function ImportQuestionsModal({
             </button>
           </div>
 
-          <div className="mb-[18px] flex gap-1.5 rounded-[10px] p-1" style={{ background: t.inputBg }}>
-            {(["aiken", "excel", "json"] as const).map((tab) => (
+          <div
+            className="mb-[18px] flex gap-1.5 rounded-[10px] p-1"
+            style={{ background: t.inputBg }}
+          >
+            {(
+              [
+                ["aiken", "Aiken"],
+                ["excel", "Excel / CSV"],
+                ["json", "JSON"],
+              ] as const
+            ).map(([tab, label]) => (
               <button
                 key={tab}
                 onClick={() => setImportTab(tab)}
@@ -87,7 +105,7 @@ export default function ImportQuestionsModal({
                   color: importTab === tab ? "#fff" : t.labelColor,
                 }}
               >
-                {tab}
+                {label}
               </button>
             ))}
           </div>
@@ -95,7 +113,8 @@ export default function ImportQuestionsModal({
           {importTab === "aiken" && (
             <div>
               <p className="mb-3 text-xs leading-[1.7]" style={{ color: t.subText }}>
-                Format: question text → <code className="text-[var(--clr-accent)]">A. option</code> lines →{" "}
+                Format: question text →{" "}
+                <code className="text-[var(--clr-accent)]">A. option</code> lines →{" "}
                 <code className="text-[var(--clr-accent)]">ANSWER: B</code>
               </p>
 
@@ -114,7 +133,10 @@ export default function ImportQuestionsModal({
 
               <div className="mt-3 flex items-center gap-2.5">
                 <div className="h-px flex-1" style={{ background: t.divider }} />
-                <span className="whitespace-nowrap text-[11px] font-semibold" style={{ color: t.subText }}>
+                <span
+                  className="whitespace-nowrap text-[11px] font-semibold"
+                  style={{ color: t.subText }}
+                >
                   OR UPLOAD FILE
                 </span>
                 <div className="h-px flex-1" style={{ background: t.divider }} />
@@ -122,7 +144,7 @@ export default function ImportQuestionsModal({
 
               <div
                 onClick={() => aikenFileRef.current?.click()}
-                className="mt-3 flex cursor-pointer items-center gap-3 rounded-[10px] border border-dashed px-4 py-3 transition-all"
+                className="mt-3 flex cursor-pointer items-center gap-3 rounded-[10px] border border-dashed px-4 py-3 transition-all hover:border-[var(--clr-accent)]"
                 style={{
                   borderColor: t.inputBorder,
                   background: t.inputBg,
@@ -172,7 +194,7 @@ export default function ImportQuestionsModal({
                   Upload Excel / CSV
                 </div>
                 <div className="text-xs" style={{ color: t.subText }}>
-                  Columns: Question, A, B, C, D, Answer, +Marks, −Marks
+                  Columns: Question, A, B, C, D, Answer, PositiveMarks, NegativeMarks
                 </div>
               </div>
 
@@ -192,13 +214,13 @@ export default function ImportQuestionsModal({
               <p className="mb-3 text-xs leading-[1.7]" style={{ color: t.subText }}>
                 Array of:{" "}
                 <code className="text-[var(--clr-accent)]">
-                  {"{ question, options[], answer, posMarks, negMarks }"}
+                  {"{ question, options[], answer, positiveMarks, negativeMarks }"}
                 </code>
               </p>
 
               <textarea
                 rows={6}
-                placeholder={'[\n  {\n    "question": "What is 2+2?",\n    "options": ["3","4","5","6"],\n    "answer": "4",\n    "posMarks": 1,\n    "negMarks": 0\n  }\n]'}
+                placeholder={'[\n  {\n    "question": "What is 2+2?",\n    "options": ["3","4","5","6"],\n    "answer": "4",\n    "positiveMarks": 1,\n    "negativeMarks": 0\n  }\n]'}
                 value={importText}
                 onChange={(e) => setImportText(e.target.value)}
                 className="qph w-full resize-y rounded-[10px] border px-4 py-3 font-mono text-xs outline-none transition-all focus:border-[var(--clr-accent)] focus:shadow-[0_0_0_3px_rgba(241,90,34,0.12)]"
@@ -211,7 +233,10 @@ export default function ImportQuestionsModal({
 
               <div className="mt-3 flex items-center gap-2.5">
                 <div className="h-px flex-1" style={{ background: t.divider }} />
-                <span className="whitespace-nowrap text-[11px] font-semibold" style={{ color: t.subText }}>
+                <span
+                  className="whitespace-nowrap text-[11px] font-semibold"
+                  style={{ color: t.subText }}
+                >
                   OR UPLOAD FILE
                 </span>
                 <div className="h-px flex-1" style={{ background: t.divider }} />
@@ -219,7 +244,7 @@ export default function ImportQuestionsModal({
 
               <div
                 onClick={() => jsonFileRef.current?.click()}
-                className="mt-3 flex cursor-pointer items-center gap-3 rounded-[10px] border border-dashed px-4 py-3 transition-all"
+                className="mt-3 flex cursor-pointer items-center gap-3 rounded-[10px] border border-dashed px-4 py-3 transition-all hover:border-[var(--clr-accent)]"
                 style={{
                   borderColor: t.inputBorder,
                   background: t.inputBg,
@@ -253,7 +278,8 @@ export default function ImportQuestionsModal({
           <div className="mt-5 flex justify-end gap-2.5">
             <button
               onClick={onClose}
-              className="rounded-[10px] border px-[18px] py-[9px] text-[13px] font-semibold"
+              disabled={importing}
+              className="rounded-[10px] border px-[18px] py-[9px] text-[13px] font-semibold disabled:opacity-60"
               style={{
                 borderColor: t.cardBorder,
                 color: t.labelColor,
@@ -263,8 +289,12 @@ export default function ImportQuestionsModal({
               Cancel
             </button>
 
-            <button className="rounded-[10px] bg-[var(--clr-accent)] px-5 py-[9px] text-[13px] font-bold text-white">
-              Import
+            <button
+              onClick={onImport}
+              disabled={importing}
+              className="rounded-[10px] bg-[var(--clr-accent)] px-5 py-[9px] text-[13px] font-bold text-white disabled:opacity-60"
+            >
+              {importing ? "Importing..." : "Import"}
             </button>
           </div>
         </div>

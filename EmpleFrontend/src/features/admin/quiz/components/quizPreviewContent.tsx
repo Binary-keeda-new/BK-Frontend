@@ -1,195 +1,256 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
-/* ===================== */
-/* Types */
-/* ===================== */
-
-interface Option {
-  id: string;
-  text: string;
-}
-
-interface Question {
-  id: number;
+interface PreviewQuestion {
+  _id: string;
   question: string;
-  options: Option[];
-  correctAnswer: string;
-  marks: number;
+  questionType: 'MCQ' | 'MSQ' | 'NAT';
+  options: string[];
+  correctOptions: string[];
+  positiveMarks: number;
+  negativeMarks: number;
 }
 
-interface Quiz {
-  id: number;
+interface PreviewQuiz {
+  _id: string;
   title: string;
   category: string;
   subcategory: string;
   totalMarks: number;
-  active: boolean;
-  description: string;
-  questions: Question[];
+  status: 'draft' | 'published' | 'archived';
+  description?: string;
+  questions: PreviewQuestion[];
 }
 
-/* ===================== */
-/* Mock Data */
-/* ===================== */
-
-const MOCK_QUIZZES: Quiz[] = [/* keep your same data */];
-
-function getQuizById(id: number): Quiz | undefined {
-  return MOCK_QUIZZES.find((q) => q.id === id);
+interface PreviewResponse {
+  success: boolean;
+  message: string;
+  data: PreviewQuiz;
 }
 
-/* ===================== */
-/* Icons */
-/* ===================== */
+const API_BASE = 'http://localhost:5000/api/v1/admin';
 
 const BackIcon = () => (
-  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
     <path d="M19 12H5M12 5l-7 7 7 7" />
   </svg>
 );
 
 const CheckIcon = () => (
-  <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+  <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
     <path d="M20 6L9 17l-5-5" />
   </svg>
 );
 
+function OptionCard({
+  option,
+  isCorrect,
+  index,
+}: {
+  option: string;
+  isCorrect: boolean;
+  index: number;
+}) {
+  const label = String.fromCharCode(65 + index);
 
-function OptionCard({ option, isCorrect }: { option: Option; isCorrect: boolean }) {
   return (
     <div
-      className={`
-        flex items-center gap-3 px-4 py-3 rounded-lg transition
-        border
-        ${
-          isCorrect
-            ? 'border-green-400 bg-green-500/10'
-            : 'border-[var(--clr-border)] hover:border-[var(--clr-border2)] hover:bg-[var(--clr-surface2)]'
-        }
-      `}
+      className={`flex items-center gap-3 rounded-lg border px-4 py-3 transition ${
+        isCorrect
+          ? 'border-green-400 bg-green-500/10'
+          : 'border-[var(--clr-border)] hover:border-[var(--clr-border2)] hover:bg-[var(--clr-surface2)]'
+      }`}
     >
       <div
-        className={`
-          w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold
-          ${
-            isCorrect
-              ? 'bg-green-500/20 border border-green-400 text-green-500'
-              : 'bg-[var(--clr-surface2)] border border-[var(--clr-border2)] text-[var(--clr-text3)]'
-          }
-        `}
+        className={`flex h-6 w-6 items-center justify-center rounded-full border text-xs font-bold ${
+          isCorrect
+            ? 'border-green-400 bg-green-500/20 text-green-500'
+            : 'border-[var(--clr-border2)] bg-[var(--clr-surface2)] text-[var(--clr-text3)]'
+        }`}
       >
-        {isCorrect ? <CheckIcon /> : option.id}
+        {isCorrect ? <CheckIcon /> : label}
       </div>
 
       <span
-        className={`
-          text-sm
-          ${isCorrect ? 'text-green-500 font-semibold' : 'text-[var(--clr-text2)]'}
-        `}
+        className={`text-sm ${
+          isCorrect ? 'font-semibold text-green-500' : 'text-[var(--clr-text2)]'
+        }`}
       >
-        {option.text}
+        {option}
       </span>
     </div>
   );
 }
 
-
-function QuestionCard({ question, index }: { question: Question; index: number }) {
+function QuestionCard({
+  question,
+  index,
+}: {
+  question: PreviewQuestion;
+  index: number;
+}) {
   return (
-    <div className="bg-[var(--clr-surface)] border border-[var(--clr-border)] rounded-2xl overflow-hidden">
-
-      {/* Header */}
-      <div className="flex items-start gap-4 px-5 py-4 border-b border-[var(--clr-border)] bg-[var(--clr-surface2)]">
-
-        <div className="w-8 h-8 rounded-full bg-[var(--clr-accent)] text-white flex items-center justify-center text-sm font-bold shadow-md">
+    <div className="overflow-hidden rounded-2xl border border-[var(--clr-border)] bg-[var(--clr-surface)]">
+      <div className="flex items-start gap-4 border-b border-[var(--clr-border)] bg-[var(--clr-surface2)] px-5 py-4">
+        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--clr-accent)] text-sm font-bold text-white shadow-md">
           {index + 1}
         </div>
 
-        <p className="flex-1 text-sm font-semibold text-[var(--clr-text)] leading-relaxed">
+        <p className="flex-1 text-sm font-semibold leading-relaxed text-[var(--clr-text)]">
           {question.question}
         </p>
 
-        <span className="px-2 py-1 rounded-md text-xs font-bold bg-[var(--clr-accent3)] text-[var(--clr-accent)]">
-          {question.marks} marks
+        <span className="rounded-md bg-[var(--clr-accent3)] px-2 py-1 text-xs font-bold text-[var(--clr-accent)]">
+          +{question.positiveMarks} / -{question.negativeMarks}
         </span>
       </div>
 
-      {/* Options */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 px-5 py-4">
-        {question.options.map((opt) => (
-          <OptionCard
-            key={opt.id}
-            option={opt}
-            isCorrect={opt.id === question.correctAnswer}
-          />
-        ))}
-      </div>
+      {question.questionType === 'NAT' ? (
+        <div className="px-5 py-4">
+          <div className="rounded-lg border border-green-400 bg-green-500/10 px-4 py-3">
+            <span className="text-xs font-bold uppercase tracking-wide text-green-500">
+              Correct Answer
+            </span>
+            <p className="mt-1 text-sm font-semibold text-green-500">
+              {question.correctOptions[0] || '-'}
+            </p>
+          </div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 gap-3 px-5 py-4 sm:grid-cols-2">
+          {question.options.map((opt, idx) => (
+            <OptionCard
+              key={`${question._id}-${idx}`}
+              option={opt}
+              index={idx}
+              isCorrect={question.correctOptions.includes(opt)}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
 
+export default function QuizPreviewContent({
+  quizId,
+  onBack,
+}: {
+  quizId: string;
+  onBack?: () => void;
+}) {
+  const [quiz, setQuiz] = useState<PreviewQuiz | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-export default function QuizPreviewContent({ quizId }: { quizId: number }) {
-  const router = useRouter();
-  const quiz = getQuizById(quizId);
+  useEffect(() => {
+    if (!quizId) return;
 
-  if (!quiz) {
+    const fetchPreview = async () => {
+      try {
+        setLoading(true);
+        setError('');
+
+        const res = await fetch(`${API_BASE}/quizzes/${quizId}/preview`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          cache: 'no-store',
+        });
+
+        const contentType = res.headers.get('content-type') || '';
+
+        if (!contentType.includes('application/json')) {
+          const text = await res.text();
+          throw new Error(text.slice(0, 120) || 'Server did not return JSON');
+        }
+
+        const result: PreviewResponse = await res.json();
+
+        if (!res.ok) {
+          throw new Error(result.message || 'Failed to fetch quiz preview');
+        }
+
+        setQuiz(result.data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to fetch quiz preview');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPreview();
+  }, [quizId]);
+
+  if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4 text-[var(--clr-text2)]">
-        <p className="text-lg font-semibold">Quiz not found</p>
-        <button
-          onClick={() => router.push('/quizzes')}
-          className="px-5 py-2 rounded-full bg-[var(--clr-accent)] text-white text-sm font-semibold"
-        >
-          Back to Quizzes
-        </button>
+      <div className="flex min-h-[60vh] items-center justify-center text-sm text-[var(--clr-text2)]">
+        Loading preview...
+      </div>
+    );
+  }
+
+  if (error || !quiz) {
+    return (
+      <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4 text-[var(--clr-text2)]">
+        <p className="text-lg font-semibold">
+          {error || 'Quiz preview not found'}
+        </p>
+        {onBack && (
+          <button
+            onClick={onBack}
+            className="rounded-full bg-[var(--clr-accent)] px-5 py-2 text-sm font-semibold text-white"
+          >
+            Back to Quizzes
+          </button>
+        )}
       </div>
     );
   }
 
   return (
-    <div className="w-full max-w-[900px] px-4 sm:px-6 py-6 sm:py-8">
+    <div className="w-full max-w-[900px] px-4 py-6 sm:px-6 sm:py-8">
+      {onBack && (
+        <button
+          onClick={onBack}
+          className="mb-6 flex items-center gap-2 rounded-full border border-[var(--clr-border2)] px-4 py-2 text-sm font-semibold text-[var(--clr-text2)] transition hover:border-[var(--clr-accent)] hover:bg-[var(--clr-accent3)] hover:text-[var(--clr-accent)]"
+        >
+          <BackIcon />
+          Back to Quizzes
+        </button>
+      )}
 
-      {/* Back Button */}
-      <button
-        onClick={() => router.push('/quizzes')}
-        className="flex items-center gap-2 px-4 py-2 mb-6 rounded-full border border-[var(--clr-border2)] text-sm font-semibold text-[var(--clr-text2)] hover:text-[var(--clr-accent)] hover:border-[var(--clr-accent)] hover:bg-[var(--clr-accent3)] transition"
-      >
-        <BackIcon />
-        Back to Quizzes
-      </button>
-
-      {/* Header */}
-      <div className="relative bg-[var(--clr-surface)] border border-[var(--clr-border)] rounded-2xl p-5 sm:p-6 mb-6 overflow-hidden">
-
-        <div className="flex flex-col sm:flex-row sm:justify-between gap-4">
-
+      <div className="relative mb-6 overflow-hidden rounded-2xl border border-[var(--clr-border)] bg-[var(--clr-surface)] p-5 sm:p-6">
+        <div className="flex flex-col gap-4 sm:flex-row sm:justify-between">
           <div>
-            <h1 className="text-xl sm:text-2xl font-extrabold text-[var(--clr-text)]">
-              {quiz.title}{' '}
-              <span className="text-[var(--clr-accent)]">Preview</span>
+            <h1 className="text-xl font-extrabold text-[var(--clr-text)] sm:text-2xl">
+              {quiz.title} <span className="text-[var(--clr-accent)]">Preview</span>
             </h1>
 
-            <p className="text-sm text-[var(--clr-text2)] mt-2 max-w-xl">
-              {quiz.description}
+            <p className="mt-2 max-w-xl text-sm text-[var(--clr-text2)]">
+              {quiz.description || 'No description available.'}
             </p>
           </div>
 
           <span
-            className={`
-              flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold
-              ${quiz.active ? 'bg-green-500/10 text-green-500 border border-green-500/20' : 'bg-[var(--clr-surface2)] text-[var(--clr-text3)]'}
-            `}
+            className={`flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold ${
+              quiz.status === 'published'
+                ? 'border border-green-500/20 bg-green-500/10 text-green-500'
+                : quiz.status === 'draft'
+                ? 'border border-yellow-500/20 bg-yellow-500/10 text-yellow-500'
+                : 'bg-[var(--clr-surface2)] text-[var(--clr-text3)]'
+            }`}
           >
-            {quiz.active && <span className="w-2 h-2 bg-green-500 rounded-full" />}
-            {quiz.active ? 'Active' : 'Inactive'}
+            {quiz.status === 'published' && (
+              <span className="h-2 w-2 rounded-full bg-green-500" />
+            )}
+            {quiz.status}
           </span>
         </div>
 
-        {/* Meta */}
-        <div className="flex flex-wrap gap-2 mt-4">
+        <div className="mt-4 flex flex-wrap gap-2">
           {[
             ['Category', quiz.category],
             ['Subcategory', quiz.subcategory],
@@ -198,7 +259,7 @@ export default function QuizPreviewContent({ quizId }: { quizId: number }) {
           ].map(([label, value]) => (
             <div
               key={label}
-              className="px-3 py-1 rounded-md bg-[var(--clr-surface2)] border border-[var(--clr-border)] text-xs"
+              className="rounded-md border border-[var(--clr-border)] bg-[var(--clr-surface2)] px-3 py-1 text-xs"
             >
               <span className="text-[var(--clr-text3)]">{label}:</span>{' '}
               <span className="font-bold text-[var(--clr-text)]">{value}</span>
@@ -207,25 +268,22 @@ export default function QuizPreviewContent({ quizId }: { quizId: number }) {
         </div>
       </div>
 
-      {/* Section */}
-      <div className="flex items-center gap-2 mb-4">
-        <div className="w-1 h-5 bg-[var(--clr-accent)] rounded" />
+      <div className="mb-4 flex items-center gap-2">
+        <div className="h-5 w-1 rounded bg-[var(--clr-accent)]" />
         <span className="text-xs font-bold uppercase text-[var(--clr-text2)]">
           Questions & Options
         </span>
       </div>
 
-      {/* Questions */}
       <div className="flex flex-col gap-4">
         {quiz.questions.map((q, i) => (
-          <QuestionCard key={q.id} question={q} index={i} />
+          <QuestionCard key={q._id} question={q} index={i} />
         ))}
       </div>
 
-      {/* Legend */}
-      <div className="mt-5 px-4 py-2 rounded-md border border-[var(--clr-border)] bg-[var(--clr-surface)] text-xs text-[var(--clr-text3)] inline-flex items-center gap-2">
-        <div className="w-3 h-3 bg-green-500/20 border border-green-400 rounded" />
-        Correct answer highlighted
+      <div className="mt-5 inline-flex items-center gap-2 rounded-md border border-[var(--clr-border)] bg-[var(--clr-surface)] px-4 py-2 text-xs text-[var(--clr-text3)]">
+        <div className="h-3 w-3 rounded border border-green-400 bg-green-500/20" />
+        Correct answers highlighted
       </div>
     </div>
   );
