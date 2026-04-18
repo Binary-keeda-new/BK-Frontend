@@ -56,9 +56,6 @@ const CheckIcon = () => (
   </svg>
 );
 
-/* ===================== */
-/* Option Card */
-/* ===================== */
 
 function OptionCard({ option, isCorrect }: { option: Option; isCorrect: boolean }) {
   return (
@@ -98,9 +95,6 @@ function OptionCard({ option, isCorrect }: { option: Option; isCorrect: boolean 
   );
 }
 
-/* ===================== */
-/* Question Card */
-/* ===================== */
 
 function QuestionCard({ question, index }: { question: Question; index: number }) {
   return (
@@ -136,9 +130,6 @@ function QuestionCard({ question, index }: { question: Question; index: number }
   );
 }
 
-/* ===================== */
-/* Main */
-/* ===================== */
 
 export default function QuizPreviewContent({ quizId }: { quizId: number }) {
   const router = useRouter();

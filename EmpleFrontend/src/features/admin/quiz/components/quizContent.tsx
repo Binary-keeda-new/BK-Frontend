@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useState, useRef  } from 'react';
+import { useRouter} from 'next/navigation';
+import ToastContainer from '@/features/admin/question-bank/components/ToastContainer';
 import {
   EyeIcon,
   EditIcon,
@@ -22,6 +23,7 @@ interface Quiz {
 
 type QuizzesContentProps = {
   onEditQuiz?: (quizId: string) => void;
+  onCreateQuiz?: () => void;
 };
 interface QuizListResponse {
   success: boolean;
@@ -38,7 +40,7 @@ interface QuizListResponse {
 const PAGE_SIZE = 5;
 const API_BASE = 'http://localhost:5000/api/v1/admin';
 
-export default function QuizzesContent({ onEditQuiz }: QuizzesContentProps) {
+export default function QuizzesContent({ onEditQuiz, onCreateQuiz, }: QuizzesContentProps) {
   const router = useRouter();
 
   const [page, setPage] = useState(1);
@@ -48,6 +50,12 @@ export default function QuizzesContent({ onEditQuiz }: QuizzesContentProps) {
   const [loading, setLoading] = useState(true);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [quizToDelete, setQuizToDelete] = useState<Quiz | null>(null);
+  const [isQuizFormOpen, setIsQuizFormOpen] = useState(false);
+
+
+  const handleCreateQuiz = (): void => {
+    setIsQuizFormOpen(true);
+  };
 
   const fetchQuizzes = async (currentPage: number) => {
     try {
@@ -87,51 +95,84 @@ export default function QuizzesContent({ onEditQuiz }: QuizzesContentProps) {
     fetchQuizzes(page);
   }, [page]);
 
-  const handleDeleteQuiz = async () => {
-    if (!quizToDelete) return;
+const handleDeleteQuiz = async () => {
+  if (!quizToDelete) return;
 
-    try {
-      setDeleteLoading(true);
+  try {
+    setDeleteLoading(true);
 
-      const res = await fetch(`${API_BASE}/quizzes/${quizToDelete._id}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+    const res = await fetch(`${API_BASE}/quizzes/${quizToDelete._id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
 
-      const result = await res.json();
+    const result = await res.json();
 
-      if (!res.ok) {
-        throw new Error(result.message || 'Failed to delete quiz');
-      }
-
-      setQuizToDelete(null);
-
-      if (quizzes.length === 1 && page > 1) {
-        setPage((prev) => prev - 1);
-      } else {
-        fetchQuizzes(page);
-      }
-    } catch (error) {
-      console.error('Failed to delete quiz:', error);
-    } finally {
-      setDeleteLoading(false);
+    if (!res.ok) {
+      throw new Error(result.message || 'Failed to delete quiz');
     }
-  };
 
+    addToast('Quiz deleted successfully!', 'success');
+    setQuizToDelete(null);
+
+    if (quizzes.length === 1 && page > 1) {
+      setPage((prev) => prev - 1);
+    } else {
+      fetchQuizzes(page);
+    }
+  } catch (error) {
+    console.error('Failed to delete quiz:', error);
+    addToast(
+      error instanceof Error ? error.message : 'Failed to delete quiz',
+      'error'
+    );
+  } finally {
+    setDeleteLoading(false);
+  }
+};
   const start = (page - 1) * PAGE_SIZE;
+  const [toasts, setToasts] = useState<
+  { id: number; message: string; type: 'success' | 'error' }[]
+>([]);
+
+const toastId = useRef(0);
+
+const addToast = (
+  message: string,
+  type: 'success' | 'error' = 'success'
+) => {
+  const id = ++toastId.current;
+  setToasts((prev) => [...prev, { id, message, type }]);
+
+  setTimeout(() => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  }, 3000);
+};
 
   return (
+    <>
+     <ToastContainer toasts={toasts} />
     <div className="w-full max-w-[1060px] px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
-      <div className="mb-6 sm:mb-8">
-        <h1 className="text-2xl font-extrabold text-[var(--clr-text)] sm:text-3xl">
-          Quizzes <span className="text-[var(--clr-accent)]">List</span>
-        </h1>
-        <p className="mt-1 text-sm text-[var(--clr-text2)]">
-          Manage and monitor all available quizzes on the platform.
-        </p>
-      </div>
+      <div className="mb-6 flex flex-col gap-4 sm:mb-8 sm:flex-row sm:items-start sm:justify-between">
+  <div>
+    <h1 className="text-2xl font-extrabold text-[var(--clr-text)] sm:text-3xl">
+      Quizzes <span className="text-[var(--clr-accent)]">List</span>
+    </h1>
+    <p className="mt-1 text-sm text-[var(--clr-text2)]">
+      Manage and monitor all available quizzes on the platform.
+    </p>
+  </div>
+
+  <button
+    onClick={onCreateQuiz}
+    className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[var(--clr-accent)] px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
+  >
+    <span className="text-base leading-none">+</span>
+    Create Quiz
+  </button>
+</div>
 
       <div className="overflow-hidden rounded-2xl border border-[var(--clr-border)] bg-[var(--clr-surface)]">
         <div className="overflow-x-auto">
@@ -225,7 +266,10 @@ export default function QuizzesContent({ onEditQuiz }: QuizzesContentProps) {
                         </button>
 
                        <button
-  onClick={() => onEditQuiz?.(quiz._id)}
+  onClick={() => {
+    console.log('Edit clicked', quiz._id, onEditQuiz);
+    onEditQuiz?.(quiz._id);
+  }}
   className="flex h-8 w-8 items-center justify-center rounded-md border border-[var(--clr-border2)] text-blue-500 transition hover:bg-blue-100"
 >
   <EditIcon className="h-4 w-4" />
@@ -317,5 +361,6 @@ export default function QuizzesContent({ onEditQuiz }: QuizzesContentProps) {
         </>
       )}
     </div>
+    </>
   );
 }

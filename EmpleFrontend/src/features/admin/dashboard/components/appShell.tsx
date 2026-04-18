@@ -10,6 +10,7 @@ import AdminJobsPage from '@/features/admin/jobs/pages/AdminJobsPage';
 import QuizPreviewContent from '@/features/admin/quiz/components/quizPreviewContent';
 import QuizzesContent from '../../quiz/components/quizContent';
 import QuizEdit from '../../quiz/components/QuizEdit';
+import QuizForm from '../../quiz/components/QuizForm';
 
 interface AppShellProps {
   initialSection?: AdminSection;
@@ -68,6 +69,7 @@ export default function AppShell({
 case 'quizzes':
   return (
     <QuizzesContent
+      onCreateQuiz={() => setActiveSection('quiz-create')}
       onEditQuiz={(id) => {
         setSelectedQuizId(id);
         setActiveSection('quiz-edit');
@@ -77,13 +79,25 @@ case 'quizzes':
 
   case 'quiz-edit':
   return selectedQuizId ? (
-    <QuizEdit quizId={selectedQuizId} />
+    <QuizEdit
+      quizId={selectedQuizId}
+      onClose={() => setActiveSection('quizzes')}
+    />
   ) : (
     <QuizzesContent
+      onCreateQuiz={() => setActiveSection('quiz-create')}
       onEditQuiz={(id) => {
         setSelectedQuizId(id);
         setActiveSection('quiz-edit');
       }}
+    />
+  );
+  
+  case 'quiz-create':
+  return (
+    <QuizForm
+      theme="dark"
+      onClose={() => setActiveSection('quizzes')}
     />
   );
 

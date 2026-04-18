@@ -13,7 +13,8 @@ export type AdminSection =
   | 'coding-problems'
   | 'jobs'
   | 'quiz-preview'
-  | 'quiz-edit';
+  | 'quiz-edit'
+  | 'quiz-create';
 
 const NAV_ITEMS: {
   label: string;

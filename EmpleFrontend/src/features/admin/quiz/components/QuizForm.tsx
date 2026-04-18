@@ -1,6 +1,7 @@
 'use client'
 
-import React, { ChangeEvent, useMemo, useState } from 'react'
+import React, { ChangeEvent, useMemo, useState, useRef } from 'react'
+import ToastContainer from '@/features/admin/question-bank/components/ToastContainer';
 
 type ThemeKey = 'dark' | 'light'
 
@@ -14,6 +15,7 @@ interface FormState {
 
 interface QuizFormProps {
   onClose: () => void
+  onSuccess?: () => void
   theme?: ThemeKey
 }
 
@@ -43,9 +45,11 @@ const categories = {
   Language: ['Grammar', 'Literature', 'Vocabulary', 'Writing', 'Comprehension'],
 }
 
+
 export default function QuizForm({
   onClose,
   theme = 'dark',
+  onSuccess,
 }: QuizFormProps) {
   const [form, setForm] = useState<FormState>({
     title: '',
@@ -55,6 +59,22 @@ export default function QuizForm({
     subcategory: '',
   })
 
+  const [toasts, setToasts] = useState<{
+  id: number;
+  message: string;
+  type: 'success' | 'error';
+}[]>([]);
+
+const toastId = useRef(0);
+
+const addToast = (message: string, type: 'success' | 'error' = 'success') => {
+  const id = ++toastId.current;
+  setToasts((prev) => [...prev, { id, message, type }]);
+
+  setTimeout(() => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  }, 3000);
+};
   const [loading, setLoading] = useState(false)
 
   const filledCount = useMemo(
@@ -80,7 +100,7 @@ export default function QuizForm({
 
  const handleSubmit = async (status: 'draft' | 'published') => {
   if (filledCount < 5) {
-    alert('Please fill all required fields.')
+    addToast('Please fill all required fields.')
     return
   }
 
@@ -105,13 +125,14 @@ export default function QuizForm({
     })
 
     const data = await response.json()
-    console.log('Quiz API response:', data)
 
     if (!response.ok) {
       throw new Error(data.message || 'Failed to save quiz')
     }
 
-    alert(
+    onSuccess?.();
+
+    addToast(
       status === 'published'
         ? 'Quiz published successfully!'
         : 'Quiz saved as draft successfully!'
@@ -127,6 +148,8 @@ export default function QuizForm({
 }
 
   return (
+    <>
+    <ToastContainer toasts={toasts}/>
     <div className="w-full">
       <div className="mx-auto max-w-4xl">
         <div className="mb-8 flex items-start justify-between gap-4">
@@ -340,5 +363,6 @@ export default function QuizForm({
         </section>
       </div>
     </div>
+    </>
   )
 }
