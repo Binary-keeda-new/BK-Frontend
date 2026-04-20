@@ -2,14 +2,13 @@ import { ThemeTokens } from "./quizEdit.types";
 
 type Props = {
   t: ThemeTokens;
-  onSaveDraft?: () => void;
+
   onPublish?: () => void;
   saving?: boolean;
 };
 
 export default function QuizPublishBar({
   t,
-  onSaveDraft,
   onPublish,
   saving = false,
 }: Props) {
@@ -19,28 +18,12 @@ export default function QuizPublishBar({
       style={{ borderColor: t.divider }}
     >
       <div>
-        <p className="text-[13px] font-semibold" style={{ color: t.headingColor }}>
-          Ready to go live?
-        </p>
         <p className="mt-[3px] text-xs" style={{ color: t.subText }}>
           Review all settings before publishing this quiz.
         </p>
       </div>
 
       <div className="flex gap-2.5">
-        <button
-          type="button"
-          onClick={onSaveDraft}
-          disabled={saving}
-          className="rounded-xl border px-6 py-[11px] text-sm font-semibold transition-all disabled:opacity-60"
-          style={{
-            borderColor: t.cardBorder,
-            background: t.inputBg,
-            color: t.labelColor,
-          }}
-        >
-          {saving ? "Saving..." : "Save Draft"}
-        </button>
 
         <button
           type="button"

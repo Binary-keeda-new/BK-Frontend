@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Sidebar, { type AdminSection } from './sidebar';
 import Topbar from './topbar';
 import DashboardContent from './dashboardContent';
@@ -14,20 +15,35 @@ import QuizForm from '../../quiz/components/QuizForm';
 
 interface AppShellProps {
   initialSection?: AdminSection;
-  quizId?: string;
 }
 
 export default function AppShell({
   initialSection = 'dashboard',
-  quizId,
 }: AppShellProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const sectionFromUrl =
+    (searchParams.get('section') as AdminSection) || initialSection;
+  const quizIdFromUrl = searchParams.get('quizId');
+  const questionBankIdFromUrl = searchParams.get('questionBankId');
+
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] =
-    useState<AdminSection>(initialSection);
+    useState<AdminSection>(sectionFromUrl);
   const [selectedQuestionBankId, setSelectedQuestionBankId] = useState<
     string | null
-  >(null);
-  const [selectedQuizId, setSelectedQuizId] = useState<string | null>(null);
+  >(questionBankIdFromUrl);
+  const [selectedQuizId, setSelectedQuizId] = useState<string | null>(
+    quizIdFromUrl
+  );
+  const [quizListRefreshKey, setQuizListRefreshKey] = useState(0);
+
+  useEffect(() => {
+    setActiveSection(sectionFromUrl);
+    setSelectedQuizId(quizIdFromUrl);
+    setSelectedQuestionBankId(questionBankIdFromUrl);
+  }, [sectionFromUrl, quizIdFromUrl, questionBankIdFromUrl]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -47,97 +63,175 @@ export default function AppShell({
     };
   }, [mobileOpen]);
 
+  const updateUrl = ({
+    section,
+    quizId,
+    questionBankId,
+  }: {
+    section: AdminSection;
+    quizId?: string | null;
+    questionBankId?: string | null;
+  }) => {
+    const params = new URLSearchParams();
+
+    params.set('section', section);
+
+    if (quizId) {
+      params.set('quizId', quizId);
+    }
+
+    if (questionBankId) {
+      params.set('questionBankId', questionBankId);
+    }
+
+    router.push(`/dashboard?${params.toString()}`);
+  };
+
   const handleSectionChange = (section: AdminSection) => {
     setActiveSection(section);
     setMobileOpen(false);
 
+    const nextQuizId =
+      section === 'quiz-edit' || section === 'quiz-preview'
+        ? selectedQuizId
+        : null;
+
+    const nextQuestionBankId =
+      section === 'question-bank-detail' ? selectedQuestionBankId : null;
+
     if (section !== 'question-bank-detail') {
       setSelectedQuestionBankId(null);
     }
+
+    if (section !== 'quiz-edit' && section !== 'quiz-preview') {
+      setSelectedQuizId(null);
+    }
+
+    updateUrl({
+      section,
+      quizId: nextQuizId,
+      questionBankId: nextQuestionBankId,
+    });
   };
 
   const goToQuestionBankList = () => {
     setActiveSection('question-bank');
     setSelectedQuestionBankId(null);
+
+    updateUrl({
+      section: 'question-bank',
+      questionBankId: null,
+    });
+  };
+
+  const goToQuizList = () => {
+    setActiveSection('quizzes');
+    setSelectedQuizId(null);
+
+    updateUrl({
+      section: 'quizzes',
+      quizId: null,
+    });
+  };
+
+  const openQuizEdit = (id: string) => {
+    setSelectedQuizId(id);
+    setActiveSection('quiz-edit');
+
+    updateUrl({
+      section: 'quiz-edit',
+      quizId: id,
+    });
+  };
+
+  const openQuizPreview = (id: string) => {
+    setSelectedQuizId(id);
+    setActiveSection('quiz-preview');
+
+    updateUrl({
+      section: 'quiz-preview',
+      quizId: id,
+    });
+  };
+
+  const openQuestionBankDetail = (id: string) => {
+    setSelectedQuestionBankId(id);
+    setActiveSection('question-bank-detail');
+
+    updateUrl({
+      section: 'question-bank-detail',
+      questionBankId: id,
+    });
   };
 
   const renderContent = () => {
-  switch (activeSection) {
-
-    case 'quiz-preview':
-  return selectedQuizId ? (
-    <QuizPreviewContent
-      quizId={selectedQuizId}
-      onBack={() => setActiveSection('quizzes')}
-    />
-  ) : (
-    <QuizzesContent
-      onCreateQuiz={() => setActiveSection('quiz-create')}
-      onEditQuiz={(id) => {
-        setSelectedQuizId(id);
-        setActiveSection('quiz-edit');
-      }}
-      onPreviewQuiz={(id) => {
-        setSelectedQuizId(id);
-        setActiveSection('quiz-preview');
-      }}
-    />
-  );
+    switch (activeSection) {
+      case 'quiz-preview':
+        return selectedQuizId ? (
+          <QuizPreviewContent
+            quizId={selectedQuizId}
+            onBack={() => {
+              setQuizListRefreshKey((prev) => prev + 1);
+              goToQuizList();
+            }}
+          />
+        ) : (
+          <QuizzesContent
+            refreshKey={quizListRefreshKey}
+            onCreateQuiz={() => handleSectionChange('quiz-create')}
+            onEditQuiz={openQuizEdit}
+            onPreviewQuiz={openQuizPreview}
+          />
+        );
 
       case 'quizzes':
         return (
           <QuizzesContent
-            onCreateQuiz={() => setActiveSection('quiz-create')}
-            onEditQuiz={(id) => {
-              setSelectedQuizId(id);
-              setActiveSection('quiz-edit');
-            }}
-            onPreviewQuiz={(id) => {
-              setSelectedQuizId(id);
-              setActiveSection('quiz-preview');
-            }}
+            refreshKey={quizListRefreshKey}
+            onCreateQuiz={() => handleSectionChange('quiz-create')}
+            onEditQuiz={openQuizEdit}
+            onPreviewQuiz={openQuizPreview}
           />
         );
 
-        case 'quiz-edit':
+      case 'quiz-edit':
         return selectedQuizId ? (
           <QuizEdit
             quizId={selectedQuizId}
-            onClose={() => setActiveSection('quizzes')}
+            onClose={() => {
+              setQuizListRefreshKey((prev) => prev + 1);
+              goToQuizList();
+            }}
           />
         ) : (
           <QuizzesContent
-            onCreateQuiz={() => setActiveSection('quiz-create')}
-            onEditQuiz={(id) => {
-              setSelectedQuizId(id);
-              setActiveSection('quiz-edit');
+            refreshKey={quizListRefreshKey}
+            onCreateQuiz={() => handleSectionChange('quiz-create')}
+            onEditQuiz={openQuizEdit}
+            onPreviewQuiz={openQuizPreview}
+          />
+        );
+
+      case 'quiz-create':
+        return (
+          <QuizForm
+            onClose={goToQuizList}
+            onSuccess={() => {
+              setQuizListRefreshKey((prev) => prev + 1);
+              goToQuizList();
             }}
           />
         );
-case 'quiz-create':
-  return (
-    <QuizForm
-      onClose={() => setActiveSection('quizzes')}
-      onSuccess={() => setActiveSection('quizzes')}
-    />
-  );
 
       case 'dashboard':
         return (
           <DashboardContent
-            onOpenQuestionBank={() => setActiveSection('question-bank')}
+            onOpenQuestionBank={() => handleSectionChange('question-bank')}
           />
         );
 
       case 'question-bank':
-        return (
-          <QuestionBankPage
-            onEditQuestionBank={(id) => {
-              setSelectedQuestionBankId(id);
-              setActiveSection('question-bank-detail');
-            }}
-          />
-        );
+        return <QuestionBankPage onEditQuestionBank={openQuestionBankDetail} />;
 
       case 'question-bank-detail':
         return selectedQuestionBankId ? (
@@ -146,13 +240,11 @@ case 'quiz-create':
             onBackToQuestionBanks={goToQuestionBankList}
           />
         ) : (
-          <QuestionBankPage
-            onEditQuestionBank={(id) => {
-              setSelectedQuestionBankId(id);
-              setActiveSection('question-bank-detail');
-            }}
-          />
+          <QuestionBankPage onEditQuestionBank={openQuestionBankDetail} />
         );
+
+      case 'jobs':
+        return <AdminJobsPage />;
 
       case 'practice':
         return (
@@ -175,55 +267,52 @@ case 'quiz-create':
           </div>
         );
 
-      case 'jobs':
-        return <AdminJobsPage />;
-
       default:
         return (
           <DashboardContent
-            onOpenQuestionBank={() => setActiveSection('question-bank')}
+            onOpenQuestionBank={() => handleSectionChange('question-bank')}
           />
         );
     }
   };
 
-return (
-  <div className="flex h-screen overflow-hidden bg-[var(--clr-bg)]">
-    <div className="hidden md:block">
-      <Sidebar
-        activeSection={activeSection}
-        onSectionChange={handleSectionChange}
-      />
-    </div>
+  return (
+    <div className="flex h-screen overflow-hidden bg-[var(--clr-bg)]">
+      <div className="hidden md:block">
+        <Sidebar
+          activeSection={activeSection}
+          onSectionChange={handleSectionChange}
+        />
+      </div>
 
-    {mobileOpen && (
+      {mobileOpen && (
+        <div
+          className="fixed inset-0 z-[299] bg-black/50 backdrop-blur-sm md:hidden"
+          onClick={() => setMobileOpen(false)}
+        />
+      )}
+
       <div
-        className="fixed inset-0 z-[299] bg-black/50 backdrop-blur-sm md:hidden"
-        onClick={() => setMobileOpen(false)}
-      />
-    )}
-
-    <div
-      className={`fixed inset-y-0 left-0 z-[300] transform transition-transform duration-300 ease-out md:hidden ${
-        mobileOpen ? 'translate-x-0' : '-translate-x-full'
-      }`}
-    >
-      <Sidebar
-        activeSection={activeSection}
-        onSectionChange={handleSectionChange}
-      />
-    </div>
-
-    <div className="flex min-w-0 flex-1 flex-col bg-[var(--clr-bg)]">
-      <Topbar onMobileMenuOpen={() => setMobileOpen(true)} />
-
-      <main
-        id="main-content"
-        className="min-w-0 flex-1 overflow-x-hidden overflow-y-auto"
+        className={`fixed inset-y-0 left-0 z-[300] transform transition-transform duration-300 ease-out md:hidden ${
+          mobileOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
       >
-        {renderContent()}
-      </main>
+        <Sidebar
+          activeSection={activeSection}
+          onSectionChange={handleSectionChange}
+        />
+      </div>
+
+      <div className="flex min-w-0 flex-1 flex-col bg-[var(--clr-bg)]">
+        <Topbar onMobileMenuOpen={() => setMobileOpen(true)} />
+
+        <main
+          id="main-content"
+          className="min-w-0 flex-1 overflow-x-hidden overflow-y-auto"
+        >
+          {renderContent()}
+        </main>
+      </div>
     </div>
-  </div>
-);
+  );
 }

@@ -28,7 +28,12 @@ export default function QuestionPills({
         {questions.map((q, i) => (
           <button
             key={q.id}
-            onClick={() => setActiveQ(q.id)}
+            onClick={() => {
+  setActiveQ(q.id);
+  document
+    .getElementById(`question-${q.id}`)
+    ?.scrollIntoView({ behavior: "smooth", block: "start" });
+}}
             className="flex items-center gap-1.5 rounded-full border px-[14px] py-[7px] text-xs font-bold transition-all"
             style={{
               borderColor: activeQ === q.id ? "var(--clr-accent)" : t.qPillBorder,

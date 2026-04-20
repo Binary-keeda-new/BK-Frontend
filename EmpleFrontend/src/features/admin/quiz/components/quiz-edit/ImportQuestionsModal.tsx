@@ -1,5 +1,9 @@
-import { RefObject } from "react";
+"use client";
+
+import { RefObject, useMemo, useState } from "react";
+import * as XLSX from "xlsx";
 import { ThemeTokens } from "./quizEdit.types";
+import { ImportedQuestionInput } from "./useQuizEditor";
 
 type ImportTab = "aiken" | "excel" | "json";
 
@@ -14,9 +18,10 @@ type Props = {
   fileRef: RefObject<HTMLInputElement | null>;
   aikenFileRef: RefObject<HTMLInputElement | null>;
   jsonFileRef: RefObject<HTMLInputElement | null>;
-  onImport?: () => void;
-  importing?: boolean;
+  onImportQuestions: (questions: ImportedQuestionInput[]) => void;
 };
+
+type ParsedQuestion = ImportedQuestionInput;
 
 export default function ImportQuestionsModal({
   open,
@@ -29,10 +34,348 @@ export default function ImportQuestionsModal({
   fileRef,
   aikenFileRef,
   jsonFileRef,
-  onImport,
-  importing = false,
+  onImportQuestions,
 }: Props) {
+  const [importing, setImporting] = useState(false);
+  const [error, setError] = useState("");
+
+  const acceptedFileLabel = useMemo(() => {
+    if (importTab === "excel") return "Excel / CSV";
+    if (importTab === "json") return "JSON";
+    return "Aiken";
+  }, [importTab]);
+
   if (!open) return null;
+
+  const parseAiken = (text: string): ParsedQuestion[] => {
+    const blocks = text
+      .trim()
+      .split(/\n\s*\n/)
+      .map((block) => block.trim())
+      .filter(Boolean);
+
+    const questions: ParsedQuestion[] = [];
+
+    for (const block of blocks) {
+      const lines = block
+        .split("\n")
+        .map((line) => line.trim())
+        .filter(Boolean);
+
+      if (lines.length < 3) continue;
+
+      const question = lines[0];
+
+      const optionLines = lines.filter((line) => /^[A-Z]\.\s+/.test(line));
+      const answerLine = lines.find((line) =>
+        /^ANSWER\s*:/i.test(line)
+      );
+
+      if (!question || !optionLines.length || !answerLine) continue;
+
+      const options = optionLines.map((line) =>
+        line.replace(/^[A-Z]\.\s+/, "").trim()
+      );
+
+      const correctKeys = answerLine
+        .replace(/^ANSWER\s*:/i, "")
+        .split(",")
+        .map((item) => item.trim().toUpperCase())
+        .filter(Boolean);
+
+      const correctOptions = correctKeys
+        .map((key) => {
+          const match = optionLines.find((line) =>
+            line.toUpperCase().startsWith(`${key}.`)
+          );
+          return match?.replace(/^[A-Z]\.\s+/, "").trim();
+        })
+        .filter((value): value is string => Boolean(value));
+
+      if (!correctOptions.length) continue;
+
+      questions.push({
+        question,
+        options,
+        correctOptions,
+        questionType: correctOptions.length > 1 ? "MSQ" : "MCQ",
+        positiveMarks: 4,
+        negativeMarks: 1,
+      });
+    }
+
+    return questions;
+  };
+
+  const parseJSON = (text: string): ParsedQuestion[] => {
+    const parsed = JSON.parse(text);
+    const arr = Array.isArray(parsed) ? parsed : [parsed];
+
+    return arr
+      .map((item: any): ParsedQuestion | null => {
+        const question = String(item.question ?? "").trim();
+        const rawType = String(item.questionType ?? "").trim().toUpperCase();
+
+        const positiveMarks = Number(item.positiveMarks ?? 4);
+        const negativeMarks = Number(item.negativeMarks ?? 1);
+        const imageUrl = item.imageUrl ? String(item.imageUrl).trim() : null;
+
+        if (!question) return null;
+
+        if (rawType === "NAT") {
+          const natAnswer = String(
+            item.answer ?? item.correctAnswer ?? item.correctOptions?.[0] ?? ""
+          ).trim();
+
+          return {
+            question,
+            questionType: "NAT",
+            options: [],
+            correctOptions: natAnswer ? [natAnswer] : [],
+            positiveMarks,
+            negativeMarks,
+            imageUrl,
+          };
+        }
+
+        const options = Array.isArray(item.options)
+          ? item.options.map((opt: any) => String(opt).trim()).filter(Boolean)
+          : [];
+
+        let correctOptions: string[] = [];
+
+        if (Array.isArray(item.correctOptions)) {
+          correctOptions = item.correctOptions
+            .map((opt: any) => String(opt).trim())
+            .filter(Boolean);
+        } else if (item.answer !== undefined) {
+          correctOptions = [String(item.answer).trim()].filter(Boolean);
+        }
+
+        const questionType =
+          rawType === "MSQ" || correctOptions.length > 1 ? "MSQ" : "MCQ";
+
+        return {
+          question,
+          questionType,
+          options,
+          correctOptions,
+          positiveMarks,
+          negativeMarks,
+          imageUrl,
+        };
+      })
+      .filter((item): item is ParsedQuestion => Boolean(item));
+  };
+
+  const parseExcel = (rows: Record<string, any>[]): ParsedQuestion[] => {
+    const questions: ParsedQuestion[] = [];
+
+    for (const row of rows) {
+      const question = String(
+        row.question ?? row.Question ?? ""
+      ).trim();
+
+      if (!question) continue;
+
+      const rawType = String(
+        row.questionType ?? row.QuestionType ?? ""
+      )
+        .trim()
+        .toUpperCase();
+
+      const positiveMarks = Number(
+        row.positiveMarks ?? row.PositiveMarks ?? 4
+      );
+      const negativeMarks = Number(
+        row.negativeMarks ?? row.NegativeMarks ?? 1
+      );
+      const imageUrl = row.imageUrl ?? row.ImageUrl ?? null;
+
+      if (rawType === "NAT") {
+        const answer = String(
+          row.answer ?? row.Answer ?? row.correctAnswer ?? ""
+        ).trim();
+
+        questions.push({
+          question,
+          questionType: "NAT",
+          options: [],
+          correctOptions: answer ? [answer] : [],
+          positiveMarks,
+          negativeMarks,
+          imageUrl: imageUrl ? String(imageUrl).trim() : null,
+        });
+
+        continue;
+      }
+
+      const options = [
+        row.A,
+        row.B,
+        row.C,
+        row.D,
+        row.E,
+        row.F,
+        row.option1,
+        row.option2,
+        row.option3,
+        row.option4,
+      ]
+        .map((item) => String(item ?? "").trim())
+        .filter(Boolean);
+
+      const answerRaw = String(
+        row.answer ?? row.Answer ?? row.correctOptions ?? ""
+      ).trim();
+
+      let correctOptions: string[] = [];
+
+      if (answerRaw.includes(",")) {
+        const answerKeys = answerRaw
+          .split(",")
+          .map((item) => item.trim().toUpperCase())
+          .filter(Boolean);
+
+        const optionMap: Record<string, string | undefined> = {
+          A: options[0],
+          B: options[1],
+          C: options[2],
+          D: options[3],
+          E: options[4],
+          F: options[5],
+        };
+
+        correctOptions = answerKeys
+          .map((key) => optionMap[key] || key)
+          .filter(Boolean) as string[];
+      } else {
+        const normalized = answerRaw.toUpperCase();
+        const optionMap: Record<string, string | undefined> = {
+          A: options[0],
+          B: options[1],
+          C: options[2],
+          D: options[3],
+          E: options[4],
+          F: options[5],
+        };
+
+        correctOptions = [
+          optionMap[normalized] || answerRaw,
+        ].filter(Boolean) as string[];
+      }
+
+      questions.push({
+        question,
+        questionType:
+          rawType === "MSQ" || correctOptions.length > 1 ? "MSQ" : "MCQ",
+        options,
+        correctOptions,
+        positiveMarks,
+        negativeMarks,
+        imageUrl: imageUrl ? String(imageUrl).trim() : null,
+      });
+    }
+
+    return questions;
+  };
+
+  const normalizeParsedQuestions = (
+    questions: ParsedQuestion[]
+  ): ParsedQuestion[] => {
+    return questions.filter((q) => {
+      if (!q.question?.trim()) return false;
+
+      if (q.questionType === "NAT") {
+        return Boolean(q.correctOptions?.[0]?.trim());
+      }
+
+      return (
+        Array.isArray(q.options) &&
+        q.options.filter((opt) => opt.trim()).length >= 2 &&
+        Array.isArray(q.correctOptions) &&
+        q.correctOptions.filter((opt) => opt.trim()).length >= 1
+      );
+    });
+  };
+
+  const importParsedQuestions = (questions: ParsedQuestion[]) => {
+    const normalized = normalizeParsedQuestions(questions);
+
+    if (!normalized.length) {
+      setError("No valid questions found to import.");
+      return;
+    }
+
+    onImportQuestions(normalized);
+  };
+
+  const handleImport = async () => {
+    try {
+      setImporting(true);
+      setError("");
+
+      let parsed: ParsedQuestion[] = [];
+
+      if (importTab === "aiken") {
+        parsed = parseAiken(importText);
+      } else if (importTab === "json") {
+        parsed = parseJSON(importText);
+      } else {
+        setError("Please upload an Excel or CSV file for this tab.");
+        return;
+      }
+
+      importParsedQuestions(parsed);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Failed to import questions."
+      );
+    } finally {
+      setImporting(false);
+    }
+  };
+
+  const handleFileUpload = async (file: File) => {
+    try {
+      setImporting(true);
+      setError("");
+
+      let parsed: ParsedQuestion[] = [];
+
+      if (importTab === "aiken" || importTab === "json") {
+        const text = await file.text();
+        parsed = importTab === "aiken" ? parseAiken(text) : parseJSON(text);
+      } else if (importTab === "excel") {
+        const buffer = await file.arrayBuffer();
+        const workbook = XLSX.read(buffer, { type: "array" });
+        const firstSheetName = workbook.SheetNames[0];
+
+        if (!firstSheetName) {
+          throw new Error("No worksheet found in the uploaded file.");
+        }
+
+        const sheet = workbook.Sheets[firstSheetName];
+        const rows = XLSX.utils.sheet_to_json<Record<string, any>>(sheet, {
+          defval: "",
+        });
+
+        parsed = parseExcel(rows);
+      }
+
+      importParsedQuestions(parsed);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Failed to read uploaded file."
+      );
+    } finally {
+      setImporting(false);
+
+      if (fileRef.current) fileRef.current.value = "";
+      if (aikenFileRef.current) aikenFileRef.current.value = "";
+      if (jsonFileRef.current) jsonFileRef.current.value = "";
+    }
+  };
 
   return (
     <div
@@ -171,7 +514,16 @@ export default function ImportQuestionsModal({
                 </div>
               </div>
 
-              <input ref={aikenFileRef} type="file" accept=".txt" className="hidden" />
+              <input
+                ref={aikenFileRef}
+                type="file"
+                accept=".txt"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) handleFileUpload(file);
+                }}
+              />
             </div>
           )}
 
@@ -194,11 +546,20 @@ export default function ImportQuestionsModal({
                   Upload Excel / CSV
                 </div>
                 <div className="text-xs" style={{ color: t.subText }}>
-                  Columns: Question, A, B, C, D, Answer, PositiveMarks, NegativeMarks
+                  Columns: question, A, B, C, D, answer, positiveMarks, negativeMarks
                 </div>
               </div>
 
-              <input ref={fileRef} type="file" accept=".xlsx,.xls,.csv" className="hidden" />
+              <input
+                ref={fileRef}
+                type="file"
+                accept=".xlsx,.xls,.csv"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) handleFileUpload(file);
+                }}
+              />
 
               <button
                 onClick={() => fileRef.current?.click()}
@@ -271,31 +632,61 @@ export default function ImportQuestionsModal({
                 </div>
               </div>
 
-              <input ref={jsonFileRef} type="file" accept=".json" className="hidden" />
+              <input
+                ref={jsonFileRef}
+                type="file"
+                accept=".json"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) handleFileUpload(file);
+                }}
+              />
             </div>
           )}
 
-          <div className="mt-5 flex justify-end gap-2.5">
-            <button
-              onClick={onClose}
-              disabled={importing}
-              className="rounded-[10px] border px-[18px] py-[9px] text-[13px] font-semibold disabled:opacity-60"
+          {error && (
+            <div
+              className="mt-4 rounded-[10px] border px-4 py-3 text-sm"
               style={{
-                borderColor: t.cardBorder,
-                color: t.labelColor,
-                background: "transparent",
+                borderColor: "rgba(239,68,68,0.35)",
+                background: "rgba(239,68,68,0.08)",
+                color: "#ef4444",
               }}
             >
-              Cancel
-            </button>
+              {error}
+            </div>
+          )}
 
-            <button
-              onClick={onImport}
-              disabled={importing}
-              className="rounded-[10px] bg-[var(--clr-accent)] px-5 py-[9px] text-[13px] font-bold text-white disabled:opacity-60"
-            >
-              {importing ? "Importing..." : "Import"}
-            </button>
+          <div className="mt-5 flex items-center justify-between gap-2.5">
+            <div className="text-[11px]" style={{ color: t.subText }}>
+              Supported format: {acceptedFileLabel}
+            </div>
+
+            <div className="flex gap-2.5">
+              <button
+                onClick={onClose}
+                disabled={importing}
+                className="rounded-[10px] border px-[18px] py-[9px] text-[13px] font-semibold disabled:opacity-60"
+                style={{
+                  borderColor: t.cardBorder,
+                  color: t.labelColor,
+                  background: "transparent",
+                }}
+              >
+                Cancel
+              </button>
+
+              {(importTab === "aiken" || importTab === "json") && (
+                <button
+                  onClick={handleImport}
+                  disabled={importing || !importText.trim()}
+                  className="rounded-[10px] bg-[var(--clr-accent)] px-5 py-[9px] text-[13px] font-bold text-white disabled:opacity-60"
+                >
+                  {importing ? "Importing..." : "Import"}
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>

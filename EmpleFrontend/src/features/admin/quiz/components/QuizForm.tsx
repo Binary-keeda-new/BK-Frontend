@@ -2,46 +2,19 @@
 
 import React, { ChangeEvent, useMemo, useState, useRef } from 'react'
 import ToastContainer from '@/features/admin/question-bank/components/ToastContainer';
-
-type ThemeKey = 'dark' | 'light'
+import { QUIZ_CATEGORIES } from '@/shared/constants/quizCategories';
 
 interface FormState {
   title: string
   description: string
   marks: string
-  category: keyof typeof categories | ''
+  category: keyof typeof QUIZ_CATEGORIES | ''
   subcategory: string
 }
 
 interface QuizFormProps {
   onClose: () => void
   onSuccess?: () => void
-}
-
-const categories = {
-  Mathematics: [
-    'Algebra',
-    'Geometry',
-    'Calculus',
-    'Statistics',
-    'Trigonometry',
-  ],
-  Science: [
-    'Physics',
-    'Chemistry',
-    'Biology',
-    'Astronomy',
-    'Earth Science',
-  ],
-  Technology: [
-    'Programming',
-    'Networking',
-    'Cybersecurity',
-    'AI & ML',
-    'Web Dev',
-  ],
-  History: ['Ancient History', 'World Wars', 'Civilizations', 'Politics'],
-  Language: ['Grammar', 'Literature', 'Vocabulary', 'Writing', 'Comprehension'],
 }
 
 
@@ -87,16 +60,16 @@ const addToast = (message: string, type: 'success' | 'error' = 'success') => {
     setForm((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handleCategory = (e: ChangeEvent<HTMLSelectElement>) => {
-    const val = e.target.value as keyof typeof categories
-    setForm((prev) => ({
-      ...prev,
-      category: val,
-      subcategory: '',
-    }))
-  }
+const handleCategory = (e: ChangeEvent<HTMLSelectElement>) => {
+  const val = e.target.value as keyof typeof QUIZ_CATEGORIES
+  setForm((prev) => ({
+    ...prev,
+    category: val,
+    subcategory: '',
+  }))
+}
 
-const handleSubmit = async (status: 'draft' | 'published') => {
+const handleSubmit = async () => {
   if (
     !form.title.trim() ||
     !form.description.trim() ||
@@ -112,13 +85,13 @@ const handleSubmit = async (status: 'draft' | 'published') => {
     setLoading(true)
 
     const payload = {
-      title: form.title,
-      description: form.description,
-      marks: form.marks,
-      category: form.category,
-      subcategory: form.subcategory,
-      status,
-    }
+  title: form.title,
+  description: form.description,
+  marks: form.marks,
+  category: form.category,
+  subcategory: form.subcategory,
+  status: 'published',
+}
 
     const response = await fetch('http://localhost:5000/api/v1/admin/quizzes', {
       method: 'POST',
@@ -132,12 +105,7 @@ const handleSubmit = async (status: 'draft' | 'published') => {
       throw new Error(data.message || 'Failed to save quiz')
     }
 
-    addToast(
-      status === 'published'
-        ? 'Quiz published successfully!'
-        : 'Quiz saved as draft successfully!',
-      'success'
-    )
+    addToast('Quiz published successfully!', 'success')
 
     onSuccess?.()
     onClose()
@@ -201,8 +169,8 @@ const handleSubmit = async (status: 'draft' | 'published') => {
                 Status
               </p>
               <p className="text-sm font-semibold text-[var(--clr-accent)]">
-                Draft to Publish
-              </p>
+  Ready to Publish
+</p>
             </div>
 
             <div className="rounded-2xl bg-[var(--clr-bg,#0a0b0e)] p-4 ring-1 ring-white/10">
@@ -229,7 +197,7 @@ const handleSubmit = async (status: 'draft' | 'published') => {
               </label>
               <input
                 name="title"
-                placeholder="e.g. Introduction to Calculus"
+                placeholder="e.g. Core CS Mock Test 1"
                 value={form.title}
                 onChange={handleInputChange}
                 className="w-full rounded-2xl bg-[var(--clr-bg,#0a0b0e)] px-4 py-3 text-sm text-[var(--clr-text)] outline-none ring-1 ring-white/10 transition placeholder:text-white/35 focus:ring-2 focus:ring-[var(--clr-accent)]"
@@ -262,33 +230,6 @@ const handleSubmit = async (status: 'draft' | 'published') => {
                 onChange={handleInputChange}
                 className="w-full rounded-2xl bg-[var(--clr-bg,#0a0b0e)] px-4 py-3 text-sm text-[var(--clr-text)] outline-none ring-1 ring-white/10 transition placeholder:text-white/35 focus:ring-2 focus:ring-[var(--clr-accent)]"
               />
-
-              <div className="mt-3 flex flex-wrap gap-2">
-                {[25, 50, 100, 200].map((value) => {
-                  const active = form.marks === String(value)
-
-                  return (
-                    <button
-                      key={value}
-                      type="button"
-                      onClick={() =>
-                        setForm((prev) => ({ ...prev, marks: String(value) }))
-                      }
-                      className={`rounded-xl px-3 py-1.5 text-xs font-medium transition ${
-                        active
-                          ? 'bg-[var(--clr-accent)] text-white ring-1 ring-[var(--clr-accent)]'
-                          : 'bg-[var(--clr-bg,#0a0b0e)] text-[var(--clr-text2)] ring-1 ring-white/10 hover:text-[var(--clr-text)]'
-                      }`}
-                    >
-                      {value}
-                    </button>
-                  )
-                })}
-              </div>
-
-              <p className="mt-2 text-xs text-[var(--clr-text2)]">
-                Quick-select a common marks value or enter a custom one.
-              </p>
             </div>
 
             <div className="border-t border-white/10 pt-6">
@@ -304,7 +245,7 @@ const handleSubmit = async (status: 'draft' | 'published') => {
                     className="w-full rounded-2xl bg-[var(--clr-bg,#0a0b0e)] px-4 py-3 text-sm text-[var(--clr-text)] outline-none ring-1 ring-white/10 transition focus:ring-2 focus:ring-[var(--clr-accent)]"
                   >
                     <option value="">Select category</option>
-                    {Object.keys(categories).map((cat) => (
+                    {Object.keys(QUIZ_CATEGORIES).map((cat) => (
                       <option key={cat} value={cat}>
                         {cat}
                       </option>
@@ -325,7 +266,7 @@ const handleSubmit = async (status: 'draft' | 'published') => {
                   >
                     <option value="">Select subcategory</option>
                     {form.category &&
-                      categories[form.category].map((sub) => (
+                      QUIZ_CATEGORIES[form.category].map((sub) => (
                         <option key={sub} value={sub}>
                           {sub}
                         </option>
@@ -356,17 +297,7 @@ const handleSubmit = async (status: 'draft' | 'published') => {
               </button>
 
               <button
-              type="button"
-              onClick={() => handleSubmit('draft')}
-              disabled={loading}
-              className="rounded-2xl bg-[var(--clr-bg,#0a0b0e)] px-5 py-3 text-sm font-medium text-[var(--clr-text)] ring-1 ring-white/10 transition hover:text-[var(--clr-text)] disabled:cursor-not-allowed disabled:opacity-60 sm:min-w-[180px]"
-            >
-              {loading ? 'Saving...' : 'Save as Draft'}
-            </button>
-
-              <button
-                type="button"
-  onClick={() => handleSubmit('published')}
+                type="button" onClick={handleSubmit}
                 disabled={loading}
                 className="rounded-2xl bg-[var(--clr-accent)] px-5 py-3 text-sm font-semibold text-white transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:min-w-[180px]"
               >

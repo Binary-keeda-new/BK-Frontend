@@ -18,7 +18,6 @@ interface PreviewQuiz {
   category: string;
   subcategory: string;
   totalMarks: number;
-  status: 'draft' | 'published' | 'archived';
   description?: string;
   questions: PreviewQuestion[];
 }
@@ -223,7 +222,7 @@ export default function QuizPreviewContent({
       )}
 
       <div className="relative mb-6 overflow-hidden rounded-2xl border border-[var(--clr-border)] bg-[var(--clr-surface)] p-5 sm:p-6">
-        <div className="flex flex-col gap-4 sm:flex-row sm:justify-between">
+        <div className="flex flex-col gap-4">
           <div>
             <h1 className="text-xl font-extrabold text-[var(--clr-text)] sm:text-2xl">
               {quiz.title} <span className="text-[var(--clr-accent)]">Preview</span>
@@ -233,21 +232,6 @@ export default function QuizPreviewContent({
               {quiz.description || 'No description available.'}
             </p>
           </div>
-
-          <span
-            className={`flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold ${
-              quiz.status === 'published'
-                ? 'border border-green-500/20 bg-green-500/10 text-green-500'
-                : quiz.status === 'draft'
-                ? 'border border-yellow-500/20 bg-yellow-500/10 text-yellow-500'
-                : 'bg-[var(--clr-surface2)] text-[var(--clr-text3)]'
-            }`}
-          >
-            {quiz.status === 'published' && (
-              <span className="h-2 w-2 rounded-full bg-green-500" />
-            )}
-            {quiz.status}
-          </span>
         </div>
 
         <div className="mt-4 flex flex-wrap gap-2">
@@ -276,10 +260,17 @@ export default function QuizPreviewContent({
       </div>
 
       <div className="flex flex-col gap-4">
-        {quiz.questions.map((q, i) => (
-          <QuestionCard key={q._id} question={q} index={i} />
-        ))}
-      </div>
+  {quiz.questions?.length ? (
+    quiz.questions.map((q, i) => (
+      <QuestionCard key={q._id} question={q} index={i} />
+    ))
+  ) : (
+    <div className="rounded-2xl border border-[var(--clr-border)] bg-[var(--clr-surface)] px-5 py-8 text-sm text-[var(--clr-text2)]">
+      No questions available in this quiz yet.
+    </div>
+  )}
+</div>
+
 
       <div className="mt-5 inline-flex items-center gap-2 rounded-md border border-[var(--clr-border)] bg-[var(--clr-surface)] px-4 py-2 text-xs text-[var(--clr-text3)]">
         <div className="h-3 w-3 rounded border border-green-400 bg-green-500/20" />

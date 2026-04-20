@@ -7,6 +7,7 @@ import {
   EditIcon,
   TrashIcon,
 } from '../../dashboard/components/icons';
+import { QUIZ_CATEGORIES } from '@/shared/constants/quizCategories';
 
 interface Quiz {
   _id: string;
@@ -15,12 +16,12 @@ interface Quiz {
   category: string;
   subcategory: string;
   totalMarks: number;
-  status: 'draft' | 'published' | 'archived';
   createdAt?: string;
   updatedAt?: string;
 }
 
 type QuizzesContentProps = {
+  refreshKey?: number;
   onEditQuiz?: (quizId: string) => void;
   onCreateQuiz?: () => void;
   onPreviewQuiz?: (quizId: string) => void;
@@ -42,6 +43,7 @@ const PAGE_SIZE = 5;
 const API_BASE = 'http://localhost:5000/api/v1/admin';
 
 export default function QuizzesContent({
+  refreshKey,
   onEditQuiz,
   onCreateQuiz,
   onPreviewQuiz,
@@ -50,9 +52,15 @@ export default function QuizzesContent({
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
   const [totalPages, setTotalPages] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
+
   const [loading, setLoading] = useState(true);
   const [deleteLoading, setDeleteLoading] = useState(false);
+  const [duplicateLoadingId, setDuplicateLoadingId] = useState<string | null>(null);
   const [quizToDelete, setQuizToDelete] = useState<Quiz | null>(null);
+
+  const [search, setSearch] = useState('');
+  const [searchInput, setSearchInput] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('');
 
   const [toasts, setToasts] = useState<
     { id: number; message: string; type: 'success' | 'error' }[]
@@ -71,22 +79,44 @@ export default function QuizzesContent({
     }, 3000);
   };
 
+  const parseJsonResponse = async <T,>(res: Response): Promise<T> => {
+    const contentType = res.headers.get('content-type') || '';
+
+    if (!contentType.includes('application/json')) {
+      const text = await res.text();
+      throw new Error(text.slice(0, 120) || 'Server did not return JSON');
+    }
+
+    return res.json();
+  };
+
+
+
+  const buildQuizListUrl = (currentPage: number) => {
+    const params = new URLSearchParams({
+      page: String(currentPage),
+      limit: String(PAGE_SIZE),
+    });
+
+    if (search.trim()) params.set('search', search.trim());
+    if (categoryFilter) params.set('category', categoryFilter);
+
+    return `${API_BASE}/quizzes?${params.toString()}`;
+  };
+
   const fetchQuizzes = async (currentPage: number) => {
     try {
       setLoading(true);
 
-      const res = await fetch(
-        `${API_BASE}/quizzes?page=${currentPage}&limit=${PAGE_SIZE}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          cache: 'no-store',
-        }
-      );
+      const res = await fetch(buildQuizListUrl(currentPage), {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        cache: 'no-store',
+      });
 
-      const result: QuizListResponse = await res.json();
+      const result: QuizListResponse = await parseJsonResponse(res);
 
       if (!res.ok) {
         throw new Error(result.message || 'Failed to fetch quizzes');
@@ -111,7 +141,19 @@ export default function QuizzesContent({
 
   useEffect(() => {
     fetchQuizzes(page);
-  }, [page]);
+  }, [page, search, categoryFilter, refreshKey]);
+
+  const handleSearchSubmit = () => {
+    setPage(1);
+    setSearch(searchInput);
+  };
+
+  const handleResetFilters = () => {
+    setSearchInput('');
+    setSearch('');
+    setCategoryFilter('');
+    setPage(1);
+  };
 
   const handleDeleteQuiz = async () => {
     if (!quizToDelete) return;
@@ -126,7 +168,8 @@ export default function QuizzesContent({
         },
       });
 
-      const result = await res.json();
+      const result: { success: boolean; message: string } =
+        await parseJsonResponse(res);
 
       if (!res.ok) {
         throw new Error(result.message || 'Failed to delete quiz');
@@ -153,6 +196,8 @@ export default function QuizzesContent({
 
   const handleDuplicateQuiz = async (quizId: string) => {
     try {
+      setDuplicateLoadingId(quizId);
+
       const res = await fetch(`${API_BASE}/quizzes/${quizId}/duplicate`, {
         method: 'POST',
         headers: {
@@ -160,7 +205,8 @@ export default function QuizzesContent({
         },
       });
 
-      const result = await res.json();
+      const result: { success: boolean; message: string } =
+        await parseJsonResponse(res);
 
       if (!res.ok) {
         throw new Error(result.message || 'Failed to duplicate quiz');
@@ -174,6 +220,8 @@ export default function QuizzesContent({
         error instanceof Error ? error.message : 'Failed to duplicate quiz',
         'error'
       );
+    } finally {
+      setDuplicateLoadingId(null);
     }
   };
 
@@ -203,28 +251,69 @@ export default function QuizzesContent({
           </button>
         </div>
 
+        <div className="mb-5 rounded-2xl border border-[var(--clr-border)] bg-[var(--clr-surface)] p-4">
+          <div className="grid gap-3 md:grid-cols-[1.5fr_1fr_auto]">
+            <input
+              type="text"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') handleSearchSubmit();
+              }}
+              placeholder="Search by quiz title..."
+              className="rounded-xl border border-[var(--clr-border)] bg-[var(--clr-surface2)] px-4 py-2.5 text-sm text-[var(--clr-text)] outline-none"
+            />
+
+            <select
+              value={categoryFilter}
+              onChange={(e) => {
+                setCategoryFilter(e.target.value);
+                setPage(1);
+              }}
+              className="rounded-xl border border-[var(--clr-border)] bg-[var(--clr-surface2)] px-4 py-2.5 text-sm text-[var(--clr-text)] outline-none"
+            >
+              <option value="">All Categories</option>
+              {Object.keys(QUIZ_CATEGORIES).map((category) => (
+  <option key={category} value={category}>
+    {category}
+  </option>
+))}
+            </select>
+
+            <div className="flex gap-2">
+              <button
+                onClick={handleSearchSubmit}
+                className="rounded-xl bg-[var(--clr-accent)] px-4 py-2.5 text-sm font-semibold text-white"
+              >
+                Search
+              </button>
+              <button
+                onClick={handleResetFilters}
+                className="rounded-xl border border-[var(--clr-border)] px-4 py-2.5 text-sm font-semibold text-[var(--clr-text2)]"
+              >
+                Reset
+              </button>
+            </div>
+          </div>
+        </div>
+
         <div className="overflow-hidden rounded-2xl border border-[var(--clr-border)] bg-[var(--clr-surface)]">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-[var(--clr-border)] bg-[var(--clr-surface2)]">
-                  {[
-                    'Title',
-                    'Category',
-                    'Subcategory',
-                    'Marks',
-                    'Status',
-                    'Actions',
-                  ].map((col) => (
-                    <th
-                      key={col}
-                      className={`px-4 py-3 text-xs font-bold uppercase tracking-wider text-[var(--clr-text3)] ${
-                        col === 'Actions' ? 'text-right' : 'text-left'
-                      }`}
-                    >
-                      {col}
-                    </th>
-                  ))}
+                  {['Title', 'Category', 'Subcategory', 'Marks', 'Actions'].map(
+                    (col) => (
+                      <th
+                        key={col}
+                        className={`px-4 py-3 text-xs font-bold uppercase tracking-wider text-[var(--clr-text3)] ${
+                          col === 'Actions' ? 'text-right' : 'text-left'
+                        }`}
+                      >
+                        {col}
+                      </th>
+                    )
+                  )}
                 </tr>
               </thead>
 
@@ -232,7 +321,7 @@ export default function QuizzesContent({
                 {loading ? (
                   <tr>
                     <td
-                      colSpan={6}
+                      colSpan={5}
                       className="px-4 py-10 text-center text-sm text-[var(--clr-text2)]"
                     >
                       Loading quizzes...
@@ -241,7 +330,7 @@ export default function QuizzesContent({
                 ) : quizzes.length === 0 ? (
                   <tr>
                     <td
-                      colSpan={6}
+                      colSpan={5}
                       className="px-4 py-10 text-center text-sm text-[var(--clr-text2)]"
                     >
                       No quizzes found.
@@ -272,25 +361,6 @@ export default function QuizzesContent({
                       </td>
 
                       <td className="px-4 py-3">
-                        {quiz.status === 'published' ? (
-                          <span className="flex w-fit items-center gap-1 rounded-md border border-green-500/20 bg-green-500/10 px-2 py-1 text-xs font-bold text-green-500">
-                            <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
-                            Published
-                          </span>
-                        ) : quiz.status === 'draft' ? (
-                          <span className="flex w-fit items-center gap-1 rounded-md border border-yellow-500/20 bg-yellow-500/10 px-2 py-1 text-xs font-bold text-yellow-500">
-                            <span className="h-1.5 w-1.5 rounded-full bg-yellow-500" />
-                            Draft
-                          </span>
-                        ) : (
-                          <span className="flex w-fit items-center gap-1 rounded-md border border-gray-500/20 bg-gray-500/10 px-2 py-1 text-xs font-bold text-gray-400">
-                            <span className="h-1.5 w-1.5 rounded-full bg-gray-400" />
-                            Archived
-                          </span>
-                        )}
-                      </td>
-
-                      <td className="px-4 py-3">
                         <div className="flex justify-end gap-2">
                           <button
                             onClick={() => onPreviewQuiz?.(quiz._id)}
@@ -308,9 +378,12 @@ export default function QuizzesContent({
 
                           <button
                             onClick={() => handleDuplicateQuiz(quiz._id)}
-                            className="rounded-md border px-2 py-1 text-xs font-medium text-[var(--clr-text2)] transition hover:bg-[var(--clr-surface2)]"
+                            disabled={duplicateLoadingId === quiz._id}
+                            className="rounded-md border px-2 py-1 text-xs font-medium text-[var(--clr-text2)] transition hover:bg-[var(--clr-surface2)] disabled:opacity-60"
                           >
-                            Duplicate
+                            {duplicateLoadingId === quiz._id
+                              ? 'Duplicating...'
+                              : 'Duplicate'}
                           </button>
 
                           <button
@@ -374,8 +447,12 @@ export default function QuizzesContent({
                 Delete Quiz
               </h3>
 
-              <p className="mb-4 text-sm text-[var(--clr-text2)]">
+              <p className="mb-2 text-sm text-[var(--clr-text2)]">
                 Delete <strong>{quizToDelete.title}</strong>?
+              </p>
+
+              <p className="mb-4 text-xs text-[var(--clr-text3)]">
+                Attempted quizzes cannot be deleted.
               </p>
 
               <div className="flex justify-end gap-2">
