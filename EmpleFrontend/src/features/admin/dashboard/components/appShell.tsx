@@ -9,7 +9,7 @@ import QuestionBankPage from '@/features/admin/question-bank/pages/QuestionBankP
 import QuestionBankDetailPage from '@/features/admin/question-bank/pages/QuestionBankDetail';
 import AdminJobsPage from '@/features/admin/jobs/pages/AdminJobsPage';
 import QuizPreviewContent from '@/features/admin/quiz/components/quizPreviewContent';
-import QuizzesContent from '../../quiz/components/quizContent';
+import QuizzesContent from '../../quiz/components/quizList';
 import QuizEdit from '../../quiz/components/QuizEdit';
 import QuizForm from '../../quiz/components/QuizForm';
 

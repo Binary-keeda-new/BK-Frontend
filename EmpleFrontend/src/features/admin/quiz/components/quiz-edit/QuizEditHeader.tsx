@@ -9,6 +9,7 @@ type Props = {
   category: keyof typeof QUIZ_CATEGORIES | "";
   subcategory: string;
   marks: string;
+  numberOfQuestions: string;
   onChange: (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => void;
@@ -24,13 +25,17 @@ export default function QuizEditHeader({
   category,
   subcategory,
   marks,
+  numberOfQuestions,
   onChange,
   onCategoryChange,
   onSave,
   saving = false,
 }: Props) {
   return (
-    <div className="mb-9 rounded-[24px] border p-5 sm:p-6" style={{ borderColor: t.cardBorder, background: t.cardBg }}>
+    <div
+      className="mb-9 rounded-[24px] border p-5 sm:p-6"
+      style={{ borderColor: t.cardBorder, background: t.cardBg }}
+    >
       <p
         className="mb-2 text-[11px] font-semibold uppercase tracking-[0.14em]"
         style={{ color: t.subText }}
@@ -38,15 +43,19 @@ export default function QuizEditHeader({
         Edit Quiz
       </p>
 
-      <h1
-        className="mb-6 break-words text-[clamp(1.6rem,4vw,2.3rem)] font-extrabold leading-[1.1]"
-        style={{
-          fontFamily: "'Nunito',sans-serif",
-          color: t.headingColor,
-        }}
-      >
-        Quiz Details
-      </h1>
+      <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h1
+            className="break-words text-[clamp(1.6rem,4vw,2.3rem)] font-extrabold leading-[1.1]"
+            style={{
+              fontFamily: "'Nunito',sans-serif",
+              color: t.headingColor,
+            }}
+          >
+            Quiz Details
+          </h1>
+        </div>
+      </div>
 
       <div className="grid gap-5">
         <div>
@@ -61,7 +70,7 @@ export default function QuizEditHeader({
             value={title}
             onChange={onChange}
             placeholder="Enter quiz title"
-            className="w-full rounded-2xl px-4 py-3 text-sm outline-none ring-1 transition"
+            className="w-full rounded-2xl border px-4 py-3 text-sm outline-none transition focus:border-[var(--clr-accent)] focus:shadow-[0_0_0_3px_rgba(241,90,34,0.12)]"
             style={{
               background: t.inputBg,
               color: t.inputText,
@@ -83,7 +92,7 @@ export default function QuizEditHeader({
             value={description}
             onChange={onChange}
             placeholder="Enter quiz description"
-            className="w-full resize-none rounded-2xl px-4 py-3 text-sm outline-none ring-1 transition"
+            className="w-full resize-none rounded-2xl border px-4 py-3 text-sm outline-none transition focus:border-[var(--clr-accent)] focus:shadow-[0_0_0_3px_rgba(241,90,34,0.12)]"
             style={{
               background: t.inputBg,
               color: t.inputText,
@@ -92,7 +101,7 @@ export default function QuizEditHeader({
           />
         </div>
 
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-2">
           <div>
             <label
               className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.12em]"
@@ -104,7 +113,7 @@ export default function QuizEditHeader({
               name="category"
               value={category}
               onChange={onCategoryChange}
-              className="w-full rounded-2xl px-4 py-3 text-sm outline-none ring-1 transition"
+              className="w-full rounded-2xl border px-4 py-3 text-sm outline-none transition focus:border-[var(--clr-accent)] focus:shadow-[0_0_0_3px_rgba(241,90,34,0.12)]"
               style={{
                 background: t.inputBg,
                 color: t.inputText,
@@ -132,7 +141,7 @@ export default function QuizEditHeader({
               value={subcategory}
               onChange={onChange}
               disabled={!category}
-              className="w-full rounded-2xl px-4 py-3 text-sm outline-none ring-1 transition disabled:cursor-not-allowed disabled:opacity-60"
+              className="w-full rounded-2xl border px-4 py-3 text-sm outline-none transition disabled:cursor-not-allowed disabled:opacity-60 focus:border-[var(--clr-accent)] focus:shadow-[0_0_0_3px_rgba(241,90,34,0.12)]"
               style={{
                 background: t.inputBg,
                 color: t.inputText,
@@ -148,7 +157,9 @@ export default function QuizEditHeader({
                 ))}
             </select>
           </div>
+        </div>
 
+        <div className="grid gap-4 md:grid-cols-2">
           <div>
             <label
               className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.12em]"
@@ -162,13 +173,45 @@ export default function QuizEditHeader({
               value={marks}
               onChange={onChange}
               placeholder="100"
-              className="w-full rounded-2xl px-4 py-3 text-sm outline-none ring-1 transition"
+              className="w-full rounded-2xl border px-4 py-3 text-sm outline-none transition focus:border-[var(--clr-accent)] focus:shadow-[0_0_0_3px_rgba(241,90,34,0.12)]"
               style={{
                 background: t.inputBg,
                 color: t.inputText,
                 borderColor: t.inputBorder,
               }}
             />
+          </div>
+
+          <div>
+            <label
+              className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.12em]"
+              style={{ color: t.labelColor }}
+            >
+              Number of Questions
+            </label>
+            {/* <input
+              name="numberOfQuestions"
+              type="number"
+              value={numberOfQuestions}
+              onChange={onChange}
+              placeholder="10"
+              className="w-full rounded-2xl border px-4 py-3 text-sm outline-none transition focus:border-[var(--clr-accent)] focus:shadow-[0_0_0_3px_rgba(241,90,34,0.12)]"
+              style={{
+                background: t.inputBg,
+                color: t.inputText,
+                borderColor: t.inputBorder,
+              }}
+            /> */}
+            <div
+  className="w-full rounded-2xl border px-4 py-3 text-sm"
+  style={{
+    background: t.inputBg,
+    color: "grey",
+    borderColor: t.inputBorder,
+  }}
+>
+  {numberOfQuestions}
+</div>
           </div>
         </div>
 

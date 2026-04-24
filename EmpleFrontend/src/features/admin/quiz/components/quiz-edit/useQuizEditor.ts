@@ -26,6 +26,7 @@ type BackendQuizResponse = {
     category: string;
     subcategory: string;
     totalMarks: number;
+    numberOfQuestions: number;
     status: 'draft' | 'published' | 'archived';
     questions: BackendQuizQuestion[];
   };
@@ -39,6 +40,7 @@ type QuizMeta = {
   subcategory: string;
   totalMarks: number;
   status: 'draft' | 'published' | 'archived';
+  numberOfQuestions: number;
 };
 
 export type ImportedQuestionInput = {
@@ -228,6 +230,7 @@ export function useQuizEditor(quizId: string) {
         subcategory: result.data.subcategory,
         totalMarks: result.data.totalMarks,
         status: result.data.status,
+        numberOfQuestions: result.data.numberOfQuestions,
       });
 
       const mappedQuestions = (result.data.questions || []).map(

@@ -55,7 +55,6 @@ export default function QuizzesContent({
 
   const [loading, setLoading] = useState(true);
   const [deleteLoading, setDeleteLoading] = useState(false);
-  const [duplicateLoadingId, setDuplicateLoadingId] = useState<string | null>(null);
   const [quizToDelete, setQuizToDelete] = useState<Quiz | null>(null);
 
   const [search, setSearch] = useState('');
@@ -191,37 +190,6 @@ export default function QuizzesContent({
       );
     } finally {
       setDeleteLoading(false);
-    }
-  };
-
-  const handleDuplicateQuiz = async (quizId: string) => {
-    try {
-      setDuplicateLoadingId(quizId);
-
-      const res = await fetch(`${API_BASE}/quizzes/${quizId}/duplicate`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      const result: { success: boolean; message: string } =
-        await parseJsonResponse(res);
-
-      if (!res.ok) {
-        throw new Error(result.message || 'Failed to duplicate quiz');
-      }
-
-      addToast('Quiz duplicated successfully!', 'success');
-      fetchQuizzes(page);
-    } catch (error) {
-      console.error('Failed to duplicate quiz:', error);
-      addToast(
-        error instanceof Error ? error.message : 'Failed to duplicate quiz',
-        'error'
-      );
-    } finally {
-      setDuplicateLoadingId(null);
     }
   };
 
@@ -374,16 +342,6 @@ export default function QuizzesContent({
                             className="flex h-8 w-8 items-center justify-center rounded-md border border-[var(--clr-border2)] text-blue-500 transition hover:bg-blue-100"
                           >
                             <EditIcon className="h-4 w-4" />
-                          </button>
-
-                          <button
-                            onClick={() => handleDuplicateQuiz(quiz._id)}
-                            disabled={duplicateLoadingId === quiz._id}
-                            className="rounded-md border px-2 py-1 text-xs font-medium text-[var(--clr-text2)] transition hover:bg-[var(--clr-surface2)] disabled:opacity-60"
-                          >
-                            {duplicateLoadingId === quiz._id
-                              ? 'Duplicating...'
-                              : 'Duplicate'}
                           </button>
 
                           <button

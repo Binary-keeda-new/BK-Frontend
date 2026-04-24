@@ -16,6 +16,7 @@ import QuizPublishBar from "./quiz-edit/QuizPublishBar";
 import ImportQuestionBank from "./quiz-edit/ImportQuestionBank";
 import ImportQuestionsModal from "./quiz-edit/ImportQuestionsModal";
 import ToastContainer from "../../question-bank/components/ToastContainer";
+import { parseJsonResponse } from "@/shared/utils/api";
 
 const API_BASE = "http://localhost:5000/api/v1/admin";
 
@@ -26,6 +27,7 @@ export default function QuizEdit({ quizId, onClose }: QuizEditProps) {
     category: "" as keyof typeof QUIZ_CATEGORIES | "",
     subcategory: "",
     marks: "",
+    numberOfQuestions: "",
   });
 
   const [savingQuizDetails, setSavingQuizDetails] = useState(false);
@@ -45,6 +47,10 @@ export default function QuizEdit({ quizId, onClose }: QuizEditProps) {
     { id: number; message: string; type: "success" | "error" }[]
   >([]);
   const toastId = useRef(0);
+
+  const removeToast = (id: number) => {
+  setToasts((prev) => prev.filter((t) => t.id !== id))
+}
 
   const t = THEMES[theme];
 
@@ -89,6 +95,7 @@ export default function QuizEdit({ quizId, onClose }: QuizEditProps) {
       category: (quiz.category as keyof typeof QUIZ_CATEGORIES) || "",
       subcategory: quiz.subcategory || "",
       marks: String(quiz.totalMarks || ""),
+      numberOfQuestions: String(quiz.numberOfQuestions || ""),
     });
   }, [quiz]);
 
@@ -115,42 +122,44 @@ export default function QuizEdit({ quizId, onClose }: QuizEditProps) {
     }));
   };
 
-  const handleSaveQuizDetails = async () => {
-    setSavingQuizDetails(true);
+const handleSaveQuizDetails = async () => {
+  setSavingQuizDetails(true);
 
-    try {
-      const res = await fetch(`${API_BASE}/quizzes/${quizId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title: quizForm.title,
-          description: quizForm.description,
-          category: quizForm.category,
-          subcategory: quizForm.subcategory,
-          marks: Number(quizForm.marks),
-        }),
-      });
+  try {
+    const res = await fetch(`${API_BASE}/quizzes/${quizId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: quizForm.title,
+        description: quizForm.description,
+        category: quizForm.category,
+        subcategory: quizForm.subcategory,
+        marks: Number(quizForm.marks),
+        numberOfQuestions: Number(quizForm.numberOfQuestions),
+      }),
+    });
 
-      const data = await res.json();
+    const data = await parseJsonResponse<any>(res);
 
-      if (!res.ok) {
-        throw new Error(data.message || "Failed to update quiz");
-      }
-
-      await loadQuiz();
-      addToast("Quiz details saved successfully!", "success");
-    } catch (error) {
-      addToast(
-        error instanceof Error ? error.message : "Failed to update quiz",
-        "error"
-      );
-      throw error;
-    } finally {
-      setSavingQuizDetails(false);
+    if (!res.ok) {
+      throw new Error(data.message || "Failed to update quiz");
     }
-  };
+
+    await loadQuiz();
+    addToast("Quiz details saved successfully!", "success");
+    return true;
+  } catch (error) {
+    addToast(
+      error instanceof Error ? error.message : "Failed to update quiz",
+      "error"
+    );
+    return false;
+  } finally {
+    setSavingQuizDetails(false);
+  }
+};
 
   const handleImportedQuestions = (imported: ImportedQuestionInput[]) => {
     if (!imported.length) {
@@ -178,7 +187,7 @@ export default function QuizEdit({ quizId, onClose }: QuizEditProps) {
 
   return (
     <>
-      <ToastContainer toasts={toasts} />
+      <ToastContainer toasts={toasts} removeToast={removeToast} />
 
       <div
         className="transition-colors duration-300"
@@ -205,6 +214,7 @@ export default function QuizEdit({ quizId, onClose }: QuizEditProps) {
             onChange={handleQuizMetaChange}
             onCategoryChange={handleQuizCategoryChange}
             onSave={handleSaveQuizDetails}
+            numberOfQuestions={quizForm.numberOfQuestions}
             saving={savingQuizDetails}
           />
 
@@ -255,35 +265,37 @@ export default function QuizEdit({ quizId, onClose }: QuizEditProps) {
             t={t}
             saving={saving || savingQuizDetails}
             onPublish={async () => {
-              try {
-                if (!questions.length) {
-                  addToast("Add at least one question before publishing", "error");
-                  return;
-                }
+  try {
+    if (!questions.length) {
+      addToast("Add at least one question before publishing", "error");
+      return;
+    }
 
-                const hasValid = questions.some((q) => isQuestionValidForSave(q));
+    const hasValid = questions.some((q) => isQuestionValidForSave(q));
 
-                if (!hasValid) {
-                  addToast("No valid questions to publish", "error");
-                  return;
-                }
+    if (!hasValid) {
+      addToast("No valid questions to publish", "error");
+      return;
+    }
 
-                await saveAllValidQuestions();
-                await handleSaveQuizDetails();
+    await saveAllValidQuestions();
 
-                addToast("Quiz published successfully!", "success");
+    const metaSaved = await handleSaveQuizDetails();
+    if (!metaSaved) return;
 
-                setTimeout(() => {
-                  onClose?.();
-                }, 800);
-              } catch (err) {
-                console.error(err);
-                addToast(
-                  err instanceof Error ? err.message : "Publish failed",
-                  "error"
-                );
-              }
-            }}
+    addToast("Quiz published successfully!", "success");
+
+    setTimeout(() => {
+      onClose?.();
+    }, 800);
+  } catch (err) {
+    console.error(err);
+    addToast(
+      err instanceof Error ? err.message : "Publish failed",
+      "error"
+    );
+  }
+}}
           />
 
           <ImportQuestionBank
