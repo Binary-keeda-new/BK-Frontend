@@ -100,7 +100,8 @@ const handleSubmit = async (e: React.FormEvent) => {
   });
 
  if (!resp?.ok) {
-  setError("Signup failed. Please try again.")
+  console.error("Descope Error:", resp);
+  setError(`Signup failed: ${resp.error?.errorMessage || "Please try again."}`);
   return
 }
 
