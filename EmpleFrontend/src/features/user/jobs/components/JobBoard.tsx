@@ -366,7 +366,7 @@ export default function JobBoard() {
   
     useEffect(() => {
   fetchJobs()
-    .then((res) => {
+    .then((res: any) => {
       // HANDLE DIFFERENT API SHAPES
       if (Array.isArray(res)) {
         setJobs(res);
