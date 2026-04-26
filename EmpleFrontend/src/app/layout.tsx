@@ -4,6 +4,8 @@ import "./landing/landing.css";
 import { ThemeProvider } from "../providers/ThemeContext";
 import { AuthProvider } from "@descope/nextjs-sdk";
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: "Emple – Dashboard",
   description: "Emple learning dashboard",
