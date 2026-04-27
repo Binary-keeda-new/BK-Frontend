@@ -34,10 +34,12 @@ useEffect(() => {
       const result = await sdk.oauth.start(provider, redirectUrl)
       if (result.ok && result.data?.url) {
         window.location.href = result.data.url
+      } else {
+        setError(`Failed to start ${provider} login: ${result.error?.errorMessage || 'Not configured in Descope'}`)
       }
-    } catch {
-  setError('Failed to start social login. Please try again.')
-}
+    } catch (err) {
+      setError('Failed to start social login. Please try again.')
+    }
   }
 
   
