@@ -228,7 +228,7 @@ export default function SignupPage() {
                 <input
                   className="auth-input"
                   type="text"
-                  placeholder="Arjun Kapoor"
+                  placeholder=""
                   value={form.name}
                   onChange={(e) => update('name', e.target.value)}
                   autoComplete="name"
@@ -244,7 +244,7 @@ export default function SignupPage() {
                 <input
                   className="auth-input"
                   type="email"
-                  placeholder="you@college.edu"
+                  placeholder=""
                   value={form.email}
                   onChange={(e) => update('email', e.target.value)}
                   autoComplete="email"
@@ -258,7 +258,7 @@ export default function SignupPage() {
                 <input
                   className="auth-input"
                   type="text"
-                  placeholder="IIT Delhi, VIT Vellore…"
+                  placeholder=""
                   value={form.college}
                   onChange={(e) => update('college', e.target.value)}
                 />

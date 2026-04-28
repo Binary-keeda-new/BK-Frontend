@@ -37,7 +37,7 @@ export default function LoginPage() {
   console.error('Social login error:', err)
   setError('Failed to start social login. Please try again.')
 }
-
+  }
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
@@ -308,5 +308,4 @@ export default function LoginPage() {
       </div>
     </AuthLayout>
   )
-}
 }
