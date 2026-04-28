@@ -1,6 +1,6 @@
 import { Job, JobFormData } from '../types/jobs.types';
 
-const API_BASE = `${process.env.NEXT_PUBLIC_API_URL}/admin/jobs`;
+const API_BASE = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/admin/jobs`;
 
 type ApiResponse<T> = {
   success: boolean;

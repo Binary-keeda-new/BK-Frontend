@@ -1,6 +1,6 @@
 import { Blog, BlogPayload } from '../types/blogs.types';
 
-const BASE = `${process.env.NEXT_PUBLIC_API_URL}/admin/blogs`;
+const BASE = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/admin/blogs`;
 
 async function req<T>(url: string, options?: RequestInit): Promise<T> {
   const res = await fetch(url, {

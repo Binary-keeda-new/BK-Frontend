@@ -13,7 +13,7 @@ export default function BlogDetailPage() {
 
   useEffect(() => {
     if (!id) return;
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/blogs/${id}`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/blogs/${id}`)
       .then(res => {
         if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
         return res.json();

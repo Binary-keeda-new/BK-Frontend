@@ -64,7 +64,7 @@ export default function InterviewExperience({ onBack }: Props) {
   useEffect(() => {
     setLoading(true);
     setError('');
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/interviews`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/interviews`)
       .then(res => {
         if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
         return res.json();
