@@ -225,7 +225,7 @@ export default function SubmissionsPanel() {
         <div style={{ marginTop: "clamp(10px, 2.5vw, 14px)" }}>
           <button
             onClick={() => setVisibleCount(prev => prev + 5)}
-            className="rounded-[20px] font-semibold cursor-pointer transition-all duration-[180ms] hover:-translate-y-[1px]"
+            className="rounded-[20px] font-semibold cursor-pointer transition-all duration-200 hover:-translate-y-[1px]"
             style={{
               fontSize: "clamp(10px, 2.5vw, 12px)",
               padding: "clamp(6px, 1.5vw, 8px) clamp(14px, 3.5vw, 20px)",
