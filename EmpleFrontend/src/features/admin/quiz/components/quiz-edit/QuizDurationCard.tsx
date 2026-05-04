@@ -4,18 +4,18 @@ import QuizEditFieldLabel from "./QuizEditFieldLabel";
 import QuizEditSectionTitle from "./QuizEditSectionTitle";
 
 type Props = {
-  hours: string;
   minutes: string;
-  setHours: (value: string) => void;
+  seconds: string;
   setMinutes: (value: string) => void;
+  setSeconds: (value: string) => void;
   t: ThemeTokens;
 };
 
 export default function QuizDurationCard({
-  hours,
   minutes,
-  setHours,
+  seconds,
   setMinutes,
+  setSeconds,
   t,
 }: Props) {
   return (
@@ -31,11 +31,13 @@ export default function QuizDurationCard({
       >
         <div className="grid grid-cols-1 items-end gap-4 sm:grid-cols-2">
           {([
-            ["Hours", hours, setHours, "0", "23", "hr"],
-            ["Minutes", minutes, setMinutes, "0", "59", "min"],
+            ["Minutes", minutes, setMinutes, "0", "180", "min"],
+            ["Seconds", seconds, setSeconds, "0", "59", "sec"],
           ] as const).map(([label, val, setter, mn, mx, unit]) => (
             <div key={label}>
-              <QuizEditFieldLabel color={t.labelColor}>{label}</QuizEditFieldLabel>
+              <QuizEditFieldLabel color={t.labelColor}>
+                {label}
+              </QuizEditFieldLabel>
 
               <div className="relative">
                 <input
@@ -62,14 +64,23 @@ export default function QuizDurationCard({
           ))}
         </div>
 
-        <div className="mt-3.5 flex items-center gap-1.5 text-[13px]" style={{ color: t.subText }}>
+        <div
+          className="mt-3.5 flex items-center gap-1.5 text-[13px]"
+          style={{ color: t.subText }}
+        >
           <svg width="13" height="13" fill="none" viewBox="0 0 24 24">
             <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5" />
-            <path d="M12 7v5l3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+            <path
+              d="M12 7v5l3 3"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            />
           </svg>
           Total duration:
           <strong style={{ color: t.labelColor }}>
-            {String(+hours).padStart(2, "0")}h {String(+minutes % 60).padStart(2, "0")}m
+            {String(+minutes).padStart(2, "0")}m{" "}
+            {String(+seconds).padStart(2, "0")}s
           </strong>
         </div>
       </QuizEditCard>

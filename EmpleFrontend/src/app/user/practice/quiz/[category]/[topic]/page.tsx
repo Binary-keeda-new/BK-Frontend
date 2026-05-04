@@ -1,5 +1,5 @@
-import TopicQuizPage from "@/features/user/practice/quiz/pages/TopicQuizPage";
+import QuizList from "@/features/user/practice/quiz/pages/QuizList";
 
 export default function Page() {
-  return <TopicQuizPage />;
+  return <QuizList />;
 }

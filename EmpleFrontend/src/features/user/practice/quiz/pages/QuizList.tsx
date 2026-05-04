@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { QUIZ_CATEGORIES } from "@/shared/constants/quizCategories";
+import { getSessionToken } from "@descope/nextjs-sdk/client";
 
 type QuizItem = {
   _id: string;
@@ -21,6 +22,18 @@ type QuizListResponse = {
   success: boolean;
   message: string;
   data: QuizItem[];
+};
+
+type AttemptStatusItem = {
+  attempted: boolean;
+  status: "in_progress" | "submitted" | "auto_submitted";
+  attemptId: string;
+};
+
+type AttemptStatusResponse = {
+  success: boolean;
+  message?: string;
+  data: Record<string, AttemptStatusItem>;
 };
 
 const API_BASE =
@@ -72,7 +85,26 @@ function mapTopicSlugToDbSubcategory(categorySlug: string, topicSlug: string) {
   );
 }
 
-export default function TopicQuizPage() {
+function getQuizAttemptState(
+  quizId: string,
+  attemptStatusMap: Record<string, AttemptStatusItem>
+) {
+  return attemptStatusMap[quizId] || null;
+}
+
+function getQuizActionLabel(attemptState: AttemptStatusItem | null) {
+  if (!attemptState) return "Attempt →";
+  if (attemptState.status === "in_progress") return "Resume →";
+  return "Review →";
+}
+
+function getQuizBadgeLabel(attemptState: AttemptStatusItem | null) {
+  if (!attemptState) return null;
+  if (attemptState.status === "in_progress") return "In Progress";
+  return "Completed";
+}
+
+export default function QuizList() {
   const router = useRouter();
   const params = useParams();
 
@@ -87,6 +119,9 @@ export default function TopicQuizPage() {
   const [error, setError] = useState("");
   const [selectedQuiz, setSelectedQuiz] = useState<QuizItem | null>(null);
   const [agreed, setAgreed] = useState(false);
+  const [attemptStatusMap, setAttemptStatusMap] = useState<
+    Record<string, AttemptStatusItem>
+  >({});
 
   useEffect(() => {
     const fetchQuizzes = async () => {
@@ -113,15 +148,49 @@ export default function TopicQuizPage() {
           throw new Error(result.message || "Failed to fetch quizzes");
         }
 
-        setQuizzes(result.data || []);
+        const fetchedQuizzes = result.data || [];
+        setQuizzes(fetchedQuizzes);
+
+        const quizIds = fetchedQuizzes.map((quiz) => quiz._id);
+
+        if (quizIds.length > 0) {
+          const token = getSessionToken();
+
+          const statusRes = await fetch(
+            `${API_BASE}/api/v1/quiz-attempts/status?quizIds=${quizIds.join(",")}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                ...(token ? { Authorization: `Bearer ${token}` } : {}),
+              },
+              credentials: "include",
+              cache: "no-store",
+            }
+          );
+
+          console.log("fetchedQuizzes", fetchedQuizzes);
+          console.log("quizIds", quizIds);
+          console.log("statusResult", statusRes);
+
+          if (statusRes.ok) {
+            const statusResult: AttemptStatusResponse = await statusRes.json();
+            setAttemptStatusMap(statusResult.data || {});
+          } else {
+            setAttemptStatusMap({});
+          }
+        } else {
+          setAttemptStatusMap({});
+        }
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to load quizzes");
         setQuizzes([]);
+        setAttemptStatusMap({});
       } finally {
         setLoading(false);
       }
     };
-
+    
     void fetchQuizzes();
   }, [dbCategory, dbSubcategory]);
 
@@ -140,6 +209,26 @@ export default function TopicQuizPage() {
 
     router.push(
       `/user/practice/quiz/${categorySlug}/${topicSlug}/${selectedQuiz._id}/attempt`
+    );
+  }
+
+  function handleQuizAction(quiz: QuizItem) {
+    const attemptState = getQuizAttemptState(quiz._id, attemptStatusMap);
+
+    if (!attemptState) {
+      openModal(quiz);
+      return;
+    }
+
+    if (attemptState.status === "in_progress") {
+      router.push(
+        `/user/practice/quiz/${categorySlug}/${topicSlug}/${quiz._id}/attempt`
+      );
+      return;
+    }
+
+    router.push(
+      `/user/practice/quiz/${categorySlug}/${topicSlug}/${quiz._id}/review?attemptId=${attemptState.attemptId}`
     );
   }
 
@@ -182,37 +271,63 @@ export default function TopicQuizPage() {
               No quizzes available for this topic yet.
             </div>
           ) : (
-            quizzes.map((quiz) => (
-              <div
-                key={quiz._id}
-                className="grid grid-cols-[1fr_auto] grid-rows-[auto_auto] items-center gap-x-3 gap-y-1 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-[14px] transition-[border,box-shadow] duration-200 ease-in-out hover:border-[var(--orange)] hover:shadow-[0_4px_16px_rgba(241,90,34,0.12)] sm:grid-cols-[1fr_140px_160px] sm:grid-rows-1 sm:px-6 sm:py-[18px]"
-              >
-                <div className="col-[1] row-[1] sm:col-auto sm:row-auto">
-                  <p className="m-0 text-[15px] font-semibold text-[var(--text)]">
-                    {quiz.title}
+            quizzes.map((quiz) => {
+              const attemptState = getQuizAttemptState(quiz._id, attemptStatusMap);
+              const badgeLabel = getQuizBadgeLabel(attemptState);
+              const actionLabel = getQuizActionLabel(attemptState);
+
+              const actionButtonClass =
+                attemptState?.status === "submitted" ||
+                attemptState?.status === "auto_submitted"
+                  ? "border border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
+                  : attemptState?.status === "in_progress"
+                  ? "border border-sky-500/30 bg-sky-500/10 text-sky-300"
+                  : "border-none bg-[var(--orange)] text-white";
+
+              return (
+                <div
+                  key={quiz._id}
+                  className="grid grid-cols-[1fr_auto] grid-rows-[auto_auto] items-center gap-x-3 gap-y-1 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-[14px] transition-[border,box-shadow] duration-200 ease-in-out hover:border-[var(--orange)] hover:shadow-[0_4px_16px_rgba(241,90,34,0.12)] sm:grid-cols-[1fr_140px_160px] sm:grid-rows-1 sm:px-6 sm:py-[18px]"
+                >
+                  <div className="col-[1] row-[1] sm:col-auto sm:row-auto">
+                    <p className="m-0 text-[15px] font-semibold text-[var(--text)]">
+                      {quiz.title}
+                    </p>
+
+                    {quiz.description && (
+                      <p className="mb-0 mt-[6px] text-xs text-[var(--muted2)]">
+                        {quiz.description}
+                      </p>
+                    )}
+
+                    {badgeLabel && (
+                      <span
+                        className={`mt-2 inline-flex rounded-full border px-2.5 py-1 text-[11px] font-semibold ${
+                          attemptState?.status === "in_progress"
+                            ? "border-sky-500/30 bg-sky-500/10 text-sky-300"
+                            : "border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
+                        }`}
+                      >
+                        {badgeLabel}
+                      </span>
+                    )}
+                  </div>
+
+                  <p className="col-[1] row-[2] m-0 text-[13px] text-[var(--muted2)] sm:col-auto sm:row-auto">
+                    {formatDuration(quiz.duration)}
                   </p>
 
-                  {quiz.description && (
-                    <p className="mb-0 mt-[6px] text-xs text-[var(--muted2)]">
-                      {quiz.description}
-                    </p>
-                  )}
+                  <div className="col-[2] row-[1/3] flex justify-end self-center sm:col-auto sm:row-auto">
+                    <button
+                      onClick={() => handleQuizAction(quiz)}
+                      className={`cursor-pointer whitespace-nowrap rounded-lg px-[18px] py-2 text-[13px] font-semibold ${actionButtonClass}`}
+                    >
+                      {actionLabel}
+                    </button>
+                  </div>
                 </div>
-
-                <p className="col-[1] row-[2] m-0 text-[13px] text-[var(--muted2)] sm:col-auto sm:row-auto">
-                  {formatDuration(quiz.duration)}
-                </p>
-
-                <div className="col-[2] row-[1/3] flex justify-end self-center sm:col-auto sm:row-auto">
-                  <button
-                    onClick={() => openModal(quiz)}
-                    className="cursor-pointer whitespace-nowrap rounded-lg border-none bg-[var(--orange)] px-[18px] py-2 text-[13px] font-semibold text-white"
-                  >
-                    Attempt →
-                  </button>
-                </div>
-              </div>
-            ))
+              );
+            })
           )}
         </div>
       </div>
