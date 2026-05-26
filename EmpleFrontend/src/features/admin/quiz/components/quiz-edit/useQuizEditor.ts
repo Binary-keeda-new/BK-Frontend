@@ -27,6 +27,7 @@ type BackendQuizResponse = {
     subcategory: string;
     totalMarks: number;
     numberOfQuestions: number;
+    duration?: number;
     status: 'draft' | 'published' | 'archived';
     questions: BackendQuizQuestion[];
   };
@@ -39,6 +40,7 @@ type QuizMeta = {
   category: string;
   subcategory: string;
   totalMarks: number;
+  duration?: number;
   status: 'draft' | 'published' | 'archived';
   numberOfQuestions: number;
 };
@@ -230,6 +232,7 @@ export function useQuizEditor(quizId: string) {
         subcategory: result.data.subcategory,
         totalMarks: result.data.totalMarks,
         status: result.data.status,
+        duration: result.data.duration,
         numberOfQuestions: result.data.numberOfQuestions,
       });
 

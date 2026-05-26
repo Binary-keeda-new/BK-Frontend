@@ -32,8 +32,8 @@ export default function QuizEdit({ quizId, onClose }: QuizEditProps) {
 
   const [savingQuizDetails, setSavingQuizDetails] = useState(false);
   const [theme, setTheme] = useState<ThemeMode>("dark");
-  const [hours, setHours] = useState("0");
   const [minutes, setMinutes] = useState("30");
+  const [seconds, setSeconds] = useState("0");
   const [importTab, setImportTab] = useState<"aiken" | "excel" | "json">("aiken");
   const [importText, setImportText] = useState("");
   const [showQuestionBankImport, setShowQuestionBankImport] = useState(false);
@@ -87,17 +87,21 @@ export default function QuizEdit({ quizId, onClose }: QuizEditProps) {
   } = useQuizEditor(quizId);
 
   useEffect(() => {
-    if (!quiz) return;
+  if (!quiz) return;
 
-    setQuizForm({
-      title: quiz.title || "",
-      description: quiz.description || "",
-      category: (quiz.category as keyof typeof QUIZ_CATEGORIES) || "",
-      subcategory: quiz.subcategory || "",
-      marks: String(quiz.totalMarks || ""),
-      numberOfQuestions: String(quiz.numberOfQuestions || ""),
-    });
-  }, [quiz]);
+  setQuizForm({
+    title: quiz.title || "",
+    description: quiz.description || "",
+    category: (quiz.category as keyof typeof QUIZ_CATEGORIES) || "",
+    subcategory: quiz.subcategory || "",
+    marks: String(quiz.totalMarks || ""),
+    numberOfQuestions: String(quiz.numberOfQuestions || ""),
+  });
+
+  const totalSeconds = Number(quiz.duration || 0) * 60;
+setMinutes(String(Math.floor(totalSeconds / 60)));
+setSeconds(String(totalSeconds % 60));
+}, [quiz]);
 
   const handleQuizMetaChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -131,14 +135,18 @@ const handleSaveQuizDetails = async () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        title: quizForm.title,
-        description: quizForm.description,
-        category: quizForm.category,
-        subcategory: quizForm.subcategory,
-        marks: Number(quizForm.marks),
-        numberOfQuestions: Number(quizForm.numberOfQuestions),
-      }),
+     body: JSON.stringify({
+  title: quizForm.title,
+  description: quizForm.description,
+  category: quizForm.category,
+  subcategory: quizForm.subcategory,
+  marks: Number(quizForm.marks),
+  numberOfQuestions: Number(quizForm.numberOfQuestions),
+
+  duration: Math.ceil(
+  (Number(minutes || 0) * 60 + Number(seconds || 0)) / 60
+),
+}),
     });
 
     const data = await parseJsonResponse<any>(res);
@@ -219,10 +227,10 @@ const handleSaveQuizDetails = async () => {
           />
 
           <QuizDurationCard
-            hours={hours}
+          seconds={seconds}
             minutes={minutes}
-            setHours={setHours}
             setMinutes={setMinutes}
+            setSeconds={setSeconds}
             t={t}
           />
 

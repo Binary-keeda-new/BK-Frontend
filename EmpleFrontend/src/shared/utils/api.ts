@@ -9,10 +9,14 @@ export const parseJsonResponse = async <T>(res: Response): Promise<T> => {
       .replace(/\s+/g, " ")
       .trim();
 
-    throw new Error(
-      cleaned.slice(0, 140) || "Server did not return JSON"
-    );
+    throw new Error(cleaned.slice(0, 140) || "Server did not return JSON");
   }
 
-  return res.json();
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data?.message || "Request failed");
+  }
+
+  return data;
 };
