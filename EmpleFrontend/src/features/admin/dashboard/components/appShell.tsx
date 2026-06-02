@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useAppAuth } from '@/providers/AppAuthProvider';
+
 import Sidebar, { type AdminSection } from './sidebar';
 import Topbar from './topbar';
 import DashboardContent from './dashboardContent';
@@ -24,6 +26,8 @@ export default function AppShell({
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  const { user, loading, isAdmin } = useAppAuth();
+
   const sectionFromUrl =
     (searchParams.get('section') as AdminSection) || initialSection;
   const quizIdFromUrl = searchParams.get('quizId');
@@ -39,6 +43,19 @@ export default function AppShell({
     quizIdFromUrl
   );
   const [quizListRefreshKey, setQuizListRefreshKey] = useState(0);
+
+  useEffect(() => {
+    if (loading) return;
+
+    if (!user) {
+      router.replace('/auth/login');
+      return;
+    }
+
+    if (!isAdmin) {
+      router.replace('/user/dashboard');
+    }
+  }, [loading, user, isAdmin, router]);
 
   useEffect(() => {
     setActiveSection(sectionFromUrl);
@@ -279,6 +296,18 @@ export default function AppShell({
         );
     }
   };
+
+  if (loading) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-[var(--clr-bg)] text-[var(--clr-text)]">
+        Loading...
+      </div>
+    );
+  }
+
+  if (!user || !isAdmin) {
+    return null;
+  }
 
   return (
     <div className="flex h-screen overflow-hidden bg-[var(--clr-bg)]">

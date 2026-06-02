@@ -48,7 +48,30 @@ export default function CallbackPage() {
           return
         }
 
-        window.location.replace('/user/dashboard')
+        const meRes = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/me`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            credentials: 'include',
+          }
+        )
+
+        if (!meRes.ok) {
+          window.location.replace('/auth/login?error=me_failed')
+          return
+        }
+
+        const meData = await meRes.json()
+        const role = meData?.user?.role
+
+        if (role === 'admin') {
+          window.location.replace('/dashboard')
+        } else {
+          window.location.replace('/user/dashboard')
+        }
       } catch {
         window.location.replace('/auth/login?error=failed')
       }
