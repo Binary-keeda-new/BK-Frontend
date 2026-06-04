@@ -39,7 +39,7 @@ export default function DashboardPage() {
         console.log('No session token found')
         return
       }
-
+      
       const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/me`
       console.log('Fetching /me from:', url)
 

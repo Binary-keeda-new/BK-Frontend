@@ -18,6 +18,7 @@ import QuizForm from '../../quiz/components/QuizForm';
 
 interface AppShellProps {
   initialSection?: AdminSection;
+  quizId?: number;
 }
 
 export default function AppShell({
