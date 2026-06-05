@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import ActionCard from './actionCard';
 import QuizForm from '../../quiz/components/QuizForm';
-import CreateTest from '../../test/components/CreateTest';
 import { apiRequest } from '@/shared/utils/api';
 
 type CreateQuestionBankResponse = {
@@ -29,7 +28,6 @@ export default function DashboardContent({
   const [snackbarMessage, setSnackbarMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [isQuizFormOpen, setIsQuizFormOpen] = useState(false);
-  const [isCreateTestOpen, setIsCreateTestOpen] = useState(false);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -40,10 +38,8 @@ export default function DashboardContent({
     setIsQuizFormOpen(true);
   };
 
-  const handleCreateTest = (): void => {
-  setIsCreateTestOpen(true);
-};
   const handleCodingProblems = (): void => console.log('Coding Problems');
+  const handleCreateTest = (): void => console.log('Test');
 
   const handleOpenQuestionBank = (): void => {
     setIsQuestionBankOpen(true);
@@ -247,18 +243,6 @@ export default function DashboardContent({
         </div>
       )}
 
-      <CreateTest
-  isOpen={isCreateTestOpen}
-  onClose={() => setIsCreateTestOpen(false)}
-  onSuccess={() => {
-    setIsCreateTestOpen(false);
-    setSnackbarMessage('Test has been created successfully.');
-
-    setTimeout(() => {
-      setSnackbarMessage(null);
-    }, 3000);
-  }}
-/>
 
      {snackbarMessage && (
   <div className="fixed bottom-6 right-6 z-[60] rounded-2xl bg-green-600 px-5 py-4 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(0,0,0,0.35)]">
