@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import ActionCard from './actionCard';
 import QuizForm from '../../quiz/components/QuizForm';
+import CreateTest from '../../test/components/CreateTest';
+import { apiRequest } from '@/shared/utils/api';
 
 type CreateQuestionBankResponse = {
   success: boolean;
@@ -27,6 +29,7 @@ export default function DashboardContent({
   const [snackbarMessage, setSnackbarMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [isQuizFormOpen, setIsQuizFormOpen] = useState(false);
+  const [isCreateTestOpen, setIsCreateTestOpen] = useState(false);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -37,7 +40,9 @@ export default function DashboardContent({
     setIsQuizFormOpen(true);
   };
 
-  const handleCreateTest = (): void => console.log('Create Test');
+  const handleCreateTest = (): void => {
+  setIsCreateTestOpen(true);
+};
   const handleCodingProblems = (): void => console.log('Coding Problems');
 
   const handleOpenQuestionBank = (): void => {
@@ -70,51 +75,41 @@ export default function DashboardContent({
   };
 
   const handleSubmit = async (
-    e: React.FormEvent<HTMLFormElement>
-  ): Promise<void> => {
-    e.preventDefault();
+  e: React.FormEvent<HTMLFormElement>
+): Promise<void> => {
+  e.preventDefault();
 
-    try {
-      setLoading(true);
+  try {
+    setLoading(true);
 
-      const res = await fetch(
-        'http://localhost:5000/api/v1/admin/question-banks',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            title: formData.title,
-            description: formData.description,
-          }),
-        }
-      );
-
-      const result: CreateQuestionBankResponse = await res.json();
-
-      if (!res.ok) {
-        throw new Error(result.message || 'Failed to create question bank');
+    await apiRequest<CreateQuestionBankResponse>(
+      '/api/v1/admin/question-banks',
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          title: formData.title,
+          description: formData.description,
+        }),
       }
+    );
 
-      setIsQuestionBankOpen(false);
-      setSnackbarMessage('Question bank has been created successfully.');
-      setFormData({
-        title: '',
-        description: '',
-      });
+    setIsQuestionBankOpen(false);
+    setSnackbarMessage('Question bank has been created successfully.');
+    setFormData({
+      title: '',
+      description: '',
+    });
 
-      setTimeout(() => {
-        setSnackbarMessage(null);
-        onOpenQuestionBank();
-      }, 3000);
-    } catch (error) {
-      console.error('Create question bank failed:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+    setTimeout(() => {
+      setSnackbarMessage(null);
+      onOpenQuestionBank();
+    }, 3000);
+  } catch (error) {
+    console.error('Create question bank failed:', error);
+  } finally {
+    setLoading(false);
+  }
+};
   if (isQuizFormOpen) {
     return (
       <div className="w-full max-w-[1100px] px-4 py-6 sm:px-6 sm:py-8 lg:px-10 lg:py-10">
@@ -251,6 +246,19 @@ export default function DashboardContent({
           </div>
         </div>
       )}
+
+      <CreateTest
+  isOpen={isCreateTestOpen}
+  onClose={() => setIsCreateTestOpen(false)}
+  onSuccess={() => {
+    setIsCreateTestOpen(false);
+    setSnackbarMessage('Test has been created successfully.');
+
+    setTimeout(() => {
+      setSnackbarMessage(null);
+    }, 3000);
+  }}
+/>
 
      {snackbarMessage && (
   <div className="fixed bottom-6 right-6 z-[60] rounded-2xl bg-green-600 px-5 py-4 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(0,0,0,0.35)]">

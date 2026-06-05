@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { apiRequest } from '@/shared/utils/api'
 
 type QuestionBank = {
   _id: string
@@ -68,25 +69,16 @@ export default function CreateQuestionBank({
     try {
       setLoading(true)
 
-      const res = await fetch(
-        'http://localhost:5000/api/v1/admin/question-banks',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            title: trimmedTitle,
-            description: trimmedDescription,
-          }),
-        }
-      )
-
-      const result: CreateQuestionBankResponse = await res.json()
-
-      if (!res.ok) {
-        throw new Error(result.message || 'Failed to create question bank')
-      }
+      const result = await apiRequest<CreateQuestionBankResponse>(
+  '/api/v1/admin/question-banks',
+  {
+    method: 'POST',
+    body: JSON.stringify({
+      title: trimmedTitle,
+      description: trimmedDescription,
+    }),
+  }
+)
 
       onSuccess?.(result.data)
 
