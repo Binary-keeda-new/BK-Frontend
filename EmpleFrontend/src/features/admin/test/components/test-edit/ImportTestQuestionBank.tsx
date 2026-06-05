@@ -1,6 +1,17 @@
 import { useEffect, useMemo, useState } from "react";
-import { ThemeTokens } from "./quizEdit.types";
 import { apiRequest } from '@/shared/utils/api'
+
+type ThemeTokens = {
+  cardBg: string;
+  cardBorder: string;
+  inputBg: string;
+  inputBorder: string;
+  inputText: string;
+  headingColor: string;
+  labelColor: string;
+  subText: string;
+  divider: string;
+};
 
 type QuestionBank = {
   _id: string;
@@ -20,7 +31,8 @@ type Props = {
   open: boolean;
   onClose: () => void;
   t: ThemeTokens;
-  quizId: string;
+  testId: string;
+sectionId: string;
   onImported?: () => void;
 };
 
@@ -42,11 +54,12 @@ type ImportQuestionsResponse = {
 };
 
 
-export default function ImportQuestionsModal({
+export default function ImportTestQuestionBank({
   open,
   onClose,
   t,
-  quizId,
+  testId,
+  sectionId,
   onImported,
 }: Props) {
   const [banks, setBanks] = useState<QuestionBank[]>([]);
@@ -91,15 +104,13 @@ export default function ImportQuestionsModal({
     setLoadingBanks(false);
   }
 };
-    
-
     fetchBanks();
   }, [open]);
 
   useEffect(() => {
     if (!open || !selectedBankId) return;
 
-   const fetchQuestions = async () => {
+    const fetchQuestions = async () => {
   try {
     setLoadingQuestions(true);
     setError("");
@@ -120,6 +131,7 @@ export default function ImportQuestionsModal({
     setLoadingQuestions(false);
   }
 };
+
     fetchQuestions();
   }, [open, selectedBankId]);
 
@@ -137,32 +149,31 @@ export default function ImportQuestionsModal({
     }
   };
 
-  const handleImport = async () => {
-    if (!quizId || selectedQuestionIds.length === 0) return;
+ const handleImport = async () => {
+  if (!testId || !sectionId || selectedQuestionIds.length === 0) return;
 
-    try {
-      setImporting(true);
-      setError("");
+  try {
+    setImporting(true);
+    setError("");
 
-      await apiRequest<ImportQuestionsResponse>(
-  "/api/v1/admin/quiz-questions/import",
-  {
-    method: "POST",
-    body: JSON.stringify({
-      quizId,
-      questionIds: selectedQuestionIds,
-    }),
+    await apiRequest<ImportQuestionsResponse>(
+      `/api/v1/admin/tests/${testId}/sections/${sectionId}/questions/import`,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          questionIds: selectedQuestionIds,
+        }),
+      }
+    );
+
+    onImported?.();
+    onClose();
+  } catch (err) {
+    setError(err instanceof Error ? err.message : "Failed to import questions");
+  } finally {
+    setImporting(false);
   }
-);
-
-      onImported?.();
-      onClose();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to import questions");
-    } finally {
-      setImporting(false);
-    }
-  };
+};
 
   if (!open) return null;
 
@@ -193,7 +204,7 @@ export default function ImportQuestionsModal({
                 Import Questions from Question Bank
               </h3>
               <p className="mt-1 text-xs" style={{ color: t.subText }}>
-                Select a question bank, choose questions, and import them into this quiz.
+                Select a question bank, choose questions, and import them into this test section.
               </p>
             </div>
 

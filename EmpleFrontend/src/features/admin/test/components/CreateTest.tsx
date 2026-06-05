@@ -4,10 +4,11 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { apiRequest } from '@/shared/utils/api'
 
-type QuestionBank = {
+type Test = {
   _id: string
   title: string
   description: string
+  duration: number
   createdAt?: string
   updatedAt?: string
 }
@@ -15,26 +16,24 @@ type QuestionBank = {
 type Props = {
   isOpen: boolean
   onClose: () => void
-  onSuccess?: (data: QuestionBank) => void
+  onSuccess?: (data: Test) => void
 }
 
-type CreateQuestionBankResponse = {
+type CreateTestResponse = {
   success: boolean
   message: string
-  data: QuestionBank
+  data: Test
 }
 
-export default function CreateQuestionBank({
-  isOpen,
-  onClose,
-  onSuccess,
-}: Props) {
+export default function CreateTest({ isOpen, onClose, onSuccess }: Props) {
   const router = useRouter()
 
   const [formData, setFormData] = useState({
     title: '',
     description: '',
+    duration: '',
   })
+
   const [loading, setLoading] = useState(false)
 
   if (!isOpen) return null
@@ -54,44 +53,45 @@ export default function CreateQuestionBank({
     setFormData({
       title: '',
       description: '',
+      duration: '',
     })
     onClose()
   }
 
   const handleCreate = async () => {
-    const trimmedTitle = formData.title.trim()
-    const trimmedDescription = formData.description.trim()
+    const title = formData.title.trim()
+    const description = formData.description.trim()
+    const duration = Number(formData.duration)
 
-    if (!trimmedTitle || !trimmedDescription) {
+    if (!title || !description || !duration || duration <= 0) {
       return
     }
 
     try {
       setLoading(true)
 
-      const result = await apiRequest<CreateQuestionBankResponse>(
-  '/api/v1/admin/question-banks',
-  {
-    method: 'POST',
-    body: JSON.stringify({
-      title: trimmedTitle,
-      description: trimmedDescription,
-    }),
-  }
-)
+      const result = await apiRequest<CreateTestResponse>('/api/v1/admin/tests', {
+  method: 'POST',
+  body: JSON.stringify({
+    title,
+    description,
+    duration,
+  }),
+})
 
       onSuccess?.(result.data)
 
       setFormData({
         title: '',
         description: '',
+        duration: '',
       })
 
       onClose()
 
-      router.push(`/practice/question-bank/${result.data._id}`)
+      router.push(`/dashboard?section=test-detail&testId=${result.data._id}`)
     } catch (err) {
-      console.error('Create question bank failed:', err)
+      console.error('Create test failed:', err)
     } finally {
       setLoading(false)
     }
@@ -102,11 +102,9 @@ export default function CreateQuestionBank({
       <div className="w-full max-w-md rounded-3xl bg-[rgb(19,20,27)] p-6 ring-1 ring-white/10">
         <div className="mb-5 flex items-start justify-between gap-4">
           <div>
-            <h2 className="text-xl font-semibold text-white">
-              Create Question Bank
-            </h2>
+            <h2 className="text-xl font-semibold text-white">Create Test</h2>
             <p className="mt-1 text-sm text-white/55">
-              Add a title and description to create a new question bank.
+              Add basic test details to create a new test.
             </p>
           </div>
 
@@ -125,7 +123,7 @@ export default function CreateQuestionBank({
             </label>
             <input
               name="title"
-              placeholder="Enter question bank title"
+              placeholder="Enter test title"
               value={formData.title}
               onChange={handleChange}
               className="w-full rounded-2xl bg-[rgb(10,11,14)] p-3 text-white outline-none ring-1 ring-white/10 placeholder:text-white/35"
@@ -138,14 +136,13 @@ export default function CreateQuestionBank({
             </label>
             <textarea
               name="description"
-              placeholder="Enter question bank description"
+              placeholder="Enter test description"
               value={formData.description}
               onChange={handleChange}
               rows={4}
               className="w-full rounded-2xl bg-[rgb(10,11,14)] p-3 text-white outline-none ring-1 ring-white/10 placeholder:text-white/35"
             />
           </div>
-
           <div className="flex justify-end gap-3 pt-2">
             <button
               onClick={handleClose}

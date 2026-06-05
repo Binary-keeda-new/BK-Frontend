@@ -15,6 +15,8 @@ import QuizPreviewContent from '@/features/admin/quiz/components/quizPreviewCont
 import QuizzesContent from '../../quiz/components/quizList';
 import QuizEdit from '../../quiz/components/QuizEdit';
 import QuizForm from '../../quiz/components/QuizForm';
+import TestsContent from '../../test/pages/TestList';
+import TestEdit from '../../test/pages/TestEdit';
 
 interface AppShellProps {
   initialSection?: AdminSection;
@@ -44,6 +46,8 @@ export default function AppShell({
     quizIdFromUrl
   );
   const [quizListRefreshKey, setQuizListRefreshKey] = useState(0);
+const [testListRefreshKey, setTestListRefreshKey] = useState(0);
+const [selectedTestId, setSelectedTestId] = useState<string | null>(null);
 
   useEffect(() => {
     if (loading) return;
@@ -182,6 +186,15 @@ export default function AppShell({
       questionBankId: id,
     });
   };
+  
+  const openTestEdit = (id: string) => {
+  setSelectedTestId(id);
+  setActiveSection('test-edit');
+
+  updateUrl({
+    section: 'test-edit',
+  });
+};
 
   const renderContent = () => {
     switch (activeSection) {
@@ -276,11 +289,27 @@ export default function AppShell({
         );
 
       case 'tests':
-        return (
-          <div className="p-6 text-[var(--clr-text)] md:p-10">
-            Tests content goes here.
-          </div>
-        );
+  return (
+    <TestsContent
+      refreshKey={testListRefreshKey}
+      onEditTest={(id) => console.log('Edit test:', id)}
+      onPreviewTest={(id) => console.log('Preview test:', id)}
+    />
+  );
+
+  case 'test-edit':
+  return selectedTestId ? (
+    <TestEdit
+      testId={selectedTestId}
+      onClose={() => handleSectionChange('tests')}
+    />
+  ) : (
+    <TestsContent
+      refreshKey={testListRefreshKey}
+      onEditTest={openTestEdit}
+      onPreviewTest={(id) => console.log('Preview test:', id)}
+    />
+  );
 
       case 'coding-problems':
         return (
