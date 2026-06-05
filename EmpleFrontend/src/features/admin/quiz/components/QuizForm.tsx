@@ -3,7 +3,6 @@
 import React, { ChangeEvent, useMemo, useRef, useState } from 'react'
 import ToastContainer from '@/features/admin/question-bank/components/ToastContainer'
 import { QUIZ_CATEGORIES } from '@/shared/constants/quizCategories'
-import { apiRequest } from '@/shared/utils/api'
 
 interface FormState {
   title: string
@@ -98,36 +97,45 @@ export default function QuizForm({
     }
 
     try {
-  setLoading(true)
+      setLoading(true)
 
+      const payload = {
+        title: form.title.trim(),
+        description: form.description.trim(),
+        marks: Number(form.marks),
+        numberOfQuestions: Number(form.numberOfQuestions),
+        category: form.category,
+        subcategory: form.subcategory,
+        status: 'published',
+      }
 
-  const payload = {
-    title: form.title.trim(),
-    description: form.description.trim(),
-    marks: Number(form.marks),
-    numberOfQuestions: Number(form.numberOfQuestions),
-    category: form.category,
-    subcategory: form.subcategory,
-    status: 'published',
-  }
+      const response = await fetch(
+        'http://localhost:5000/api/v1/admin/quizzes',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        }
+      )
 
-  await apiRequest('/api/v1/admin/quizzes', {
-    method: 'POST',
-    body: JSON.stringify(payload),
-  })
+      const data = await response.json()
 
-  addToast('Quiz published successfully!', 'success')
-  onSuccess?.()
-  onClose()
-} catch (error) {
-  console.error('Failed to save quiz:', error)
-  addToast(
-    error instanceof Error ? error.message : 'Server connection failed.',
-    'error'
-  )
-} finally {
-  setLoading(false)
-}
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to save quiz')
+      }
+
+      addToast('Quiz published successfully!', 'success')
+      onSuccess?.()
+      onClose()
+    } catch (error) {
+      console.error('Failed to save quiz:', error)
+      addToast(
+        error instanceof Error ? error.message : 'Server connection failed.',
+        'error'
+      )
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
