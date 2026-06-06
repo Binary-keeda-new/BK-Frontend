@@ -1,7 +1,7 @@
 'use client';
 
 import type { TopbarProps } from '../types';
-import { HamburgerIcon, UserCircleIcon } from  './icons';
+import { HamburgerIcon, UserCircleIcon } from './icons';
 import { useEffect, useRef, useState } from 'react';
 
 export default function Topbar({ onMobileMenuOpen }: TopbarProps) {
@@ -9,7 +9,6 @@ export default function Topbar({ onMobileMenuOpen }: TopbarProps) {
   const popoverRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
-  // Close on outside click
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (
@@ -21,60 +20,53 @@ export default function Topbar({ onMobileMenuOpen }: TopbarProps) {
         setProfileOpen(false);
       }
     }
+
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Close on Escape
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
       if (e.key === 'Escape') setProfileOpen(false);
     }
+
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   function handleLogout() {
     setProfileOpen(false);
-    
   }
 
   return (
     <header
       className="
-        sticky top-0 z-[100]
-        flex items-center gap-3
-        h-16
-        px-4 sm:px-5
-        bg-[var(--clr-surface)]
+        relative z-[100]
+        flex h-16 items-center gap-3
         border-b border-[var(--clr-border)]
-        transition-all
+        bg-[var(--clr-surface)]
+        px-4 sm:px-5
       "
     >
-      {/* Mobile Menu Button */}
       <button
         onClick={onMobileMenuOpen}
         aria-label="Open navigation menu"
         type="button"
         className="
-          md:hidden
-          w-9 h-9
-          flex items-center justify-center
+          flex h-9 w-9 items-center justify-center
           rounded-full
           border border-[var(--clr-border2)]
           bg-[var(--clr-surface2)]
           text-[var(--clr-text2)]
           transition-all
-          hover:scale-110 hover:text-[var(--clr-accent)] hover:border-[var(--clr-accent)] hover:bg-[var(--clr-accent3)]
+          hover:scale-110 hover:border-[var(--clr-accent)] hover:bg-[var(--clr-accent3)] hover:text-[var(--clr-accent)]
+          md:hidden
         "
       >
         <HamburgerIcon />
       </button>
 
-      {/* Right Side */}
       <div className="ml-auto flex items-center gap-2.5">
-
-        {/* Profile Button + Popover */}
         <div className="relative">
           <button
             ref={buttonRef}
@@ -84,33 +76,27 @@ export default function Topbar({ onMobileMenuOpen }: TopbarProps) {
             type="button"
             onClick={() => setProfileOpen((prev) => !prev)}
             className="
-              w-9 h-9
-              flex items-center justify-center
+              flex h-9 w-9 items-center justify-center
               rounded-full
               border border-[var(--clr-border2)]
               bg-[var(--clr-surface2)]
               text-[var(--clr-text2)]
               transition-all
-              hover:scale-110 hover:text-[var(--clr-accent)] hover:border-[var(--clr-accent)] hover:bg-[var(--clr-accent3)]
+              hover:scale-110 hover:border-[var(--clr-accent)] hover:bg-[var(--clr-accent3)] hover:text-[var(--clr-accent)]
             "
           >
             <UserCircleIcon />
           </button>
 
-          {/* Popover */}
           {profileOpen && (
             <div
               ref={popoverRef}
               role="menu"
               className="
-                absolute right-0 mt-2
-                w-44
-                rounded-xl
+                absolute right-0 mt-2 w-44 overflow-hidden rounded-xl
                 border border-[var(--clr-border)]
                 bg-[var(--clr-surface)]
                 shadow-lg shadow-black/10
-                overflow-hidden
-                animate-in fade-in slide-in-from-top-2 duration-150
               "
             >
               <button
@@ -118,17 +104,13 @@ export default function Topbar({ onMobileMenuOpen }: TopbarProps) {
                 type="button"
                 onClick={handleLogout}
                 className="
-                  w-full
-                  flex items-center gap-2.5
-                  px-4 py-2.5
-                  text-sm text-left
-                  text-[var(--clr-text2)]
+                  flex w-full items-center gap-2.5 px-4 py-2.5
+                  text-left text-sm text-[var(--clr-text2)]
+                  transition-colors
                   hover:bg-[var(--clr-surface2)]
                   hover:text-[var(--clr-accent)]
-                  transition-colors
                 "
               >
-                {/* Logout icon */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="15"
@@ -150,7 +132,6 @@ export default function Topbar({ onMobileMenuOpen }: TopbarProps) {
             </div>
           )}
         </div>
-
       </div>
     </header>
   );

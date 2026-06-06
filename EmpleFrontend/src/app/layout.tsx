@@ -4,6 +4,8 @@ import "./landing/landing.css";
 import { ThemeProvider } from "../providers/ThemeContext";
 import { AuthProvider } from "@descope/nextjs-sdk";
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: "Emple – Dashboard",
   description: "Emple learning dashboard",
@@ -17,7 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           projectId={process.env.NEXT_PUBLIC_DESCOPE_PROJECT_ID || ""}
           
           sessionTokenViaCookie={{
-            secure: process.env.NODE_ENV !== 'development',
+            secure: process.env.NODE_ENV === 'production',
             sameSite: 'Lax'
           }}
         >

@@ -1,23 +1,57 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Sidebar, { type AdminSection } from './sidebar';
 import Topbar from './topbar';
 import DashboardContent from './dashboardContent';
 import QuestionBankPage from '@/features/admin/question-bank/pages/QuestionBankPage';
 import QuestionBankDetailPage from '@/features/admin/question-bank/pages/QuestionBankDetail';
+import AdminJobsPage from '@/features/admin/jobs/pages/AdminJobsPage';
+import AdminBlogsPage from '@/features/admin/blogs/pages/AdminBlogsPage';
+import QuizPreviewContent from '@/features/admin/quiz/components/quizPreviewContent';
+import QuizzesContent from '../../quiz/components/quizList';
+import QuizEdit from '../../quiz/components/QuizEdit';
+import QuizForm from '../../quiz/components/QuizForm';
 
-export default function AppShell() {
-  const [mobileOpen, setMobileOpen] = useState<boolean>(false);
+interface AppShellProps {
+  initialSection?: AdminSection;
+  quizId?: number;
+}
+
+export default function AppShell({
+  initialSection = 'dashboard',
+}: AppShellProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const sectionFromUrl =
+    (searchParams.get('section') as AdminSection) || initialSection;
+  const quizIdFromUrl = searchParams.get('quizId');
+  const questionBankIdFromUrl = searchParams.get('questionBankId');
+
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] =
-    useState<AdminSection>('dashboard');
+    useState<AdminSection>(sectionFromUrl);
   const [selectedQuestionBankId, setSelectedQuestionBankId] = useState<
     string | null
-  >(null);
+  >(questionBankIdFromUrl);
+  const [selectedQuizId, setSelectedQuizId] = useState<string | null>(
+    quizIdFromUrl
+  );
+  const [quizListRefreshKey, setQuizListRefreshKey] = useState(0);
+
+  useEffect(() => {
+    setActiveSection(sectionFromUrl);
+    setSelectedQuizId(quizIdFromUrl);
+    setSelectedQuestionBankId(questionBankIdFromUrl);
+  }, [sectionFromUrl, quizIdFromUrl, questionBankIdFromUrl]);
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 768) setMobileOpen(false);
+      if (window.innerWidth >= 768) {
+        setMobileOpen(false);
+      }
     };
 
     window.addEventListener('resize', handleResize);
@@ -31,38 +65,175 @@ export default function AppShell() {
     };
   }, [mobileOpen]);
 
+  const updateUrl = ({
+    section,
+    quizId,
+    questionBankId,
+  }: {
+    section: AdminSection;
+    quizId?: string | null;
+    questionBankId?: string | null;
+  }) => {
+    const params = new URLSearchParams();
+
+    params.set('section', section);
+
+    if (quizId) {
+      params.set('quizId', quizId);
+    }
+
+    if (questionBankId) {
+      params.set('questionBankId', questionBankId);
+    }
+
+    router.push(`/dashboard?${params.toString()}`);
+  };
+
   const handleSectionChange = (section: AdminSection) => {
     setActiveSection(section);
     setMobileOpen(false);
 
+    const nextQuizId =
+      section === 'quiz-edit' || section === 'quiz-preview'
+        ? selectedQuizId
+        : null;
+
+    const nextQuestionBankId =
+      section === 'question-bank-detail' ? selectedQuestionBankId : null;
+
     if (section !== 'question-bank-detail') {
       setSelectedQuestionBankId(null);
     }
+
+    if (section !== 'quiz-edit' && section !== 'quiz-preview') {
+      setSelectedQuizId(null);
+    }
+
+    updateUrl({
+      section,
+      quizId: nextQuizId,
+      questionBankId: nextQuestionBankId,
+    });
   };
 
   const goToQuestionBankList = () => {
     setActiveSection('question-bank');
     setSelectedQuestionBankId(null);
+
+    updateUrl({
+      section: 'question-bank',
+      questionBankId: null,
+    });
+  };
+
+  const goToQuizList = () => {
+    setActiveSection('quizzes');
+    setSelectedQuizId(null);
+
+    updateUrl({
+      section: 'quizzes',
+      quizId: null,
+    });
+  };
+
+  const openQuizEdit = (id: string) => {
+    setSelectedQuizId(id);
+    setActiveSection('quiz-edit');
+
+    updateUrl({
+      section: 'quiz-edit',
+      quizId: id,
+    });
+  };
+
+  const openQuizPreview = (id: string) => {
+    setSelectedQuizId(id);
+    setActiveSection('quiz-preview');
+
+    updateUrl({
+      section: 'quiz-preview',
+      quizId: id,
+    });
+  };
+
+  const openQuestionBankDetail = (id: string) => {
+    setSelectedQuestionBankId(id);
+    setActiveSection('question-bank-detail');
+
+    updateUrl({
+      section: 'question-bank-detail',
+      questionBankId: id,
+    });
   };
 
   const renderContent = () => {
     switch (activeSection) {
+      case 'quiz-preview':
+        return selectedQuizId ? (
+          <QuizPreviewContent
+            quizId={selectedQuizId}
+            onBack={() => {
+              setQuizListRefreshKey((prev) => prev + 1);
+              goToQuizList();
+            }}
+          />
+        ) : (
+          <QuizzesContent
+            refreshKey={quizListRefreshKey}
+            onCreateQuiz={() => handleSectionChange('quiz-create')}
+            onEditQuiz={openQuizEdit}
+            onPreviewQuiz={openQuizPreview}
+          />
+        );
+
+      case 'quizzes':
+        return (
+          <QuizzesContent
+            refreshKey={quizListRefreshKey}
+            onCreateQuiz={() => handleSectionChange('quiz-create')}
+            onEditQuiz={openQuizEdit}
+            onPreviewQuiz={openQuizPreview}
+          />
+        );
+
+      case 'quiz-edit':
+        return selectedQuizId ? (
+          <QuizEdit
+            quizId={selectedQuizId}
+            onClose={() => {
+              setQuizListRefreshKey((prev) => prev + 1);
+              goToQuizList();
+            }}
+          />
+        ) : (
+          <QuizzesContent
+            refreshKey={quizListRefreshKey}
+            onCreateQuiz={() => handleSectionChange('quiz-create')}
+            onEditQuiz={openQuizEdit}
+            onPreviewQuiz={openQuizPreview}
+          />
+        );
+
+      case 'quiz-create':
+        return (
+          <QuizForm
+            onClose={goToQuizList}
+            onSuccess={() => {
+              setQuizListRefreshKey((prev) => prev + 1);
+              goToQuizList();
+            }}
+          />
+        );
+
       case 'dashboard':
         return (
           <DashboardContent
-            onOpenQuestionBank={() => setActiveSection('question-bank')}
+            onOpenQuestionBank={() => handleSectionChange('question-bank')}
           />
         );
 
       case 'question-bank':
-        return (
-          <QuestionBankPage
-            onEditQuestionBank={(id) => {
-              setSelectedQuestionBankId(id);
-              setActiveSection('question-bank-detail');
-            }}
-          />
-        );
+        return <QuestionBankPage onEditQuestionBank={openQuestionBankDetail} />;
 
       case 'question-bank-detail':
         return selectedQuestionBankId ? (
@@ -71,36 +242,32 @@ export default function AppShell() {
             onBackToQuestionBanks={goToQuestionBankList}
           />
         ) : (
-          <QuestionBankPage
-            onEditQuestionBank={(id) => {
-              setSelectedQuestionBankId(id);
-              setActiveSection('question-bank-detail');
-            }}
-          />
+          <QuestionBankPage onEditQuestionBank={openQuestionBankDetail} />
         );
+
+      case 'jobs':
+        return <AdminJobsPage />;
+
+      case 'blogs':
+        return <AdminBlogsPage />;
 
       case 'practice':
         return (
-          <div className="p-6 text-white md:p-10">
+          <div className="p-6 text-[var(--clr-text)] md:p-10">
             Practice content goes here.
-          </div>
-        );
-
-      case 'quizzes':
-        return (
-          <div className="p-6 text-white md:p-10">
-            Quizzes content goes here.
           </div>
         );
 
       case 'tests':
         return (
-          <div className="p-6 text-white md:p-10">Tests content goes here.</div>
+          <div className="p-6 text-[var(--clr-text)] md:p-10">
+            Tests content goes here.
+          </div>
         );
 
       case 'coding-problems':
         return (
-          <div className="p-6 text-white md:p-10">
+          <div className="p-6 text-[var(--clr-text)] md:p-10">
             Coding problems content goes here.
           </div>
         );
@@ -108,15 +275,15 @@ export default function AppShell() {
       default:
         return (
           <DashboardContent
-            onOpenQuestionBank={() => setActiveSection('question-bank')}
+            onOpenQuestionBank={() => handleSectionChange('question-bank')}
           />
         );
     }
   };
 
   return (
-    <div className="flex min-h-screen bg-[var(--clr-bg)]">
-      <div className="hidden flex-shrink-0 md:flex">
+    <div className="flex h-screen overflow-hidden bg-[var(--clr-bg)]">
+      <div className="hidden md:block">
         <Sidebar
           activeSection={activeSection}
           onSectionChange={handleSectionChange}
@@ -125,37 +292,28 @@ export default function AppShell() {
 
       {mobileOpen && (
         <div
-          className="
-            fixed inset-0 z-[299]
-            bg-black/50 backdrop-blur-sm
-            md:hidden
-          "
+          className="fixed inset-0 z-[299] bg-black/50 backdrop-blur-sm md:hidden"
           onClick={() => setMobileOpen(false)}
         />
       )}
 
       <div
-        className={`
-          fixed top-0 left-0 bottom-0 z-[300]
-          transform transition-transform duration-300 ease-out
-          ${mobileOpen ? 'translate-x-0' : '-translate-x-full'}
-          md:hidden
-        `}
+        className={`fixed inset-y-0 left-0 z-[300] transform transition-transform duration-300 ease-out md:hidden ${
+          mobileOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
       >
-        <div className="h-full shadow-2xl">
-          <Sidebar
-            activeSection={activeSection}
-            onSectionChange={handleSectionChange}
-          />
-        </div>
+        <Sidebar
+          activeSection={activeSection}
+          onSectionChange={handleSectionChange}
+        />
       </div>
 
-      <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
+      <div className="flex min-w-0 flex-1 flex-col bg-[var(--clr-bg)]">
         <Topbar onMobileMenuOpen={() => setMobileOpen(true)} />
 
         <main
           id="main-content"
-          className="flex-1 overflow-x-hidden overflow-y-auto"
+          className="min-w-0 flex-1 overflow-x-hidden overflow-y-auto"
         >
           {renderContent()}
         </main>

@@ -1,135 +1,213 @@
-"use client";
-import { useEffect, useState } from "react";
-import { useSession } from "@descope/nextjs-sdk/client";
-import { useRouter } from "next/navigation";
-import ActivityCalendar from "@/features/user/dashboard/components/ActivityCalendar";
-import Leaderboard from "@/features/user/dashboard/components/Leaderboard";
-import PromoCard from "@/features/user/dashboard/components/PromoCard";
-import SubmissionsPanel from "@/features/user/dashboard/components/SubmissionsPanel";
+// 'use client'
+
+// import { useEffect, useState } from 'react'
+// import { useSession } from '@descope/nextjs-sdk/client'
+// import { useRouter } from 'next/navigation'
+// import ActivityCalendar from '@/features/user/dashboard/components/ActivityCalendar'
+// import Leaderboard from '@/features/user/dashboard/components/Leaderboard'
+// import PromoCard from '@/features/user/dashboard/components/PromoCard'
+// import SubmissionsPanel from '@/features/user/dashboard/components/SubmissionsPanel'
+
+// type User = {
+//   name?: string
+//   email?: string
+// }
+
+// export default function DashboardPage() {
+//   const { sessionToken, isAuthenticated, isSessionLoading } = useSession()
+//   const router = useRouter()
+//   const [user, setUser] = useState<User | null>(null)
+
+//   useEffect(() => {
+//     if (!isSessionLoading && !isAuthenticated) {
+//       router.replace('/auth/login')
+//       return
+//     }
+
+//     const fetchUser = async () => {
+//       const token = sessionToken
+//       if (!token) return
+
+//       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/me`, {
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//         },
+//       })
+
+//       if (!res.ok) {
+//         router.replace('/auth/login')
+//         return
+//       }
+
+//       const data = await res.json()
+//       setUser(data.user)
+//     }
+
+//     if (isAuthenticated) {
+//       fetchUser()
+//     }
+//   }, [sessionToken, isAuthenticated, isSessionLoading, router])
+
+//   if (isSessionLoading || !user) {
+//     return <div className="p-6">Loading dashboard...</div>
+//   }
+  
+
+//   const displayName =
+//     user.name ||
+//     (user.email
+//       ? user.email.split('@')[0].charAt(0).toUpperCase() +
+//         user.email.split('@')[0].slice(1)
+//       : 'User')
+
+//   return (
+//    <main className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-[22px_24px]">
+//       <h2 className="text-white text-lg font-medium drop-shadow-[0_0_8px_rgba(255,255,255,0.5)] mb-4">
+//         Welcome,{' '}
+//         <span className="underline decoration-orange-500 underline-offset-4">
+//           {displayName}
+//         </span>
+//       </h2>
+
+//       <div
+//         className="grid gap-[18px]
+//         grid-cols-1
+//         md:grid-cols-2
+//         xl:grid-cols-[1fr_1fr_300px]"
+//       >
+//         <ActivityCalendar />
+//         <Leaderboard />
+
+//         <div className="md:col-span-2 xl:col-span-1">
+//           <PromoCard />
+//         </div>
+
+//         <div className="col-span-1 md:col-span-2 xl:col-span-3">
+//           <SubmissionsPanel />
+//         </div>
+//       </div>
+//     </main>
+//   )
+// }
+
+'use client'
+
+import { useEffect, useState } from 'react'
+import { useSession } from '@descope/nextjs-sdk/client'
+import { useRouter } from 'next/navigation'
+import ActivityCalendar from '@/features/user/dashboard/components/ActivityCalendar'
+import Leaderboard from '@/features/user/dashboard/components/Leaderboard'
+import PromoCard from '@/features/user/dashboard/components/PromoCard'
+import SubmissionsPanel from '@/features/user/dashboard/components/SubmissionsPanel'
+
+type User = {
+  name?: string
+  email?: string
+}
 
 export default function DashboardPage() {
-
-  const { sessionToken, isAuthenticated, isSessionLoading } = useSession();
-  const router = useRouter();
-  const [user, setUser] = useState<any>(null);
+  const { sessionToken, isAuthenticated, isSessionLoading } = useSession()
+  const router = useRouter()
+  const [user, setUser] = useState<User | null>(null)
 
   useEffect(() => {
-    // 🚫 Not logged in → redirect
+    console.log('dashboard state ->', {
+      isSessionLoading,
+      isAuthenticated,
+      hasSessionToken: !!sessionToken,
+      apiUrl: process.env.NEXT_PUBLIC_API_URL,
+    })
+
     if (!isSessionLoading && !isAuthenticated) {
-      router.replace("/auth/login");
-      return;
+      console.log('Not authenticated, redirecting to /auth/login')
+      router.replace('/auth/login')
+      return
     }
 
-    // ✅ Logged in → fetch user
-    /*const fetchUser = async () => {
-      const token = sessionToken;
-      if (!token) return;
+    const fetchUser = async () => {
+      const token = sessionToken
 
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/me`,
-        {
+      if (!token) {
+        console.log('No session token found')
+        return
+      }
+
+      const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/me`
+      console.log('Fetching /me from:', url)
+
+      try {
+        const res = await fetch(url, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
+        })
+
+        const text = await res.text()
+
+        console.log('/me response ->', {
+          status: res.status,
+          ok: res.ok,
+          body: text,
+        })
+
+        if (!res.ok) {
+          console.log('/me failed, redirecting to /auth/login')
+          router.replace('/auth/login')
+          return
         }
-      );
 
-      const data = await res.json();
-      console.log("USER DATA:", data);
+        const data = JSON.parse(text)
+        console.log('/me parsed data ->', data)
 
-      setUser(data.user);
-    };*/
-    const fetchUser = async () => {
-  const token = sessionToken;
-  if (!token) return;
-
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/me`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        setUser(data.user)
+      } catch (error) {
+        console.error('Error fetching /me ->', error)
+        router.replace('/auth/login')
       }
-    );
-
-    if (!res.ok) throw new Error("API error");
-
-    const data = await res.json();
-    console.log("USER DATA:", data);
-
-    setUser(data.user);
-
-  } catch (err) {
-    console.error("Fetch failed:", err);
-
-    // ✅ fallback user (IMPORTANT)
-    setUser({
-      name: "User",
-      email: "user@example.com",
-    });
-  }
-};
+    }
 
     if (isAuthenticated) {
-      fetchUser();
+      fetchUser()
     }
-  }, [sessionToken, isAuthenticated, isSessionLoading, router]);
+  }, [sessionToken, isAuthenticated, isSessionLoading, router])
 
-  // ⏳ Loading state
-  /*if (isSessionLoading || !user) {
-    return <div className="p-6">Loading dashboard...</div>;
-  }*/
+  if (isSessionLoading || !user) {
+    return <div className="p-6">Loading dashboard...</div>
+  }
 
-    if (isSessionLoading) {
-  return <div className="p-6">Loading dashboard...</div>;
-}
-
-  // display name
-  /*const displayName =
-  user.name ||
-  user.email.split("@")[0].charAt(0).toUpperCase() +
-    user.email.split("@")[0].slice(1);*/
-
-    const displayName =
-  user?.name ||
-  (user?.email
-    ? user.email.split("@")[0].charAt(0).toUpperCase() +
-      user.email.split("@")[0].slice(1)
-    : "User");
+  const displayName =
+    user.name ||
+    (user.email
+      ? user.email.split('@')[0].charAt(0).toUpperCase() +
+        user.email.split('@')[0].slice(1)
+      : 'User')
 
   return (
-  <main className="flex-1 overflow-y-auto p-4 sm:p-[22px_24px]">
+    <main className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-[22px_24px]">
+      <h2 className="text-white text-lg font-medium drop-shadow-[0_0_8px_rgba(255,255,255,0.5)] mb-4">
+        Welcome,{' '}
+        <span className="underline decoration-orange-500 underline-offset-4">
+          {displayName}
+        </span>
+      </h2>
 
-    {/* ✅ Welcome text (from develop) */}
-    <h2 className="text-white text-lg font-medium drop-shadow-[0_0_8px_rgba(255,255,255,0.5)] mb-4">
-      Welcome,{" "}
-      <span className="underline decoration-orange-500 underline-offset-4">
-        {displayName}
-      </span>
-    </h2>
+      <div
+        className="grid gap-[18px]
+        grid-cols-1
+        md:grid-cols-2
+        xl:grid-cols-[1fr_1fr_300px]"
+      >
+        <ActivityCalendar />
+        <Leaderboard />
 
-    {/* ✅ YOUR responsive layout (unchanged) */}
-    <div
-      className="grid gap-[18px]
-      grid-cols-1
-      md:grid-cols-2
-      xl:grid-cols-[1fr_1fr_300px]"
-    >
-      <ActivityCalendar />
-      <Leaderboard />
+        <div className="md:col-span-2 xl:col-span-1">
+          <PromoCard />
+        </div>
 
-      {/* Sidebar card */}
-      <div className="md:col-span-2 xl:col-span-1">
-        <PromoCard />
+        <div className="col-span-1 md:col-span-2 xl:col-span-3">
+          <SubmissionsPanel />
+        </div>
       </div>
-
-      {/* Full width */}
-      <div className="col-span-1 md:col-span-2 xl:col-span-3">
-        <SubmissionsPanel />
-      </div>
-    </div>
-
-  </main>
-);
+    </main>
+  )
 }
