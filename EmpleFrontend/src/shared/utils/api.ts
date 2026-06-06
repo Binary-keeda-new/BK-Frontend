@@ -5,17 +5,10 @@ export const API_BASE_URL =
 
 export const parseJsonResponse = async <T>(res: Response): Promise<T> => {
   const contentType = res.headers.get('content-type') || ''
-  const text = await res.text()
 
-  let data: any = null
+  if (!contentType.includes('application/json')) {
+    const text = await res.text()
 
-  if (contentType.includes('application/json')) {
-    try {
-      data = text ? JSON.parse(text) : null
-    } catch {
-      throw new Error('Invalid JSON response from server')
-    }
-  } else {
     const cleaned = text
       .replace(/<[^>]*>/g, ' ')
       .replace(/\s+/g, ' ')
@@ -24,24 +17,13 @@ export const parseJsonResponse = async <T>(res: Response): Promise<T> => {
     throw new Error(cleaned.slice(0, 140) || 'Server did not return JSON')
   }
 
+  const data = await res.json()
+
   if (!res.ok) {
-    console.error('API error:', res.status, data)
-
-    const detailMessage = Array.isArray(data?.detail)
-      ? data.detail
-          .map((err: any) => {
-            const field = err.loc?.join('.') || 'field'
-            return `${field}: ${err.msg}`
-          })
-          .join(', ')
-      : data?.detail
-
-    throw new Error(
-      detailMessage || data?.message || data?.error || 'Request failed'
-    )
+    throw new Error(data?.message || 'Request failed')
   }
 
-  return data as T
+  return data
 }
 
 export function buildApiUrl(path: string) {
