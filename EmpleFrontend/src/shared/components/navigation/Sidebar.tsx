@@ -46,7 +46,7 @@ const NAV_ITEMS = [
 
 const iconClass = "w-7 h-7 flex items-center justify-center flex-shrink-0";
 
-const itemBase = "has-tip flex items-center gap-[11px] px-[10px] py-[9px] rounded-[11px] cursor-pointer select-none text-[13.5px] whitespace-nowrap font-medium transition-all duration-[180ms]";
+const itemBase = "has-tip flex items-center gap-[11px] px-[10px] py-[9px] rounded-[11px] cursor-pointer select-none text-[13.5px] whitespace-nowrap font-medium transition-all duration-200";
 
 export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
@@ -82,7 +82,7 @@ export default function Sidebar() {
     <aside
       className={`
         relative z-20 flex flex-col flex-shrink-0 overflow-hidden
-        transition-all duration-[380ms] ease-[cubic-bezier(0.4,0,0.2,1)]
+        transition-all duration-300 ease-in-out
         md:w-[215px] ${collapsed ? "w-[66px]" : "w-[215px]"}
       `}
       style={{ background: "var(--surface)", borderRight: "1px solid var(--border)" }}

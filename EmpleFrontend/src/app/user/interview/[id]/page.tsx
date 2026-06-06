@@ -28,7 +28,7 @@ export default function InterviewDetailPage() {
     if (!id) return;
     setLoading(true);
     setError('');
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/interviews/${id}`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/interviews/${id}`)
       .then(res => {
         if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
         return res.json();

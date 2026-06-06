@@ -1,6 +1,7 @@
 export type JobType = 'private' | 'government';
 
 export interface GovStage {
+  name?: string;
   label: string;
   status: 'released' | 'pending';
   link?: string;

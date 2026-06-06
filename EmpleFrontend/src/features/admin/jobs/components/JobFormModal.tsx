@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Job, JobFormData, type } from '../types/jobs.types'
+import { Job, JobFormData } from '../types/jobs.types'
 import { createJob, updateJob } from '../services/jobs.service'
 
 type Props = {
@@ -16,7 +16,7 @@ const EMPTY_FORM: JobFormData = {
   company: '',
   location: '',
   description: '',
-  type: 'private',
+  jobType: 'private',
   salary: '',
   applyLink: '',
   tags: [],
@@ -128,8 +128,8 @@ export default function JobFormModal({ isOpen, editTarget, onClose, onSuccess }:
             <div>
               <label className="mb-2 block text-sm font-medium text-white/75">Job Type</label>
               <select
-                name="type"
-                value={formData.type}
+                name="jobType"
+                value={formData.jobType}
                 onChange={handleChange}
                 className="w-full rounded-2xl bg-[rgb(10,11,14)] p-3 text-white outline-none ring-1 ring-white/10"
               >
@@ -175,7 +175,7 @@ export default function JobFormModal({ isOpen, editTarget, onClose, onSuccess }:
             </div>
           </div>
 
-          {formData.type === 'government' && (
+          {formData.jobType === 'government' && (
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="mb-2 block text-sm font-medium text-white/75">Department</label>

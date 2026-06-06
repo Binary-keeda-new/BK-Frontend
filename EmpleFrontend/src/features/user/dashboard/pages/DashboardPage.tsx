@@ -16,41 +16,61 @@ type User = {
 export default function DashboardPage() {
   const { sessionToken, isAuthenticated, isSessionLoading } = useSession()
   const router = useRouter()
-  const [user, setUser] = useState<any>(null)
+  const [user, setUser] = useState<User | null>(null)
 
   useEffect(() => {
+    console.log('dashboard state ->', {
+      isSessionLoading,
+      isAuthenticated,
+      hasSessionToken: !!sessionToken,
+      apiUrl: process.env.NEXT_PUBLIC_API_URL,
+    })
+
     if (!isSessionLoading && !isAuthenticated) {
+      console.log('Not authenticated, redirecting to /auth/login')
       router.replace('/auth/login')
       return
     }
 
     const fetchUser = async () => {
       const token = sessionToken
-      if (!token) return
+
+      if (!token) {
+        console.log('No session token found')
+        return
+      }
+      
+      const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/me`
+      console.log('Fetching /me from:', url)
 
       try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/me`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        )
+        const res = await fetch(url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
 
-        if (!res.ok) throw new Error('API error')
+        const text = await res.text()
 
-        const data = await res.json()
-        console.log('USER DATA:', data)
+        console.log('/me response ->', {
+          status: res.status,
+          ok: res.ok,
+          body: text,
+        })
+
+        if (!res.ok) {
+          console.log('/me failed, redirecting to /auth/login')
+          router.replace('/auth/login')
+          return
+        }
+
+        const data = JSON.parse(text)
+        console.log('/me parsed data ->', data)
 
         setUser(data.user)
-      } catch (err) {
-        console.error('Fetch failed:', err)
-
-        setUser({
-          name: 'User',
-          email: 'user@example.com',
-        })
+      } catch (error) {
+        console.error('Error fetching /me ->', error)
+        router.replace('/auth/login')
       }
     }
 
@@ -59,20 +79,20 @@ export default function DashboardPage() {
     }
   }, [sessionToken, isAuthenticated, isSessionLoading, router])
 
-  if (isSessionLoading) {
+  if (isSessionLoading || !user) {
     return <div className="p-6">Loading dashboard...</div>
   }
 
   const displayName =
-    user?.name ||
-    (user?.email
+    user.name ||
+    (user.email
       ? user.email.split('@')[0].charAt(0).toUpperCase() +
         user.email.split('@')[0].slice(1)
       : 'User')
 
   return (
-    <main className="flex-1 overflow-y-auto p-4 sm:p-[22px_24px]">
-      <h2 className="mb-4 text-lg font-medium text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]">
+    <main className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-[22px_24px]">
+      <h2 className="text-white text-lg font-medium drop-shadow-[0_0_8px_rgba(255,255,255,0.5)] mb-4">
         Welcome,{' '}
         <span className="underline decoration-orange-500 underline-offset-4">
           {displayName}

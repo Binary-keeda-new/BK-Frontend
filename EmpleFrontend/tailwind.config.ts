@@ -1,26 +1,3 @@
-
-
-
-// import type { Config } from "tailwindcss";
-
-// const config: Config = {
-//   content: [
-//     "./src/app/**/*.{js,ts,jsx,tsx}",
-//     "./src/view/**/*.{js,ts,jsx,tsx}",
-//   ],
-//   theme: {
-//     extend: {},
-//   },
-//   plugins: [],
-// };
-
-// export default config;
-
-
-
-
-
-
 import type { Config } from "tailwindcss";
 
 const config: Config = {
@@ -33,6 +10,15 @@ const config: Config = {
       fontFamily: {
         syne: ["Syne", "sans-serif"],
         inter: ["Inter", "sans-serif"],
+      },
+      keyframes: {
+        fadeIn: {
+          "0%": { opacity: "0", transform: "translateY(-6px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+      },
+      animation: {
+        fadeIn: "fadeIn 0.15s ease",
       },
     },
   },

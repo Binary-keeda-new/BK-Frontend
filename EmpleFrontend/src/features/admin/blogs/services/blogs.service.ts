@@ -1,34 +1,55 @@
+import { apiRequest } from '@/shared/utils/api';
 import { Blog, BlogPayload } from '../types/blogs.types';
 
-const BASE = `${process.env.NEXT_PUBLIC_API_URL}/admin/blogs`;
-
-async function req<T>(url: string, options?: RequestInit): Promise<T> {
-  const res = await fetch(url, {
-    headers: { 'Content-Type': 'application/json' },
-    ...options,
-  });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.message || `Request failed: ${res.status}`);
-  }
-  return res.json();
-}
+type ApiResponse<T> = {
+  success: boolean;
+  message: string;
+  data: T;
+};
 
 export async function fetchBlogs(): Promise<Blog[]> {
-  const data = await req<{ data: Blog[] }>(BASE);
+  const data = await apiRequest<ApiResponse<Blog[]>>(
+    '/api/v1/admin/blogs',
+    {
+      method: 'GET',
+    }
+  );
+
   return data.data;
 }
 
 export async function createBlog(payload: BlogPayload): Promise<Blog> {
-  const data = await req<{ data: Blog }>(BASE, { method: 'POST', body: JSON.stringify(payload) });
+  const data = await apiRequest<ApiResponse<Blog>>(
+    '/api/v1/admin/blogs',
+    {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    }
+  );
+
   return data.data;
 }
 
-export async function updateBlog(id: string, payload: Partial<BlogPayload>): Promise<Blog> {
-  const data = await req<{ data: Blog }>(`${BASE}/${id}`, { method: 'PUT', body: JSON.stringify(payload) });
+export async function updateBlog(
+  id: string,
+  payload: Partial<BlogPayload>
+): Promise<Blog> {
+  const data = await apiRequest<ApiResponse<Blog>>(
+    `/api/v1/admin/blogs/${id}`,
+    {
+      method: 'PUT',
+      body: JSON.stringify(payload),
+    }
+  );
+
   return data.data;
 }
 
 export async function deleteBlog(id: string): Promise<void> {
-  await req(`${BASE}/${id}`, { method: 'DELETE' });
+  await apiRequest<ApiResponse<null>>(
+    `/api/v1/admin/blogs/${id}`,
+    {
+      method: 'DELETE',
+    }
+  );
 }

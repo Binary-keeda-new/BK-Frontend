@@ -1,5 +1,9 @@
+'use client';
+
+import { useRouter } from 'next/navigation';
 import InterviewExperience from '@/features/user/jobs/components/InterviewExperience';
 
 export default function InterviewPage() {
-  return <InterviewExperience />;
+  const router = useRouter();
+  return <InterviewExperience onBack={() => router.back()} />;
 }

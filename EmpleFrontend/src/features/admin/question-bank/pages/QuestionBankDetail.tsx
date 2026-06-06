@@ -10,6 +10,7 @@ import QuestionList from '../components/QuestionList'
 import ToastContainer from '../components/ToastContainer'
 import type { NewQuestion } from '../components/QuestionForm'
 import * as XLSX from 'xlsx'
+import { apiRequest } from '@/shared/utils/api'
 
 type QuestionBank = {
   _id: string
@@ -44,7 +45,6 @@ type QuestionsResponse = {
 
 type Toast = { id: number; message: string; type: 'success' | 'error' }
 
-const API_BASE = 'http://localhost:5000/api/v1/admin'
 
 const EMPTY_QUESTION: NewQuestion = {
   question: '',
@@ -87,6 +87,7 @@ function parseAiken(text: string): NewQuestion[] {
       line.replace(/^[A-Z]\.\s/, '').trim()
     )
 
+    
     const correctOptions = answerKeys
       .map((key) =>
         optionLines
@@ -259,78 +260,81 @@ export default function QuestionBankDetailPage({
     if (!id) return
 
     const fetchBank = async () => {
-      try {
-        const res = await fetch(`${API_BASE}/question-banks/${id}`)
-        const result: SingleQuestionBankResponse = await res.json()
-
-        if (!res.ok) throw new Error(result.message)
-
-        setQuestionBank(result.data)
-        setEditTitle(result.data.title)
-        setEditDescription(result.data.description)
-      } catch (err) {
-        addToast(
-          (err as Error).message || 'Failed to load question bank',
-          'error'
-        )
-      } finally {
-        setBankLoading(false)
+  try {
+    const result = await apiRequest<SingleQuestionBankResponse>(
+      `/api/v1/admin/question-banks/${id}`,
+      {
+        method: 'GET',
       }
-    }
+    )
+
+    setQuestionBank(result.data)
+    setEditTitle(result.data.title)
+    setEditDescription(result.data.description)
+  } catch (err) {
+    addToast((err as Error).message || 'Failed to load question bank', 'error')
+  } finally {
+    setBankLoading(false)
+  }
+}
 
     fetchBank()
   }, [id])
 
   const fetchQuestions = async () => {
-    setQuestionsLoading(true)
-    try {
-      const res = await fetch(`${API_BASE}/question-banks/${id}/questions`)
-      const result: QuestionsResponse = await res.json()
+  setQuestionsLoading(true)
 
-      if (!res.ok) throw new Error(result.message)
+  try {
+    const result = await apiRequest<QuestionsResponse>(
+      `/api/v1/admin/question-banks/${id}/questions`,
+      {
+        method: 'GET',
+      }
+    )
 
-      setQuestions(result.data)
-    } catch (err) {
-      addToast((err as Error).message || 'Failed to fetch questions', 'error')
-    } finally {
-      setQuestionsLoading(false)
-    }
+    setQuestions(result.data)
+  } catch (err) {
+    addToast((err as Error).message || 'Failed to fetch questions', 'error')
+  } finally {
+    setQuestionsLoading(false)
   }
+}
 
   useEffect(() => {
     if (id) fetchQuestions()
   }, [id])
 
   const handleSaveBank = async () => {
-    if (!editTitle.trim()) {
-      addToast('Title cannot be empty', 'error')
-      return
-    }
+  if (!editTitle.trim()) {
+    addToast('Title cannot be empty', 'error')
+    return
+  }
 
-    setBankSaving(true)
-    try {
-      const res = await fetch(`${API_BASE}/question-banks/${id}`, {
+  setBankSaving(true)
+
+  try {
+    await apiRequest(
+      `/api/v1/admin/question-banks/${id}`,
+      {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           title: editTitle,
           description: editDescription,
         }),
-      })
+      }
+    )
 
-      const result = await res.json()
-      if (!res.ok) throw new Error(result.message)
+    setQuestionBank((prev) =>
+      prev ? { ...prev, title: editTitle, description: editDescription } : prev
+    )
 
-      setQuestionBank((prev) =>
-        prev ? { ...prev, title: editTitle, description: editDescription } : prev
-      )
-      addToast('Question bank saved successfully')
-    } catch (err) {
-      addToast((err as Error).message || 'Failed to save', 'error')
-    } finally {
-      setBankSaving(false)
-    }
+    addToast('Question bank saved successfully')
+  } catch (err) {
+    addToast((err as Error).message || 'Failed to save', 'error')
+  } finally {
+    setBankSaving(false)
   }
+}
 
  const validateQuestion = (q: NewQuestion): string | null => {
   if (!q.question.trim()) return 'Question text is required'
@@ -360,32 +364,32 @@ export default function QuestionBankDetailPage({
 }
 
   const submitQuestions = async (questionsToAdd: NewQuestion[]) => {
-    setAddLoading(true)
-    try {
-      const res = await fetch(`${API_BASE}/question-banks/${id}/questions`, {
+  setAddLoading(true)
+
+  try {
+    await apiRequest(
+      `/api/v1/admin/question-banks/${id}/questions`,
+      {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ questions: questionsToAdd }),
-      })
+      }
+    )
 
-      const result = await res.json()
+    addToast(
+      questionsToAdd.length > 1
+        ? `${questionsToAdd.length} questions added`
+        : 'Question added successfully'
+    )
 
-      if (!res.ok) throw new Error(result.message)
-
-      addToast(
-        questionsToAdd.length > 1
-          ? `${questionsToAdd.length} questions added`
-          : 'Question added successfully'
-      )
-
-      closeAddModal()
-      fetchQuestions()
-    } catch (err) {
-      addToast((err as Error).message || 'Failed to add question', 'error')
-    } finally {
-      setAddLoading(false)
-    }
+    closeAddModal()
+    fetchQuestions()
+  } catch (err) {
+    addToast((err as Error).message || 'Failed to add question', 'error')
+  } finally {
+    setAddLoading(false)
   }
+}
+  
 
  const handleAddQuestion = () => {
   const err = validateQuestion(newQ)
@@ -517,49 +521,47 @@ export default function QuestionBankDetailPage({
   }
 
   const handleEditQuestion = async () => {
-    if (!editingQuestion) return
+  if (!editingQuestion) return
 
-    const err = validateQuestion(editQ)
-    if (err) {
-      addToast(err, 'error')
-      return
-    }
+  const err = validateQuestion(editQ)
 
-    setEditLoading(true)
-    try {
-      const res = await fetch(
-        `${API_BASE}/question-banks/${id}/questions/${editingQuestion._id}`,
-        {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            ...editQ,
-            options:
-              editQ.questionType === 'NAT'
-                ? []
-                : editQ.options.filter((o) => o.trim()),
-            questionType:
-              editQ.questionType === 'NAT'
-                ? 'NAT'
-                : editQ.correctOptions.length > 1
-                ? 'MSQ'
-                : 'MCQ',
-          }),
-        }
-      )
-
-      const result = await res.json()
-      if (!res.ok) throw new Error(result.message)
-
-      addToast('Question updated')
-      setIsEditOpen(false)
-      fetchQuestions()
-    } catch (err) {
-      addToast((err as Error).message || 'Failed to update', 'error')
-    } finally {
-      setEditLoading(false)
-    }
+  if (err) {
+    addToast(err, 'error')
+    return
   }
+
+  setEditLoading(true)
+
+  try {
+    await apiRequest(
+      `/api/v1/admin/question-banks/${id}/questions/${editingQuestion._id}`,
+      {
+        method: 'PUT',
+        body: JSON.stringify({
+          ...editQ,
+          options:
+            editQ.questionType === 'NAT'
+              ? []
+              : editQ.options.filter((o) => o.trim()),
+          questionType:
+            editQ.questionType === 'NAT'
+              ? 'NAT'
+              : editQ.correctOptions.length > 1
+              ? 'MSQ'
+              : 'MCQ',
+        }),
+      }
+    )
+
+    addToast('Question updated')
+    setIsEditOpen(false)
+    fetchQuestions()
+  } catch (err) {
+    addToast((err as Error).message || 'Failed to update', 'error')
+  } finally {
+    setEditLoading(false)
+  }
+}
 
   const handleDeleteClick = (questionId: string, questionText: string) => {
     setDeleteQuestionId(questionId)
@@ -567,29 +569,28 @@ export default function QuestionBankDetailPage({
   }
 
   const handleConfirmDelete = async () => {
-    if (!deleteQuestionId) return
+  if (!deleteQuestionId) return
 
-    setDeletingId(deleteQuestionId)
+  setDeletingId(deleteQuestionId)
 
-    try {
-      const res = await fetch(
-        `${API_BASE}/question-banks/${id}/questions/${deleteQuestionId}`,
-        { method: 'DELETE' }
-      )
+  try {
+    await apiRequest(
+      `/api/v1/admin/question-banks/${id}/questions/${deleteQuestionId}`,
+      {
+        method: 'DELETE',
+      }
+    )
 
-      const result = await res.json()
-      if (!res.ok) throw new Error(result.message)
-
-      setQuestions((prev) => prev.filter((q) => q._id !== deleteQuestionId))
-      addToast('Question deleted')
-      setDeleteQuestionId(null)
-      setDeleteQuestionText('')
-    } catch (err) {
-      addToast((err as Error).message || 'Failed to delete', 'error')
-    } finally {
-      setDeletingId(null)
-    }
+    setQuestions((prev) => prev.filter((q) => q._id !== deleteQuestionId))
+    addToast('Question deleted')
+    setDeleteQuestionId(null)
+    setDeleteQuestionText('')
+  } catch (err) {
+    addToast((err as Error).message || 'Failed to delete', 'error')
+  } finally {
+    setDeletingId(null)
   }
+}
 
   if (bankLoading) {
     return (
