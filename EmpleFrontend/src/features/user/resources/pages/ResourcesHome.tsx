@@ -35,6 +35,14 @@ const RESOURCES_CARDS = [
     topics: ["DSA", "System Design", "Web Dev"],
     color: "#f59e0b",
   },
+  {
+    title: "Interview Questions",
+    href: "/user/resources/interview-questions",
+    description: "Top interview questions and detailed solutions across subjects",
+    icon: "📚",
+    topics: ["OOP", "DBMS", "CN", "OS", "ML", "Cyber", "DevOps", "System Design"],
+    color: "#ff3b30",
+  },
 ];
 
 export default function ResourcesHome() {
