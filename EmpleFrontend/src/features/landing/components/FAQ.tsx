@@ -18,7 +18,7 @@ const faqs: FAQItem[] = [
   },
   {
     q: "Who can join Emple?",
-    a: "Emple is open to all learners — from BCA, B.Tech, MCA students to self-taught coders — anyone passionate about tech, development, and building impactful projects.",
+    a: "Emple is open to all learners - from BCA, B.Tech, MCA students to self-taught coders - anyone passionate about tech, development, and building impactful projects.",
   },
   {
     q: "Is Emple free?",
@@ -26,7 +26,7 @@ const faqs: FAQItem[] = [
   },
   {
     q: "What makes Emple different?",
-    a: "Unlike tutorial-based platforms, Emple focuses on real projects, peer collaboration, and tech-driven problem-solving — helping you build your portfolio and confidence.",
+    a: "Unlike tutorial-based platforms, Emple focuses on real projects, peer collaboration, and tech-driven problem-solving - helping you build your portfolio and confidence.",
   },
   {
     q: "How do I get started",
@@ -53,7 +53,7 @@ export default function FAQ() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
         .faq-root {
-          font-family: 'Plus Jakarta Sans', sans-serif;
+          font-family: 'Nunito', sans-serif;
           background: #0a0b0f;
           color: #eeeef4;
           -webkit-font-smoothing: antialiased;
@@ -66,7 +66,7 @@ export default function FAQ() {
           width: 100%; display: flex; align-items: center; justify-content: space-between;
           gap: 16px; background: none; border: none; cursor: pointer;
           padding: 22px 0; text-align: left;
-          font-family: 'Plus Jakarta Sans', sans-serif;
+          font-family: 'Nunito', sans-serif;
         }
         .faq-btn:hover .faq-q { color: #eeeef4; }
         .faq-q {
@@ -117,11 +117,16 @@ export default function FAQ() {
       >
         <div className="faq-glow" />
 
-        <div style={{ maxWidth: 860, marginInline: "auto", position: "relative" }}>
+        <div
+          className="content-container"
+          style={{
+            position: "relative"
+          }}
+        >
 
           {/* Label row */}
           <div className={`faq-fade${visible ? " faq-in" : ""}`} style={{ transitionDelay: "0.05s", display: "flex", alignItems: "center",   justifyContent: "center", gap: 10, marginBottom: 20 }}>
-            <span style={{ display: "inline-block", width: 28, height: 2.5, background: "#f15a22", borderRadius: 4, flexShrink: 0 }} />
+            
             <span style={{ fontWeight: 700, fontSize: "0.72rem", letterSpacing: "0.18em", textTransform: "uppercase", color: "#f15a22" }}>
               FAQ
             </span>
@@ -134,6 +139,7 @@ export default function FAQ() {
               transitionDelay: "0.15s",
               fontWeight: 900,
               fontSize: "clamp(2.2rem, 5.5vw, 3.75rem)",
+              textAlign: "center",
               lineHeight: 1.08,
               letterSpacing: "-0.03em",
               color: "#eeeef4",
