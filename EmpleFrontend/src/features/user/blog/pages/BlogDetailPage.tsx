@@ -94,7 +94,7 @@ export default function BlogDetailPage() {
 
           {/* Content Renderer */}
           <article className="blog-article-body" style={{ borderBottom: '1px solid var(--border)', paddingBottom: '60px', marginBottom: '40px' }}>
-            <BlogContentRenderer rawContent={blog.content} />
+            <BlogContentRenderer rawContent={blog.content} blocks={blog.blocks} />
           </article>
         </div>
       )}

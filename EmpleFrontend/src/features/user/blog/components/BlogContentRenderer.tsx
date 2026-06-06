@@ -3,7 +3,7 @@
 import React from 'react';
 
 // Future-proofing for structured content blocks
-export type ContentBlockType = 'paragraph' | 'heading' | 'image' | 'quote' | 'code' | 'list';
+export type ContentBlockType = 'paragraph' | 'heading' | 'image' | 'quote' | 'code' | 'list' | 'text' | 'divider';
 
 export interface ContentBlock {
   type: ContentBlockType;
@@ -52,9 +52,16 @@ export default function BlogContentRenderer({ rawContent, blocks }: Props) {
                   {block.content.split('\n').map((item, i) => <li key={i} style={{ marginBottom: '12px' }}>{item}</li>)}
                 </ul>
               );
+            case 'divider':
+              return <hr key={index} style={{ border: 'none', borderTop: '2px solid var(--border)', margin: '40px 0' }} />;
+            case 'text':
             case 'paragraph':
             default:
-              return <p key={index} style={{ fontSize: '18px', lineHeight: 1.9, color: 'var(--text)', marginBottom: 0 }}>{block.content}</p>;
+              return (
+                <div key={index} style={{ fontSize: '18px', lineHeight: 1.9, color: 'var(--text)', marginBottom: 0, whiteSpace: 'pre-wrap' }}>
+                  {block.content}
+                </div>
+              );
           }
         })}
       </div>

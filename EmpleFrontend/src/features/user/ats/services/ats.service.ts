@@ -7,9 +7,8 @@ import type {
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
-/* ═══════════════════════════════════════════
-   HELPERS
-═══════════════════════════════════════════ */
+
+   //HELPERS
 
 async function handleResponse<T>(response: Response): Promise<T> {
   const data: ATSApiResponse<T> = await response.json();
@@ -25,9 +24,9 @@ async function handleResponse<T>(response: Response): Promise<T> {
   return data.data;
 }
 
-/* ═══════════════════════════════════════════
-   STANDARD ATS
-═══════════════════════════════════════════ */
+
+   //STANDARD ATS
+
 
 export async function analyzeStandard(
   file: File,
@@ -52,9 +51,9 @@ export async function analyzeStandard(
   return handleResponse<StandardATSResult>(response);
 }
 
-/* ═══════════════════════════════════════════
-   AI ATS
-═══════════════════════════════════════════ */
+
+   //AI ATS
+
 
 export async function analyzeAI(
   file: File,

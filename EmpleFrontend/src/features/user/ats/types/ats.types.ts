@@ -1,14 +1,12 @@
-/* ═══════════════════════════════════════════
-   ATS MODULE — TYPE DEFINITIONS
-═══════════════════════════════════════════ */
 
-/** Active analysis mode */
+
+
 export type ATSMode = 'standard' | 'ai';
 
-/** Current state of an analysis run */
+
 export type ATSAnalysisState = 'idle' | 'loading' | 'success' | 'error';
 
-/* ─── Standard ATS ─── */
+
 
 export interface StandardATSResult {
   score: number;
@@ -21,7 +19,7 @@ export interface StandardATSResult {
   resume_skills?: string[];
 }
 
-/* ─── AI ATS ─── */
+
 
 export interface SkillAlignment {
   semantic_score: number;
@@ -115,7 +113,7 @@ export interface ATSApiResponse<T> {
   error?: string;
 }
 
-/* ─── Component Props ─── */
+
 
 export interface ScoreRingProps {
   score: number;
