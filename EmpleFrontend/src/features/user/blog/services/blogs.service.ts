@@ -1,6 +1,6 @@
 import { Blog } from '../types/blogs.types';
 
-const API_BASE = `${process.env.NEXT_PUBLIC_API_URL}/blogs`;
+const API_BASE = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/blogs`;
 
 export async function fetchBlogs(): Promise<Blog[]> {
   const res = await fetch(API_BASE, { cache: 'no-store' });
