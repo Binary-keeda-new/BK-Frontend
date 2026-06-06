@@ -73,14 +73,26 @@ export default function LoginPage() {
       })
 
       const syncText = await syncRes.text()
-      console.log('login sync ->', syncRes.status, syncText)
+console.log('login sync ->', syncRes.status, syncText)
 
-      if (!syncRes.ok) {
-        setError(`Login succeeded, but sync failed: ${syncRes.status} ${syncText}`)
-        return
-      }
+if (!syncRes.ok) {
+  setError(`Login succeeded, but sync failed: ${syncRes.status} ${syncText}`)
+  return
+}
 
+    const syncData = JSON.parse(syncText)
+    const user = syncData.data?.user || syncData.user
+    const role = user?.role
+
+    localStorage.setItem('token', token)
+    localStorage.setItem('role', role || 'user')
+
+    if (role === 'admin') {
+      router.replace('/dashboard')
+    } else {
       router.replace('/user/dashboard')
+    }
+    
     } catch (err) {
       console.error('Login error:', err)
       setError('Something went wrong. Please try again.')

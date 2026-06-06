@@ -2,12 +2,9 @@
 
 import { useEffect, useRef, useState } from 'react';
 import ToastContainer from '@/features/admin/question-bank/components/ToastContainer';
-import {
-  EyeIcon,
-  EditIcon,
-  TrashIcon,
-} from '../../dashboard/components/icons';
+import { EyeIcon, EditIcon, TrashIcon } from '../../dashboard/components/icons';
 import { QUIZ_CATEGORIES } from '@/shared/constants/quizCategories';
+import { apiRequest } from '@/shared/utils/api';
 
 interface Quiz {
   _id: string;
@@ -40,7 +37,6 @@ interface QuizListResponse {
 }
 
 const PAGE_SIZE = 5;
-const API_BASE = 'http://localhost:5000/api/v1/admin';
 
 export default function QuizzesContent({
   refreshKey,
@@ -78,20 +74,7 @@ export default function QuizzesContent({
     }, 3000);
   };
 
-  const parseJsonResponse = async <T,>(res: Response): Promise<T> => {
-    const contentType = res.headers.get('content-type') || '';
-
-    if (!contentType.includes('application/json')) {
-      const text = await res.text();
-      throw new Error(text.slice(0, 120) || 'Server did not return JSON');
-    }
-
-    return res.json();
-  };
-
-
-
-  const buildQuizListUrl = (currentPage: number) => {
+  const buildQuizListPath = (currentPage: number) => {
     const params = new URLSearchParams({
       page: String(currentPage),
       limit: String(PAGE_SIZE),
@@ -100,26 +83,19 @@ export default function QuizzesContent({
     if (search.trim()) params.set('search', search.trim());
     if (categoryFilter) params.set('category', categoryFilter);
 
-    return `${API_BASE}/quizzes?${params.toString()}`;
+    return `/api/v1/admin/quizzes?${params.toString()}`;
   };
 
   const fetchQuizzes = async (currentPage: number) => {
     try {
       setLoading(true);
 
-      const res = await fetch(buildQuizListUrl(currentPage), {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        cache: 'no-store',
-      });
-
-      const result: QuizListResponse = await parseJsonResponse(res);
-
-      if (!res.ok) {
-        throw new Error(result.message || 'Failed to fetch quizzes');
-      }
+      const result = await apiRequest<QuizListResponse>(
+        buildQuizListPath(currentPage),
+        {
+          method: 'GET',
+        }
+      );
 
       setQuizzes(result.data || []);
       setTotalPages(result.pagination?.totalPages || 1);
@@ -160,19 +136,12 @@ export default function QuizzesContent({
     try {
       setDeleteLoading(true);
 
-      const res = await fetch(`${API_BASE}/quizzes/${quizToDelete._id}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      const result: { success: boolean; message: string } =
-        await parseJsonResponse(res);
-
-      if (!res.ok) {
-        throw new Error(result.message || 'Failed to delete quiz');
-      }
+      await apiRequest<{ success: boolean; message: string }>(
+        `/api/v1/admin/quizzes/${quizToDelete._id}`,
+        {
+          method: 'DELETE',
+        }
+      );
 
       addToast('Quiz deleted successfully!', 'success');
       setQuizToDelete(null);
@@ -242,10 +211,10 @@ export default function QuizzesContent({
             >
               <option value="">All Categories</option>
               {Object.keys(QUIZ_CATEGORIES).map((category) => (
-  <option key={category} value={category}>
-    {category}
-  </option>
-))}
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
             </select>
 
             <div className="flex gap-2">

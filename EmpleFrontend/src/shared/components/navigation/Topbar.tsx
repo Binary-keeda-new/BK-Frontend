@@ -3,14 +3,23 @@
 import { useState, useRef, useEffect } from "react";
 import { Clapperboard, Sparkles, Bell, User, LogOut } from "lucide-react";
 import { useDescope, useSession, useUser } from "@descope/nextjs-sdk/client";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
+
 
 export default function Topbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  
+  
   const dropdownRef = useRef<HTMLDivElement>(null);
   const sdk = useDescope();
   const router = useRouter();
+<<<<<<< HEAD
+  
 
+  // useUser is more reliable for profile data than useSession on localhost
+=======
+
+>>>>>>> develop
   const { session } = useSession() as any;
   const { user, isUserLoading } = useUser();
 
@@ -55,17 +64,86 @@ export default function Topbar() {
       document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const iconBtns = [
-    { title: "Media - Coming Soon", icon: <Clapperboard size={22} /> },
-    { title: "Emple AI", icon: <Sparkles size={22} /> },
-    { title: "Notifications", icon: <Bell size={20} /> },
-  ];
-
   return (
+<<<<<<< HEAD
+    <>
+      <style>{`
+        .enhanced-navbar {
+          backdrop-filter: blur(10px);
+          background: var(--surface);
+          border-bottom: 1px solid var(--border);
+          box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+        }
+        .logo-text em { color: var(--orange); }
+        .coin-badge {
+          background: rgba(253,216,53,0.1);
+          border: 1px solid rgba(253,216,53,0.3);
+          color: #f0c030;
+          transition: all 0.3s ease;
+        }
+        .coin-badge:hover { background: rgba(253,216,53,0.18); transform: translateY(-1px); }
+        .nav-icon-btn {
+          width: 44px; height: 44px; border-radius: 50%;
+          display: flex; align-items: center; justify-content: center;
+          cursor: pointer; border: none; background: transparent;
+          color: var(--muted2);
+          transition: all 0.3s ease;
+        }
+        .nav-icon-btn:hover, .nav-icon-btn.active {
+          transform: translateY(-2px);
+          background-color: rgba(241, 90, 34, 0.1) !important;
+          color: var(--orange) !important;
+        }
+        .nav-icon-btn.active {
+          box-shadow: 0 0 12px rgba(241, 90, 34, 0.2);
+        }
+        /* Hide less critical icon buttons on small screens */
+        @media (max-width: 480px) {
+          .nav-icon-btn.hide-mobile { display: none; }
+          .coin-badge { padding: 4px 8px; }
+          .coin-badge .coin-label { display: none; }
+        }
+        .user-avatar {
+          border: 2px solid var(--border);
+          box-shadow: 0 2px 8px rgba(241,90,34,0.3);
+          transition: all 0.3s ease;
+          cursor: pointer;
+        }
+        .user-avatar:hover { transform: scale(1.1); box-shadow: 0 4px 14px rgba(241,90,34,0.45); }
+        .avatar-dropdown {
+          position: absolute;
+          top: 54px; right: 0;
+          min-width: 160px;
+          border-radius: 12px;
+          overflow: hidden;
+          z-index: 100;
+          background: var(--surface);
+          border: 1px solid var(--border);
+          box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+          animation: fadeIn 0.15s ease;
+        }
+        .dropdown-item {
+          display: flex; align-items: center; gap: 10px;
+          padding: 11px 16px; cursor: pointer;
+          font-size: 14px; font-weight: 500;
+          color: var(--text);
+          transition: background 0.15s;
+        }
+        .dropdown-item:hover { background: var(--orange-dim); color: var(--orange); }
+        .dropdown-item.logout { color: #ef4444 !important; }
+        .dropdown-item.logout:hover { background: rgba(239,68,68,0.1) !important; }
+        .dropdown-divider { height: 1px; margin: 0; background: var(--border); }
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(-6px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
+=======
     <header className="relative h-[62px]">
       <nav className="fixed top-0 left-0 z-40 w-full h-[62px] flex items-center justify-between px-3 sm:px-6 pr-4 sm:pr-8
         backdrop-blur-md bg-[var(--surface)] border-b border-[var(--border)]
         shadow-[0_2px_12px_rgba(0,0,0,0.3)]">
+>>>>>>> develop
 
         {/* Logo */}
         <div className="flex items-center">
@@ -125,11 +203,35 @@ export default function Topbar() {
               {!isUserLoading && initials}
             </div>
 
+<<<<<<< HEAD
+            {/* Icon Buttons */}
+            <button
+  title="Media Feed"
+  className="nav-icon-btn hide-mobile"
+>
+  <Clapperboard size={22} />
+</button>
+            
+            <button
+  title="Emple AI"
+  className="nav-icon-btn"
+>
+  <Sparkles size={22} />
+</button>
+
+            <button
+              title="Notifications"
+              className="nav-icon-btn"
+            >
+              <Bell size={20} />
+            </button>
+=======
             {dropdownOpen && (
               <div className="absolute right-0 top-[54px] w-40 rounded-xl overflow-hidden z-50
                 bg-[var(--surface)] border border-[var(--border)]
                 shadow-[0_8px_24px_rgba(0,0,0,0.4)]
                 animate-[fadeIn_0.15s_ease]">
+>>>>>>> develop
 
                 <div className="px-4 py-2 text-[11px] opacity-70">
                   {displayName}
@@ -157,9 +259,17 @@ export default function Topbar() {
               </div>
             )}
           </div>
+<<<<<<< HEAD
+        </nav>
+      </header>
+
+      
+    </>
+=======
 
         </div>
       </nav>
     </header>
+>>>>>>> develop
   );
 }
