@@ -104,7 +104,7 @@ useEffect(() => {
             {/*<div className="auth-logo-badge"><span>e</span></div>*/}
           
           
-          <div className="auth-logo-badge">
+          {/*<div className="auth-logo-badge">
             <Image
               src="/logo-isolated.png"
               alt="logo"
@@ -112,7 +112,7 @@ useEffect(() => {
               height={100}
               className="object-contain"
             />
-          </div>
+          </div>*/}
             <h1 className="auth-title">Welcome <em>back</em></h1>
             <p className="auth-subtitle">Sign in to continue your placement journey</p>
           </div>
@@ -206,9 +206,7 @@ useEffect(() => {
               ) : (
                 <>
                   Sign In
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
-                  </svg>
+                  
                 </>
               )}
             </button>
@@ -216,25 +214,11 @@ useEffect(() => {
 
           <p className="auth-redirect">
             Don&apos;t have an account?{' '}
-            <Link href="/auth/signup" className="auth-link">Create one free →</Link>
+            <Link href="/auth/signup" className="auth-link">Create one free </Link>
           </p>
         </div>
 
-        <div className="auth-stats-strip">
-          {[
-            { val: '50K+', lbl: 'Users' },
-            { val: '12K+', lbl: 'Placed' },
-            { val: '4.9★', lbl: 'Rating' },
-          ].map((s, i) => (
-            <Fragment key={s.lbl}>
-              {i > 0 && <div className="auth-stat-div" />}
-              <div className="auth-stat">
-                <div className="auth-stat-val">{s.val}</div>
-                <div className="auth-stat-lbl">{s.lbl}</div>
-              </div>
-            </Fragment>
-          ))}
-        </div>
+        
       </div>
     </AuthLayout>
   )

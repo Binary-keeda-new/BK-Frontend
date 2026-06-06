@@ -149,7 +149,7 @@ const handleSubmit = async (e: React.FormEvent) => {
       <div className="auth-card-wrap" style={{ maxWidth: 600 }}>
         <div className="auth-card">
           <div className="auth-header">
-            <div className="auth-logo-badge">
+            {/*<div className="auth-logo-badge">
               <Image
                 src="/logo-isolated.png"
                 alt="logo"
@@ -157,7 +157,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                 height={100}
                 className="object-contain"
               />
-            </div>
+            </div>*/}
 
             <h1 className="auth-title">Join <em>Emple</em></h1>
             <p className="auth-subtitle">Your AI-powered placement journey starts here</p>
@@ -305,11 +305,11 @@ const handleSubmit = async (e: React.FormEvent) => {
             </button>
           </form>
 
-          <p className="auth-terms">By signing up, you get access to our free plan — no credit card required.</p>
+          <p className="auth-terms">By signing up, you get access to our free plan - no credit card required.</p>
 
           <p className="auth-redirect">
             Already have an account?{' '}
-            <Link href="/auth/login" className="auth-link">Sign in →</Link>
+            <Link href="/auth/login" className="auth-link">Sign in </Link>
           </p>
         </div>
       </div>

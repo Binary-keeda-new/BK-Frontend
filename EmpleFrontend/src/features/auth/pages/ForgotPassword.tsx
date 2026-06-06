@@ -85,9 +85,9 @@ export default function ForgotPasswordPage() {
             /* ── STEP 1: Enter email ── */
             <>
               <div className="auth-header">
-                <div className="auth-logo-badge" style={{ background: 'var(--clr-surface2)', border: '1.5px solid var(--clr-border2)', boxShadow: 'none' }}>
+                {/*<div className="auth-logo-badge" style={{ background: 'var(--clr-surface2)', border: '1.5px solid var(--clr-border2)', boxShadow: 'none' }}>
                   
-                </div>
+                </div>*/}
                 <h1 className="auth-title">Forgot your <em>password?</em></h1>
                 <p className="auth-subtitle">
                   No worries — enter your registered email and we&apos;ll send you a reset link instantly.

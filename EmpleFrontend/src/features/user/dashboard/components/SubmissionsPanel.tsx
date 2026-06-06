@@ -169,7 +169,7 @@ export default function SubmissionsPanel() {
                     border: "1px solid var(--border)",
                   }}
                 >
-                  View →
+                  View 
                 </button>
               </div>
             </div>
@@ -213,7 +213,7 @@ export default function SubmissionsPanel() {
                   border: "1px solid var(--border)",
                 }}
               >
-                View →
+                View 
               </button>
             </div>
           </div>

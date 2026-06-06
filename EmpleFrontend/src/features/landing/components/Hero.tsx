@@ -289,7 +289,7 @@ export default function Hero() {
         <div className="hero-left">
           <div className="hero-eyebrow">
             <span className="eyebrow-dot" />
-            AI-Powered Mock Interviews — Now Live
+            AI-Powered Mock Interviews - Now Live
           </div>
 
           <h1 className="hero-h1">
@@ -299,7 +299,7 @@ export default function Hero() {
           </h1>
 
           <p className="hero-desc">
-            Your AI-powered Placement Preparation Ecosystem- practice coding interviews,
+            Your AI-powered Placement Preparation Ecosystem - practice coding interviews,
             score your resume against ATS, track applications, and follow expert career
             roadmaps, all in one platform built for ambitious job seekers.
           </p>
@@ -307,9 +307,7 @@ export default function Hero() {
           <div className="hero-btns">
             <Link className="hero-btn-primary" href="/auth/signup">
               Start for Free
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
-              </svg>
+              
             </Link>
             {/*<button className="hero-btn-secondary" onClick={() => scrollTo('how')}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -319,7 +317,7 @@ export default function Hero() {
             </button>*/}
           </div>
 
-          <div className="hero-stats">
+          {/*<div className="hero-stats">
             {[
               { num: '50', suffix: 'K+', label: 'Active Users' },
               { num: '98', suffix: '%', label: 'Satisfaction' },
@@ -333,7 +331,7 @@ export default function Hero() {
                 </div>
               </Fragment>
             ))}
-          </div>
+          </div>*/}
         </div>
 
         {/* RIGHT — AI Character */}

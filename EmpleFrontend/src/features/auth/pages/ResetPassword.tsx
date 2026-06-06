@@ -97,9 +97,9 @@ export default function ResetPasswordPage() {
             /* ── Reset Form ── */
             <>
               <div className="auth-header">
-                <div className="auth-logo-badge" style={{ background: 'var(--clr-surface2)', border: '1.5px solid var(--clr-border2)', boxShadow: 'none' }}>
+                {/*<div className="auth-logo-badge" style={{ background: 'var(--clr-surface2)', border: '1.5px solid var(--clr-border2)', boxShadow: 'none' }}>
                   <span style={{ fontSize: 22 }}>🔒</span>
-                </div>
+                </div>*/}
                 <h1 className="auth-title">Reset your <em>password</em></h1>
                 <p className="auth-subtitle">
                   Enter your new password below. Make sure it's strong and secure!
