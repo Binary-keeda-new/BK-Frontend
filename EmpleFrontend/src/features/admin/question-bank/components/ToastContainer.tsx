@@ -4,11 +4,12 @@ type Toast = { id: number; message: string; type: 'success' | 'error' }
 
 type Props = {
   toasts: Toast[]
+  removeToast?: (id: number) => void
 }
 
-export default function ToastContainer({ toasts }: Props) {
+export default function ToastContainer({ toasts, removeToast }: Props) {
   return (
-    <div className="fixed bottom-6 right-6 z-[100] flex flex-col gap-3">
+    <div className="fixed top-6 left-1/2 -translate-x-1/2 z-[100] flex flex-col items-center gap-3">
       {toasts.map((t) => (
         <div
           key={t.id}
@@ -22,13 +23,20 @@ export default function ToastContainer({ toasts }: Props) {
               : 'bg-red-600/90 text-white ring-1 ring-red-400/30'
           }`}
         >
-          {/* Icon */}
           <span className="text-base">
             {t.type === 'success' ? '✓' : '⚠'}
           </span>
 
-          {/* Message */}
           <span className="flex-1">{t.message}</span>
+
+          {removeToast && (
+            <button
+              onClick={() => removeToast(t.id)}
+              className="text-white/70 hover:text-white text-sm"
+            >
+              ✕
+            </button>
+          )}
         </div>
       ))}
     </div>

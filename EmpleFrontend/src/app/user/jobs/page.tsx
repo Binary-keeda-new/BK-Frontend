@@ -1,1 +1,5 @@
-export default function JobsPage() { return <div>Jobs Page</div> }
+import JobBoard from '@/features/user/jobs/components/JobBoard';
+
+export default function JobsPage() {
+  return <JobBoard />;
+}
