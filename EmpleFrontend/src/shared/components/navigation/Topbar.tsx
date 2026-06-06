@@ -3,14 +3,22 @@
 import { useState, useRef, useEffect } from "react";
 import { Clapperboard, Sparkles, Bell, User, LogOut } from "lucide-react";
 import { useDescope, useSession, useUser } from "@descope/nextjs-sdk/client";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
+
+// Restored drawer imports
+import SlideDrawer from "../ui/SlideDrawer";
+import SocialFeedPanel from "../../../features/user/social-feed/components/SocialFeedPanel";
+import AIChatPanel from "../../../features/user/ai-assistant/components/AIChatPanel";
 
 export default function Topbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [activeDrawer, setActiveDrawer] = useState<'media' | 'ai' | null>(null);
+  
   const dropdownRef = useRef<HTMLDivElement>(null);
   const sdk = useDescope();
   const router = useRouter();
   
+
   // useUser is more reliable for profile data than useSession on localhost
   const { session } = useSession() as any;
   const { user, isUserLoading } = useUser();
@@ -50,12 +58,6 @@ export default function Topbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const iconBtns = [
-    { title: "Media - Coming Soon", icon: <Clapperboard size={22} /> },
-    { title: "Emple AI", icon: <Sparkles size={22} /> },
-    { title: "Notifications", icon: <Bell size={20} /> },
-  ];
-
   return (
     <>
       <style>{`
@@ -80,10 +82,13 @@ export default function Topbar() {
           color: var(--muted2);
           transition: all 0.3s ease;
         }
-        .nav-icon-btn:hover {
+        .nav-icon-btn:hover, .nav-icon-btn.active {
           transform: translateY(-2px);
-          background-color: rgba(249,115,22,0.1) !important;
-          color: #f97316 !important;
+          background-color: rgba(241, 90, 34, 0.1) !important;
+          color: var(--orange) !important;
+        }
+        .nav-icon-btn.active {
+          box-shadow: 0 0 12px rgba(241, 90, 34, 0.2);
         }
         /* Hide less critical icon buttons on small screens */
         @media (max-width: 480px) {
@@ -152,16 +157,29 @@ export default function Topbar() {
               <span className="coin-label text-xs font-semibold">100</span>
             </div>
 
-            {/* Icon Buttons — hide Clapperboard on mobile */}
-            {iconBtns.map(({ title, icon }) => (
-              <button
-                key={title}
-                title={title}
-                className={`nav-icon-btn${title === "Media - Coming Soon" ? " hide-mobile" : ""}`}
-              >
-                {icon}
-              </button>
-            ))}
+            {/* Icon Buttons */}
+            <button
+              title="Media Feed"
+              onClick={() => setActiveDrawer(activeDrawer === 'media' ? null : 'media')}
+              className={`nav-icon-btn hide-mobile ${activeDrawer === 'media' ? 'active' : ''}`}
+            >
+              <Clapperboard size={22} />
+            </button>
+            
+            <button
+              title="Emple AI"
+              onClick={() => setActiveDrawer(activeDrawer === 'ai' ? null : 'ai')}
+              className={`nav-icon-btn ${activeDrawer === 'ai' ? 'active' : ''}`}
+            >
+              <Sparkles size={22} />
+            </button>
+
+            <button
+              title="Notifications"
+              className="nav-icon-btn"
+            >
+              <Bell size={20} />
+            </button>
 
             {/* User Avatar + Dropdown */}
             <div className="relative" ref={dropdownRef}>
@@ -196,6 +214,27 @@ export default function Topbar() {
           </div>
         </nav>
       </header>
+
+      {/* Slide Drawers */}
+      <SlideDrawer
+        isOpen={activeDrawer === 'media'}
+        onClose={() => setActiveDrawer(null)}
+        title="Social Feed"
+        width="sm"
+        icon={<Clapperboard className="w-5 h-5" />}
+      >
+        <SocialFeedPanel />
+      </SlideDrawer>
+
+      <SlideDrawer
+        isOpen={activeDrawer === 'ai'}
+        onClose={() => setActiveDrawer(null)}
+        title="Emple AI"
+        width="md"
+        icon={<Sparkles className="w-5 h-5" />}
+      >
+        <AIChatPanel />
+      </SlideDrawer>
     </>
   );
 }
