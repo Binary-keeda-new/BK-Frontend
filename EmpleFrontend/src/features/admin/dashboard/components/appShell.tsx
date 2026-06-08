@@ -23,6 +23,7 @@ interface AppShellProps {
 
 export default function AppShell({
   initialSection = 'dashboard',
+  quizId,
 }: AppShellProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -41,7 +42,7 @@ export default function AppShell({
     string | null
   >(questionBankIdFromUrl);
   const [selectedQuizId, setSelectedQuizId] = useState<string | null>(
-    quizIdFromUrl
+    quizId?.toString() || quizIdFromUrl
   );
   const [quizListRefreshKey, setQuizListRefreshKey] = useState(0);
 const [testListRefreshKey, setTestListRefreshKey] = useState(0);
@@ -62,9 +63,9 @@ const [selectedTestId, setSelectedTestId] = useState<string | null>(null);
 
   useEffect(() => {
     setActiveSection(sectionFromUrl);
-    setSelectedQuizId(quizIdFromUrl);
+    setSelectedQuizId(quizId?.toString() || quizIdFromUrl);
     setSelectedQuestionBankId(questionBankIdFromUrl);
-  }, [sectionFromUrl, quizIdFromUrl, questionBankIdFromUrl]);
+  }, [sectionFromUrl, quizIdFromUrl, questionBankIdFromUrl, quizId]);
 
   useEffect(() => {
     const handleResize = () => {
