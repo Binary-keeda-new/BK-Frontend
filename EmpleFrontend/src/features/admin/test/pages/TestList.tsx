@@ -10,8 +10,8 @@ interface Test {
   _id: string;
   title: string;
   description?: string;
-  duration: number;
-  totalMarks?: number;
+  totalSections: number;
+  status?: 'draft' | 'published';
   createdAt?: string;
   updatedAt?: string;
 }
@@ -221,7 +221,7 @@ export default function TestsContent({
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-[var(--clr-border)] bg-[var(--clr-surface2)]">
-                  {['Title', 'Description', 'Duration', 'Marks', 'Actions'].map(
+                  {['Title', 'Description', 'Sections', 'Status', 'Actions'].map(
                     (col) => (
                       <th
                         key={col}
@@ -269,14 +269,14 @@ export default function TestsContent({
                         {test.description || '-'}
                       </td>
 
-                      <td className="px-4 py-3 text-[var(--clr-text2)]">
-                        {test.duration} min
-                      </td>
-
                       <td className="px-4 py-3">
                         <span className="rounded-md bg-[var(--clr-accent3)] px-2 py-1 text-xs font-bold text-[var(--clr-accent)]">
-                          {test.totalMarks ?? 0}
+                          {test.totalSections ?? 0}
                         </span>
+                      </td>
+
+                      <td className="px-4 py-3 text-[var(--clr-text2)]">
+                        {test.status || 'draft'}
                       </td>
 
                       <td className="px-4 py-3">

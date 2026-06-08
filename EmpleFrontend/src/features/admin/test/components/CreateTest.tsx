@@ -8,7 +8,8 @@ type Test = {
   _id: string
   title: string
   description: string
-  duration: number
+  totalSections: number
+  status?: 'draft' | 'published'
   createdAt?: string
   updatedAt?: string
 }
@@ -31,7 +32,6 @@ export default function CreateTest({ isOpen, onClose, onSuccess }: Props) {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    duration: '',
   })
 
   const [loading, setLoading] = useState(false)
@@ -53,7 +53,6 @@ export default function CreateTest({ isOpen, onClose, onSuccess }: Props) {
     setFormData({
       title: '',
       description: '',
-      duration: '',
     })
     onClose()
   }
@@ -61,35 +60,36 @@ export default function CreateTest({ isOpen, onClose, onSuccess }: Props) {
   const handleCreate = async () => {
     const title = formData.title.trim()
     const description = formData.description.trim()
-    const duration = Number(formData.duration)
 
-    if (!title || !description || !duration || duration <= 0) {
+    if (!title || !description) {
       return
     }
 
     try {
       setLoading(true)
 
-      const result = await apiRequest<CreateTestResponse>('/api/v1/admin/tests', {
-  method: 'POST',
-  body: JSON.stringify({
-    title,
-    description,
-    duration,
-  }),
-})
+      const result = await apiRequest<CreateTestResponse>(
+        '/api/v1/admin/tests',
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            title,
+            description,
+            totalSections: 0,
+          }),
+        }
+      )
 
       onSuccess?.(result.data)
 
       setFormData({
         title: '',
         description: '',
-        duration: '',
       })
 
       onClose()
 
-      router.push(`/dashboard?section=test-detail&testId=${result.data._id}`)
+      router.push(`/dashboard?section=test-edit&testId=${result.data._id}`)
     } catch (err) {
       console.error('Create test failed:', err)
     } finally {
@@ -110,7 +110,8 @@ export default function CreateTest({ isOpen, onClose, onSuccess }: Props) {
 
           <button
             onClick={handleClose}
-            className="rounded-full bg-[rgb(10,11,14)] px-3 py-1 text-sm text-white/70 ring-1 ring-white/10 transition hover:text-white"
+            disabled={loading}
+            className="rounded-full bg-[rgb(10,11,14)] px-3 py-1 text-sm text-white/70 ring-1 ring-white/10 transition hover:text-white disabled:cursor-not-allowed disabled:opacity-60"
           >
             ✕
           </button>
@@ -143,6 +144,7 @@ export default function CreateTest({ isOpen, onClose, onSuccess }: Props) {
               className="w-full rounded-2xl bg-[rgb(10,11,14)] p-3 text-white outline-none ring-1 ring-white/10 placeholder:text-white/35"
             />
           </div>
+
           <div className="flex justify-end gap-3 pt-2">
             <button
               onClick={handleClose}

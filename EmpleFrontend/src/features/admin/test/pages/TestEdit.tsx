@@ -1,12 +1,25 @@
 // features/admin/tests/components/TestEdit.tsx
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import ToastContainer from '@/features/admin/question-bank/components/ToastContainer';
 import ImportTestQuestionBank from '../components/test-edit/ImportTestQuestionBank';
-import ImportTestQuestionsModal from '../components/test-edit/mportTestQuestionsModal';
+import ImportTestQuestionsModal from '../components/test-edit/ImportTestQuestionsModal';
+import { apiRequest } from '@/shared/utils/api';
 
 type SectionType = 'mcq' | 'coding';
+
+type TestResponse = {
+  success: boolean;
+  message: string;
+  data: {
+    _id: string;
+    title: string;
+    description: string;
+    totalSections: number;
+    status?: 'draft' | 'published';
+  };
+};
 
 type TestSection = {
   id: string;
@@ -35,6 +48,8 @@ const [showFileImport, setShowFileImport] = useState(false);
 
 const [importTab, setImportTab] = useState<'aiken' | 'excel' | 'json'>('aiken');
 const [importText, setImportText] = useState('');
+const [loadingTest, setLoadingTest] = useState(true);
+const [savingTest, setSavingTest] = useState(false);
 
   const [sectionForm, setSectionForm] = useState({
     type: 'mcq' as SectionType,
@@ -119,6 +134,71 @@ const [importText, setImportText] = useState('');
 const aikenFileRef = useRef<HTMLInputElement>(null);
 const jsonFileRef = useRef<HTMLInputElement>(null);
 
+useEffect(() => {
+  const fetchTest = async () => {
+    try {
+      setLoadingTest(true);
+
+      const result = await apiRequest<TestResponse>(
+        `/api/v1/admin/tests/${testId}`,
+        {
+          method: 'GET',
+        }
+      );
+
+      setTestForm({
+        title: result.data.title || '',
+        description: result.data.description || '',
+        totalSections: String(result.data.totalSections || ''),
+      });
+    } catch (error) {
+      console.error('Failed to fetch test:', error);
+      addToast(
+        error instanceof Error ? error.message : 'Failed to fetch test',
+        'error'
+      );
+    } finally {
+      setLoadingTest(false);
+    }
+  };
+
+  fetchTest();
+}, [testId]);
+
+const handleSaveTestDetails = async () => {
+  const title = testForm.title.trim();
+  const description = testForm.description.trim();
+  const totalSections = Number(testForm.totalSections);
+
+  if (!title || !description || totalSections < 0) {
+    addToast('Please fill test details correctly.', 'error');
+    return;
+  }
+
+  try {
+    setSavingTest(true);
+
+    await apiRequest<TestResponse>(`/api/v1/admin/tests/${testId}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        title,
+        description,
+        totalSections,
+      }),
+    });
+
+    addToast('Test details saved successfully.', 'success');
+  } catch (error) {
+    console.error('Failed to save test:', error);
+    addToast(
+      error instanceof Error ? error.message : 'Failed to save test',
+      'error'
+    );
+  } finally {
+    setSavingTest(false);
+  }
+};
+
 const t = {
   pageBg: 'var(--clr-bg)',
   cardBg: 'var(--clr-surface)',
@@ -133,6 +213,13 @@ const t = {
   divider: 'var(--clr-border)',
 };
 
+if (loadingTest) {
+  return (
+    <div className="p-6 text-sm text-[var(--clr-text2)]">
+      Loading test...
+    </div>
+  );
+}
   return (
     <>
       <ToastContainer toasts={toasts} />
@@ -199,16 +286,25 @@ const t = {
               />
             </div>
 
-            <div className="flex justify-end">
-              <button
-                onClick={() => setShowAddSection(true)}
-                className="rounded-2xl bg-[var(--clr-accent)] px-5 py-3 text-sm font-semibold text-white"
-              >
-                + Add Section
-              </button>
-            </div>
           </div>
         </div>
+
+        <div className="mt-4 flex justify-end gap-3">
+  <button
+    onClick={handleSaveTestDetails}
+    disabled={savingTest}
+    className="rounded-2xl border border-[var(--clr-border)] px-5 py-3 text-sm font-semibold text-[var(--clr-text)] disabled:opacity-60"
+  >
+    {savingTest ? 'Saving...' : 'Save Details'}
+  </button>
+
+  <button
+    onClick={() => setShowAddSection(true)}
+    className="rounded-2xl bg-[var(--clr-accent)] px-5 py-3 text-sm font-semibold text-white"
+  >
+    + Add Section
+  </button>
+</div>
 
         <div className="mt-6 space-y-4">
           {sections.length === 0 ? (
