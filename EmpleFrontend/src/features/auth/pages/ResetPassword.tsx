@@ -182,20 +182,18 @@ export default function ResetPasswordPage() {
           ) : (
             <>
               <div className="auth-header">
-                <div
-                  className="auth-logo-badge"
-                  style={{
-                    background: 'var(--clr-surface2)',
-                    border: '1.5px solid var(--clr-border2)',
-                    boxShadow: 'none',
-                  }}
-                >
+
+                {/*<div className="auth-logo-badge" style={{ background: 'var(--clr-surface2)', border: '1.5px solid var(--clr-border2)', boxShadow: 'none' }}>
                   <span style={{ fontSize: 22 }}>🔒</span>
-                </div>
+                </div>*/}
+               
+
+                
 
                 <h1 className="auth-title">
                   Reset your <em>password</em>
                 </h1>
+
 
                 <p className="auth-subtitle">
                   Create a strong password you can remember and keep secure.

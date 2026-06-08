@@ -7,7 +7,7 @@ const QUIZ_CARDS = [
   { title: "Aptitude", desc: "Quantitative, Logical Reasoning, Verbal", icon: "🧠", href: "/user/practice/quiz/aptitude" },
   { title: "IT Concepts", desc: "Cloud, DevOps, Databases, Security", icon: "☁️", href: "/user/practice/quiz/it-concepts" },
   { title: "UPSC Mapping", desc: "Technology mapped to UPSC syllabus", icon: "📚", href: "/user/practice/quiz/upsc" },
-  { title: "Constitution", desc: "Indian Constitution and Polity", icon: "⚖️", href: "/user/practice/quiz/constitution" },
+  { title: "Constitution", desc: "Indian Constitution and Politics", icon: "⚖️", href: "/user/practice/quiz/constitution" },
 ];
 
 export default function QuizHome() {
@@ -29,7 +29,7 @@ export default function QuizHome() {
               style={{
                 background: "var(--surface)", border: "1px solid var(--border)",
                 borderRadius: "16px", padding: "24px", cursor: "pointer",
-                transition: "all 0.2s ease",
+                transition: "all 0.2s ease", height :"100%"
               }}
               onMouseEnter={e => {
                 (e.currentTarget as HTMLElement).style.border = "1px solid var(--orange)";

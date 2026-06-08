@@ -29,22 +29,9 @@ export default function CTABand() {
             one <em>streak away</em>
           </h2>
           <p className="cta-sub">
-            Join 50,000+ students and professionals levelling up their careers with Emple.
+            Join students and professionals levelling up their careers with Emple.
           </p>
-          <div className="cta-form">
-            <input
-              className="cta-input"
-              type="email"
-              placeholder="Enter your email address…"
-              aria-label="Email address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <button className="cta-submit" onClick={() => alert('Welcome to Emple!')}>
-              Start Free →
-            </button>
-          </div>
-          <p className="cta-note">Free forever plan available. No credit card required.</p>
+          
         </div>
       </div>
     </section>

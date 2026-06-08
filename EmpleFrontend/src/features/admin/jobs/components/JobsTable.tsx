@@ -104,12 +104,12 @@ export default function JobsTable() {
                   <h2 className="text-xl font-bold text-white">{job.title}</h2>
                   <span
                     className={`shrink-0 rounded-full px-3 py-1 text-xs font-medium capitalize ${
-                      job.jobType === 'government'
+                      job.type === 'government'
                         ? 'bg-blue-500/10 text-blue-400'
                         : 'bg-[rgb(241,90,34)]/10 text-[rgb(241,90,34)]'
                     }`}
                   >
-                    {job.jobType}
+                    {job.type}
                   </span>
                 </div>
 

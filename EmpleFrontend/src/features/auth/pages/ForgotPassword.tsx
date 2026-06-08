@@ -87,20 +87,17 @@ export default function ForgotPasswordPage() {
           {!sent ? (
             <>
               <div className="auth-header">
-                <div
-                  className="auth-logo-badge"
-                  style={{
-                    background: 'var(--clr-surface2)',
-                    border: '1.5px solid var(--clr-border2)',
-                    boxShadow: 'none',
-                  }}
-                >
-                  <span style={{ fontSize: 22 }}>🔑</span>
-                </div>
 
+                {/*<div className="auth-logo-badge" style={{ background: 'var(--clr-surface2)', border: '1.5px solid var(--clr-border2)', boxShadow: 'none' }}>
+                  
+                </div>*/}
+                <h1 className="auth-title">Forgot your <em>password?</em></h1>
+
+                
                 <h1 className="auth-title">
                   Forgot your <em>password?</em>
                 </h1>
+
 
                 <p className="auth-subtitle">
                   Enter your registered email address and we&apos;ll send you a

@@ -1,0 +1,7 @@
+flask
+flask-cors
+pymupdf
+spacy
+skillNer
+google-generativeai
+python-dotenv

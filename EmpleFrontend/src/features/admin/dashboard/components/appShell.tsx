@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useAppAuth } from '@/providers/AppAuthProvider';
+
 import Sidebar, { type AdminSection } from './sidebar';
 import Topbar from './topbar';
 import DashboardContent from './dashboardContent';
@@ -16,13 +18,17 @@ import QuizForm from '../../quiz/components/QuizForm';
 
 interface AppShellProps {
   initialSection?: AdminSection;
+  quizId?: number;
 }
 
 export default function AppShell({
   initialSection = 'dashboard',
+  quizId,
 }: AppShellProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  const { user, loading, isAdmin } = useAppAuth();
 
   const sectionFromUrl =
     (searchParams.get('section') as AdminSection) || initialSection;
@@ -36,15 +42,30 @@ export default function AppShell({
     string | null
   >(questionBankIdFromUrl);
   const [selectedQuizId, setSelectedQuizId] = useState<string | null>(
-    quizIdFromUrl
+    quizId?.toString() || quizIdFromUrl
   );
   const [quizListRefreshKey, setQuizListRefreshKey] = useState(0);
+const [testListRefreshKey, setTestListRefreshKey] = useState(0);
+const [selectedTestId, setSelectedTestId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (loading) return;
+
+    if (!user) {
+      router.replace('/auth/login');
+      return;
+    }
+
+    if (!isAdmin) {
+      router.replace('/user/dashboard');
+    }
+  }, [loading, user, isAdmin, router]);
 
   useEffect(() => {
     setActiveSection(sectionFromUrl);
-    setSelectedQuizId(quizIdFromUrl);
+    setSelectedQuizId(quizId?.toString() || quizIdFromUrl);
     setSelectedQuestionBankId(questionBankIdFromUrl);
-  }, [sectionFromUrl, quizIdFromUrl, questionBankIdFromUrl]);
+  }, [sectionFromUrl, quizIdFromUrl, questionBankIdFromUrl, quizId]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -164,6 +185,15 @@ export default function AppShell({
       questionBankId: id,
     });
   };
+  
+  const openTestEdit = (id: string) => {
+  setSelectedTestId(id);
+  setActiveSection('test-edit');
+
+  updateUrl({
+    section: 'test-edit',
+  });
+};
 
   const renderContent = () => {
     switch (activeSection) {
@@ -258,11 +288,12 @@ export default function AppShell({
         );
 
       case 'tests':
-        return (
-          <div className="p-6 text-[var(--clr-text)] md:p-10">
-            Tests content goes here.
-          </div>
-        );
+  return (
+    <div className='p-6 text-[var(--clr-text)] md:p-10'>
+      test content goes here.
+    </div>
+  );
+
 
       case 'coding-problems':
         return (
@@ -279,6 +310,18 @@ export default function AppShell({
         );
     }
   };
+
+  if (loading) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-[var(--clr-bg)] text-[var(--clr-text)]">
+        Loading...
+      </div>
+    );
+  }
+
+  if (!user || !isAdmin) {
+    return null;
+  }
 
   return (
     <div className="flex h-screen overflow-hidden bg-[var(--clr-bg)]">

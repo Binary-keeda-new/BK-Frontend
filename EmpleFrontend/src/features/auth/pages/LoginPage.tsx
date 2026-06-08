@@ -73,14 +73,26 @@ export default function LoginPage() {
       })
 
       const syncText = await syncRes.text()
-      console.log('login sync ->', syncRes.status, syncText)
+console.log('login sync ->', syncRes.status, syncText)
 
-      if (!syncRes.ok) {
-        setError(`Login succeeded, but sync failed: ${syncRes.status} ${syncText}`)
-        return
-      }
+if (!syncRes.ok) {
+  setError(`Login succeeded, but sync failed: ${syncRes.status} ${syncText}`)
+  return
+}
 
+    const syncData = JSON.parse(syncText)
+    const user = syncData.data?.user || syncData.user
+    const role = user?.role
+
+    localStorage.setItem('token', token)
+    localStorage.setItem('role', role || 'user')
+
+    if (role === 'admin') {
+      router.replace('/dashboard')
+    } else {
       router.replace('/user/dashboard')
+    }
+    
     } catch (err) {
       console.error('Login error:', err)
       setError('Something went wrong. Please try again.')
@@ -94,19 +106,25 @@ export default function LoginPage() {
       <div className="auth-card-wrap">
         <div className="auth-card">
           <div className="auth-header">
-            <div className="auth-logo-badge">
-              <Image
-                src="/logo-isolated.png"
-                alt="logo"
-                width={100}
-                height={100}
-                className="object-contain"
-              />
-            </div>
+
+            {/*<div className="auth-logo-badge"><span>e</span></div>*/}
+          
+          
+          {/*<div className="auth-logo-badge">
+            <Image
+              src="/logo-isolated.png"
+              alt="logo"
+              width={100}
+              height={100}
+              className="object-contain"
+            />
+          </div>*/}
+            
 
             <h1 className="auth-title">
               Welcome <em>back</em>
             </h1>
+
             <p className="auth-subtitle">Sign in to continue your placement journey</p>
           </div>
 
@@ -264,6 +282,9 @@ export default function LoginPage() {
               ) : (
                 <>
                   Sign In
+
+                  
+
                   <svg
                     width="16"
                     height="16"
@@ -284,27 +305,15 @@ export default function LoginPage() {
 
           <p className="auth-redirect">
             Don&apos;t have an account?{' '}
-            <Link href="/auth/signup" className="auth-link">
-              Create one free →
-            </Link>
+
+            <Link href="/auth/signup" className="auth-link">Create one free </Link>
+
+            
+
           </p>
         </div>
 
-        <div className="auth-stats-strip">
-          {[
-            { val: '50K+', lbl: 'Users' },
-            { val: '12K+', lbl: 'Placed' },
-            { val: '4.9★', lbl: 'Rating' },
-          ].map((s, i) => (
-            <Fragment key={s.lbl}>
-              {i > 0 && <div className="auth-stat-div" />}
-              <div className="auth-stat">
-                <div className="auth-stat-val">{s.val}</div>
-                <div className="auth-stat-lbl">{s.lbl}</div>
-              </div>
-            </Fragment>
-          ))}
-        </div>
+        
       </div>
     </AuthLayout>
   )

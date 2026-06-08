@@ -1,0 +1,40 @@
+{
+  "name": "emple_backend",
+  "version": "1.0.0",
+  "description": "emple backend",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EmplePortal/Emple_Backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/EmplePortal/Emple_Backend/issues"
+  },
+  "homepage": "https://github.com/EmplePortal/Emple_Backend#readme",
+  "dependencies": {
+    "@descope/node-sdk": "^1.10.0",
+    "@google/generative-ai": "^0.24.1",
+    "axios": "^1.17.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.3.2",
+    "express-validator": "^7.3.2",
+    "form-data": "^4.0.5",
+    "mammoth": "^1.12.0",
+    "mongoose": "^9.2.4",
+    "multer": "^2.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

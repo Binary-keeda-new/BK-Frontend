@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { apiRequest } from '@/shared/utils/api';
 
 interface PreviewQuestion {
   _id: string;
@@ -28,7 +29,7 @@ interface PreviewResponse {
   data: PreviewQuiz;
 }
 
-const API_BASE = 'http://localhost:5000/api/v1/admin';
+
 
 const BackIcon = () => (
   <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -147,38 +148,26 @@ export default function QuizPreviewContent({
     if (!quizId) return;
 
     const fetchPreview = async () => {
-      try {
-        setLoading(true);
-        setError('');
+  try {
+    setLoading(true);
+    setError('');
 
-        const res = await fetch(`${API_BASE}/quizzes/${quizId}/preview`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          cache: 'no-store',
-        });
-
-        const contentType = res.headers.get('content-type') || '';
-
-        if (!contentType.includes('application/json')) {
-          const text = await res.text();
-          throw new Error(text.slice(0, 120) || 'Server did not return JSON');
-        }
-
-        const result: PreviewResponse = await res.json();
-
-        if (!res.ok) {
-          throw new Error(result.message || 'Failed to fetch quiz preview');
-        }
-
-        setQuiz(result.data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to fetch quiz preview');
-      } finally {
-        setLoading(false);
+    const result = await apiRequest<PreviewResponse>(
+      `/api/v1/admin/quizzes/${quizId}/preview`,
+      {
+        method: 'GET',
       }
-    };
+    );
+
+    setQuiz(result.data);
+  } catch (err) {
+    setError(
+      err instanceof Error ? err.message : 'Failed to fetch quiz preview'
+    );
+  } finally {
+    setLoading(false);
+  }
+};
 
     fetchPreview();
   }, [quizId]);
