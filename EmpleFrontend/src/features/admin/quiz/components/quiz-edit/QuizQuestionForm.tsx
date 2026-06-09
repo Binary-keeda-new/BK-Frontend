@@ -42,6 +42,48 @@ export default function QuizQuestionForm({
         />
       </div>
 
+      <div className="mb-6">
+  <QuizEditFieldLabel color={t.labelColor}>
+    Solution
+  </QuizEditFieldLabel>
+
+  <textarea
+    rows={4}
+    placeholder="Add solution / explanation for this question…"
+    value={question.solution || ""}
+    onChange={(e) =>
+      updateQ(question.id, { solution: e.target.value })
+    }
+    className="qph w-full resize-none rounded-[10px] border px-4 py-3 outline-none transition-all focus:border-[var(--clr-accent)] focus:shadow-[0_0_0_3px_rgba(241,90,34,0.12)]"
+    style={{
+      background: t.inputBg,
+      borderColor: t.inputBorder,
+      color: t.inputText,
+    }}
+  />
+</div>
+
+<div className="mb-6">
+  <QuizEditFieldLabel color={t.labelColor}>
+    Solution Media URL
+  </QuizEditFieldLabel>
+
+  <input
+    type="text"
+    placeholder="Optional solution image/video/file URL"
+    value={question.solutionMedia || ""}
+    onChange={(e) =>
+      updateQ(question.id, { solutionMedia: e.target.value })
+    }
+    className="qph w-full rounded-[10px] border px-4 py-3 outline-none transition-all focus:border-[var(--clr-accent)] focus:shadow-[0_0_0_3px_rgba(241,90,34,0.12)]"
+    style={{
+      background: t.inputBg,
+      borderColor: t.inputBorder,
+      color: t.inputText,
+    }}
+  />
+</div>
+
       {question.type !== "NAT" && (
         <div className="mb-6">
           <div className="mb-3 flex items-center justify-between">
