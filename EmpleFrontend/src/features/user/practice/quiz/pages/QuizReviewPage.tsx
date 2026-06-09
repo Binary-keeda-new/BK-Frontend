@@ -350,18 +350,18 @@ export default function QuizReviewPage() {
                           "rounded-xl border px-4 py-3 text-sm transition";
 
                         if (isSelected && isCorrect) {
-  optionClassName +=
-    " border-emerald-500 bg-emerald-500/15 text-emerald-200";
-} else if (isSelected && !isCorrect) {
-  optionClassName +=
-    " border-red-500/70 bg-red-500/10 text-red-300";
-} else if (isCorrect) {
-  optionClassName +=
-    " border-emerald-500/70 bg-emerald-500/10 text-emerald-300";
-} else {
-  optionClassName +=
-    " border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface,#161820)] text-[var(--muted2,#8a8a9a)]";
-}
+                        optionClassName +=
+                          " border-emerald-500 bg-emerald-500/15 text-emerald-200";
+                      } else if (isSelected && !isCorrect) {
+                        optionClassName +=
+                          " border-red-500/70 bg-red-500/10 text-red-300";
+                      } else if (isCorrect) {
+                        optionClassName +=
+                          " border-emerald-500/70 bg-emerald-500/10 text-emerald-300";
+                      } else {
+                        optionClassName +=
+                          " border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface,#161820)] text-[var(--muted2,#8a8a9a)]";
+                      }
 
                         return (
                           <div key={option} className={optionClassName}>
@@ -387,7 +387,30 @@ export default function QuizReviewPage() {
                       })}
                     </div>
                   )}
+
+                  {(answer.solution || answer.solutionMedia) && (
+  <div className="rounded-2xl border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface,#161820)] p-4">
+    <p className="text-xs font-semibold tracking-[0.08em] text-[var(--orange,#f15a22)]">
+      SOLUTION
+    </p>
+
+    {answer.solution && (
+      <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-[var(--muted2,#8a8a9a)]">
+        {answer.solution}
+      </p>
+    )}
+
+    {answer.solutionMedia && (
+      <img
+        src={answer.solutionMedia}
+        alt="Solution"
+        className="mt-3 max-w-full rounded-xl border border-[var(--border,rgba(255,255,255,0.07))]"
+      />
+    )}
+  </div>
+)}
                 </div>
+
               </article>
             );
           })}
