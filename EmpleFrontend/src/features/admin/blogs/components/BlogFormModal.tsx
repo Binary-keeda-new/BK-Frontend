@@ -113,13 +113,13 @@ export default function BlogFormModal({ blog, onSave, onClose }: Props) {
         .btn-add:hover { border-color: var(--orange); color: var(--orange); background: var(--orange-dim); }
       `}</style>
 
-      <div onClick={onClose} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(2px)', zIndex: 40 }} />
+      <div onClick={onClose} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(2px)', zIndex: 9998 }} />
 
       <div style={{
         position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%,-50%)',
         width: 'min(700px, calc(100vw - 32px))', maxHeight: 'calc(100vh - 48px)',
         background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 18,
-        zIndex: 50, display: 'flex', flexDirection: 'column',
+        zIndex: 9999, display: 'flex', flexDirection: 'column',
         animation: 'modalIn 0.22s ease', boxShadow: '0 24px 64px rgba(0,0,0,0.45)',
       }}>
         {/* Header */}

@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useRef, useEffect } from "react";
@@ -145,7 +146,7 @@ export default function Topbar() {
             </button>
 
             <div
-              className={`fixed right-4 top-20 w-[300px] z-50
+            className={`fixed right-4 top-20 w-[300px] z-50
                 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]
                 ${
                   todoOpen
