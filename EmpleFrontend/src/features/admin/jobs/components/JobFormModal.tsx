@@ -16,7 +16,7 @@ const EMPTY_FORM: JobFormData = {
   company: '',
   location: '',
   description: '',
-  jobType: 'private',
+  type: 'private',
   salary: '',
   applyLink: '',
   tags: [],
@@ -128,8 +128,8 @@ export default function JobFormModal({ isOpen, editTarget, onClose, onSuccess }:
             <div>
               <label className="mb-2 block text-sm font-medium text-white/75">Job Type</label>
               <select
-                name="jobType"
-                value={formData.jobType}
+                name="type"
+                value={formData.type}
                 onChange={handleChange}
                 className="w-full rounded-2xl bg-[rgb(10,11,14)] p-3 text-white outline-none ring-1 ring-white/10"
               >
@@ -175,7 +175,7 @@ export default function JobFormModal({ isOpen, editTarget, onClose, onSuccess }:
             </div>
           </div>
 
-          {formData.jobType === 'government' && (
+          {formData.type === 'government' && (
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="mb-2 block text-sm font-medium text-white/75">Department</label>
