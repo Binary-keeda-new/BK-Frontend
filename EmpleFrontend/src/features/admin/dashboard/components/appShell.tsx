@@ -15,6 +15,8 @@ import QuizPreviewContent from '@/features/admin/quiz/components/quizPreviewCont
 import QuizzesContent from '../../quiz/components/quizList';
 import QuizEdit from '../../quiz/components/QuizEdit';
 import QuizForm from '../../quiz/components/QuizForm';
+import TestsContent from '../../test/pages/TestList';
+import TestEdit from '../../test/pages/TestEdit';
 
 interface AppShellProps {
   initialSection?: AdminSection;
@@ -34,6 +36,7 @@ export default function AppShell({
     (searchParams.get('section') as AdminSection) || initialSection;
   const quizIdFromUrl = searchParams.get('quizId');
   const questionBankIdFromUrl = searchParams.get('questionBankId');
+  const testIdFromUrl = searchParams.get('testId');
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] =
@@ -62,10 +65,16 @@ const [selectedTestId, setSelectedTestId] = useState<string | null>(null);
   }, [loading, user, isAdmin, router]);
 
   useEffect(() => {
-    setActiveSection(sectionFromUrl);
-    setSelectedQuizId(quizId?.toString() || quizIdFromUrl);
-    setSelectedQuestionBankId(questionBankIdFromUrl);
-  }, [sectionFromUrl, quizIdFromUrl, questionBankIdFromUrl, quizId]);
+  setActiveSection(sectionFromUrl);
+  setSelectedQuizId(quizIdFromUrl);
+  setSelectedQuestionBankId(questionBankIdFromUrl);
+  setSelectedTestId(testIdFromUrl);
+}, [
+  sectionFromUrl,
+  quizIdFromUrl,
+  questionBankIdFromUrl,
+  testIdFromUrl,
+]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -89,10 +98,12 @@ const [selectedTestId, setSelectedTestId] = useState<string | null>(null);
     section,
     quizId,
     questionBankId,
+    testId,
   }: {
     section: AdminSection;
     quizId?: string | null;
     questionBankId?: string | null;
+    testId?: string | null;
   }) => {
     const params = new URLSearchParams();
 
@@ -106,6 +117,9 @@ const [selectedTestId, setSelectedTestId] = useState<string | null>(null);
       params.set('questionBankId', questionBankId);
     }
 
+    if (testId) {
+  params.set('testId', testId);
+}
     router.push(`/dashboard?${params.toString()}`);
   };
 
@@ -165,6 +179,15 @@ const [selectedTestId, setSelectedTestId] = useState<string | null>(null);
       quizId: id,
     });
   };
+const openTestEdit = (id: string) => {
+  setSelectedTestId(id);
+  setActiveSection('test-edit');
+
+  updateUrl({
+    section: 'test-edit',
+    testId: id,
+  });
+};
 
   const openQuizPreview = (id: string) => {
     setSelectedQuizId(id);
@@ -185,15 +208,6 @@ const [selectedTestId, setSelectedTestId] = useState<string | null>(null);
       questionBankId: id,
     });
   };
-  
-  const openTestEdit = (id: string) => {
-  setSelectedTestId(id);
-  setActiveSection('test-edit');
-
-  updateUrl({
-    section: 'test-edit',
-  });
-};
 
   const renderContent = () => {
     switch (activeSection) {
@@ -289,12 +303,28 @@ const [selectedTestId, setSelectedTestId] = useState<string | null>(null);
 
       case 'tests':
   return (
-    <div className='p-6 text-[var(--clr-text)] md:p-10'>
-      test content goes here.
-    </div>
+    <TestsContent
+      refreshKey={testListRefreshKey}
+      onEditTest={openTestEdit}
+      onPreviewTest={(id) => console.log('Preview test:', id)}
+    />
   );
-
-
+  case 'test-edit':
+  return selectedTestId ? (
+    <TestEdit
+      testId={selectedTestId}
+      onClose={() => {
+        setTestListRefreshKey((prev) => prev + 1);
+        handleSectionChange('tests');
+      }}
+    />
+  ) : (
+    <TestsContent
+      refreshKey={testListRefreshKey}
+      onEditTest={openTestEdit}
+      onPreviewTest={(id) => console.log('Preview test:', id)}
+    />
+  );
       case 'coding-problems':
         return (
           <div className="p-6 text-[var(--clr-text)] md:p-10">

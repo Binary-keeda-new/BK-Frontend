@@ -1,3 +1,4 @@
-export default function Page(){
-    return <h4>Test section goes here</h4>;
+import TestsContent from "@/features/admin/test/pages/TestList";
+export default function TestPage() {
+  return <TestsContent />;
 }
