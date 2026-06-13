@@ -6,6 +6,8 @@ import ToastContainer from '@/features/admin/question-bank/components/ToastConta
 import ImportTestQuestionBank from '../components/test-edit/ImportTestQuestionBank';
 import ImportTestQuestionsModal from '../components/test-edit/ImportTestQuestionsModal';
 import { apiRequest } from '@/shared/utils/api';
+import TestSettingsCard from '../components/TestSettingsCard';
+import { TestSettings } from '../components/TestSettingsCard';
 
 type SectionType = 'mcq' | 'coding';
 
@@ -18,19 +20,44 @@ type TestResponse = {
     description: string;
     totalSections: number;
     status?: 'draft' | 'published';
+    settings?: Partial<TestSettings>;
   };
+};
+type TestSectionResponse = {
+  success: boolean;
+  message: string;
+  data: TestSection[];
 };
 
 type TestSection = {
-  id: string;
+  _id: string;
   type: SectionType;
   numberOfQuestions: number;
   duration: number;
+  order?: number;
 };
 
 type TestEditProps = {
   testId: string;
   onClose?: () => void;
+};
+
+const defaultSettings: TestSettings = {
+  blockKeyboard: false,
+  allowVirtualKeyboard: false,
+  allowCalculator: false,
+  noExitScreen: false,
+  ipBinding: false,
+  noCopyPaste: false,
+  noMinimize: false,
+  noDevTools: false,
+  noLostFocus: false,
+  navigationMode: 'free',
+  minTimeBeforeSubmit: 0,
+  deadline: '',
+  duration: 0,
+  passwordProtected: false,
+  password: '',
 };
 
 export default function TestEdit({ testId, onClose }: TestEditProps) {
@@ -50,6 +77,7 @@ const [importTab, setImportTab] = useState<'aiken' | 'excel' | 'json'>('aiken');
 const [importText, setImportText] = useState('');
 const [loadingTest, setLoadingTest] = useState(true);
 const [savingTest, setSavingTest] = useState(false);
+const [settings, setSettings] = useState<TestSettings>(defaultSettings);
 
   const [sectionForm, setSectionForm] = useState({
     type: 'mcq' as SectionType,
@@ -95,30 +123,30 @@ const [savingTest, setSavingTest] = useState(false);
     }));
   };
 
-  const handleAddSection = () => {
-    const numberOfQuestions = Number(sectionForm.numberOfQuestions);
-    const duration = Number(sectionForm.duration);
+ const handleAddSection = async () => {
+  const numberOfQuestions = Number(sectionForm.numberOfQuestions);
+  const duration = Number(sectionForm.duration);
 
-    if (!sectionForm.type || numberOfQuestions <= 0 || duration <= 0) {
-      addToast('Please fill all section fields correctly.', 'error');
-      return;
-    }
+  if (!sectionForm.type || numberOfQuestions <= 0 || duration <= 0) {
+    addToast('Please fill all section fields correctly.', 'error');
+    return;
+  }
 
-    const maxSections = Number(testForm.totalSections);
+  try {
+    const result = await apiRequest<{
+      success: boolean;
+      message: string;
+      data: TestSection;
+    }>(`/api/v1/admin/tests/${testId}/sections`, {
+      method: 'POST',
+      body: JSON.stringify({
+        type: sectionForm.type,
+        numberOfQuestions,
+        duration,
+      }),
+    });
 
-    if (maxSections && sections.length >= maxSections) {
-      addToast('You have already added the total number of sections.', 'error');
-      return;
-    }
-
-    const newSection: TestSection = {
-      id: crypto.randomUUID(),
-      type: sectionForm.type,
-      numberOfQuestions,
-      duration,
-    };
-
-    setSections((prev) => [...prev, newSection]);
+    setSections((prev) => [...prev, result.data]);
 
     setSectionForm({
       type: 'mcq',
@@ -128,11 +156,32 @@ const [savingTest, setSavingTest] = useState(false);
 
     setShowAddSection(false);
     addToast('Section added successfully.', 'success');
-  };
+  } catch (error) {
+    addToast(
+      error instanceof Error ? error.message : 'Failed to create section',
+      'error'
+    );
+  }
+};
 
   const fileRef = useRef<HTMLInputElement>(null);
 const aikenFileRef = useRef<HTMLInputElement>(null);
 const jsonFileRef = useRef<HTMLInputElement>(null);
+
+const fetchSections = async () => {
+  try {
+    const result = await apiRequest<TestSectionResponse>(
+      `/api/v1/admin/tests/${testId}/sections`,
+      {
+        method: 'GET',
+      }
+    );
+
+    setSections(result.data || []);
+  } catch (error) {
+    console.error('Failed to fetch sections:', error);
+  }
+};
 
 useEffect(() => {
   const fetchTest = async () => {
@@ -151,6 +200,15 @@ useEffect(() => {
         description: result.data.description || '',
         totalSections: String(result.data.totalSections || ''),
       });
+
+      setSettings({
+  ...defaultSettings,
+  ...result.data.settings,
+  deadline: result.data.settings?.deadline
+    ? String(result.data.settings.deadline).slice(0, 16)
+    : '',
+});
+await fetchSections();
     } catch (error) {
       console.error('Failed to fetch test:', error);
       addToast(
@@ -184,6 +242,7 @@ const handleSaveTestDetails = async () => {
         title,
         description,
         totalSections,
+        settings,
       }),
     });
 
@@ -285,9 +344,10 @@ if (loadingTest) {
                 className="w-full rounded-2xl bg-[var(--clr-surface2)] px-4 py-3 text-sm text-[var(--clr-text)] outline-none ring-1 ring-white/10"
               />
             </div>
-
           </div>
         </div>
+        <TestSettingsCard settings={settings} onChange={setSettings} />
+
 
         <div className="mt-4 flex justify-end gap-3">
   <button
@@ -314,7 +374,7 @@ if (loadingTest) {
           ) : (
             sections.map((section, index) => (
               <div
-                key={section.id}
+                key={section._id}
                 className="rounded-3xl border border-[var(--clr-border)] bg-[var(--clr-surface)] p-5"
               >
                 <div className="mb-4 flex items-start justify-between gap-4">
@@ -332,7 +392,7 @@ if (loadingTest) {
                   <div className="flex flex-wrap gap-3">
   <button
     onClick={() => {
-      setActiveImportSectionId(section.id);
+      setActiveImportSectionId(section._id);
       setImportTab('json');
       setShowFileImport(true);
     }}
@@ -343,7 +403,7 @@ if (loadingTest) {
 
   <button
     onClick={() => {
-      setActiveImportSectionId(section.id);
+      setActiveImportSectionId(section._id);
       setImportTab('aiken');
       setShowFileImport(true);
     }}
@@ -354,7 +414,7 @@ if (loadingTest) {
 
   <button
     onClick={() => {
-      setActiveImportSectionId(section.id);
+      setActiveImportSectionId(section._id);
       setShowQuestionBankImport(true);
     }}
     className="rounded-xl border border-[var(--clr-border)] px-4 py-2 text-sm text-[var(--clr-text)]"
