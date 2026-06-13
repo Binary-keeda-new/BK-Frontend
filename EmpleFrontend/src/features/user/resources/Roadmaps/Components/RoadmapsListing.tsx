@@ -3,8 +3,29 @@
 import React, { useState, useEffect } from 'react';
 import { roadmapsListingData } from '../data/index';
 
-const RoadmapCard = ({ roadmap, onView }) => {
-  const t = {
+interface Roadmap {
+  id: string;
+  name: string;
+  description: string;
+  estimatedDuration: string;
+  sections: number;
+  difficulty: string;
+  icon: React.ReactNode;
+  category: string;
+  enrolled: number;
+}
+
+interface RoadmapCardProps {
+  roadmap: Roadmap;
+  onView: (id: string) => void;
+}
+
+interface RoadmapsListingProps {
+  onView: (id: string) => void;
+}
+
+const RoadmapCard: React.FC<RoadmapCardProps> = ({ roadmap, onView }) => {
+  const t: Record<string, string> = {
     border: 'var(--border)',
     surface: 'var(--surface)',
     surface2: 'var(--surface2)',
@@ -12,9 +33,9 @@ const RoadmapCard = ({ roadmap, onView }) => {
     muted: 'var(--muted2)',
     brand: 'var(--orange)',
   };
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [shareText, setShareText] = useState('Share Path');
-  const [progressDetails, setProgressDetails] = useState(null);
+  const [showDropdown, setShowDropdown] = useState<boolean>(false);
+  const [shareText, setShareText] = useState<string>('Share Path');
+  const [progressDetails, setProgressDetails] = useState<any>(null);
 
   // Load progress details from localStorage to check enrollment state
   useEffect(() => {
@@ -38,7 +59,7 @@ const RoadmapCard = ({ roadmap, onView }) => {
 
   const isEnrolled = progressDetails !== null;
 
-  const handleShare = (e) => {
+  const handleShare = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     const url = `${window.location.origin}/user/resources/roadmaps?id=${roadmap.id}`;
     navigator.clipboard.writeText(url)
@@ -51,7 +72,7 @@ const RoadmapCard = ({ roadmap, onView }) => {
       });
   };
 
-  const handleReset = (e) => {
+  const handleReset = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     if (window.confirm(`Are you sure you want to reset your progress for the ${roadmap.name}? This cannot be undone.`)) {
       localStorage.removeItem(`roadmap_progress_details_${roadmap.id}`);
@@ -208,8 +229,8 @@ const RoadmapCard = ({ roadmap, onView }) => {
   );
 };
 
-const RoadmapsListing = ({ onView }) => {
-  const t = {
+const RoadmapsListing: React.FC<RoadmapsListingProps> = ({ onView }) => {
+  const t: Record<string, string> = {
     border: 'var(--border)',
     surface: 'var(--surface)',
     surface2: 'var(--surface2)',
@@ -217,9 +238,9 @@ const RoadmapsListing = ({ onView }) => {
     muted: 'var(--muted2)',
     brand: 'var(--orange)',
   };
-  const [searchQuery, setSearchQuery] = useState('');
-  const [sortBy, setSortBy] = useState('popular');
-  const [category, setCategory] = useState('All');
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [sortBy, setSortBy] = useState<string>('popular');
+  const [category, setCategory] = useState<string>('All');
 
   // Filtering Logic
   const filteredRoadmaps = roadmapsListingData.filter(roadmap => {

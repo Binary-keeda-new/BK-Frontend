@@ -1,7 +1,33 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
-const QuizModal = ({ section, level, onClose, onComplete }) => {
-  const t = {
+interface QuizQuestion {
+  id: string | number;
+  q?: string;
+  question?: string;
+  opts?: string[];
+  options?: string[];
+  type?: string;
+  ans?: number | number[];
+  correctAnswer?: number | number[];
+}
+
+interface Section {
+  title: string;
+  points: number;
+  quizzes?: Record<string, QuizQuestion[]>;
+  quiz?: QuizQuestion[];
+  quizQuestions?: QuizQuestion[];
+}
+
+interface QuizModalProps {
+  section: Section;
+  level?: string | null;
+  onClose: () => void;
+  onComplete: (passed: boolean, points: number, percentage: number, level?: string | null) => void;
+}
+
+const QuizModal: React.FC<QuizModalProps> = ({ section, level, onClose, onComplete }) => {
+  const t: Record<string, string> = {
     border: 'var(--border)',
     surface2: 'var(--surface2)',
     text: 'var(--text)',
@@ -9,23 +35,23 @@ const QuizModal = ({ section, level, onClose, onComplete }) => {
     quizBg: 'var(--surface)',
     quizProgressBg: 'var(--surface2)',
   };
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [selectedAnswers, setSelectedAnswers] = useState({});
-  const [showResults, setShowResults] = useState(false);
-  const [score, setScore] = useState(0);
+  const [currentQuestion, setCurrentQuestion] = useState<number>(0);
+  const [selectedAnswers, setSelectedAnswers] = useState<Record<string | number, any>>({});
+  const [showResults, setShowResults] = useState<boolean>(false);
+  const [score, setScore] = useState<number>(0);
 
-  const questions = level && section.quizzes
+  const questions: QuizQuestion[] = level && section.quizzes
     ? (section.quizzes[level] || [])
     : (section.quiz || section.quizQuestions || []);
 
   const currentQ = questions[currentQuestion];
 
-  const handleAnswerSelect = (questionId, answerIndex) => {
+  const handleAnswerSelect = (questionId: string | number, answerIndex: number) => {
     if (currentQ && currentQ.type === 'msq') {
       const currentSelections = selectedAnswers[questionId] || [];
-      let newSelections;
+      let newSelections: number[];
       if (currentSelections.includes(answerIndex)) {
-        newSelections = currentSelections.filter(i => i !== answerIndex);
+        newSelections = currentSelections.filter((i: number) => i !== answerIndex);
       } else {
         newSelections = [...currentSelections, answerIndex];
       }
@@ -55,7 +81,7 @@ const QuizModal = ({ section, level, onClose, onComplete }) => {
         const userAns = selectedAnswers[q.id] || [];
         const isCorrect = Array.isArray(correctAns) &&
           userAns.length === correctAns.length &&
-          userAns.every(val => correctAns.includes(val));
+          userAns.every((val: any) => (correctAns as number[]).includes(val));
         if (isCorrect) correct++;
       } else {
         if (selectedAnswers[q.id] === correctAns) correct++;
@@ -78,7 +104,7 @@ const QuizModal = ({ section, level, onClose, onComplete }) => {
       : selectedAnswers[currentQ.id] !== undefined
   );
 
-  const modalStyle = {
+  const modalStyle: React.CSSProperties = {
     background: t.quizBg,
     borderRadius: 16,
     width: '100%',

@@ -1,6 +1,15 @@
 import React, { useState } from 'react';
 
-const SectionCard = ({
+interface SectionCardProps {
+  section: any;
+  isCompleted: boolean;
+  onStartQuiz: (section: any, level?: string | null) => void;
+  progressDetails?: any;
+  onUpdateProgressDetails?: (details: any) => void;
+  roadmapId: string;
+}
+
+const SectionCard: React.FC<SectionCardProps> = ({
   section,
   isCompleted,
   onStartQuiz,
@@ -8,9 +17,9 @@ const SectionCard = ({
   onUpdateProgressDetails,
   roadmapId
 }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [selectedVideo, setSelectedVideo] = useState(null);
-  const t = {
+  const [isExpanded, setIsExpanded] = useState<boolean>(false);
+  const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
+  const t: Record<string, string> = {
     border: 'var(--border)',
     surface: 'var(--surface)',
     surface2: 'var(--surface2)',
@@ -27,7 +36,7 @@ const SectionCard = ({
   const watchedVideos = progressDetails.watchedVideos?.[section.id] || [];
   const passedQuizzes = progressDetails.passedQuizzes?.[section.id] || { easy: false, medium: false, hard: false };
 
-  const getProgressStatus = () => {
+  const getProgressStatus = (): 'completed' | 'in-progress' | 'not-attempted' => {
     if (isCompleted) return 'completed';
     
     if (isNewSchema) {
@@ -44,11 +53,11 @@ const SectionCard = ({
   
   const status = getProgressStatus();
 
-  let websites = [];
-  let videos = [];
+  let websites: any[] = [];
+  let videos: any[] = [];
   if (section.resources) {
     if (Array.isArray(section.resources)) {
-      section.resources.forEach(r => {
+      section.resources.forEach((r: any) => {
         const isVideo = r.type === 'yt' || r.type === 'video' || (r.url && (r.url.includes('youtube.com') || r.url.includes('youtu.be')));
         if (isVideo) {
           videos.push({
@@ -69,7 +78,7 @@ const SectionCard = ({
     }
   }
 
-  const handleWebsiteClick = (url) => {
+  const handleWebsiteClick = (url: string) => {
     if (!onUpdateProgressDetails) return;
     if (viewedWebsites.includes(url)) return;
     
@@ -83,7 +92,7 @@ const SectionCard = ({
     });
   };
 
-  const handleVideoWatched = (url) => {
+  const handleVideoWatched = (url: string) => {
     if (!onUpdateProgressDetails) return;
     if (watchedVideos.includes(url)) return;
 
@@ -97,7 +106,7 @@ const SectionCard = ({
     });
   };
 
-  const handleContentToggle = (e) => {
+  const handleContentToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!onUpdateProgressDetails) return;
     const isChecked = e.target.checked;
     
@@ -107,7 +116,7 @@ const SectionCard = ({
         newCompletedContent = [...newCompletedContent, section.id];
       }
     } else {
-      newCompletedContent = newCompletedContent.filter(id => id !== section.id);
+      newCompletedContent = newCompletedContent.filter((id: any) => id !== section.id);
     }
 
     onUpdateProgressDetails({
@@ -116,14 +125,14 @@ const SectionCard = ({
     });
   };
 
-  const handleResourceClick = (e, resource) => {
+  const handleResourceClick = (e: React.MouseEvent<HTMLAnchorElement>, resource: any) => {
     if (resource.type === 'yt' || resource.type === 'video' || (resource.url && (resource.url.includes('youtube.com') || resource.url.includes('youtu.be')))) {
       e.preventDefault();
       setSelectedVideo(resource.url);
     }
   };
 
-  const getEmbedUrl = (url) => {
+  const getEmbedUrl = (url: string): string => {
     let embedUrl = url;
     if (url.includes('youtube.com/watch?v=')) {
       embedUrl = url.replace('watch?v=', 'embed/');
@@ -267,7 +276,7 @@ const SectionCard = ({
                 Learning Objectives
               </h4>
               <ul style={{ listStyle: 'none', padding: 0 }}>
-                {(section.objectives || section.learningObjectives).map((obj, i) => (
+                {(section.objectives || section.learningObjectives).map((obj: any, i: number) => (
                   <li key={i} style={{
                     padding: '8px 0 8px 24px',
                     position: 'relative',

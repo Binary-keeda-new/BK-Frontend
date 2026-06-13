@@ -5,8 +5,20 @@ import { getRoadmapById } from '../data/index';
 import QuizModal from './QuizModal';
 import SectionCard from './SectionCard';
 
-const RoadmapDetail = ({ roadmapId, onBack }) => {
-  const t = {
+interface RoadmapDetailProps {
+  roadmapId: string;
+  onBack: () => void;
+}
+
+interface ProgressDetails {
+  completedContent: any[];
+  viewedWebsites: Record<string, any>;
+  watchedVideos: Record<string, any>;
+  passedQuizzes: Record<string, any>;
+}
+
+const RoadmapDetail: React.FC<RoadmapDetailProps> = ({ roadmapId, onBack }) => {
+  const t: Record<string, string> = {
     border: 'var(--border)',
     surface: 'var(--surface)',
     surface2: 'var(--surface2)',
@@ -16,10 +28,10 @@ const RoadmapDetail = ({ roadmapId, onBack }) => {
     progressBg: 'var(--surface2)',
   };
 
-  const [duration, setDuration] = useState('6 months');
+  const [duration, setDuration] = useState<string>('6 months');
   const roadmap = getRoadmapById(roadmapId, duration);
 
-  const handleDurationChange = (newDur) => {
+  const handleDurationChange = (newDur: string) => {
     setDuration(newDur);
     localStorage.setItem(`roadmap_duration_${roadmapId}`, newDur);
   };
@@ -48,13 +60,13 @@ const RoadmapDetail = ({ roadmapId, onBack }) => {
   }, [roadmapId]);
 
   // PERSISTENCE
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [completedSections, setCompletedSections] = useState(new Set());
-  const [totalPoints, setTotalPoints] = useState(0);
-  const [selectedSection, setSelectedSection] = useState(null);
-  const [selectedLevel, setSelectedLevel] = useState(null);
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
+  const [completedSections, setCompletedSections] = useState<Set<any>>(new Set());
+  const [totalPoints, setTotalPoints] = useState<number>(0);
+  const [selectedSection, setSelectedSection] = useState<any>(null);
+  const [selectedLevel, setSelectedLevel] = useState<string | null>(null);
 
-  const [progressDetails, setProgressDetails] = useState({
+  const [progressDetails, setProgressDetails] = useState<ProgressDetails>({
     completedContent: [],
     viewedWebsites: {},
     watchedVideos: {},
@@ -99,10 +111,10 @@ const RoadmapDetail = ({ roadmapId, onBack }) => {
   useEffect(() => {
     if (!isLoaded || !roadmap) return;
 
-    const newCompleted = new Set();
+    const newCompleted = new Set<any>();
     let newPoints = 0;
 
-    roadmap.sections.forEach(section => {
+    roadmap.sections.forEach((section: any) => {
       const isNewSchema = section.resources && !Array.isArray(section.resources);
       let isComp = false;
 
@@ -145,12 +157,12 @@ const RoadmapDetail = ({ roadmapId, onBack }) => {
     }
   }, [progressDetails, roadmap, roadmapId, isLoaded]);
 
-  const handleStartQuiz = (section, level) => {
+  const handleStartQuiz = (section: any, level?: string | null) => {
     setSelectedSection(section);
     setSelectedLevel(level || null);
   };
 
-  const handleQuizComplete = (passed, points, percentage, level) => {
+  const handleQuizComplete = (passed: boolean, points: number, percentage: number, level?: string | null) => {
     if (passed && selectedSection) {
       const isNewSchema = selectedSection.resources && !Array.isArray(selectedSection.resources);
 
@@ -286,7 +298,7 @@ const RoadmapDetail = ({ roadmapId, onBack }) => {
       <div style={{ marginBottom: 40 }}>
         <h2 style={{ fontSize: 28, fontWeight: 800, color: t.text, marginBottom: 24 }}>Learning Journey</h2>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          {roadmap.sections.map(section => (
+          {roadmap.sections.map((section: any) => (
             <SectionCard
               key={`${roadmapId}-${duration}-${section.id}`}
               section={section}

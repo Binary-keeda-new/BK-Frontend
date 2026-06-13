@@ -170,8 +170,8 @@ export const roadmapsListingData = [
   }
 ];
 
-export const getRoadmapById = (roadmapId, duration = '6 months') => {
-  const roadmapMap = {
+export const getRoadmapById = (roadmapId: string, duration: string = '6 months'): any => {
+  const roadmapMap: Record<string, any> = {
     'grc': grcRoadmap,
     'app-security': appSecurityRoadmap,
     'ai-ml': mlRoadmap,
@@ -215,4 +215,5 @@ export const getRoadmapById = (roadmapId, duration = '6 months') => {
   };
 };
 
-export default { roadmapsListingData, getRoadmapById };
+const defaultExport = { roadmapsListingData, getRoadmapById };
+export default defaultExport;

@@ -35,9 +35,9 @@ const gfgSvg = `
 `;
 
 // Helper to generate the HTML table for each phase
-const makePhaseTable = (phaseName, days) => {
+const makePhaseTable = (phaseName: string, days: any[]) => {
   let rowsHtml = '';
-  days.forEach((day) => {
+  days.forEach((day: any) => {
     rowsHtml += `
       <tr style="border-bottom: 1px solid var(--border); transition: background-color 0.2s;">
         <!-- Column 1: Days (Separated & Centered) -->
@@ -241,7 +241,7 @@ const ytVideoIds = {
 };
 
 // Custom slugs for Naukri Code360 (Coding Ninjas) direct links
-const cnSlugs = {
+const cnSlugs: Record<number, string> = {
   1: 'create-a-hello-world-function', 2: 'print-even-numbers', 3: 'switch-case-problems', 5: 'linear-search',
   6: 'binary-search', 7: 'nth-fibonacci-number', 8: 'palindrome-string', 9: 'bubble-sort', 11: 'sum-of-array',
   13: 'reverse-the-array', 14: 'move-zeroes', 15: 'contains-duplicate', 16: 'missing-number', 17: 'rotate-array',
@@ -262,7 +262,7 @@ const cnSlugs = {
   110: 'valid-parentheses', 116: 'remove-nth-node', 117: 'palindrome-linked-list', 118: 'next-greater-element', 119: 'min-stack'
 };
 
-const getCNLink = (day) => {
+const getCNLink = (day: any) => {
   if (cnSlugs[day.day]) {
     return `https://www.naukri.com/code360/problems/${cnSlugs[day.day]}`;
   }
@@ -414,7 +414,7 @@ const rawDays = [
 ];
 
 // Map over rawDays to enrich with CN and YouTube links (Striver & Apna College only)
-const allDays = rawDays.map(day => {
+const allDays = rawDays.map((day: any) => {
   const cleanTitle = day.title
     .replace('Write a program to ', '')
     .replace('implement ', '')
@@ -439,7 +439,7 @@ const allDays = rawDays.map(day => {
 });
 
 // Helper to filter allDays and get content for a phase
-const getPhaseContent = (phaseName) => {
+const getPhaseContent = (phaseName: string) => {
   const phaseDays = allDays.filter(d => d.phase === phaseName);
   return makePhaseTable(phaseName, phaseDays);
 };
