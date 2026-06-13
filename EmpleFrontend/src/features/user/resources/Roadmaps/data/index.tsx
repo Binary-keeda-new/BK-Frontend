@@ -3,31 +3,9 @@ import appSecurityRoadmap from './ApplicationSecurity';
 import mlRoadmap from './MLRoadmap';
 import llmRoadmap from './LLMRoadmap';
 import fullStackRoadmap from './FullStackRoadmap';
-import placementRoadmap from './placementRoadmap';
 import daysOfCodeRoadmap from './120DaysOfCodeRoadmap';
 
 export const roadmapsListingData = [
-  {
-    id: 'placement',
-    slug: 'placement',
-    name: 'Placement Sheet',
-    description: 'Comprehensive preparation guide for campus placements with DSA and interview prep',
-    domain: 'Career',
-    category: 'Career',
-    difficulty: 'Beginner',
-    estimatedDuration: '2 months',
-    sections: 12,
-    targetUsers: ['Campus'],
-    color: 'teal',
-    points: 600,
-    enrolled: 4231,
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-        <circle cx="12" cy="7" r="4"/>
-      </svg>
-    )
-  },
   {
     id: 'full-stack',
     slug: 'full-stack',
@@ -177,7 +155,6 @@ export const getRoadmapById = (roadmapId: string, duration: string = '6 months')
     'ai-ml': mlRoadmap,
     'llm': llmRoadmap,
     'full-stack': fullStackRoadmap,
-    'placement': placementRoadmap,
     '120-days-of-code': daysOfCodeRoadmap,
   };
   
