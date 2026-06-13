@@ -6,7 +6,7 @@ export interface Job {
   company: string;
   location?: string;
   description: string;
-  jobType: JobType;
+  type: JobType;
   salary?: string;
   applyLink?: string;
   tags?: string[];

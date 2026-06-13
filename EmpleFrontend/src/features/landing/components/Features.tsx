@@ -7,7 +7,7 @@ const features = [
   {
     icon: '🎯',
     title: 'ATS Resume Scanner',
-    desc: "Upload your resume and get an instant ATS compatibility score. We highlight exactly what recruiters' systems flag — and show you how to fix it.",
+    desc: "Upload your resume and get an instant ATS compatibility score. We highlight exactly what recruiters' systems flag - and show you how to fix it.",
     href: '/user/jobs',
   },
   {
@@ -66,12 +66,12 @@ export default function Features() {
 
   return (
     <section className="section" id="features" ref={sectionRef}>
-      <div className="container">
+      <div className="content-container">
         <div className="features-head reveal">
           <div className="section-tag">What We Offer</div>
           <h2 className="section-h2">Everything to <em>land the job</em></h2>
           <p className="section-lead">
-            From your first application to your final offer — Emple has a tool for every step of your career journey.
+            From your first application to your final offer - Emple has a tool for every step of your career journey.
           </p>
         </div>
 

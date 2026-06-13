@@ -19,5 +19,7 @@ export const blankQuestion = (): Question => ({
   positiveMarks: 4,
   negativeMarks: 1,
   imageUrl: "",
+  solution: "",
+  solutionMedia: "",
   isPersisted: false,
 });

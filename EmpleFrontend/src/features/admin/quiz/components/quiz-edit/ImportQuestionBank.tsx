@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { ThemeTokens } from "./quizEdit.types";
+import { apiRequest } from '@/shared/utils/api'
 
 type QuestionBank = {
   _id: string;
@@ -23,7 +24,23 @@ type Props = {
   onImported?: () => void;
 };
 
-const API_BASE = "http://localhost:5000/api/v1/admin";
+type QuestionBankListResponse = {
+  success: boolean;
+  message: string;
+  data: QuestionBank[];
+};
+
+type BankQuestionListResponse = {
+  success: boolean;
+  message: string;
+  data: BankQuestion[];
+};
+
+type ImportQuestionsResponse = {
+  success: boolean;
+  message: string;
+};
+
 
 export default function ImportQuestionsModal({
   open,
@@ -49,43 +66,32 @@ export default function ImportQuestionsModal({
     if (!open) return;
 
     const fetchBanks = async () => {
-      try {
-        setLoadingBanks(true);
-        setError("");
+  try {
+    setLoadingBanks(true);
+    setError("");
 
-       const res = await fetch(`${API_BASE}/question-banks?page=1&limit=100`, {
-  method: "GET",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  cache: "no-store",
-});
-
-const contentType = res.headers.get("content-type") || "";
-
-if (!contentType.includes("application/json")) {
-  const text = await res.text();
-  throw new Error(text.slice(0, 120) || "Server did not return JSON");
-}
-
-const result = await res.json();
-
-        if (!res.ok) {
-          throw new Error(result.message || "Failed to fetch question banks");
-        }
-
-        const bankItems = result?.data || [];
-        setBanks(bankItems);
-
-        if (bankItems.length > 0) {
-          setSelectedBankId(bankItems[0]._id);
-        }
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to fetch question banks");
-      } finally {
-        setLoadingBanks(false);
+    const result = await apiRequest<QuestionBankListResponse>(
+      "/api/v1/admin/question-banks?page=1&limit=100",
+      {
+        method: "GET",
       }
-    };
+    );
+
+    const bankItems = result?.data || [];
+    setBanks(bankItems);
+
+    if (bankItems.length > 0) {
+      setSelectedBankId(bankItems[0]._id);
+    }
+  } catch (err) {
+    setError(
+      err instanceof Error ? err.message : "Failed to fetch question banks"
+    );
+  } finally {
+    setLoadingBanks(false);
+  }
+};
+    
 
     fetchBanks();
   }, [open]);
@@ -93,45 +99,27 @@ const result = await res.json();
   useEffect(() => {
     if (!open || !selectedBankId) return;
 
-    const fetchQuestions = async () => {
-      try {
-        setLoadingQuestions(true);
-        setError("");
-        setSelectedQuestionIds([]);
+   const fetchQuestions = async () => {
+  try {
+    setLoadingQuestions(true);
+    setError("");
+    setSelectedQuestionIds([]);
 
-        const res = await fetch(
-  `${API_BASE}/question-banks/${selectedBankId}/questions`,
-  {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    cache: "no-store",
-  }
-);
-
-const contentType = res.headers.get("content-type") || "";
-
-if (!contentType.includes("application/json")) {
-  const text = await res.text();
-  throw new Error(text.slice(0, 120) || "Server did not return JSON");
-}
-
-const result = await res.json();
-
-        if (!res.ok) {
-          throw new Error(result.message || "Failed to fetch questions");
-        }
-
-        setQuestions(result?.data || []);
-      } catch (err) {
-        setQuestions([]);
-        setError(err instanceof Error ? err.message : "Failed to fetch questions");
-      } finally {
-        setLoadingQuestions(false);
+    const result = await apiRequest<BankQuestionListResponse>(
+      `/api/v1/admin/question-banks/${selectedBankId}/questions`,
+      {
+        method: "GET",
       }
-    };
+    );
 
+    setQuestions(result?.data || []);
+  } catch (err) {
+    setQuestions([]);
+    setError(err instanceof Error ? err.message : "Failed to fetch questions");
+  } finally {
+    setLoadingQuestions(false);
+  }
+};
     fetchQuestions();
   }, [open, selectedBankId]);
 
@@ -156,29 +144,16 @@ const result = await res.json();
       setImporting(true);
       setError("");
 
-      const res = await fetch(`${API_BASE}/quiz-questions/import`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          quizId,
-          questionIds: selectedQuestionIds,
-        }),
-      });
-
-      const contentType = res.headers.get("content-type") || "";
-
-            if (!contentType.includes("application/json")) {
-            const text = await res.text();
-            throw new Error(text.slice(0, 120) || "Server did not return JSON");
-            }
-
-            const result = await res.json();
-
-      if (!res.ok) {
-        throw new Error(result.message || "Failed to import questions");
-      }
+      await apiRequest<ImportQuestionsResponse>(
+  "/api/v1/admin/quiz-questions/import",
+  {
+    method: "POST",
+    body: JSON.stringify({
+      quizId,
+      questionIds: selectedQuestionIds,
+    }),
+  }
+);
 
       onImported?.();
       onClose();

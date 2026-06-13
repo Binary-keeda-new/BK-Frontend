@@ -48,7 +48,7 @@ export default function HowItWorks() {
     <section className="section how" id="how" ref={sectionRef}>
       
 
-      <div className="container">
+      <div className="content-container">
         <div style={{ marginBottom: 'clamp(32px, 5vw, 56px)' }}>
           <div style={{ textAlign: 'center' }}>
             <div className="section-tag">How It Works</div>
@@ -57,7 +57,7 @@ export default function HowItWorks() {
             From zero to <em>offer letter</em>
           </h2>
           <p className="section-lead" style={{ margin: '0 auto', textAlign: 'center' }}>
-            Our platform guides you through every phase of your career journey — not just interview prep, but the whole picture.
+            Our platform guides you through every phase of your career journey - not just interview prep, but the whole picture.
           </p>
         </div>
         <div className="how-inner">

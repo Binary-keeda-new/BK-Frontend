@@ -49,6 +49,8 @@ export interface QuizAttemptResultAnswer {
   positiveMarks: number;
   negativeMarks: number;
   imageUrl: string | null;
+  solution?: string | null;
+  solutionMedia?: string | null;
 }
 
 export interface QuizAttemptResultData {
@@ -71,4 +73,7 @@ export interface QuizAttemptResultResponse {
 export interface SaveAnswerPayload {
   questionId: string;
   selectedOptions: string[];
+}
+export interface SubmitAttemptPayload {
+  answers: SaveAnswerPayload[];
 }

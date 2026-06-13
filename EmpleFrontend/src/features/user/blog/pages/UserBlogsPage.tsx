@@ -67,9 +67,10 @@ export default function UserBlogsPage() {
         ) : (
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-            gap: 20,
+            gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+            gap: 24,
             alignItems: 'stretch',
+            maxWidth: '100%',
           }}>
             {blogs.map((blog, i) => (
               <BlogCard key={blog._id ?? `blog-${i}`} blog={blog} />

@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { apiRequest } from '@/shared/utils/api';
 import { Option, Question } from './quizEdit.types';
 import { blankOption, blankQuestion, mkId } from './quizEdit.utils';
-
-const API_BASE = 'http://localhost:5000/api/v1/admin';
 
 type BackendQuizQuestion = {
   _id: string;
@@ -14,6 +13,8 @@ type BackendQuizQuestion = {
   positiveMarks: number;
   negativeMarks: number;
   imageUrl?: string | null;
+  solution?: string | null;
+solutionMedia?: string | null;
 };
 
 type BackendQuizResponse = {
@@ -31,6 +32,12 @@ type BackendQuizResponse = {
     status: 'draft' | 'published' | 'archived';
     questions: BackendQuizQuestion[];
   };
+};
+
+type ApiResponse<T> = {
+  success: boolean;
+  message: string;
+  data: T;
 };
 
 type QuizMeta = {
@@ -53,6 +60,8 @@ export type ImportedQuestionInput = {
   positiveMarks?: number;
   negativeMarks?: number;
   imageUrl?: string | null;
+  solution?: string | null;
+solutionMedia?: string | null;
 };
 
 const mapBackendQuestionToEditor = (q: BackendQuizQuestion): Question => {
@@ -61,6 +70,8 @@ const mapBackendQuestionToEditor = (q: BackendQuizQuestion): Question => {
     text,
     isImage: false,
     imageUrl: '',
+    solution: q.solution || '',
+solutionMedia: q.solutionMedia || '',
   }));
 
   const correctIds = optionObjects
@@ -144,6 +155,8 @@ const mapEditorQuestionToPayload = (quizId: string, q: Question) => {
       positiveMarks: Number(q.positiveMarks || 0),
       negativeMarks: Number(q.negativeMarks || 0),
       imageUrl: q.imageUrl?.trim() || null,
+      solution: q.solution?.trim() || null,
+solutionMedia: q.solutionMedia?.trim() || null,
     };
   }
 
@@ -163,6 +176,8 @@ const mapEditorQuestionToPayload = (quizId: string, q: Question) => {
     positiveMarks: Number(q.positiveMarks || 0),
     negativeMarks: Number(q.negativeMarks || 0),
     imageUrl: q.imageUrl?.trim() || null,
+    solution: q.solution?.trim() || null,
+solutionMedia: q.solutionMedia?.trim() || null,
   };
 };
 
@@ -210,19 +225,12 @@ export function useQuizEditor(quizId: string) {
     try {
       setLoading(true);
 
-      const res = await fetch(`${API_BASE}/quizzes/${quizId}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        cache: 'no-store',
-      });
-
-      const result: BackendQuizResponse = await res.json();
-
-      if (!res.ok) {
-        throw new Error(result.message || 'Failed to load quiz');
-      }
+      const result = await apiRequest<BackendQuizResponse>(
+        `/api/v1/admin/quizzes/${quizId}`,
+        {
+          method: 'GET',
+        }
+      );
 
       setQuiz({
         _id: result.data._id,
@@ -335,11 +343,7 @@ export function useQuizEditor(quizId: string) {
 
     const mapped = incoming.map(createImportedQuestion);
 
-    setQuestions((prev) => {
-      const next = [...prev, ...mapped];
-      return next;
-    });
-
+    setQuestions((prev) => [...prev, ...mapped]);
     setActiveQ(mapped[0].id);
   }, []);
 
@@ -361,36 +365,24 @@ export function useQuizEditor(quizId: string) {
       const payload = mapEditorQuestionToPayload(quizId, question);
 
       if (question.isPersisted) {
-        const res = await fetch(`${API_BASE}/quiz-questions/${question.id}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(payload),
-        });
-
-        const result = await res.json();
-
-        if (!res.ok) {
-          throw new Error(result.message || 'Failed to update question');
-        }
+        const result = await apiRequest<ApiResponse<BackendQuizQuestion>>(
+          `/api/v1/admin/quiz-questions/${question.id}`,
+          {
+            method: 'PUT',
+            body: JSON.stringify(payload),
+          }
+        );
 
         return result.data;
       }
 
-      const res = await fetch(`${API_BASE}/quiz-questions`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
-
-      const result = await res.json();
-
-      if (!res.ok) {
-        throw new Error(result.message || 'Failed to create question');
-      }
+      const result = await apiRequest<ApiResponse<BackendQuizQuestion>>(
+        '/api/v1/admin/quiz-questions',
+        {
+          method: 'POST',
+          body: JSON.stringify(payload),
+        }
+      );
 
       return result.data;
     },
@@ -446,18 +438,12 @@ export function useQuizEditor(quizId: string) {
         return;
       }
 
-      const res = await fetch(`${API_BASE}/quiz-questions/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      const result = await res.json();
-
-      if (!res.ok) {
-        throw new Error(result.message || 'Failed to delete question');
-      }
+      await apiRequest<ApiResponse<null>>(
+        `/api/v1/admin/quiz-questions/${id}`,
+        {
+          method: 'DELETE',
+        }
+      );
 
       await loadQuiz();
     },
@@ -466,19 +452,13 @@ export function useQuizEditor(quizId: string) {
 
   const bulkDeleteQuestions = useCallback(
     async (ids: string[]) => {
-      const res = await fetch(`${API_BASE}/quiz-questions/bulk-delete`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ ids }),
-      });
-
-      const result = await res.json();
-
-      if (!res.ok) {
-        throw new Error(result.message || 'Failed to bulk delete questions');
-      }
+      await apiRequest<ApiResponse<null>>(
+        '/api/v1/admin/quiz-questions/bulk-delete',
+        {
+          method: 'DELETE',
+          body: JSON.stringify({ ids }),
+        }
+      );
 
       await loadQuiz();
     },
@@ -487,22 +467,16 @@ export function useQuizEditor(quizId: string) {
 
   const importQuestionsFromBank = useCallback(
     async (questionIds: string[]) => {
-      const res = await fetch(`${API_BASE}/quiz-questions/import`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          quizId,
-          questionIds,
-        }),
-      });
-
-      const result = await res.json();
-
-      if (!res.ok) {
-        throw new Error(result.message || 'Failed to import questions');
-      }
+      await apiRequest<ApiResponse<BackendQuizQuestion[]>>(
+        '/api/v1/admin/quiz-questions/import',
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            quizId,
+            questionIds,
+          }),
+        }
+      );
 
       await loadQuiz();
     },
