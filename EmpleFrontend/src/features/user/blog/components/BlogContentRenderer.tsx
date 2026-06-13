@@ -28,9 +28,12 @@ export default function BlogContentRenderer({ rawContent, blocks }: Props) {
             case 'heading':
               return <h2 key={index} style={{ fontSize: '28px', fontWeight: 900, color: 'var(--text)', marginTop: '48px', marginBottom: '16px', fontFamily: "'Inter', sans-serif", letterSpacing: '-0.02em' }}>{block.content}</h2>;
             case 'image':
+              const imgSrc = block.content.startsWith('/') 
+                ? `${process.env.NEXT_PUBLIC_API_URL || ''}${block.content}` 
+                : block.content;
               return (
                 <figure key={index} style={{ margin: '40px 0' }}>
-                  <img src={block.content} alt={block.metadata?.alt || 'Article image'} style={{ width: '100%', borderRadius: '16px', display: 'block' }} />
+                  <img src={imgSrc} alt={block.metadata?.alt || 'Article image'} style={{ width: '100%', borderRadius: '16px', display: 'block' }} />
                   {block.metadata?.caption && <figcaption style={{ textAlign: 'center', fontSize: '14px', color: 'var(--muted)', marginTop: '16px' }}>{block.metadata.caption}</figcaption>}
                 </figure>
               );
