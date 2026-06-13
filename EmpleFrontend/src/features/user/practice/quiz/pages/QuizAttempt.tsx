@@ -4,7 +4,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import {
   getQuizAttempt,
-  saveQuizAnswer,
   startQuizAttempt,
   submitQuizAttempt,
 } from "../services/quizAttempt.service";
@@ -82,7 +81,6 @@ export default function QuizAttemptPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  const [saving, setSaving] = useState(false);
   const [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [timeLeftMs, setTimeLeftMs] = useState<number | null>(null);
@@ -165,7 +163,12 @@ export default function QuizAttemptPage() {
       setSubmitting(true);
       setError(null);
 
-      await submitQuizAttempt(attemptId);
+      await submitQuizAttempt(attemptId, {
+  answers: Object.entries(answers).map(([questionId, selectedOptions]) => ({
+    questionId,
+    selectedOptions,
+  })),
+});
       router.push(getAttemptResultPath(params, attemptId));
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to submit quiz");
@@ -173,7 +176,7 @@ export default function QuizAttemptPage() {
       setSubmitting(false);
       setShowSubmitConfirm(false);
     }
-  }, [attemptId, params, router, submitting]);
+  }, [answers, attemptId, params, router, submitting]);
 
   const openSubmitConfirm = useCallback(() => {
     if (submitting || loading) return;
@@ -188,24 +191,7 @@ export default function QuizAttemptPage() {
     void handleSubmit();
   }, [handleSubmit, timeLeftMs]);
 
-  const persistAnswer = useCallback(
-    async (questionId: string, selectedOptions: string[]) => {
-      if (!attemptId) return;
-
-      try {
-        setSaving(true);
-        await saveQuizAnswer(attemptId, {
-          questionId,
-          selectedOptions,
-        });
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to save answer");
-      } finally {
-        setSaving(false);
-      }
-    },
-    [attemptId]
-  );
+  
 
   const handleOption = useCallback(
     (option: string) => {
@@ -225,7 +211,6 @@ export default function QuizAttemptPage() {
             ? currentSelected.filter((item) => item !== option)
             : [...currentSelected, option];
 
-        void persistAnswer(q.questionId, nextSelected);
 
         return {
           ...prev,
@@ -233,7 +218,7 @@ export default function QuizAttemptPage() {
         };
       });
     },
-    [persistAnswer, q]
+    [ q]
   );
 
   const handleNatChange = useCallback(
@@ -248,10 +233,6 @@ export default function QuizAttemptPage() {
     [q]
   );
 
-  const handleNatBlur = useCallback(() => {
-    if (!q) return;
-    void persistAnswer(q.questionId, answers[q.questionId] ?? []);
-  }, [answers, persistAnswer, q]);
 
   const goTo = useCallback(
     (idx: number) => {
@@ -432,9 +413,9 @@ export default function QuizAttemptPage() {
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
-              {saving && (
+              {submitting && (
                 <span className="rounded-full border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface2,#1e2028)] px-3 py-2 text-xs font-medium text-[var(--muted2,#8a8a9a)]">
-                  Saving...
+                  Submitting...
                 </span>
               )}
 
@@ -538,7 +519,6 @@ export default function QuizAttemptPage() {
                       inputMode="decimal"
                       value={selected[0] ?? ""}
                       onChange={(e) => handleNatChange(e.target.value)}
-                      onBlur={handleNatBlur}
                       placeholder="Enter your answer"
                       className="w-full rounded-xl border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface2,#1e2028)] px-4 py-[14px] text-[15px] text-[var(--text,#f0f0f4)] outline-none transition focus:border-[var(--orange,#f15a22)] focus:shadow-[0_0_0_3px_rgba(241,90,34,0.12)]"
                     />

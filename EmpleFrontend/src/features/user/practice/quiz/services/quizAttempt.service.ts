@@ -4,6 +4,7 @@ import type {
   QuizAttemptResponse,
   QuizAttemptResultResponse,
   SaveAnswerPayload,
+  SubmitAttemptPayload
 } from "../types/quizAttempt.types";
 
 const API_BASE_URL =
@@ -74,12 +75,14 @@ export async function saveQuizAnswer(
 }
 
 export async function submitQuizAttempt(
-  attemptId: string
+  attemptId: string,
+  payload: SubmitAttemptPayload
 ): Promise<QuizAttemptResponse> {
   return request<QuizAttemptResponse>(
     `/api/v1/quiz-attempts/${attemptId}/submit`,
     {
       method: "POST",
+      body: JSON.stringify(payload),
     }
   );
 }

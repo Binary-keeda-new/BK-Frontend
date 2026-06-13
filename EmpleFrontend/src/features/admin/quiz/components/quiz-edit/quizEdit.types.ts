@@ -51,6 +51,8 @@ export type Question = {
   negativeMarks: number;
   imageUrl?: string;
   isPersisted?: boolean;
+  solution?: string;
+solutionMedia?: string | null;
 };
 
 export type QuizEditProps = {
