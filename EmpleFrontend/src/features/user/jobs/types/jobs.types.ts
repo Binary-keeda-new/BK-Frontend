@@ -7,6 +7,11 @@ export interface GovStage {
   link?: string;
 }
 
+export interface JobLink {
+  label: string;
+  url: string;
+}
+
 export interface Job {
   id: string;
   type: JobType;
@@ -21,6 +26,7 @@ export interface Job {
   tags?: string[];
   // Government job extras
   stages?: GovStage[];
+  links?: JobLink[];     // Government job: multiple important links
   department?: string;
   lastDate?: string;
 }

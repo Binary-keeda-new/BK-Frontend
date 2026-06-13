@@ -4,6 +4,14 @@ import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 
 export default function Navbar() {
+  const navItems = [
+  { id: 'about', label: 'About' },
+  { id: 'features', label: 'Features' },
+  { id: 'how', label: 'How It Works' },
+  { id: 'pricing', label: 'Pricing' },
+  { id: 'testimonials', label: 'Testimonials' },
+  { id: 'faq', label: 'FAQ' },
+]
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
@@ -64,11 +72,20 @@ export default function Navbar() {
 
             {/* NAV LINKS */}
             <div className="nav-links">
-              {['about', 'features', 'how', 'pricing', 'testimonials', 'faq'].map((id) => (
+              {/*{['about', 'features', 'how', 'pricing', 'testimonials', 'faq'].map((id) => (
                 <button key={id} className="nav-link" onClick={() => scrollTo(id)}>
                   {id === 'how'
                     ? 'How It Works'
                     : id.charAt(0).toUpperCase() + id.slice(1)}
+                </button>
+              ))}*/}
+              {navItems.map((item) => (
+                <button
+                  key={item.id}
+                  className="nav-link"
+                  onClick={() => scrollTo(item.id)}
+                >
+                  {item.label}
                 </button>
               ))}
             </div>
@@ -98,11 +115,20 @@ export default function Navbar() {
 
       {/* MOBILE DRAWER */}
       <div ref={drawerRef} className={`nav-drawer${drawerOpen ? ' open' : ''}`}>
-        {['about', 'features', 'how', 'pricing', 'testimonials', 'faq'].map((id) => (
+        {/*{['about', 'features', 'how', 'pricing', 'testimonials', 'faq'].map((id) => (
           <button key={id} className="nav-link" onClick={() => scrollTo(id)}>
             {id === 'how'
               ? 'How It Works'
               : id.charAt(0).toUpperCase() + id.slice(1)}
+          </button>
+        ))}*/}
+        {navItems.map((item) => (
+          <button
+            key={item.id}
+            className="nav-link"
+            onClick={() => scrollTo(item.id)}
+          >
+            {item.label}
           </button>
         ))}
 

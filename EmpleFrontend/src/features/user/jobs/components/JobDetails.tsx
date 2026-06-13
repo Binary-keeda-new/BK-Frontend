@@ -323,6 +323,68 @@ export default function JobDetails({ job, onBack }: JobDetailsProps) {
             </div>
           )}
 
+          {/* ── Gov: Important Links ── */}
+          {isGov && job.links && job.links.length > 0 && (
+            <div
+              style={{
+                background: 'rgba(255,255,255,0.04)',
+                border: '1px solid rgba(255,255,255,0.07)',
+                borderRadius: 12,
+                padding: '16px',
+              }}
+            >
+              <p
+                style={{
+                  margin: '0 0 12px',
+                  fontSize: 11,
+                  fontWeight: 700,
+                  color: '#555',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.07em',
+                }}
+              >
+                Important Links
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                {job.links.map((link, i) => (
+                  <a
+                    key={i}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      padding: '10px 14px',
+                      borderRadius: 10,
+                      background: 'rgba(241,90,34,0.06)',
+                      border: '1px solid rgba(241,90,34,0.18)',
+                      color: '#f0f0f4',
+                      textDecoration: 'none',
+                      fontSize: 13,
+                      fontWeight: 600,
+                      transition: 'background 0.15s, border-color 0.15s',
+                    }}
+                    onMouseEnter={e => {
+                      (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(241,90,34,0.14)';
+                      (e.currentTarget as HTMLAnchorElement).style.borderColor = 'rgba(241,90,34,0.4)';
+                    }}
+                    onMouseLeave={e => {
+                      (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(241,90,34,0.06)';
+                      (e.currentTarget as HTMLAnchorElement).style.borderColor = 'rgba(241,90,34,0.18)';
+                    }}
+                  >
+                    <span>{link.label}</span>
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0 }}>
+                      <path d="M3 11L11 3M11 3H6M11 3V8" stroke="var(--orange)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* ── Skills ── */}
           {job.tags && job.tags.length > 0 && (
             <div>

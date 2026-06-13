@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import CreateQuestionBank from '../components/createQuestionBank'
 import DeleteConfirmationModal from '../components/DeleteConfirmation'
 import ToastContainer from '../components/ToastContainer'
+import { apiRequest } from '@/shared/utils/api'
 
 type QuestionBank = {
   _id: string
@@ -19,95 +20,100 @@ type GetQuestionBanksResponse = {
   data: QuestionBank[]
 }
 
-const API_BASE = 'http://localhost:5000/api/v1/admin/question-banks'
+type DeleteQuestionBankResponse = {
+  success: boolean
+  message: string
+}
 
 type QuestionBankPageProps = {
   onEditQuestionBank: (id: string) => void
 }
 
+type Toast = {
+  id: number
+  message: string
+  type: 'success' | 'error'
+}
+
 export default function QuestionBankPage({
   onEditQuestionBank,
 }: QuestionBankPageProps) {
-
   const [questionBanks, setQuestionBanks] = useState<QuestionBank[]>([])
   const [loading, setLoading] = useState(true)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [deleteTarget, setDeleteTarget] = useState<QuestionBank | null>(null)
-const [deleteLoading, setDeleteLoading] = useState(false)
-type Toast = { id: number; message: string; type: 'success' | 'error' }
+  const [deleteLoading, setDeleteLoading] = useState(false)
+  const [toasts, setToasts] = useState<Toast[]>([])
 
-const [toasts, setToasts] = useState<Toast[]>([])
+  const addToast = (message: string, type: 'success' | 'error') => {
+    const id = Date.now()
 
-const addToast = (message: string, type: 'success' | 'error') => {
-  const id = Date.now()
+    setToasts((prev) => [...prev, { id, message, type }])
 
-  setToasts((prev) => [...prev, { id, message, type }])
-
-  setTimeout(() => {
-    setToasts((prev) => prev.filter((t) => t.id !== id))
-  }, 2500)
-}
-
-const fetchQuestionBanks = async () => {
-  try {
-    setLoading(true)
-    const res = await fetch(API_BASE, {
-      cache: 'no-store',
-    })
-    const result: GetQuestionBanksResponse = await res.json()
-
-    if (!res.ok) {
-      throw new Error(result.message || 'Failed to fetch')
-    }
-
-    setQuestionBanks(result.data)
-  } catch (err) {
-    alert(err instanceof Error ? err.message : 'An error occurred')
-  } finally {
-    setLoading(false)
+    setTimeout(() => {
+      setToasts((prev) => prev.filter((t) => t.id !== id))
+    }, 2500)
   }
-}
 
-useEffect(() => {
-  fetchQuestionBanks()
+  const fetchQuestionBanks = async () => {
+    try {
+      setLoading(true)
 
-  const handleFocus = () => fetchQuestionBanks()
-  window.addEventListener('focus', handleFocus)
+      const result = await apiRequest<GetQuestionBanksResponse>(
+        '/api/v1/admin/question-banks',
+        {
+          method: 'GET',
+        }
+      )
 
-  return () => window.removeEventListener('focus', handleFocus)
-}, [])
-const handleDelete = async () => {
-  if (!deleteTarget) return
-
-  try {
-    setDeleteLoading(true)
-
-    const res = await fetch(`${API_BASE}/${deleteTarget._id}`, {
-      method: 'DELETE',
-    })
-
-    const result = await res.json()
-
-    if (!res.ok) {
-      throw new Error(result.message || 'Delete failed')
+      setQuestionBanks(result.data || [])
+    } catch (err) {
+      addToast(
+        err instanceof Error ? err.message : 'Failed to fetch question banks',
+        'error'
+      )
+    } finally {
+      setLoading(false)
     }
-
-    setQuestionBanks((prev) =>
-      prev.filter((item) => item._id !== deleteTarget._id)
-    )
-
-    setDeleteTarget(null)
-
-    addToast('Question bank deleted successfully.', 'success')
-  } catch (err) {
-    addToast(
-      err instanceof Error ? err.message : 'Error deleting question bank',
-      'error'
-    )
-  } finally {
-    setDeleteLoading(false)
   }
-}
+
+  useEffect(() => {
+    fetchQuestionBanks()
+
+    const handleFocus = () => fetchQuestionBanks()
+    window.addEventListener('focus', handleFocus)
+
+    return () => window.removeEventListener('focus', handleFocus)
+  }, [])
+
+  const handleDelete = async () => {
+    if (!deleteTarget) return
+
+    try {
+      setDeleteLoading(true)
+
+      await apiRequest<DeleteQuestionBankResponse>(
+        `/api/v1/admin/question-banks/${deleteTarget._id}`,
+        {
+          method: 'DELETE',
+        }
+      )
+
+      setQuestionBanks((prev) =>
+        prev.filter((item) => item._id !== deleteTarget._id)
+      )
+
+      setDeleteTarget(null)
+      addToast('Question bank deleted successfully.', 'success')
+    } catch (err) {
+      addToast(
+        err instanceof Error ? err.message : 'Error deleting question bank',
+        'error'
+      )
+    } finally {
+      setDeleteLoading(false)
+    }
+  }
 
   return (
     <main className="min-h-screen bg-[rgb(10,11,14)] px-6 py-10 text-white md:px-12 lg:px-20">
@@ -124,6 +130,7 @@ const handleDelete = async () => {
             + Create New
           </button>
         </div>
+
         {loading ? (
           <div className="flex h-40 items-center justify-center">
             <div className="h-8 w-8 animate-spin rounded-full border-4 border-[rgb(241,90,34)] border-t-transparent"></div>
@@ -166,29 +173,31 @@ const handleDelete = async () => {
         )}
 
         <CreateQuestionBank
-  isOpen={isModalOpen}
-  onClose={() => setIsModalOpen(false)}
-  onSuccess={async (newItem) => {
-    setQuestionBanks((prev) => [newItem, ...prev])
-    await fetchQuestionBanks()
-    addToast('Question bank created successfully.', 'success')
-  }}
-/>
-<DeleteConfirmationModal
-  isOpen={!!deleteTarget}
-  onClose={() => {
-    if (!deleteLoading) setDeleteTarget(null)
-  }}
-  onConfirm={handleDelete}
-  loading={deleteLoading}
-  title="Delete Question Bank"
-  description={
-    deleteTarget
-      ? `Are you sure you want to delete "${deleteTarget.title}"? This action cannot be undone.`
-      : ''
-  }
-/>
-<ToastContainer toasts={toasts} />
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onSuccess={async (newItem) => {
+            setQuestionBanks((prev) => [newItem, ...prev])
+            await fetchQuestionBanks()
+            addToast('Question bank created successfully.', 'success')
+          }}
+        />
+
+        <DeleteConfirmationModal
+          isOpen={!!deleteTarget}
+          onClose={() => {
+            if (!deleteLoading) setDeleteTarget(null)
+          }}
+          onConfirm={handleDelete}
+          loading={deleteLoading}
+          title="Delete Question Bank"
+          description={
+            deleteTarget
+              ? `Are you sure you want to delete "${deleteTarget.title}"? This action cannot be undone.`
+              : ''
+          }
+        />
+
+        <ToastContainer toasts={toasts} />
       </div>
     </main>
   )

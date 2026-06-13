@@ -36,6 +36,13 @@ const RESOURCES_CARDS = [
     color: "#f59e0b",
   },
   {
+    title: "Interview Questions",
+    href: "/user/resources/interview-questions",
+    description: "Top interview questions and detailed solutions across subjects",
+    icon: "📚",
+    topics: ["OOP", "DBMS", "CN", "OS", "ML", "Cyber", "DevOps", "System Design"],
+    color: "#ff3b30",
+  },
   title: "Certificates",
   href: "/user/resources/certificates",
   description: "Explore certifications in AWS, Cisco, Red Hat, CUDA, TensorFlow, Google, and Cyber Security",
