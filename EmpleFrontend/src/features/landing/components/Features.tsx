@@ -1,37 +1,44 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import Link from 'next/link'
 
 const features = [
   {
     icon: '🎯',
     title: 'ATS Resume Scanner',
     desc: "Upload your resume and get an instant ATS compatibility score. We highlight exactly what recruiters' systems flag — and show you how to fix it.",
+    href: '/user/jobs',
   },
   {
     icon: '🤖',
     title: 'AI Mock Interviews',
     desc: 'Practice with our AI interviewer that adapts to your target role. Get real-time feedback on clarity, confidence, and technical accuracy.',
+    href: '/user/ai-interview',
   },
   {
     icon: '📊',
     title: 'Skill Analytics Dashboard',
     desc: 'Track streaks, monitor skill growth over time, and benchmark yourself against peers with our live leaderboard system.',
+    href: '/user/dashboard',
   },
   {
     icon: '🗺️',
     title: 'Career Roadmaps',
     desc: 'Curated step-by-step learning paths for every tech role. From junior dev to staff engineer — know exactly what to learn next.',
+    href: '/user/resources/roadmaps',
   },
   {
     icon: '💰',
     title: 'Finance & Salary Intel',
     desc: 'Explore verified salary data by role, company, and location. Walk into every negotiation with real numbers in your corner.',
+    href: '/user/dashboard',
   },
   {
     icon: '🏆',
     title: 'University Leaderboards',
     desc: 'Compete with peers at your university or globally. Earn Emple Coins for every milestone and redeem them in the Tech Shop.',
+    href: '/user/dashboard',
   },
 ]
 
@@ -70,11 +77,16 @@ export default function Features() {
 
         <div className="features-grid">
           {features.map((feat, i) => (
-            <div key={feat.title} className={`feat-card reveal ${delays[i]}`}>
+            <Link
+              key={feat.title}
+              href={feat.href}
+              className={`feat-card reveal ${delays[i]}`}
+              style={{ cursor: 'pointer', display: 'block' }}
+            >
               <div className="feat-icon-box">{feat.icon}</div>
               <div className="feat-title">{feat.title}</div>
               <p className="feat-desc">{feat.desc}</p>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
