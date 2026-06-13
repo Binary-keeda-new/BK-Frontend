@@ -12,16 +12,30 @@ export default function BlogDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError]     = useState('');
 
+  const getImageUrl = (image: string) => {
+    if (!image) return '';
+    if (image.startsWith('http')) return image;
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+    if (image.startsWith('/uploads')) return `${baseUrl}${image}`;
+    if (image.startsWith('uploads/')) return `${baseUrl}/${image}`;
+    if (image.startsWith('/')) return `${baseUrl}${image}`;
+    return `${baseUrl}/uploads/${image}`;
+  };
+
   useEffect(() => {
     if (!id) return;
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/blogs/${id}`)
-      .then(res => {
-        if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
-        return res.json();
-      })
-      .then(data => setBlog(data.data ?? data))
-      .catch(err => setError(err.message || 'Failed to load blog.'))
-      .finally(() => setLoading(false));
+    const fetchBlog = async () => {
+      try {
+        const res = await blogsService.getBlog(id as string);
+        setBlog(res);
+      } catch (err) {
+        console.error(err);
+        setError('Failed to fetch blog');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchBlog();
   }, [id]);
 
   return (
@@ -87,7 +101,7 @@ export default function BlogDetailPage() {
 
           {blog.coverImage && (
             <figure style={{ margin: '0 0 40px' }}>
-              <img src={blog.coverImage.startsWith('/') ? `${process.env.NEXT_PUBLIC_API_URL || ''}${blog.coverImage}` : blog.coverImage} alt={blog.title} style={{ width: '100%', maxHeight: '500px', objectFit: 'cover', borderRadius: '16px', display: 'block' }} />
+              <img src={getImageUrl(blog.coverImage)} alt={blog.title} style={{ width: '100%', maxHeight: '500px', objectFit: 'cover', borderRadius: '16px', display: 'block' }} />
             </figure>
           )}
 

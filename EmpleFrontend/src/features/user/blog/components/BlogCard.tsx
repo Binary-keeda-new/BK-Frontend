@@ -13,6 +13,16 @@ export default function BlogCard({ blog }: Props) {
   const preview  = blog.content.length > 120 ? blog.content.slice(0, 120) + '…' : blog.content;
   const date     = new Date(blog.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
 
+  const getImageUrl = (image: string) => {
+    if (!image) return '';
+    if (image.startsWith('http')) return image;
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+    if (image.startsWith('/uploads')) return `${baseUrl}${image}`;
+    if (image.startsWith('uploads/')) return `${baseUrl}/${image}`;
+    if (image.startsWith('/')) return `${baseUrl}${image}`;
+    return `${baseUrl}/uploads/${image}`;
+  };
+
   return (
     <Link href={`/user/resources/blogs/${blog._id}`} style={{ textDecoration: 'none', display: 'flex', height: '100%' }}
     >
@@ -42,7 +52,7 @@ export default function BlogCard({ blog }: Props) {
       >
         {blog.coverImage ? (
           <img
-            src={blog.coverImage.startsWith('/') ? `${process.env.NEXT_PUBLIC_API_URL || ''}${blog.coverImage}` : blog.coverImage}
+            src={getImageUrl(blog.coverImage)}
             alt={blog.title}
             style={{ width: '100%', height: 200, objectFit: 'cover', display: 'block' }}
           />
