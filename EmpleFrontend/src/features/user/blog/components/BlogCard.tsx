@@ -41,7 +41,11 @@ export default function BlogCard({ blog }: Props) {
         }}
       >
         {blog.coverImage ? (
-          <img src={blog.coverImage} alt={blog.title} style={{ width: '100%', height: 200, objectFit: 'cover', display: 'block' }} />
+          <img
+            src={blog.coverImage.startsWith('/') ? `${process.env.NEXT_PUBLIC_API_URL || ''}${blog.coverImage}` : blog.coverImage}
+            alt={blog.title}
+            style={{ width: '100%', height: 200, objectFit: 'cover', display: 'block' }}
+          />
         ) : (
           <div style={{ width: '100%', height: 200, background: 'var(--orange-dim)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 32, fontWeight: 800, color: 'var(--orange)', letterSpacing: '-0.02em', fontFamily: "'Inter', sans-serif" }}>
             {initials}

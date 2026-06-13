@@ -36,11 +36,11 @@ export default function SlideDrawer({
     };
   }, [isOpen, onClose]);
 
-  const widthClass = {
-    xs: 'w-[330px] shrink-0',
-    sm: 'w-[360px] shrink-0',
-    md: 'w-[440px] shrink-0',
-    lg: 'w-[500px] shrink-0'
+  const widthValue = {
+    xs: 340,
+    sm: 380,
+    md: 440,
+    lg: 500
   }[width];
 
   if (!isOpen) return null;
@@ -50,8 +50,12 @@ export default function SlideDrawer({
       {/* Drawer */}
       <div 
         ref={drawerRef}
-        className={`relative pointer-events-auto w-full ${widthClass} h-full shadow-2xl flex flex-col border-l border-[var(--border)] bg-[var(--surface)]`}
-        style={{ animation: 'slide-in-right 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards' }}
+        className="relative pointer-events-auto h-full shadow-2xl flex flex-col border-l border-[var(--border)] bg-[var(--surface)] shrink-0"
+        style={{ 
+          width: '100%', 
+          maxWidth: `${widthValue}px`, 
+          animation: 'slide-in-right 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards' 
+        }}
       >
         <div className="flex flex-col h-full w-full overflow-hidden">
           {/* Header */}

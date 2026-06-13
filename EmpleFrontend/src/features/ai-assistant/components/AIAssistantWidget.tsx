@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Settings, Send, Bot, Sparkles, Key, Loader2, User, CheckCircle2, ChevronLeft, LogOut, Copy, Check, X } from "lucide-react";
 import ReactMarkdown from "react-markdown";
-import { useSession } from "@descope/nextjs-sdk/client";
+import { useSession, useUser } from "@descope/nextjs-sdk/client";
 import {
   checkConnectionStatus,
   connectGemini,
@@ -22,7 +22,11 @@ interface AIAssistantWidgetProps {
 
 export default function AIAssistantWidget({ onClose }: AIAssistantWidgetProps = {}) {
   const { session, sessionToken: hookSessionToken, isAuthenticated, isSessionLoading } = useSession() as any;
+  const { user } = useUser();
   const sessionToken = hookSessionToken || session?.sessionJwt || session?.jwt;
+
+  const fullName = user?.name || session?.user?.name || session?.token?.name;
+  const displayUsername = fullName ? fullName.split(' ')[0] : "User";
 
   const [isLoading, setIsLoading] = useState(true);
   const [isConnected, setIsConnected] = useState(false);
@@ -325,10 +329,7 @@ export default function AIAssistantWidget({ onClose }: AIAssistantWidgetProps = 
       <div className="flex-1 overflow-y-auto p-4 space-y-5" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
         {messages.length === 0 && (
           <div className="flex flex-col items-center justify-center h-full text-center px-4 mb-20">
-            <div className="w-16 h-16 mb-4 flex items-center justify-center">
-              <img src="/logo-isolated.png" alt="Emple" className="w-full h-full object-contain opacity-90" />
-            </div>
-            <h3 className="text-lg font-medium text-gray-300 mb-2">Hi! I'm Emple AI.</h3>
+            <h3 className="text-lg font-medium text-gray-300 mb-2">Welcome, {displayUsername}.</h3>
             <p className="text-sm text-gray-500">Ask me anything about careers, code, or interviews.</p>
           </div>
         )}

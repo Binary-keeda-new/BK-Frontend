@@ -4,17 +4,11 @@ import { Bell, ChevronDown, ExternalLink, Link as LinkIcon, Briefcase, Graduatio
 
 export default function MediaFeedWidget() {
   return (
-    <div className="h-full w-full flex flex-col bg-[var(--surface)] text-white font-sans overflow-hidden">
-      {/* Header Section */}
-      <div className="px-5 py-4 border-b border-[var(--border)] shrink-0">
-        <h2 className="text-[19px] font-bold text-white mb-1 tracking-wide">Connect with Emple Learning</h2>
-        <p className="text-[13px] text-gray-400 leading-relaxed m-0">
-          Follow us across all platforms for jobs, roadmaps, technical updates, quizzes, career guidance and community updates.
-        </p>
-      </div>
-
-      {/* Cards Container */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-5" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+    <div className="animated-border h-full w-full">
+      <div className="animated-border-inner h-full w-full flex flex-col bg-[var(--surface)] text-white font-sans overflow-hidden">
+        
+        {/* Cards Container */}
+        <div className="flex-1 overflow-y-auto p-4 space-y-5" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
         
         {/* ================================================== CARD 1 - LINKEDIN ================================================== */}
         <div className="rounded-xl overflow-hidden border border-[var(--border)] bg-[#1b1f23] flex flex-col">
@@ -132,6 +126,7 @@ export default function MediaFeedWidget() {
           </div>
         </div>
 
+        </div>
       </div>
     </div>
   );
