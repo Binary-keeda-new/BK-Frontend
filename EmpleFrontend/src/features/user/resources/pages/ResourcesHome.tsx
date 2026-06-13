@@ -43,6 +43,22 @@ const RESOURCES_CARDS = [
     topics: ["OOP", "DBMS", "CN", "OS", "ML", "Cyber", "DevOps", "System Design"],
     color: "#ff3b30",
   },
+  title: "Certificates",
+  href: "/user/resources/certificates",
+  description: "Explore certifications in AWS, Cisco, Red Hat, CUDA, TensorFlow, Google, and Cyber Security",
+  icon: "🏆",
+  topics: ["AWS", "Cisco", "Red Hat", "CUDA", "TensorFlow", "Google", "Cyber Security"],
+  color: "#fbbf24",
+},
+{
+  title: "GATE Notes",
+  href: "/user/resources/gate-notes",
+  description: "Access GATE preparation notes and study material.",
+  icon: "📚",
+  topics: ["OS", "DBMS", "CN", "COA"],
+  color: "#123456",
+}
+  
 ];
 
 export default function ResourcesHome() {
