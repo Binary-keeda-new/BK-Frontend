@@ -23,15 +23,8 @@ export default function DashboardPage() {
   const [user, setUser] = useState<User | null>(null)
   
   useEffect(() => {
-    console.log('dashboard state ->', {
-      isSessionLoading,
-      isAuthenticated,
-      hasSessionToken: !!sessionToken,
-      apiUrl: baseurl,
-    })
 
     if (!isSessionLoading && !isAuthenticated) {
-      console.log('Not authenticated, redirecting to /auth/login')
       router.replace('/auth/login')
       return
     }
@@ -40,12 +33,10 @@ export default function DashboardPage() {
       const token = sessionToken
 
       if (!token) {
-        console.log('No session token found')
         return
       }
       
       const url = `${baseurl}/api/v1/users/me`
-      console.log('Fetching /me from:', url)
 
       try {
         const res = await fetch(url, {
@@ -56,20 +47,13 @@ export default function DashboardPage() {
 
         const text = await res.text()
 
-        console.log('/me response ->', {
-          status: res.status,
-          ok: res.ok,
-          body: text,
-        })
 
         if (!res.ok) {
-          console.log('/me failed, redirecting to /auth/login')
           router.replace('/auth/login')
           return
         }
 
         const data = JSON.parse(text)
-        console.log('/me parsed data ->', data)
 
         setUser(data.user)
       } catch (error) {
@@ -81,7 +65,7 @@ export default function DashboardPage() {
     if (isAuthenticated) {
       fetchUser()
     }
-  }, [sessionToken, isAuthenticated, isSessionLoading, router, baseurl])
+  }, [sessionToken, isAuthenticated, isSessionLoading, router])
 
   if (isSessionLoading || !user) {
     return <div className="p-6">Loading dashboard...</div>
