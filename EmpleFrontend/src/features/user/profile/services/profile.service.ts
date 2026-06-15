@@ -1,8 +1,10 @@
 import { Profile } from '../types/profile.types';
-import { getSession } from "@descope/nextjs-sdk"; // ✅ added
+import { getSessionToken } from '@descope/nextjs-sdk/client' 
 
+const baseurl =
+  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
 
-const API_BASE = `${process.env.NEXT_PUBLIC_API_URL}/profile`;
+const API_BASE = `${baseurl}/profile`;
 
 async function req<T>(url: string, options?: RequestInit): Promise<T> {
   // ✅ get token from Descope session
