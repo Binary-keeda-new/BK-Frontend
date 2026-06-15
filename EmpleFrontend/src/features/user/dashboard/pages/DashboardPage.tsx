@@ -13,17 +13,21 @@ type User = {
   email?: string
 }
 
+const baseurl =
+  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
+
+
 export default function DashboardPage() {
   const { sessionToken, isAuthenticated, isSessionLoading } = useSession()
   const router = useRouter()
   const [user, setUser] = useState<User | null>(null)
-
+  
   useEffect(() => {
     console.log('dashboard state ->', {
       isSessionLoading,
       isAuthenticated,
       hasSessionToken: !!sessionToken,
-      apiUrl: process.env.NEXT_PUBLIC_API_URL,
+      apiUrl: baseurl,
     })
 
     if (!isSessionLoading && !isAuthenticated) {
@@ -40,7 +44,7 @@ export default function DashboardPage() {
         return
       }
       
-      const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/me`
+      const url = `${baseurl}/api/v1/users/me`
       console.log('Fetching /me from:', url)
 
       try {
@@ -77,7 +81,7 @@ export default function DashboardPage() {
     if (isAuthenticated) {
       fetchUser()
     }
-  }, [sessionToken, isAuthenticated, isSessionLoading, router])
+  }, [sessionToken, isAuthenticated, isSessionLoading, router, baseurl])
 
   if (isSessionLoading || !user) {
     return <div className="p-6">Loading dashboard...</div>

@@ -1,6 +1,7 @@
 import { Profile } from '../types/profile.types';
 import { getSession } from "@descope/nextjs-sdk"; // ✅ added
 
+
 const API_BASE = `${process.env.NEXT_PUBLIC_API_URL}/profile`;
 
 async function req<T>(url: string, options?: RequestInit): Promise<T> {
