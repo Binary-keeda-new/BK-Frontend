@@ -93,12 +93,6 @@ export default function ForgotPasswordPage() {
                 </div>*/}
                 <h1 className="auth-title">Forgot your <em>password?</em></h1>
 
-                
-                <h1 className="auth-title">
-                  Forgot your <em>password?</em>
-                </h1>
-
-
                 <p className="auth-subtitle">
                   Enter your registered email address and we&apos;ll send you a
                   password reset link.

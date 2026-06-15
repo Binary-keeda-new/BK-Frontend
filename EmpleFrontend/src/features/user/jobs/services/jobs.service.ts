@@ -1,7 +1,8 @@
 import { Job } from '../types/jobs.types';
 
 export async function fetchJobs(): Promise<Job[]> {
-  const res = await fetch('http://localhost:5000/api/v1/jobs', {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+  const res = await fetch(`${baseUrl}/api/v1/jobs`, {
     cache: 'no-store',
   });
 

@@ -13,6 +13,16 @@ export default function BlogCard({ blog }: Props) {
   const preview  = blog.content.length > 120 ? blog.content.slice(0, 120) + '…' : blog.content;
   const date     = new Date(blog.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
 
+  const getImageUrl = (image: string) => {
+    if (!image) return '';
+    if (image.startsWith('http')) return image;
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+    if (image.startsWith('/uploads')) return `${baseUrl}${image}`;
+    if (image.startsWith('uploads/')) return `${baseUrl}/${image}`;
+    if (image.startsWith('/')) return `${baseUrl}${image}`;
+    return `${baseUrl}/uploads/${image}`;
+  };
+
   return (
     <Link href={`/user/resources/blogs/${blog._id}`} style={{ textDecoration: 'none', display: 'flex', height: '100%' }}
     >
@@ -41,7 +51,11 @@ export default function BlogCard({ blog }: Props) {
         }}
       >
         {blog.coverImage ? (
-          <img src={blog.coverImage} alt={blog.title} style={{ width: '100%', height: 200, objectFit: 'cover', display: 'block' }} />
+          <img
+            src={getImageUrl(blog.coverImage)}
+            alt={blog.title}
+            style={{ width: '100%', height: 200, objectFit: 'cover', display: 'block' }}
+          />
         ) : (
           <div style={{ width: '100%', height: 200, background: 'var(--orange-dim)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 32, fontWeight: 800, color: 'var(--orange)', letterSpacing: '-0.02em', fontFamily: "'Inter', sans-serif" }}>
             {initials}

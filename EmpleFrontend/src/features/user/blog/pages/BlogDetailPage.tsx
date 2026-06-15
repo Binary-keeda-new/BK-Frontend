@@ -12,6 +12,16 @@ export default function BlogDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError]     = useState('');
 
+  const getImageUrl = (image: string) => {
+    if (!image) return '';
+    if (image.startsWith('http')) return image;
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+    if (image.startsWith('/uploads')) return `${baseUrl}${image}`;
+    if (image.startsWith('uploads/')) return `${baseUrl}/${image}`;
+    if (image.startsWith('/')) return `${baseUrl}${image}`;
+    return `${baseUrl}/uploads/${image}`;
+  };
+
   useEffect(() => {
     if (!id) return;
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/blogs/${id}`)
@@ -85,10 +95,9 @@ export default function BlogDetailPage() {
             <span style={{ fontSize: 11, color: 'var(--muted)', marginTop: 4 }}>Banner Ad (728x90 or responsive)</span>
           </div>
 
-          {/* Optional: We can still show the cover image as the first block of the article if it exists */}
           {blog.coverImage && (
             <figure style={{ margin: '0 0 40px' }}>
-              <img src={blog.coverImage} alt={blog.title} style={{ width: '100%', maxHeight: '500px', objectFit: 'cover', borderRadius: 16, display: 'block' }} />
+              <img src={getImageUrl(blog.coverImage)} alt={blog.title} style={{ width: '100%', maxHeight: '500px', objectFit: 'cover', borderRadius: '16px', display: 'block' }} />
             </figure>
           )}
 
