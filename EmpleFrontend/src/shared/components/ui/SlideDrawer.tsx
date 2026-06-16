@@ -4,10 +4,11 @@ import { X } from 'lucide-react';
 interface SlideDrawerProps {
   isOpen: boolean;
   onClose: () => void;
-  title: string;
-  width?: 'sm' | 'md' | 'lg';
+  title?: string | React.ReactNode;
+  width?: 'xs' | 'sm' | 'md' | 'lg';
   children: React.ReactNode;
   icon?: React.ReactNode;
+  hideHeader?: boolean;
 }
 
 export default function SlideDrawer({
@@ -16,7 +17,8 @@ export default function SlideDrawer({
   title,
   width = 'md',
   children,
-  icon
+  icon,
+  hideHeader = false
 }: SlideDrawerProps) {
   const drawerRef = useRef<HTMLDivElement>(null);
 
@@ -34,10 +36,11 @@ export default function SlideDrawer({
     };
   }, [isOpen, onClose]);
 
-  const widthClass = {
-    sm: 'max-w-[380px]',
-    md: 'max-w-[440px]',
-    lg: 'max-w-[500px]'
+  const widthValue = {
+    xs: 340,
+    sm: 380,
+    md: 440,
+    lg: 500
   }[width];
 
   if (!isOpen) return null;
@@ -47,23 +50,29 @@ export default function SlideDrawer({
       {/* Drawer */}
       <div 
         ref={drawerRef}
-        className={`relative pointer-events-auto w-full ${widthClass} h-full shadow-2xl flex flex-col animated-border`}
-        style={{ animation: 'slide-in-right 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards' }}
+        className="relative pointer-events-auto h-full shadow-2xl flex flex-col border-l border-[var(--border)] bg-[var(--surface)] shrink-0"
+        style={{ 
+          width: '100%', 
+          maxWidth: `${widthValue}px`, 
+          animation: 'slide-in-right 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards' 
+        }}
       >
-        <div className="animated-border-inner flex flex-col h-full bg-[var(--surface)] w-full overflow-hidden">
+        <div className="flex flex-col h-full w-full overflow-hidden">
           {/* Header */}
-          <div className="flex items-center justify-between p-4 border-b border-[var(--border)] bg-[var(--surface)]">
-            <div className="flex items-center gap-2">
-              {icon && <div className="text-[var(--orange)]">{icon}</div>}
-              <h2 className="text-lg font-semibold text-[var(--text)]">{title}</h2>
+          {!hideHeader && (
+            <div className="flex items-center justify-between p-4 border-b border-[var(--border)] bg-[var(--surface)]">
+              <div className="flex items-center gap-2">
+                {icon && <div className="text-[var(--orange)]">{icon}</div>}
+                <h2 className="text-lg font-semibold text-[var(--text)]">{title}</h2>
+              </div>
+              <button
+                onClick={onClose}
+                className="p-2 text-[var(--muted)] hover:text-[var(--text)] hover:bg-[var(--surface2)] rounded-xl transition-all"
+              >
+                <X className="w-5 h-5" />
+              </button>
             </div>
-            <button
-              onClick={onClose}
-              className="p-2 text-[var(--muted)] hover:text-[var(--text)] hover:bg-[var(--surface2)] rounded-xl transition-all"
-            >
-              <X className="w-5 h-5" />
-            </button>
-          </div>
+          )}
 
           {/* Content Area */}
           <div className="flex-1 overflow-y-auto">

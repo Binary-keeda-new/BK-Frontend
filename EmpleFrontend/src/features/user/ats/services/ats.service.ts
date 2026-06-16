@@ -14,7 +14,7 @@ async function handleResponse<T>(response: Response): Promise<T> {
   const data: ATSApiResponse<T> = await response.json();
 
   if (!response.ok || !data.success) {
-    throw new Error(data.error || `Request failed with status ${response.status}`);
+    throw new Error(data.message || `Request failed with status ${response.status}`);
   }
 
   if (!data.data) {
