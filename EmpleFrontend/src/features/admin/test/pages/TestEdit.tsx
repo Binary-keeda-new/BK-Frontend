@@ -1,15 +1,25 @@
-// features/admin/tests/components/TestEdit.tsx
+
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ToastContainer from '@/features/admin/question-bank/components/ToastContainer';
+import { apiRequest } from '@/shared/utils/api';
 import ImportTestQuestionBank from '../components/test-edit/ImportTestQuestionBank';
 import ImportTestQuestionsModal from '../components/test-edit/ImportTestQuestionsModal';
-import { apiRequest } from '@/shared/utils/api';
-import TestSettingsCard from '../components/TestSettingsCard';
-import { TestSettings } from '../components/TestSettingsCard';
+import TestSettingsCard, {
+  type TestSettings,
+} from '../components/TestSettingsCard';
+import TestSectionQuestionEditor from '../components/test-edit/TestSectionQuestionEditor';
 
 type SectionType = 'mcq' | 'coding';
+
+type TestSection = {
+  _id: string;
+  type: SectionType;
+  numberOfQuestions: number;
+  duration: number;
+  order?: number;
+};
 
 type TestResponse = {
   success: boolean;
@@ -23,18 +33,17 @@ type TestResponse = {
     settings?: Partial<TestSettings>;
   };
 };
-type TestSectionResponse = {
+
+type TestSectionListResponse = {
   success: boolean;
   message: string;
   data: TestSection[];
 };
 
-type TestSection = {
-  _id: string;
-  type: SectionType;
-  numberOfQuestions: number;
-  duration: number;
-  order?: number;
+type TestSectionSingleResponse = {
+  success: boolean;
+  message: string;
+  data: TestSection;
 };
 
 type TestEditProps = {
@@ -60,6 +69,20 @@ const defaultSettings: TestSettings = {
   password: '',
 };
 
+const themeTokens = {
+  pageBg: 'var(--clr-bg)',
+  cardBg: 'var(--clr-surface)',
+  cardBorder: 'var(--clr-border)',
+  inputBg: 'var(--clr-surface2)',
+  inputBorder: 'var(--clr-border)',
+  inputText: 'var(--clr-text)',
+  inputPlaceholder: 'var(--clr-text3)',
+  headingColor: 'var(--clr-text)',
+  labelColor: 'var(--clr-text2)',
+  subText: 'var(--clr-text2)',
+  divider: 'var(--clr-border)',
+};
+
 export default function TestEdit({ testId, onClose }: TestEditProps) {
   const [testForm, setTestForm] = useState({
     title: '',
@@ -67,23 +90,39 @@ export default function TestEdit({ testId, onClose }: TestEditProps) {
     totalSections: '',
   });
 
+  const [settings, setSettings] = useState<TestSettings>(defaultSettings);
   const [sections, setSections] = useState<TestSection[]>([]);
-  const [showAddSection, setShowAddSection] = useState(false);
-  const [activeImportSectionId, setActiveImportSectionId] = useState<string | null>(null);
-const [showQuestionBankImport, setShowQuestionBankImport] = useState(false);
-const [showFileImport, setShowFileImport] = useState(false);
 
-const [importTab, setImportTab] = useState<'aiken' | 'excel' | 'json'>('aiken');
-const [importText, setImportText] = useState('');
-const [loadingTest, setLoadingTest] = useState(true);
-const [savingTest, setSavingTest] = useState(false);
-const [settings, setSettings] = useState<TestSettings>(defaultSettings);
+  const [loadingTest, setLoadingTest] = useState(true);
+  const [savingTest, setSavingTest] = useState(false);
+
+  const [showSectionModal, setShowSectionModal] = useState(false);
+  const [editingSection, setEditingSection] = useState<TestSection | null>(
+    null
+  );
+  const [sectionSaving, setSectionSaving] = useState(false);
 
   const [sectionForm, setSectionForm] = useState({
     type: 'mcq' as SectionType,
     numberOfQuestions: '',
     duration: '',
   });
+
+  const [activeImportSectionId, setActiveImportSectionId] = useState<
+    string | null
+  >(null);
+  const [showQuestionBankImport, setShowQuestionBankImport] = useState(false);
+  const [showFileImport, setShowFileImport] = useState(false);
+
+  const [importTab, setImportTab] = useState<'aiken' | 'excel' | 'json'>(
+    'aiken'
+  );
+  const [importText, setImportText] = useState('');
+  const [questionRefreshKey, setQuestionRefreshKey] = useState(0);
+
+  const fileRef = useRef<HTMLInputElement>(null);
+  const aikenFileRef = useRef<HTMLInputElement>(null);
+  const jsonFileRef = useRef<HTMLInputElement>(null);
 
   const [toasts, setToasts] = useState<
     { id: number; message: string; type: 'success' | 'error' }[]
@@ -100,6 +139,66 @@ const [settings, setSettings] = useState<TestSettings>(defaultSettings);
       setToasts((prev) => prev.filter((toast) => toast.id !== id));
     }, 3000);
   };
+
+  const fetchSections = async () => {
+    try {
+      const result = await apiRequest<TestSectionListResponse>(
+        `/api/v1/admin/tests/${testId}/sections`,
+        {
+          method: 'GET',
+        }
+      );
+
+      setSections(result.data || []);
+    } catch (error) {
+      console.error('Failed to fetch sections:', error);
+      addToast(
+        error instanceof Error ? error.message : 'Failed to fetch sections',
+        'error'
+      );
+    }
+  };
+
+  useEffect(() => {
+    const fetchTest = async () => {
+      try {
+        setLoadingTest(true);
+
+        const result = await apiRequest<TestResponse>(
+          `/api/v1/admin/tests/${testId}`,
+          {
+            method: 'GET',
+          }
+        );
+
+        setTestForm({
+          title: result.data.title || '',
+          description: result.data.description || '',
+          totalSections: String(result.data.totalSections || ''),
+        });
+
+        setSettings({
+          ...defaultSettings,
+          ...result.data.settings,
+          deadline: result.data.settings?.deadline
+            ? String(result.data.settings.deadline).slice(0, 16)
+            : '',
+        });
+
+        await fetchSections();
+      } catch (error) {
+        console.error('Failed to fetch test:', error);
+        addToast(
+          error instanceof Error ? error.message : 'Failed to fetch test',
+          'error'
+        );
+      } finally {
+        setLoadingTest(false);
+      }
+    };
+
+    fetchTest();
+  }, [testId]);
 
   const handleTestChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -123,162 +222,158 @@ const [settings, setSettings] = useState<TestSettings>(defaultSettings);
     }));
   };
 
- const handleAddSection = async () => {
-  const numberOfQuestions = Number(sectionForm.numberOfQuestions);
-  const duration = Number(sectionForm.duration);
+  const handleSaveTestDetails = async () => {
+    const title = testForm.title.trim();
+    const description = testForm.description.trim();
+    const totalSections = Number(testForm.totalSections);
 
-  if (!sectionForm.type || numberOfQuestions <= 0 || duration <= 0) {
-    addToast('Please fill all section fields correctly.', 'error');
-    return;
-  }
+    if (!title || !description || totalSections < 0) {
+      addToast('Please fill test details correctly.', 'error');
+      return;
+    }
 
-  try {
-    const result = await apiRequest<{
-      success: boolean;
-      message: string;
-      data: TestSection;
-    }>(`/api/v1/admin/tests/${testId}/sections`, {
-      method: 'POST',
-      body: JSON.stringify({
-        type: sectionForm.type,
-        numberOfQuestions,
-        duration,
-      }),
-    });
+    try {
+      setSavingTest(true);
 
-    setSections((prev) => [...prev, result.data]);
+      await apiRequest<TestResponse>(`/api/v1/admin/tests/${testId}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+          title,
+          description,
+          totalSections,
+          settings,
+        }),
+      });
 
+      addToast('Test details saved successfully.', 'success');
+    } catch (error) {
+      console.error('Failed to save test:', error);
+      addToast(
+        error instanceof Error ? error.message : 'Failed to save test',
+        'error'
+      );
+    } finally {
+      setSavingTest(false);
+    }
+  };
+
+  const resetSectionForm = () => {
     setSectionForm({
       type: 'mcq',
       numberOfQuestions: '',
       duration: '',
     });
+  };
 
-    setShowAddSection(false);
-    addToast('Section added successfully.', 'success');
-  } catch (error) {
-    addToast(
-      error instanceof Error ? error.message : 'Failed to create section',
-      'error'
-    );
-  }
-};
+  const handleOpenAddSection = () => {
+    setEditingSection(null);
+    resetSectionForm();
+    setShowSectionModal(true);
+  };
 
-  const fileRef = useRef<HTMLInputElement>(null);
-const aikenFileRef = useRef<HTMLInputElement>(null);
-const jsonFileRef = useRef<HTMLInputElement>(null);
+  const handleCloseSectionModal = () => {
+    if (sectionSaving) return;
 
-const fetchSections = async () => {
-  try {
-    const result = await apiRequest<TestSectionResponse>(
-      `/api/v1/admin/tests/${testId}/sections`,
-      {
-        method: 'GET',
-      }
-    );
+    setShowSectionModal(false);
+    setEditingSection(null);
+    resetSectionForm();
+  };
 
-    setSections(result.data || []);
-  } catch (error) {
-    console.error('Failed to fetch sections:', error);
-  }
-};
+  const handleEditSection = (section: TestSection) => {
+    setEditingSection(section);
 
-useEffect(() => {
-  const fetchTest = async () => {
+    setSectionForm({
+      type: section.type,
+      numberOfQuestions: String(section.numberOfQuestions),
+      duration: String(section.duration),
+    });
+
+    setShowSectionModal(true);
+  };
+
+  const handleSaveSection = async () => {
+    const numberOfQuestions = Number(sectionForm.numberOfQuestions);
+    const duration = Number(sectionForm.duration);
+
+    if (!sectionForm.type || numberOfQuestions <= 0 || duration <= 0) {
+      addToast('Please fill all section fields correctly.', 'error');
+      return;
+    }
+
     try {
-      setLoadingTest(true);
+      setSectionSaving(true);
 
-      const result = await apiRequest<TestResponse>(
-        `/api/v1/admin/tests/${testId}`,
+      if (editingSection) {
+        await apiRequest<TestSectionSingleResponse>(
+          `/api/v1/admin/test-sections/${editingSection._id}`,
+          {
+            method: 'PUT',
+            body: JSON.stringify({
+              type: sectionForm.type,
+              numberOfQuestions,
+              duration,
+            }),
+          }
+        );
+
+        await fetchSections();
+        handleCloseSectionModal();
+        addToast('Section updated successfully.', 'success');
+        return;
+      }
+
+        await apiRequest<TestSectionSingleResponse>(
+        `/api/v1/admin/tests/${testId}/sections`,
         {
-          method: 'GET',
+          method: 'POST',
+          body: JSON.stringify({
+            type: sectionForm.type,
+            numberOfQuestions,
+            duration,
+          }),
         }
       );
 
-      setTestForm({
-        title: result.data.title || '',
-        description: result.data.description || '',
-        totalSections: String(result.data.totalSections || ''),
-      });
-
-      setSettings({
-  ...defaultSettings,
-  ...result.data.settings,
-  deadline: result.data.settings?.deadline
-    ? String(result.data.settings.deadline).slice(0, 16)
-    : '',
-});
-await fetchSections();
+      await fetchSections();
+      handleCloseSectionModal();
+      addToast('Section added successfully.', 'success');
     } catch (error) {
-      console.error('Failed to fetch test:', error);
       addToast(
-        error instanceof Error ? error.message : 'Failed to fetch test',
+        error instanceof Error ? error.message : 'Failed to save section',
         'error'
       );
     } finally {
-      setLoadingTest(false);
+      setSectionSaving(false);
     }
   };
 
-  fetchTest();
-}, [testId]);
+  const handleDeleteSection = async (sectionId: string) => {
+    try {
+      await apiRequest(`/api/v1/admin/test-sections/${sectionId}`, {
+        method: 'DELETE',
+      });
 
-const handleSaveTestDetails = async () => {
-  const title = testForm.title.trim();
-  const description = testForm.description.trim();
-  const totalSections = Number(testForm.totalSections);
+      setSections((prev) =>
+        prev.filter((section) => section._id !== sectionId)
+      );
 
-  if (!title || !description || totalSections < 0) {
-    addToast('Please fill test details correctly.', 'error');
-    return;
-  }
+      addToast('Section deleted successfully.', 'success');
+    } catch (error) {
+      addToast(
+        error instanceof Error ? error.message : 'Failed to delete section',
+        'error'
+      );
+    }
+  };
 
-  try {
-    setSavingTest(true);
-
-    await apiRequest<TestResponse>(`/api/v1/admin/tests/${testId}`, {
-      method: 'PUT',
-      body: JSON.stringify({
-        title,
-        description,
-        totalSections,
-        settings,
-      }),
-    });
-
-    addToast('Test details saved successfully.', 'success');
-  } catch (error) {
-    console.error('Failed to save test:', error);
-    addToast(
-      error instanceof Error ? error.message : 'Failed to save test',
-      'error'
+  if (loadingTest) {
+    return (
+      <div className="p-6 text-sm text-[var(--clr-text2)]">
+        Loading test...
+      </div>
     );
-  } finally {
-    setSavingTest(false);
   }
-};
 
-const t = {
-  pageBg: 'var(--clr-bg)',
-  cardBg: 'var(--clr-surface)',
-  cardBorder: 'var(--clr-border)',
-  inputBg: 'var(--clr-surface2)',
-  inputBorder: 'var(--clr-border)',
-  inputText: 'var(--clr-text)',
-  inputPlaceholder: 'var(--clr-text3)',
-  headingColor: 'var(--clr-text)',
-  labelColor: 'var(--clr-text2)',
-  subText: 'var(--clr-text2)',
-  divider: 'var(--clr-border)',
-};
-
-if (loadingTest) {
-  return (
-    <div className="p-6 text-sm text-[var(--clr-text2)]">
-      Loading test...
-    </div>
-  );
-}
   return (
     <>
       <ToastContainer toasts={toasts} />
@@ -346,25 +441,25 @@ if (loadingTest) {
             </div>
           </div>
         </div>
+
         <TestSettingsCard settings={settings} onChange={setSettings} />
 
-
         <div className="mt-4 flex justify-end gap-3">
-  <button
-    onClick={handleSaveTestDetails}
-    disabled={savingTest}
-    className="rounded-2xl border border-[var(--clr-border)] px-5 py-3 text-sm font-semibold text-[var(--clr-text)] disabled:opacity-60"
-  >
-    {savingTest ? 'Saving...' : 'Save Details'}
-  </button>
+          <button
+            onClick={handleSaveTestDetails}
+            disabled={savingTest}
+            className="rounded-2xl border border-[var(--clr-border)] px-5 py-3 text-sm font-semibold text-[var(--clr-text)] disabled:opacity-60"
+          >
+            {savingTest ? 'Saving...' : 'Save Details'}
+          </button>
 
-  <button
-    onClick={() => setShowAddSection(true)}
-    className="rounded-2xl bg-[var(--clr-accent)] px-5 py-3 text-sm font-semibold text-white"
-  >
-    + Add Section
-  </button>
-</div>
+          <button
+            onClick={handleOpenAddSection}
+            className="rounded-2xl bg-[var(--clr-accent)] px-5 py-3 text-sm font-semibold text-white"
+          >
+            + Add Section
+          </button>
+        </div>
 
         <div className="mt-6 space-y-4">
           {sections.length === 0 ? (
@@ -377,79 +472,108 @@ if (loadingTest) {
                 key={section._id}
                 className="rounded-3xl border border-[var(--clr-border)] bg-[var(--clr-surface)] p-5"
               >
-                <div className="mb-4 flex items-start justify-between gap-4">
+                <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                   <div>
                     <h3 className="text-lg font-bold text-[var(--clr-text)]">
-                      Section {index + 1}: {section.type === 'mcq' ? 'MCQ' : 'Coding'}
+                      Section {index + 1}:{' '}
+                      {section.type === 'mcq' ? 'MCQ' : 'Coding'}
                     </h3>
                     <p className="mt-1 text-sm text-[var(--clr-text2)]">
-                      {section.numberOfQuestions} questions · {section.duration} minutes
+                      {section.numberOfQuestions} questions · {section.duration}{' '}
+                      minutes
                     </p>
+                  </div>
+
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => handleEditSection(section)}
+                      className="rounded-xl border border-[var(--clr-border)] px-3 py-2 text-sm text-[var(--clr-text)]"
+                    >
+                      Edit
+                    </button>
+
+                    <button
+                      onClick={() => handleDeleteSection(section._id)}
+                      className="rounded-xl border border-red-300 px-3 py-2 text-sm text-red-500"
+                    >
+                      Delete
+                    </button>
                   </div>
                 </div>
 
                 {section.type === 'mcq' ? (
-                  <div className="flex flex-wrap gap-3">
-  <button
-    onClick={() => {
-      setActiveImportSectionId(section._id);
-      setImportTab('json');
-      setShowFileImport(true);
-    }}
-    className="rounded-xl border border-[var(--clr-border)] px-4 py-2 text-sm text-[var(--clr-text)]"
-  >
-    Import JSON
-  </button>
+  <>
+    <div className="flex flex-wrap gap-3">
+      <button
+        onClick={() => {
+          setActiveImportSectionId(section._id);
+          setImportTab('json');
+          setShowFileImport(true);
+        }}
+        className="rounded-xl border border-[var(--clr-border)] px-4 py-2 text-sm text-[var(--clr-text)]"
+      >
+        Import JSON
+      </button>
 
-  <button
-    onClick={() => {
-      setActiveImportSectionId(section._id);
-      setImportTab('aiken');
-      setShowFileImport(true);
-    }}
-    className="rounded-xl border border-[var(--clr-border)] px-4 py-2 text-sm text-[var(--clr-text)]"
-  >
-    Import Aiken
-  </button>
+      <button
+        onClick={() => {
+          setActiveImportSectionId(section._id);
+          setImportTab('aiken');
+          setShowFileImport(true);
+        }}
+        className="rounded-xl border border-[var(--clr-border)] px-4 py-2 text-sm text-[var(--clr-text)]"
+      >
+        Import Aiken
+      </button>
 
-  <button
-    onClick={() => {
-      setActiveImportSectionId(section._id);
-      setShowQuestionBankImport(true);
-    }}
-    className="rounded-xl border border-[var(--clr-border)] px-4 py-2 text-sm text-[var(--clr-text)]"
-  >
-    Import from Question Bank
-  </button>
+      <button
+        onClick={() => {
+          setActiveImportSectionId(section._id);
+          setShowQuestionBankImport(true);
+        }}
+        className="rounded-xl border border-[var(--clr-border)] px-4 py-2 text-sm text-[var(--clr-text)]"
+      >
+        Import from Question Bank
+      </button>
 
-  <button
-    onClick={() => addToast('Manual question editor will be added next.', 'success')}
-    className="rounded-xl bg-[var(--clr-accent)] px-4 py-2 text-sm font-semibold text-white"
-  >
-    Add Manually
-  </button>
-</div>
-                ) : (
-                  <div className="rounded-2xl border border-[var(--clr-border)] bg-[var(--clr-surface2)] p-4 text-sm text-[var(--clr-text2)]">
-                    Coding Problems import will come here.
-                  </div>
-                )}
+      <button
+        onClick={() =>
+          addToast('Manual question editor will be added next.', 'success')
+        }
+        className="rounded-xl bg-[var(--clr-accent)] px-4 py-2 text-sm font-semibold text-white"
+      >
+        Add Manually
+      </button>
+    </div>
+
+    <TestSectionQuestionEditor
+      testId={testId}
+      sectionId={section._id}
+      onToast={addToast}
+      refreshKey={questionRefreshKey}
+    />
+  </>
+) : (
+  <div className="rounded-2xl border border-[var(--clr-border)] bg-[var(--clr-surface2)] p-4 text-sm text-[var(--clr-text2)]">
+    Coding Problems import will come here.
+  </div>
+)}
               </div>
             ))
           )}
         </div>
       </div>
 
-      {showAddSection && (
+      {showSectionModal && (
         <>
           <div
-            onClick={() => setShowAddSection(false)}
+            onClick={handleCloseSectionModal}
             className="fixed inset-0 z-[400] bg-black/60 backdrop-blur-sm"
           />
 
           <div className="fixed left-1/2 top-1/2 z-[401] w-[90%] max-w-md -translate-x-1/2 -translate-y-1/2 rounded-3xl bg-[var(--clr-surface)] p-6 shadow-2xl ring-1 ring-white/10">
             <h2 className="text-xl font-bold text-[var(--clr-text)]">
-              Add Section
+              {editingSection ? 'Edit Section' : 'Add Section'}
             </h2>
 
             <p className="mt-1 text-sm text-[var(--clr-text2)]">
@@ -502,64 +626,88 @@ if (loadingTest) {
 
               <div className="flex justify-end gap-3 pt-2">
                 <button
-                  onClick={() => setShowAddSection(false)}
-                  className="rounded-2xl border border-[var(--clr-border)] px-5 py-3 text-sm text-[var(--clr-text2)]"
+                  onClick={handleCloseSectionModal}
+                  disabled={sectionSaving}
+                  className="rounded-2xl border border-[var(--clr-border)] px-5 py-3 text-sm text-[var(--clr-text2)] disabled:opacity-60"
                 >
                   Cancel
                 </button>
 
                 <button
-                  onClick={handleAddSection}
-                  className="rounded-2xl bg-[var(--clr-accent)] px-5 py-3 text-sm font-semibold text-white"
+                  onClick={handleSaveSection}
+                  disabled={sectionSaving}
+                  className="rounded-2xl bg-[var(--clr-accent)] px-5 py-3 text-sm font-semibold text-white disabled:opacity-60"
                 >
-                  Add Section
+                  {sectionSaving
+                    ? 'Saving...'
+                    : editingSection
+                    ? 'Update Section'
+                    : 'Add Section'}
                 </button>
               </div>
             </div>
           </div>
         </>
       )}
+
       {activeImportSectionId && (
-  <ImportTestQuestionBank
-    open={showQuestionBankImport}
-    onClose={() => setShowQuestionBankImport(false)}
-    t={t}
-    testId={testId}
-    sectionId={activeImportSectionId}
-    onImported={() => {
-      setShowQuestionBankImport(false);
-      addToast('Questions imported from question bank.', 'success');
-    }}
-  />
-)}
+        <ImportTestQuestionBank
+          open={showQuestionBankImport}
+          onClose={() => setShowQuestionBankImport(false)}
+          t={themeTokens}
+          testId={testId}
+          sectionId={activeImportSectionId}
+          onImported={() => {
+            setShowQuestionBankImport(false);
+            setQuestionRefreshKey((prev) => prev + 1);
+            addToast('Questions imported from question bank.', 'success');
+          }}
+        />
+      )}
 
-{activeImportSectionId && (
-  <ImportTestQuestionsModal
-    open={showFileImport}
-    onClose={() => setShowFileImport(false)}
-    importTab={importTab}
-    setImportTab={setImportTab}
-    importText={importText}
-    setImportText={setImportText}
-    t={t}
-    fileRef={fileRef}
-    aikenFileRef={aikenFileRef}
-    jsonFileRef={jsonFileRef}
-    onImportQuestions={(questions) => {
-      console.log('Imported questions:', {
-        testId,
-        sectionId: activeImportSectionId,
-        questions,
-      });
+      {activeImportSectionId && (
+        <ImportTestQuestionsModal
+          open={showFileImport}
+          onClose={() => setShowFileImport(false)}
+          importTab={importTab}
+          setImportTab={setImportTab}
+          importText={importText}
+          setImportText={setImportText}
+          t={themeTokens}
+          fileRef={fileRef}
+          aikenFileRef={aikenFileRef}
+          jsonFileRef={jsonFileRef}
+          onImportQuestions={async (questions) => {
+  if (!activeImportSectionId) return;
 
-      setShowFileImport(false);
-      setImportText('');
-      setImportTab('aiken');
+  try {
+    await apiRequest(
+      `/api/v1/admin/tests/${testId}/sections/${activeImportSectionId}/questions`,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          questions: questions.map((q) => ({
+            ...q,
+            source: 'file',
+          })),
+        }),
+      }
+    );
 
-      addToast(`${questions.length} questions imported to section.`, 'success');
-    }}
-  />
-)}
+    setShowFileImport(false);
+    setImportText('');
+    setImportTab('aiken');
+
+    addToast(`${questions.length} questions imported to section.`, 'success');
+  } catch (error) {
+    addToast(
+      error instanceof Error ? error.message : 'Failed to import questions',
+      'error'
+    );
+  }
+}}
+        />
+      )}
     </>
   );
 }
