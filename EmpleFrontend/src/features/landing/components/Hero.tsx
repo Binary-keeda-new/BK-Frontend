@@ -40,19 +40,18 @@ export default function Hero() {
         <div className="hero-left">
           <div className="hero-eyebrow">
             <span className="eyebrow-dot" />
-            AI-Powered Mock Interviews - Now Live
+            AI Agents - Now Live
           </div>
 
           <h1 className="hero-h1">
-            Don&apos;t Hustle<br />
-            and Get <span className="highlight">Placed</span><br />
+            Get <span className="highlight">Placed</span><br />
             with <span className="accent">Emple</span>
           </h1>
 
           <p className="hero-desc">
-            Your AI-powered Placement Preparation Ecosystem - practice coding interviews,
+            Your AI-powered Career Development Platform, practice coding interviews,
             score your resume against ATS, track applications, and follow expert career
-            roadmaps, all in one platform built for ambitious job seekers.
+            roadmaps, all in one platform built for ambitious students and professionals.
           </p>
 
           <div className="hero-btns">
@@ -91,20 +90,22 @@ export default function Hero() {
 
             <div className="ai-chip ai-chip-1">
               <span className="chip-live-dot" />
-              <span className="chip-icon">🤖</span>
+              
               AI Interview Live
             </div>
             <div className="ai-chip ai-chip-2">
-              <span className="chip-icon">📊</span>
+              <span className="chip-live-dot" />
+              
               98% ATS Score
             </div>
             <div className="ai-chip ai-chip-3">
-              <span className="chip-icon">🔥</span>
+              <span className="chip-live-dot" />
+              
               5-day Streak!
             </div>
             <div className="ai-chip ai-chip-4">
               <span className="chip-live-dot" />
-              <span className="chip-icon">✅</span>
+              
               Offer Received
             </div>
 
