@@ -110,7 +110,7 @@ export interface AIATSResult {
 export interface ATSApiResponse<T> {
   success: boolean;
   data?: T;
-  error?: string;
+  message?: string;
 }
 
 

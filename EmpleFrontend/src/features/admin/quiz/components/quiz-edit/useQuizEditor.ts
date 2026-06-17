@@ -13,6 +13,8 @@ type BackendQuizQuestion = {
   positiveMarks: number;
   negativeMarks: number;
   imageUrl?: string | null;
+  solution?: string | null;
+solutionMedia?: string | null;
 };
 
 type BackendQuizResponse = {
@@ -58,6 +60,8 @@ export type ImportedQuestionInput = {
   positiveMarks?: number;
   negativeMarks?: number;
   imageUrl?: string | null;
+  solution?: string | null;
+solutionMedia?: string | null;
 };
 
 const mapBackendQuestionToEditor = (q: BackendQuizQuestion): Question => {
@@ -66,6 +70,8 @@ const mapBackendQuestionToEditor = (q: BackendQuizQuestion): Question => {
     text,
     isImage: false,
     imageUrl: '',
+    solution: q.solution || '',
+solutionMedia: q.solutionMedia || '',
   }));
 
   const correctIds = optionObjects
@@ -149,6 +155,8 @@ const mapEditorQuestionToPayload = (quizId: string, q: Question) => {
       positiveMarks: Number(q.positiveMarks || 0),
       negativeMarks: Number(q.negativeMarks || 0),
       imageUrl: q.imageUrl?.trim() || null,
+      solution: q.solution?.trim() || null,
+solutionMedia: q.solutionMedia?.trim() || null,
     };
   }
 
@@ -168,6 +176,8 @@ const mapEditorQuestionToPayload = (quizId: string, q: Question) => {
     positiveMarks: Number(q.positiveMarks || 0),
     negativeMarks: Number(q.negativeMarks || 0),
     imageUrl: q.imageUrl?.trim() || null,
+    solution: q.solution?.trim() || null,
+solutionMedia: q.solutionMedia?.trim() || null,
   };
 };
 

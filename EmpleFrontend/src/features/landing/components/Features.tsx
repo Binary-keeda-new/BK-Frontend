@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+
 import {
   Target,
   Sparkles,
@@ -10,29 +11,38 @@ import {
   Compass,
 } from "lucide-react";
 
+import Link from 'next/link'
+
 
 const features = [
   {
     icon: Target,
     title: 'ATS Resume Scanner',
+
     desc: "Upload your resume and get an instant ATS compatibility score. We highlight exactly what recruiters' systems flag and help you fix it.",
   },
   {
     icon: Sparkles,
     title: 'AI Agents',
     desc: 'Learn faster with AI agents designed to support your goals. Follow structured roadmaps, track progress, and discover the right resources. ',
+
+    
+
   },
   {
     icon: LineChart,
     title: 'Skill Analytics Dashboard',
     desc: 'Track streaks, monitor skill growth over time, and benchmark yourself against peers with our live leaderboard system.',
+    
   },
   {
     icon: Route,
     title: 'Career Roadmaps',
-    desc: 'Curated step-by-step learning paths for every tech role. From junior dev to staff engineer - know exactly what to learn next.',
+    desc: 'Curated step-by-step learning paths for every tech role. From junior dev to staff engineer — know exactly what to learn next.',
+    
   },
   {
+
     icon: GraduationCap,
     title: 'Quizzes & Tests',
     desc: 'Assess your knowledge with interactive quizzes and skill-based tests. Get instant feedback, identify gaps, and improve your strenghts.',
@@ -41,6 +51,9 @@ const features = [
     icon: Compass, 
     title: 'Career Counselling',
     desc: 'Receive expert-backed career guidnce tailored to your goals. Discover opportunities, build a plan, and navigate your future with clarity.',
+
+    
+
   },
 ]
 
@@ -79,6 +92,7 @@ export default function Features() {
 
         <div className="features-grid">
           {features.map((feat, i) => (
+
   <div key={feat.title} className={`feat-card reveal ${delays[i]}`}>
     <div className="feat-icon-box">
       <feat.icon size={26} strokeWidth={2} />
@@ -88,6 +102,19 @@ export default function Features() {
     <p className="feat-desc">{feat.desc}</p>
   </div>
 ))}
+
+           {/* <Link
+              key={feat.title}
+              href={feat.href}
+              className={`feat-card reveal ${delays[i]}`}
+              style={{ cursor: 'pointer', display: 'block' }}
+            >
+              <div className="feat-icon-box">{feat.icon}</div>
+              <div className="feat-title">{feat.title}</div>
+              <p className="feat-desc">{feat.desc}</p>
+            </Link>*
+          ))}*/}
+
         </div>
       </div>
     </section>

@@ -91,8 +91,12 @@ export default function ForgotPasswordPage() {
                 {/*<div className="auth-logo-badge" style={{ background: 'var(--clr-surface2)', border: '1.5px solid var(--clr-border2)', boxShadow: 'none' }}>
                   
                 </div>*/}
+<<<<<<< HEAD
                 <h1 className="auth-title">Forgot your <em>password?</em></h1> 
 
+=======
+                <h1 className="auth-title">Forgot your <em>password?</em></h1>
+>>>>>>> 716a1a95d23c98a3a1b9304771883982e4fa14ef
 
                 <p className="auth-subtitle">
                   Enter your registered email address and we&apos;ll send you a
