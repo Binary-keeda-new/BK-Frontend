@@ -3,63 +3,53 @@
 import { UserTest, UserTestSection } from '../types/test.types';
 
 type Props = {
-  open: boolean;
-  test: UserTest | null;
+  test: UserTest;
   enabledSectionIndex: number;
   completedSectionIds: string[];
-  onClose: () => void;
+  onBack: () => void;
   onAttemptSection: (section: UserTestSection, index: number) => void;
 };
 
 function getDotClass(index: number, enabledIndex: number, completed: boolean) {
   if (completed) return 'border-emerald-500 bg-emerald-500 text-white';
-  if (index === enabledIndex) return 'border-[var(--orange)] bg-[var(--orange)] text-white';
+  if (index === enabledIndex) {
+    return 'border-[var(--orange)] bg-[var(--orange)] text-white';
+  }
   return 'border-[var(--border)] bg-[var(--surface2,#1e2028)] text-[var(--muted2)]';
 }
 
-export default function TestSectionsModal({
-  open,
+export default function TestSectionsPreview({
   test,
   enabledSectionIndex,
   completedSectionIds,
-  onClose,
+  onBack,
   onAttemptSection,
 }: Props) {
-  if (!open || !test) return null;
-
   return (
-    <div
-      onClick={onClose}
-      className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/75 p-4 backdrop-blur"
-    >
-      <div
-        onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-[620px] rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6"
+    <div className="mx-auto w-full max-w-[760px] p-6">
+      <button
+        onClick={onBack}
+        className="mb-5 rounded-xl border border-[var(--border)] px-4 py-2 text-sm font-semibold text-[var(--muted2)]"
       >
-        <div className="mb-5 flex items-start justify-between gap-4">
-          <div>
-            <h2 className="text-xl font-bold text-[var(--text)]">
-              Test Sections
-            </h2>
-            <p className="mt-1 text-sm text-[var(--muted2)]">
-              Complete sections one by one.
-            </p>
-          </div>
+        ← Back to Instructions
+      </button>
 
-          <button
-            onClick={onClose}
-            className="text-2xl leading-none text-[var(--muted2)]"
-          >
-            ×
-          </button>
+      <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6">
+        <div className="mb-5">
+          <h1 className="text-2xl font-extrabold text-[var(--text)]">
+            Test Sections
+          </h1>
+          <p className="mt-1 text-sm text-[var(--muted2)]">
+            Complete sections one by one.
+          </p>
         </div>
 
-        <div className="mb-6 flex items-center justify-center gap-3">
+        <div className="mb-6 flex flex-wrap items-center justify-center gap-3">
           {test.sections.map((section, index) => {
-            const completed = completedSectionIds.includes(section.id);
+            const completed = completedSectionIds.includes(section._id);
 
             return (
-              <div key={section.id} className="flex items-center gap-3">
+              <div key={section._id} className="flex items-center gap-3">
                 <div
                   className={`flex h-9 w-9 items-center justify-center rounded-full border text-sm font-bold ${getDotClass(
                     index,
@@ -80,12 +70,12 @@ export default function TestSectionsModal({
 
         <div className="space-y-3">
           {test.sections.map((section, index) => {
-            const completed = completedSectionIds.includes(section.id);
+            const completed = completedSectionIds.includes(section._id);
             const enabled = index === enabledSectionIndex && !completed;
 
             return (
               <div
-                key={section.id}
+                key={section._id}
                 className="rounded-xl border border-[var(--border)] bg-[var(--surface2,#1e2028)] p-4"
               >
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -96,14 +86,17 @@ export default function TestSectionsModal({
 
                     <p className="mt-1 text-sm text-[var(--muted2)]">
                       {section.type === 'mcq' ? 'MCQ / Quiz' : 'Coding'} ·{' '}
-                      {section.numberOfQuestions} questions · {section.duration} mins
+                      {section.numberOfQuestions} questions · {section.duration}{' '}
+                      mins
                     </p>
 
                     <p className="mt-2 text-xs font-semibold">
                       {completed ? (
                         <span className="text-emerald-400">Completed</span>
                       ) : enabled ? (
-                        <span className="text-[var(--orange)]">Available now</span>
+                        <span className="text-[var(--orange)]">
+                          Available now
+                        </span>
                       ) : (
                         <span className="text-[var(--muted2)]">Locked</span>
                       )}
@@ -116,7 +109,9 @@ export default function TestSectionsModal({
                     className="rounded-xl px-4 py-2 text-sm font-bold disabled:cursor-not-allowed disabled:opacity-50"
                     style={{
                       background: enabled ? 'var(--orange)' : 'transparent',
-                      border: `1px solid ${enabled ? 'var(--orange)' : 'var(--border)'}`,
+                      border: `1px solid ${
+                        enabled ? 'var(--orange)' : 'var(--border)'
+                      }`,
                       color: enabled ? '#fff' : 'var(--muted)',
                     }}
                   >

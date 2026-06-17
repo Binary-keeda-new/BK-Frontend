@@ -1,11 +1,12 @@
 'use client';
 
+import { UserTest } from '../types/test.types';
+
 type Props = {
-  open: boolean;
-  testTitle: string;
+  test: UserTest;
   agreed: boolean;
   onAgreeChange: (value: boolean) => void;
-  onClose: () => void;
+  onBack: () => void;
   onPreview: () => void;
 };
 
@@ -17,44 +18,46 @@ const RULES = [
   'After completing one section, you can move to the next section.',
 ];
 
-export default function TestInstructionsModal({
-  open,
-  testTitle,
+export default function TestInstructionsView({
+  test,
   agreed,
   onAgreeChange,
-  onClose,
+  onBack,
   onPreview,
 }: Props) {
-  if (!open) return null;
-
   return (
-    <div
-      onClick={onClose}
-      className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/75 p-4 backdrop-blur"
-    >
-      <div
-        onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-[500px] rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6"
+    <div className="mx-auto w-full max-w-[760px] p-6">
+      <button
+        onClick={onBack}
+        className="mb-5 rounded-xl border border-[var(--border)] px-4 py-2 text-sm font-semibold text-[var(--muted2)]"
       >
-        <div className="mb-5 flex items-start justify-between gap-4">
-          <div>
-            <h2 className="text-xl font-bold text-[var(--text)]">
-              {testTitle}
-            </h2>
-            <p className="mt-1 text-sm text-[var(--muted2)]">
-              Please read the instructions before previewing the test.
-            </p>
-          </div>
+        ← Back to Tests
+      </button>
 
-          <button
-            onClick={onClose}
-            className="text-2xl leading-none text-[var(--muted2)]"
-          >
-            ×
-          </button>
+      <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6">
+        <div className="mb-6">
+          <h1 className="text-2xl font-extrabold text-[var(--text)]">
+            {test.title}
+          </h1>
+
+          {test.description && (
+            <p className="mt-2 text-sm leading-6 text-[var(--muted2)]">
+              {test.description}
+            </p>
+          )}
+
+          <div className="mt-4 flex flex-wrap gap-2 text-xs text-[var(--muted2)]">
+            <span className="rounded-full border border-[var(--border)] px-3 py-1">
+              {test.totalSections} Sections
+            </span>
+
+            <span className="rounded-full border border-[var(--border)] px-3 py-1">
+              {test.totalDuration} Minutes
+            </span>
+          </div>
         </div>
 
-        <div className="rounded-xl border border-[var(--border)] bg-[var(--surface2,#1e2028)] p-5">
+        <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface2,#1e2028)] p-5">
           <p className="mb-3 text-xs font-semibold tracking-[0.06em] text-[var(--orange)]">
             TEST RULES
           </p>
@@ -82,15 +85,16 @@ export default function TestInstructionsModal({
             className="mt-1 h-4 w-4"
             style={{ accentColor: 'var(--orange)' }}
           />
+
           <span className="text-sm text-[var(--text)]">
             I have read and understood all the test instructions.
           </span>
         </label>
 
-        <div className="mt-5 flex gap-3">
+        <div className="mt-6 flex justify-end gap-3">
           <button
-            onClick={onClose}
-            className="flex-1 rounded-xl border border-[var(--border)] px-4 py-3 text-sm font-semibold text-[var(--muted2)]"
+            onClick={onBack}
+            className="rounded-xl border border-[var(--border)] px-5 py-3 text-sm font-semibold text-[var(--muted2)]"
           >
             Cancel
           </button>
@@ -98,7 +102,7 @@ export default function TestInstructionsModal({
           <button
             disabled={!agreed}
             onClick={onPreview}
-            className="flex-[2] rounded-xl px-4 py-3 text-sm font-bold"
+            className="rounded-xl px-5 py-3 text-sm font-bold"
             style={{
               background: agreed ? 'var(--orange)' : 'transparent',
               border: `1px solid ${agreed ? 'var(--orange)' : 'var(--border)'}`,

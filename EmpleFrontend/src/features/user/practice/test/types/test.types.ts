@@ -1,7 +1,7 @@
 export type TestSectionType = 'mcq' | 'coding';
 
 export type UserTestSection = {
-  id: string;
+  _id: string;
   title: string;
   type: TestSectionType;
   duration: number;
@@ -15,5 +15,7 @@ export type UserTest = {
   totalSections: number;
   totalDuration: number;
   attempted: boolean;
+  status?: 'not_started' | 'in_progress' | 'completed';
+  attemptId?: string;
   sections: UserTestSection[];
 };
