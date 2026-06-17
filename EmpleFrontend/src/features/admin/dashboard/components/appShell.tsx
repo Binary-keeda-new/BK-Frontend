@@ -17,6 +17,7 @@ import QuizEdit from '../../quiz/components/QuizEdit';
 import QuizForm from '../../quiz/components/QuizForm';
 import TestsContent from '../../test/pages/TestList';
 import TestEdit from '../../test/pages/TestEdit';
+import CreateTest from '../../test/components/CreateTest';
 
 interface AppShellProps {
   initialSection?: AdminSection;
@@ -268,10 +269,22 @@ const openTestEdit = (id: string) => {
           />
         );
 
+        case 'test-create':
+  return (
+    <CreateTest
+      isOpen={true}
+      onClose={() => handleSectionChange('tests')}
+      onSuccess={() => {
+        setTestListRefreshKey((prev) => prev + 1);
+        handleSectionChange('tests');
+      }}
+    />
+  );
       case 'dashboard':
         return (
           <DashboardContent
             onOpenQuestionBank={() => handleSectionChange('question-bank')}
+            onCreateTest={() => handleSectionChange('test-create')}
           />
         );
 
@@ -304,10 +317,11 @@ const openTestEdit = (id: string) => {
       case 'tests':
   return (
     <TestsContent
-      refreshKey={testListRefreshKey}
-      onEditTest={openTestEdit}
-      onPreviewTest={(id) => console.log('Preview test:', id)}
-    />
+  refreshKey={testListRefreshKey}
+  onCreateTest={() => handleSectionChange('test-create')}
+  onEditTest={openTestEdit}
+  onPreviewTest={(id) => console.log('Preview test:', id)}
+/>
   );
   case 'test-edit':
   return selectedTestId ? (
@@ -336,6 +350,7 @@ const openTestEdit = (id: string) => {
         return (
           <DashboardContent
             onOpenQuestionBank={() => handleSectionChange('question-bank')}
+            onCreateTest={() => handleSectionChange('test-create')}
           />
         );
     }

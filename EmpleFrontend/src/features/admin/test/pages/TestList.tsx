@@ -20,6 +20,7 @@ type TestsContentProps = {
   refreshKey?: number;
   onEditTest?: (testId: string) => void;
   onPreviewTest?: (testId: string) => void;
+  onCreateTest?: () => void;
 };
 
 interface TestListResponse {
@@ -40,6 +41,7 @@ export default function TestsContent({
   refreshKey,
   onEditTest,
   onPreviewTest,
+  onCreateTest,
 }: TestsContentProps) {
   const [page, setPage] = useState(1);
   const [tests, setTests] = useState<Test[]>([]);
@@ -52,8 +54,6 @@ export default function TestsContent({
 
   const [search, setSearch] = useState('');
   const [searchInput, setSearchInput] = useState('');
-
-  const [isCreateTestOpen, setIsCreateTestOpen] = useState(false);
   const [localRefreshKey, setLocalRefreshKey] = useState(0);
 
   const [toasts, setToasts] = useState<
@@ -178,7 +178,7 @@ export default function TestsContent({
           </div>
 
           <button
-            onClick={() => setIsCreateTestOpen(true)}
+           onClick={onCreateTest}
             className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[var(--clr-accent)] px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
           >
             <span className="text-base leading-none">+</span>
@@ -344,15 +344,6 @@ export default function TestsContent({
           </div>
         </div>
 
-        <CreateTest
-          isOpen={isCreateTestOpen}
-          onClose={() => setIsCreateTestOpen(false)}
-          onSuccess={() => {
-            setIsCreateTestOpen(false);
-            setLocalRefreshKey((prev) => prev + 1);
-            addToast('Test created successfully!', 'success');
-          }}
-        />
 
         {testToDelete && (
           <>

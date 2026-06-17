@@ -19,10 +19,12 @@ type CreateQuestionBankResponse = {
 
 type DashboardContentProps = {
   onOpenQuestionBank: () => void;
+  onCreateTest?: () => void;
 };
 
 export default function DashboardContent({
   onOpenQuestionBank,
+  onCreateTest,
 }: DashboardContentProps) {
   const [isQuestionBankOpen, setIsQuestionBankOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState<string | null>(null);
@@ -38,8 +40,10 @@ export default function DashboardContent({
     setIsQuizFormOpen(true);
   };
 
+  const handleCreateTest = (): void => {
+  onCreateTest?.();
+};
   const handleCodingProblems = (): void => console.log('Coding Problems');
-  const handleCreateTest = (): void => console.log('Test');
 
   const handleOpenQuestionBank = (): void => {
     setIsQuestionBankOpen(true);

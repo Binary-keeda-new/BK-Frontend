@@ -16,7 +16,8 @@ export type AdminSection =
   | 'quiz-preview'
   | 'quiz-edit'
   | 'quiz-create'
-  | 'test-edit';
+  | 'test-edit'
+  | 'test-create';
 
 const NAV_ITEMS: {
   label: string;

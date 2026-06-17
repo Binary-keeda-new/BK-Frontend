@@ -374,6 +374,30 @@ export default function TestEdit({ testId, onClose }: TestEditProps) {
     );
   }
 
+  const handlePublishTest = async () => {
+  try {
+    setSavingTest(true);
+
+    await apiRequest(`/api/v1/admin/tests/${testId}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        status: 'published',
+      }),
+    });
+
+    addToast('Test published successfully.', 'success');
+
+    await fetchSections();
+  } catch (error) {
+    addToast(
+      error instanceof Error ? error.message : 'Failed to publish test',
+      'error'
+    );
+  } finally {
+    setSavingTest(false);
+  }
+};
+
   return (
     <>
       <ToastContainer toasts={toasts} />
@@ -444,22 +468,14 @@ export default function TestEdit({ testId, onClose }: TestEditProps) {
 
         <TestSettingsCard settings={settings} onChange={setSettings} />
 
-        <div className="mt-4 flex justify-end gap-3">
-          <button
-            onClick={handleSaveTestDetails}
-            disabled={savingTest}
-            className="rounded-2xl border border-[var(--clr-border)] px-5 py-3 text-sm font-semibold text-[var(--clr-text)] disabled:opacity-60"
-          >
-            {savingTest ? 'Saving...' : 'Save Details'}
-          </button>
-
-          <button
-            onClick={handleOpenAddSection}
-            className="rounded-2xl bg-[var(--clr-accent)] px-5 py-3 text-sm font-semibold text-white"
-          >
-            + Add Section
-          </button>
-        </div>
+       <div className="mt-4 flex justify-end">
+  <button
+    onClick={handleOpenAddSection}
+    className="rounded-2xl bg-[var(--clr-accent)] px-5 py-3 text-sm font-semibold text-white"
+  >
+    + Add Section
+  </button>
+</div>
 
         <div className="mt-6 space-y-4">
           {sections.length === 0 ? (
@@ -535,15 +551,6 @@ export default function TestEdit({ testId, onClose }: TestEditProps) {
       >
         Import from Question Bank
       </button>
-
-      <button
-        onClick={() =>
-          addToast('Manual question editor will be added next.', 'success')
-        }
-        className="rounded-xl bg-[var(--clr-accent)] px-4 py-2 text-sm font-semibold text-white"
-      >
-        Add Manually
-      </button>
     </div>
 
     <TestSectionQuestionEditor
@@ -562,6 +569,23 @@ export default function TestEdit({ testId, onClose }: TestEditProps) {
             ))
           )}
         </div>
+        <div className="mt-8 flex justify-end gap-3 border-t border-[var(--clr-border)] pt-5">
+  <button
+    onClick={handleSaveTestDetails}
+    disabled={savingTest}
+    className="rounded-2xl border border-[var(--clr-border)] px-5 py-3 text-sm font-semibold text-[var(--clr-text)] disabled:opacity-60"
+  >
+    {savingTest ? 'Saving...' : 'Save Details'}
+  </button>
+
+  <button
+    onClick={handlePublishTest}
+    disabled={savingTest}
+    className="rounded-2xl bg-green-600 px-5 py-3 text-sm font-semibold text-white disabled:opacity-60"
+  >
+    Publish Test
+  </button>
+</div>
       </div>
 
       {showSectionModal && (
@@ -644,6 +668,7 @@ export default function TestEdit({ testId, onClose }: TestEditProps) {
                     ? 'Update Section'
                     : 'Add Section'}
                 </button>
+
               </div>
             </div>
           </div>
@@ -709,5 +734,6 @@ export default function TestEdit({ testId, onClose }: TestEditProps) {
         />
       )}
     </>
+    
   );
 }
