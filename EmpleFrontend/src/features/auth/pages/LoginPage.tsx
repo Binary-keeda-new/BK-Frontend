@@ -16,6 +16,7 @@ export default function LoginPage() {
   const [remember, setRemember] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [acceptCookies, setAcceptCookies] = useState(false)
 
   const router = useRouter()
   const sdk = useDescope()
@@ -175,7 +176,7 @@ if (!syncRes.ok) {
 
             <button
               className="auth-social-icon-btn microsoft"
-              onClick={() => handleSocialLogin('microsoft')}
+              onClick={() => handleSocialLogin('microsoft')} 
               title="Continue with Microsoft"
               type="button"
             >
@@ -252,6 +253,18 @@ if (!syncRes.ok) {
                 onChange={(e) => setRemember(e.target.checked)}
               />
               <span className="auth-check-label">Keep me signed in for 30 days</span>
+            </label>
+
+            <label className="auth-check-wrap">
+              <input
+                type="checkbox"
+                className="auth-check"
+                checked={acceptCookies}
+                onChange={(e) => setAcceptCookies(e.target.checked)}
+              />
+              <span className="auth-check-label">
+                Accept <Link href="/company/cookies" className="auth-link">Cookies</Link> for a better experience
+              </span>
             </label>
 
             <button className="auth-submit" type="submit" disabled={loading}>

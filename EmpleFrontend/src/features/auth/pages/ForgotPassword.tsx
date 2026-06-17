@@ -91,7 +91,12 @@ export default function ForgotPasswordPage() {
                 {/*<div className="auth-logo-badge" style={{ background: 'var(--clr-surface2)', border: '1.5px solid var(--clr-border2)', boxShadow: 'none' }}>
                   
                 </div>*/}
+<<<<<<< HEAD
+                <h1 className="auth-title">Forgot your <em>password?</em></h1> 
+
+=======
                 <h1 className="auth-title">Forgot your <em>password?</em></h1>
+>>>>>>> 716a1a95d23c98a3a1b9304771883982e4fa14ef
 
                 <p className="auth-subtitle">
                   Enter your registered email address and we&apos;ll send you a
@@ -110,7 +115,7 @@ export default function ForgotPasswordPage() {
                 <div className="auth-field">
                   <label className="auth-label">Email Address</label>
                   <div className="auth-input-wrap">
-                    <span className="auth-input-icon">✉️</span>
+                    
                     <input
                       className="auth-input"
                       type="email"
@@ -188,7 +193,7 @@ export default function ForgotPasswordPage() {
                     marginBottom: 10,
                   }}
                 >
-                  💡 Tips
+                  Tips
                 </div>
 
                 {[
@@ -231,7 +236,7 @@ export default function ForgotPasswordPage() {
               <p className="auth-redirect">
                 Remember your password?{' '}
                 <Link href="/auth/login" className="auth-link">
-                  Back to Sign In →
+                  Back to Sign In 
                 </Link>
               </p>
             </>
@@ -293,7 +298,7 @@ export default function ForgotPasswordPage() {
                     borderRadius: 50,
                   }}
                 >
-                  ← Back to Sign In
+                  Back to Sign In
                 </Link>
               </div>
 
@@ -346,7 +351,7 @@ export default function ForgotPasswordPage() {
               (e.currentTarget.style.color = 'var(--clr-text3)')
             }
           >
-            ← Back to Emple home
+            Back to Emple home
           </Link>
         </div>
       </div>
