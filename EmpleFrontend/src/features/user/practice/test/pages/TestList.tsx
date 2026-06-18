@@ -55,6 +55,8 @@ const [completedSectionIds, setCompletedSectionIds] = useState<string[]>([]);
   useState<UserTestSection | null>(null);
 
 const [activeSectionIndex, setActiveSectionIndex] = useState(0);
+const [attemptedTestIds, setAttemptedTestIds] = useState<string[]>([]);
+const [redirectCountdown, setRedirectCountdown] = useState<number | null>(null);
 
   const handleAttempt = (test: UserTest) => {
     setSelectedTest(test);
@@ -147,10 +149,29 @@ const [activeSectionIndex, setActiveSectionIndex] = useState(0);
 if (view === 'feedback') {
   return (
     <TestFeedbackView
+      countdown={redirectCountdown}
       onBack={() => setView('sections')}
-      onSubmit={(payload) => {
-        console.log('Feedback submitted:', payload);
-        setView('list');
+      onSubmit={() => {
+        if (!selectedTest) return;
+
+        setAttemptedTestIds((prev) =>
+          prev.includes(selectedTest._id) ? prev : [...prev, selectedTest._id]
+        );
+
+        setRedirectCountdown(3);
+
+        const interval = setInterval(() => {
+          setRedirectCountdown((prev) => {
+            if (!prev || prev <= 1) {
+              clearInterval(interval);
+              setRedirectCountdown(null);
+              handleBackToList();
+              return null;
+            }
+
+            return prev - 1;
+          });
+        }, 1000);
       }}
     />
   );
@@ -169,36 +190,45 @@ if (view === 'feedback') {
       </div>
 
       <div className="space-y-4">
-        {tests.map((test) => (
-          <div
-            key={test._id}
-            className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5"
-          >
-            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-              <div>
-                <h2 className="text-lg font-bold text-[var(--text)]">
-                  {test.title}
-                </h2>
+        {tests.map((test) => {
+  const isAttempted =
+    test.attempted || attemptedTestIds.includes(test._id);
 
-                <p className="mt-1 text-sm text-[var(--muted2)]">
-                  {test.description}
-                </p>
+  return (
+    <div
+      key={test._id}
+      className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5"
+    >
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div>
+          <h2 className="text-lg font-bold text-[var(--text)]">
+            {test.title}
+          </h2>
 
-                <div className="mt-3 flex flex-wrap gap-3 text-xs text-[var(--muted2)]">
-                  <span>{test.totalSections} Sections</span>
-                  <span>{test.totalDuration} Minutes</span>
-                </div>
-              </div>
+          <p className="mt-1 text-sm text-[var(--muted2)]">
+            {test.description}
+          </p>
 
-              <button
-                onClick={() => handleAttempt(test)}
-                className="rounded-xl bg-[var(--orange)] px-5 py-3 text-sm font-bold text-white"
-              >
-                {test.attempted ? 'Preview →' : 'Attempt →'}
-              </button>
-            </div>
+          <div className="mt-3 flex flex-wrap gap-3 text-xs text-[var(--muted2)]">
+            <span>{test.totalSections} Sections</span>
+            <span>{test.totalDuration} Minutes</span>
           </div>
-        ))}
+        </div>
+
+        <button
+          onClick={() => handleAttempt(test)}
+          className={`rounded-xl px-5 py-3 text-sm font-bold ${
+            isAttempted
+              ? 'border border-emerald-500/30 bg-emerald-500/10 text-emerald-300'
+              : 'bg-[var(--orange)] text-white'
+          }`}
+        >
+          {isAttempted ? 'Preview →' : 'Attempt →'}
+        </button>
+      </div>
+    </div>
+  );
+})}
       </div>
     </div>
   );

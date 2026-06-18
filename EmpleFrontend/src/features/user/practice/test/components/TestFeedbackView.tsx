@@ -3,6 +3,7 @@
 import { useState } from 'react';
 
 type Props = {
+  countdown?: number | null;
   onBack?: () => void;
   onSubmit: (payload: {
     rating: number;
@@ -11,6 +12,7 @@ type Props = {
 };
 
 export default function TestFeedbackView({
+  countdown,
   onBack,
   onSubmit,
 }: Props) {
@@ -66,6 +68,12 @@ export default function TestFeedbackView({
             className="w-full rounded-2xl border border-[var(--border)] bg-[var(--surface2)] px-4 py-3 text-sm text-[var(--text)] outline-none"
           />
         </div>
+
+        {countdown !== null && countdown !== undefined && (
+        <p className="mt-4 text-center text-sm font-semibold text-[var(--orange)]">
+          Redirecting to dashboard in {countdown}...
+        </p>
+         )}
 
         <div className="mt-8 flex justify-end gap-3">
           {onBack && (
