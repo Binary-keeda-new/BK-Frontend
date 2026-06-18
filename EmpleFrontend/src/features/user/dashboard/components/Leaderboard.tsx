@@ -2,8 +2,6 @@
 
 
 import { useSession } from "@descope/nextjs-sdk/client";
-import EmptyState from "@/shared/components/ui/EmptyState";
-import { Trophy } from "lucide-react";
 
 
 
@@ -45,12 +43,17 @@ export default function Leaderboard() {
            Global Leaderboard
         </div>
         {/* Empty state */}
-        <div className="flex-1 min-h-0 mb-3">
-          <EmptyState
-            title="No Data"
-            description="No leaderboard data available yet."
-            icon={<Trophy size={20} />}
-          />
+        <div
+          className="text-center rounded-[12px] mb-3"
+          style={{
+            fontSize: "clamp(11px, 2.8vw, 13px)",
+            padding: "clamp(10px, 2.5vw, 16px) 0",
+            color: "var(--muted)",
+            border: "1px dashed var(--border)",
+            background: "var(--surface2)",
+          }}
+        >
+          No leaderboard data available.
         </div>
 
         {/* Your rank */}

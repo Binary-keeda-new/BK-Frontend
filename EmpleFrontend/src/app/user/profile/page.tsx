@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { useState, useMemo } from "react";
+import EmptyState from "@/shared/components/ui/EmptyState";
 import { useTheme } from "@/providers/ThemeContext";
 import {
   User, Calendar, Phone, Mail, MapPin, GraduationCap,
@@ -40,16 +41,7 @@ const defaultData: ProfileData = Object.fromEntries(Object.keys(fieldMeta).map((
 // Replace generateMockActivity with a real data fetch when backend is ready.
 // Shape: Record<"YYYY-MM-DD", 0|1|2|3|4>
 function generateMockActivity(): Record<string, 0 | 1 | 2 | 3 | 4> {
-  const data: Record<string, 0 | 1 | 2 | 3 | 4> = {};
-  const today = new Date();
-  for (let i = 0; i < 364; i++) {
-    const d = new Date(today);
-    d.setDate(today.getDate() - i);
-    const key = d.toISOString().split("T")[0];
-    const rand = Math.random();
-    data[key] = rand < 0.35 ? 0 : rand < 0.55 ? 1 : rand < 0.72 ? 2 : rand < 0.87 ? 3 : 4;
-  }
-  return data;
+  return {};
 }
 
 // ─── Heatmap component ────────────────────────────────────────────────────────
@@ -63,6 +55,19 @@ function ActivityHeatmap({ isDark, activityData }: {
   activityData: Record<string, 0 | 1 | 2 | 3 | 4>;
 }) {
   const [tooltip, setTooltip] = useState<{ text: string; x: number; y: number } | null>(null);
+
+  const hasData = Object.keys(activityData).length > 0;
+  if (!hasData) {
+    return (
+      <div className="flex-1 min-h-0 mb-3 mt-4">
+        <EmptyState
+          title="No Activity Data"
+          description="Activity data will appear here once you start using the platform."
+          icon={<Calendar size={20} />}
+        />
+      </div>
+    );
+  }
 
   // dark-mode orange ramp: level 0 = near-invisible, 1-4 = progressively brighter
   const darkColors  = ["#1a1a1a", "#7c2d0e", "#c2410c", "#ea580c", "#f97316"];
