@@ -119,7 +119,9 @@ export default function Sidebar() {
       {/* Nav items */}
       <nav className="flex-1 px-[10px] py-1 overflow-y-auto overflow-x-hidden">
         {NAV_ITEMS.map((item) => {
-          const isActive = pathname === item.href;
+          let isActive = pathname === item.href;
+          if (item.label === "Resources" && pathname.startsWith("/resources")) isActive = true;
+          if (item.label === "Jobs" && pathname.startsWith("/jobs")) isActive = true;
           const isPremium = item.label !== "Resources" && item.label !== "Jobs";
           return (
             <Link href={item.href} key={item.label} style={{ textDecoration: "none" }} onClick={(e) => handleItemClick(e, isPremium)}>
