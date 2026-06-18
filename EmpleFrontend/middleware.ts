@@ -12,9 +12,13 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/auth/login', request.url))
   }
 
+  if (!token && request.nextUrl.pathname.startsWith('/admin')) {
+    return NextResponse.redirect(new URL('/auth/login', request.url))
+  }
+
   return NextResponse.next()
 }
 
 export const config = {
-  matcher: ['/user/:path*', '/dashboard/:path*'],
+  matcher: ['/user/:path*', '/dashboard/:path*', '/admin/:path*'],
 }

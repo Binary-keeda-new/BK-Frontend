@@ -55,7 +55,7 @@ export default function Hero() {
           </p>
 
           <div className="hero-btns">
-            <Link className="hero-btn-primary" href="/auth/signup">
+            <Link className="hero-btn-primary" href="/resources">
               Start for Free
               
             </Link>
