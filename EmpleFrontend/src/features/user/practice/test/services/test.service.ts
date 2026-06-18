@@ -35,14 +35,21 @@ export const getTestAttemptStatus = async (testIds: string[]) => {
 
   return result.data;
 };
-
-export const startTestAttempt = async (testId: string) => {
-  const result = await apiRequest<ApiResponse<{ _id: string }>>(
-    `/api/v1/test-attempts/${testId}/start`,
-    {
-      method: 'POST',
-    }
-  );
+export const startTestAttempt = async (
+  testId: string,
+  password?: string
+) => {
+  const result = await apiRequest<
+    ApiResponse<{
+      _id: string;
+      expiresAt?: string | null;
+    }>
+  >(`/api/v1/test-attempts/${testId}/start`, {
+    method: 'POST',
+    body: JSON.stringify({
+      password,
+    }),
+  });
 
   return result.data;
 };

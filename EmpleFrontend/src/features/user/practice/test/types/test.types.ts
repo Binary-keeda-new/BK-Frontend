@@ -15,7 +15,26 @@ export type UserTest = {
   totalSections: number;
   totalDuration: number;
   attempted: boolean;
+  sections: UserTestSection[];
+
   status?: 'not_started' | 'in_progress' | 'completed';
   attemptId?: string;
-  sections: UserTestSection[];
+  settings?: UserTestSettings;
+};
+
+export type UserTestSettings = {
+  blockKeyboard?: boolean;
+  allowVirtualKeyboard?: boolean;
+  allowCalculator?: boolean;
+  noExitScreen?: boolean;
+  ipBinding?: boolean;
+  noCopyPaste?: boolean;
+  noMinimize?: boolean;
+  noDevTools?: boolean;
+  noLostFocus?: boolean;
+  navigationMode?: 'free' | 'sequential';
+  minTimeBeforeSubmit?: number;
+  deadline?: string;
+  duration?: number;
+  passwordProtected?: boolean;
 };

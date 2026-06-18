@@ -12,6 +12,8 @@ type Status = 'not-visited' | 'not-attempted' | 'answered' | 'flagged';
 
 type Props = {
   attemptId: string;
+  attemptExpiresAt?: string | null;
+  securityWarnings?: number;
   testId: string;
   section: UserTestSection;
   sectionIndex: number;
@@ -57,6 +59,8 @@ function getQuestionMode(questionType?: string): 'mcq' | 'multi' | 'nat' {
 
 export default function TestAttempt({
   attemptId,
+  attemptExpiresAt,
+  securityWarnings = 0,
   section,
   sectionIndex,
   onBackToSections,
@@ -72,6 +76,7 @@ export default function TestAttempt({
   const [submitting, setSubmitting] = useState(false);
   const [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [timeLeftMs, setTimeLeftMs] = useState<number | null>(null);
 
   const questions = data?.questions ?? [];
   const totalQuestions = questions.length;
@@ -170,6 +175,44 @@ export default function TestAttempt({
     },
     [q]
   );
+
+  useEffect(() => {
+  if (!attemptExpiresAt) {
+    setTimeLeftMs(null);
+    return;
+  }
+
+  const tick = () => {
+    const diff = new Date(attemptExpiresAt).getTime() - Date.now();
+    setTimeLeftMs(Math.max(diff, 0));
+  };
+
+  tick();
+  const interval = setInterval(tick, 1000);
+
+  return () => clearInterval(interval);
+}, [attemptExpiresAt]);
+
+const formattedTimeLeft = useMemo(() => {
+  if (timeLeftMs === null) return null;
+
+  const totalSeconds = Math.floor(timeLeftMs / 1000);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  if (hours > 0) {
+    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(
+      2,
+      '0'
+    )}:${String(seconds).padStart(2, '0')}`;
+  }
+
+  return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(
+    2,
+    '0'
+  )}`;
+}, [timeLeftMs]);
 
   const handleNatChange = useCallback(
     (value: string) => {
@@ -391,7 +434,58 @@ export default function TestAttempt({
               >
                 Sections
               </button>
-              
+
+                {securityWarnings ? (
+                <span className="rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs font-bold text-red-400">
+                  Warnings: {securityWarnings}
+                </span>
+              ) : null}
+
+              <div className="flex flex-wrap items-center gap-2">
+  <button
+    type="button"
+    onClick={onBackToSections}
+    className="rounded-xl border border-[var(--border)] bg-[var(--surface2)] px-3 py-2 text-sm font-semibold text-[var(--text)]"
+  >
+    Sections
+  </button>
+
+  {formattedTimeLeft && (
+    <span
+      className="rounded-xl border border-[var(--border)] bg-[var(--surface2)] px-3 py-2 text-sm font-bold"
+      style={{
+        color:
+          timeLeftMs !== null && timeLeftMs < 60_000
+            ? '#f87171'
+            : 'var(--text)',
+      }}
+    >
+      ⏱ {formattedTimeLeft}
+    </span>
+  )}
+
+  {securityWarnings ? (
+    <span className="rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs font-bold text-red-400">
+      Warnings: {securityWarnings}
+    </span>
+  ) : null}
+
+  <button
+    type="button"
+    onClick={() => setSidebarOpen(true)}
+    className="rounded-xl border border-[var(--border)] bg-[var(--surface2)] px-3 py-2 text-sm font-semibold text-[var(--text)] md:hidden"
+  >
+    Questions
+  </button>
+
+  <button
+    type="button"
+    onClick={openSubmitConfirm}
+    className="rounded-xl bg-[var(--orange)] px-4 py-2 text-sm font-bold text-white"
+  >
+    Submit
+  </button>
+</div>
               <button
                 type="button"
                 onClick={() => setSidebarOpen(true)}

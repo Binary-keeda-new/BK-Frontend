@@ -55,19 +55,6 @@ export default function TestFeedbackView({
           </div>
         </div>
 
-        <div className="mt-8">
-          <label className="mb-2 block text-sm font-semibold text-[var(--text)]">
-            Additional Feedback (Optional)
-          </label>
-
-          <textarea
-            rows={5}
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            placeholder="Tell us about your experience..."
-            className="w-full rounded-2xl border border-[var(--border)] bg-[var(--surface2)] px-4 py-3 text-sm text-[var(--text)] outline-none"
-          />
-        </div>
 
         {countdown !== null && countdown !== undefined && (
         <p className="mt-4 text-center text-sm font-semibold text-[var(--orange)]">
