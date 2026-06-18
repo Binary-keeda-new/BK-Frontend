@@ -1,11 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import TestInstructionsView from '../components/TestInstructionsView';
 import TestSectionsPreview from '../components/TestSectionsPreview';
 import { UserTest, UserTestSection } from '../types/test.types';
 import TestAttempt from './TestAttempt';
 import TestFeedbackView from '../components/TestFeedbackView';
+import { getTests } from '../services/test.service';
 
 const mockTests: UserTest[] = [
   {
@@ -42,7 +43,8 @@ const mockTests: UserTest[] = [
 ];
 
 export default function TestList() {
-  const [tests] = useState(mockTests);
+  const [tests, setTests] = useState<UserTest[]>([]);
+const [loading, setLoading] = useState(true);
   const [selectedTest, setSelectedTest] = useState<UserTest | null>(null);
   const [view, setView] = useState<
   'list' | 'instructions' | 'sections' | 'attempt' | 'feedback'
@@ -57,6 +59,7 @@ const [completedSectionIds, setCompletedSectionIds] = useState<string[]>([]);
 const [activeSectionIndex, setActiveSectionIndex] = useState(0);
 const [attemptedTestIds, setAttemptedTestIds] = useState<string[]>([]);
 const [redirectCountdown, setRedirectCountdown] = useState<number | null>(null);
+
 
   const handleAttempt = (test: UserTest) => {
     setSelectedTest(test);
@@ -174,6 +177,28 @@ if (view === 'feedback') {
         }, 1000);
       }}
     />
+  );
+}
+useEffect(() => {
+  const loadTests = async () => {
+    try {
+      const data = await getTests();
+      setTests(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  loadTests();
+}, []);
+
+if (loading) {
+  return (
+    <div className="p-6 text-sm text-[var(--muted2)]">
+      Loading tests...
+    </div>
   );
 }
 
