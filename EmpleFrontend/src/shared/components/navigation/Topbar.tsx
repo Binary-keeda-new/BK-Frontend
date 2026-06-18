@@ -13,6 +13,9 @@ import {
 } from "lucide-react";
 import { useDescope, useSession, useUser } from "@descope/nextjs-sdk/client";
 import { useRouter } from "next/navigation";
+import SlideDrawer from "@/shared/components/ui/SlideDrawer";
+import MediaFeedWidget from "@/features/user/dashboard/components/MediaFeedWidget";
+import AIAssistantWidget from "@/features/ai-assistant/components/AIAssistantWidget";
 
 type Task = {
   text: string;
@@ -22,6 +25,8 @@ type Task = {
 export default function Topbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [todoOpen, setTodoOpen] = useState(false);
+  const [mediaOpen, setMediaOpen] = useState(false);
+  const [aiOpen, setAiOpen] = useState(false);
   const [tasks, setTasks] = useState<Task[]>([{ text: "", done: false }]);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -120,10 +125,17 @@ export default function Topbar() {
             <button
               key={title}
               title={title}
+              onClick={() => {
+                if (title === "Media - Coming Soon" || title === "Media") {
+                  setMediaOpen(true);
+                } else if (title === "Emple AI") {
+                  setAiOpen(true);
+                }
+              }}
               className={`w-11 h-11 flex items-center justify-center rounded-full text-[var(--muted2)]
                 transition-all duration-300
                 hover:-translate-y-[2px] hover:bg-orange-500/10 hover:text-orange-500
-                ${title === "Media - Coming Soon" ? "hidden sm:flex" : ""}`}
+                ${title.includes("Media") ? "hidden sm:flex" : ""}`}
             >
               {icon}
             </button>
@@ -290,6 +302,31 @@ export default function Topbar() {
           </div>
         </div>
       </nav>
+
+      {/* Media Drawer */}
+      <SlideDrawer
+        isOpen={mediaOpen}
+        onClose={() => setMediaOpen(false)}
+        title="Media"
+        icon={<img src="/logo-isolated.png" alt="Emple" className="h-6 w-auto object-contain scale-110" />}
+        width="xs"
+      >
+        <div className="h-full">
+          <MediaFeedWidget />
+        </div>
+      </SlideDrawer>
+
+      {/* AI Assistant Drawer */}
+      <SlideDrawer
+        isOpen={aiOpen}
+        onClose={() => setAiOpen(false)}
+        width="sm"
+        hideHeader={true}
+      >
+        <div className="h-full">
+          <AIAssistantWidget onClose={() => setAiOpen(false)} />
+        </div>
+      </SlideDrawer>
     </header>
   );
 }

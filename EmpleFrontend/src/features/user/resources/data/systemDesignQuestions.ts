@@ -306,8 +306,6 @@ The choice depends on whether strict data consistency or continuous availability
 - Example: A smaller application upgrading a single server's resources.
 
 **Rule of thumb:** Vertical scaling works well for smaller systems, but horizontal scaling is preferred for large-scale distributed applications.`,
-    imageUrls: ["/images/interview-questions/system-design/Q25.png"],
-    imageCaptions: ["Figure 25: Comparison of Horizontal Scaling (adding more servers with a load balancer) and Vertical Scaling (upgrading a single server's resources), including pros and cons of each approach."],
     companies: ["Amazon", "Google", "Microsoft", "Netflix"],
   },
   {
@@ -501,8 +499,7 @@ For example, in an e-commerce platform, the API Gateway handles requests from mo
 - Provides fallback responses to maintain partial functionality.
 
 For example, if the payment service in a microservices app becomes unavailable, the circuit breaker stops further calls to it, returning a graceful error message instead of causing a system-wide failure.`,
-    imageUrls: ["/images/interview-questions/system-design/Q34.png"],
-    imageCaptions: ["Figure 34: The three states of the Circuit Breaker Pattern — Closed (normal operation), Open (requests blocked), and Half-Open (testing recovery) — with state transition conditions."],
+    
     companies: ["Netflix", "Amazon", "Microsoft", "Google", "Uber"],
   },
   {
@@ -523,8 +520,7 @@ For example, if the payment service in a microservices app becomes unavailable, 
 **Virtual Nodes:** To improve balance, each server is assigned multiple virtual positions on the ring.
 
 For example, **Redis Cluster** uses consistent hashing to efficiently distribute cached data across many nodes, ensuring minimal disruption when the cluster scales.`,
-    imageUrls: ["/images/interview-questions/system-design/Q35.png"],
-    imageCaptions: ["Figure 35: Consistent hashing hash ring showing four server nodes distributed at 0°, 90°, 180°, and 270°, with data keys assigned to their nearest clockwise server node."],
+    
     companies: ["Amazon", "Google", "Redis Labs", "Akamai", "Cassandra"],
   },
   {
@@ -676,8 +672,6 @@ For example, traditional web login sessions are stateful (server stores session)
 - Guides the design of security measures at the appropriate layer (e.g., TLS at Layer 6, firewalls at Layer 3).
 
 For example, when a user accesses a website, data travels from the Application Layer (HTTP request) down through all layers to the Physical Layer for transmission, then back up on the receiving end.`,
-    imageUrls: ["/images/interview-questions/system-design/Q41.png"],
-    imageCaptions: ["Figure 41: The 7 layers of the OSI Model — Application, Presentation, Session, Transport, Network, Data Link, and Physical — with responsibilities and protocol examples for each layer."],
     companies: ["Cisco", "Amazon", "Google", "Microsoft", "Cloudflare"],
   },
   {

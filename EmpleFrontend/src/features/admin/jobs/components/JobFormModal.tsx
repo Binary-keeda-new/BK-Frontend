@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Job, JobFormData } from '../types/jobs.types'
+import { Job, JobFormData, JobLink } from '../types/jobs.types'
 import { createJob, updateJob } from '../services/jobs.service'
 
 type Props = {
@@ -22,18 +22,22 @@ const EMPTY_FORM: JobFormData = {
   tags: [],
   department: '',
   lastDate: '',
+  links: [],
 }
 
 export default function JobFormModal({ isOpen, editTarget, onClose, onSuccess }: Props) {
   const [formData, setFormData] = useState<JobFormData>(EMPTY_FORM)
+  const [links, setLinks] = useState<JobLink[]>([])
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     if (editTarget) {
       const { _id, createdAt, updatedAt, ...rest } = editTarget
       setFormData({ ...EMPTY_FORM, ...rest })
+      setLinks(editTarget.links ?? [])
     } else {
       setFormData(EMPTY_FORM)
+      setLinks([])
     }
   }, [editTarget, isOpen])
 
@@ -48,6 +52,7 @@ export default function JobFormModal({ isOpen, editTarget, onClose, onSuccess }:
 
   const handleClose = () => {
     setFormData(EMPTY_FORM)
+    setLinks([])
     onClose()
   }
 
@@ -56,9 +61,13 @@ export default function JobFormModal({ isOpen, editTarget, onClose, onSuccess }:
 
     try {
       setLoading(true)
+      const payload: JobFormData = {
+        ...formData,
+        links: formData.type === 'government' ? links.filter(l => l.label.trim() && l.url.trim()) : [],
+      }
       const result = editTarget
-        ? await updateJob(editTarget._id, formData)
-        : await createJob(formData)
+        ? await updateJob(editTarget._id, payload)
+        : await createJob(payload)
       onSuccess(result)
       handleClose()
     } catch (err) {
@@ -67,6 +76,14 @@ export default function JobFormModal({ isOpen, editTarget, onClose, onSuccess }:
       setLoading(false)
     }
   }
+
+  // ── Government Links helpers ──────────────────────────────────────────────
+  const addLink = () => setLinks(prev => [...prev, { label: '', url: '' }])
+
+  const removeLink = (idx: number) => setLinks(prev => prev.filter((_, i) => i !== idx))
+
+  const updateLink = (idx: number, field: keyof JobLink, value: string) =>
+    setLinks(prev => prev.map((l, i) => i === idx ? { ...l, [field]: value } : l))
 
   const isEdit = !!editTarget
 
@@ -196,6 +213,59 @@ export default function JobFormModal({ isOpen, editTarget, onClose, onSuccess }:
                   onChange={handleChange}
                   className="w-full rounded-2xl bg-[rgb(10,11,14)] p-3 text-white outline-none ring-1 ring-white/10"
                 />
+              </div>
+            </div>
+          )}
+
+          {/* ── Government Links ──────────────────────────────── */}
+          {formData.type === 'government' && (
+            <div>
+              <div className="mb-3 flex items-center justify-between">
+                <label className="text-sm font-medium text-white/75">Government Links</label>
+                <button
+                  type="button"
+                  onClick={addLink}
+                  className="flex items-center gap-1.5 rounded-xl bg-[rgb(241,90,34)]/15 px-3 py-1.5 text-xs font-semibold text-[rgb(241,90,34)] ring-1 ring-[rgb(241,90,34)]/25 transition hover:bg-[rgb(241,90,34)]/25"
+                >
+                  <span className="text-base leading-none">+</span> Add Link
+                </button>
+              </div>
+
+              {links.length === 0 && (
+                <p className="rounded-xl bg-[rgb(10,11,14)] px-4 py-3 text-sm text-white/30 ring-1 ring-white/8">
+                  No links added yet. Click <span className="text-[rgb(241,90,34)]">+ Add Link</span> to add official notification, apply link, admit card, etc.
+                </p>
+              )}
+
+              <div className="space-y-3">
+                {links.map((link, idx) => (
+                  <div key={idx} className="rounded-2xl bg-[rgb(10,11,14)] p-3 ring-1 ring-white/10">
+                    <div className="mb-2 flex items-center justify-between">
+                      <span className="text-xs font-semibold text-white/40">Link {idx + 1}</span>
+                      <button
+                        type="button"
+                        onClick={() => removeLink(idx)}
+                        className="rounded-lg px-2 py-0.5 text-xs font-semibold text-red-400/70 ring-1 ring-red-400/20 transition hover:bg-red-400/10 hover:text-red-400"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2">
+                      <input
+                        placeholder="Label (e.g. Apply Online)"
+                        value={link.label}
+                        onChange={e => updateLink(idx, 'label', e.target.value)}
+                        className="w-full rounded-xl bg-[rgb(19,20,27)] p-2.5 text-sm text-white outline-none ring-1 ring-white/8 placeholder:text-white/25"
+                      />
+                      <input
+                        placeholder="URL (https://...)"
+                        value={link.url}
+                        onChange={e => updateLink(idx, 'url', e.target.value)}
+                        className="w-full rounded-xl bg-[rgb(19,20,27)] p-2.5 text-sm text-white outline-none ring-1 ring-white/8 placeholder:text-white/25"
+                      />
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           )}

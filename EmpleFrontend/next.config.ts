@@ -1,5 +1,10 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+import type { NextConfig } from 'next';
+
+const nextConfig: NextConfig = {
   output: 'standalone',
+  images: {
+    domains: ["upload.wikimedia.org"],
+  },
 };
-module.exports = nextConfig;
+
+export default nextConfig;

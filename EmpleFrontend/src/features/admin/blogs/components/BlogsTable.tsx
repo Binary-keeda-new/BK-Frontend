@@ -10,6 +10,16 @@ interface Props {
 }
 
 export default function BlogsTable({ blogs, onEdit, onDelete }: Props) {
+  const getImageUrl = (image: string) => {
+    if (!image) return '';
+    if (image.startsWith('http')) return image;
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+    if (image.startsWith('/uploads')) return `${baseUrl}${image}`;
+    if (image.startsWith('uploads/')) return `${baseUrl}/${image}`;
+    if (image.startsWith('/')) return `${baseUrl}${image}`;
+    return `${baseUrl}/uploads/${image}`;
+  };
+
   if (blogs.length === 0) {
     return (
       <div style={{ padding: '48px 20px', textAlign: 'center', border: '1px dashed var(--border)', borderRadius: 16, color: 'var(--muted)', fontSize: 14 }}>
@@ -31,7 +41,7 @@ export default function BlogsTable({ blogs, onEdit, onDelete }: Props) {
           >
             {/* Avatar */}
             {blog.coverImage ? (
-              <img src={blog.coverImage} alt="" style={{ width: 40, height: 40, borderRadius: 10, objectFit: 'cover', flexShrink: 0 }} />
+              <img src={getImageUrl(blog.coverImage)} alt="" style={{ width: 40, height: 40, borderRadius: 10, objectFit: 'cover', flexShrink: 0 }} />
             ) : (
               <div style={{ width: 40, height: 40, borderRadius: 10, flexShrink: 0, background: 'var(--orange-dim)', border: '1px solid rgba(241,90,34,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 800, color: 'var(--orange)' }}>
                 {initials}
