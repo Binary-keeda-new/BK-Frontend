@@ -7,9 +7,27 @@ type ApiResponse<T> = {
   data: T;
 };
 
+export type TestAttemptStatusItem = {
+  attempted: boolean;
+  status: 'in_progress' | 'submitted';
+  attemptId: string;
+};
+
+export type TestAttemptStatusMap = Record<string, TestAttemptStatusItem>;
+
 export const getTests = async () => {
-  const result = await apiRequest<ApiResponse<UserTest[]>>(
-    '/api/v1/tests',
+  const result = await apiRequest<ApiResponse<UserTest[]>>('/api/v1/tests', {
+    method: 'GET',
+  });
+
+  return result.data;
+};
+
+export const getTestAttemptStatus = async (testIds: string[]) => {
+  if (testIds.length === 0) return {};
+
+  const result = await apiRequest<ApiResponse<TestAttemptStatusMap>>(
+    `/api/v1/test-attempts/status?testIds=${testIds.join(',')}`,
     {
       method: 'GET',
     }
@@ -18,11 +36,48 @@ export const getTests = async () => {
   return result.data;
 };
 
-export const getTestById = async (testId: string) => {
-  const result = await apiRequest<ApiResponse<UserTest>>(
-    `/api/v1/tests/${testId}`,
+export const startTestAttempt = async (testId: string) => {
+  const result = await apiRequest<ApiResponse<{ _id: string }>>(
+    `/api/v1/test-attempts/${testId}/start`,
     {
-      method: 'GET',
+      method: 'POST',
+    }
+  );
+
+  return result.data;
+};
+
+export const submitTestSection = async (
+  attemptId: string,
+  sectionId: string,
+  answers: {
+    questionId: string;
+    selectedOptions: string[];
+  }[]
+) => {
+  const result = await apiRequest<ApiResponse<unknown>>(
+    `/api/v1/test-attempts/${attemptId}/sections/${sectionId}/submit`,
+    {
+      method: 'POST',
+      body: JSON.stringify({ answers }),
+    }
+  );
+
+  return result.data;
+};
+
+export const submitTestFeedback = async (
+  attemptId: string,
+  payload: {
+    rating: number;
+    comment: string;
+  }
+) => {
+  const result = await apiRequest<ApiResponse<unknown>>(
+    `/api/v1/test-attempts/${attemptId}/feedback`,
+    {
+      method: 'POST',
+      body: JSON.stringify(payload),
     }
   );
 
