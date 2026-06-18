@@ -116,6 +116,7 @@ export default function TestList() {
     return (
       <TestAttempt
         testId={selectedTest._id}
+        attemptId={activeAttemptId!}
         section={activeSection}
         sectionIndex={activeSectionIndex}
         onBackToSections={() => setView('sections')}
