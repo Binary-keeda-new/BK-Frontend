@@ -15,8 +15,8 @@ const WEEKS: CalDay[][] = [
     { day: 29, otherMonth: true }, { day: 30, otherMonth: true }, { day: 31, otherMonth: true },
     { day: 1 },
   ],
-  [{ day: 2 }, { day: 3 }, { day: 4 }, { day: 5, hasDot: true }, { day: 6 }, { day: 7 }, { day: 8, hasDot: true }],
-  [{ day: 9, hasDot: true }, { day: 10 }, { day: 11 }, { day: 12 }, { day: 13 }, { day: 14 }, { day: 15 }],
+  [{ day: 2 }, { day: 3 }, { day: 4 }, { day: 5 }, { day: 6 }, { day: 7 }, { day: 8 }],
+  [{ day: 9 }, { day: 10 }, { day: 11 }, { day: 12 }, { day: 13 }, { day: 14 }, { day: 15 }],
   [{ day: 16 }, { day: 17 }, { day: 18 }, { day: 19 }, { day: 20, isToday: true }, { day: 21 }, { day: 22 }],
   [{ day: 23 }, { day: 24 }, { day: 25 }, { day: 26 }, { day: 27 }, { day: 28 }, { day: 1, otherMonth: true }],
 ];
@@ -66,9 +66,12 @@ export default function ActivityCalendar() {
             </div>
             <div
               className="font-syne font-extrabold"
-              style={{ fontSize: "clamp(17px, 4.5vw, 20px)", color: "var(--orange)", lineHeight: 1.1 }}
+              style={{ fontSize: "clamp(17px, 4.5vw, 20px)", color: "var(--muted)", lineHeight: 1.1 }}
             >
-              5 days
+              0 days
+            </div>
+            <div style={{ fontSize: "clamp(9px, 2.2vw, 11px)", color: "var(--orange)", marginTop: "4px" }}>
+              Start practicing to build your streak.
             </div>
           </div>
         </div>

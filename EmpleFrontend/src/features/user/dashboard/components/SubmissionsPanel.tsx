@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getSessionToken } from "@descope/nextjs-sdk/client";
+import EmptyState from "@/shared/components/ui/EmptyState";
+import { FileText } from "lucide-react";
 
 type Tab = "Test" | "Quiz";
 
@@ -186,26 +188,20 @@ export default function SubmissionsPanel() {
             Loading submissions...
           </div>
         ) : active === "Test" ? (
-          <div
-            className="rounded-[10px] p-4 text-sm"
-            style={{
-              background: "var(--surface2)",
-              border: "1px solid var(--border)",
-              color: "var(--muted2)",
-            }}
-          >
-            Test submissions are not connected yet.
+          <div className="py-2">
+            <EmptyState
+              title="No Test Submissions"
+              description="Test submissions are not connected yet."
+              icon={<FileText size={20} />}
+            />
           </div>
         ) : visibleSubmissions.length === 0 ? (
-          <div
-            className="rounded-[10px] p-4 text-sm"
-            style={{
-              background: "var(--surface2)",
-              border: "1px solid var(--border)",
-              color: "var(--muted2)",
-            }}
-          >
-            No quiz submissions yet.
+          <div className="py-2">
+            <EmptyState
+              title="No Submissions"
+              description="No submissions available."
+              icon={<FileText size={20} />}
+            />
           </div>
         ) : (
           visibleSubmissions.map((item) => {

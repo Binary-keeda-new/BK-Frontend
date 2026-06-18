@@ -5,10 +5,11 @@ import { Job } from '../types/jobs.types';
 
 interface JobDetailsProps {
   job: Job;
+  onApply: (link: string) => void;
   onBack: () => void;
 }
 
-export default function JobDetails({ job, onBack }: JobDetailsProps) {
+export default function JobDetails({ job, onApply, onBack }: JobDetailsProps) {
   const isGov = job.type === 'government';
   const releasedCount = job.stages?.filter(s => s.status === 'released').length ?? 0;
   const totalCount = job.stages?.length ?? 0;
@@ -470,10 +471,8 @@ export default function JobDetails({ job, onBack }: JobDetailsProps) {
           >
             Back
           </button>
-          <a
-            href={job.applyLink}
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            onClick={() => onApply(job.applyLink)}
             style={{
               flex: 1,
               padding: '13px 0',
@@ -482,17 +481,18 @@ export default function JobDetails({ job, onBack }: JobDetailsProps) {
               color: '#fff',
               fontSize: 14,
               fontWeight: 700,
-              textDecoration: 'none',
+              border: 'none',
+              cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               transition: 'opacity 0.15s',
             }}
-            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.opacity = '0.88'; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.opacity = '1'; }}
+            onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.opacity = '0.88'; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.opacity = '1'; }}
           >
             Apply Now
-          </a>
+          </button>
         </div>
       </div>
     </>

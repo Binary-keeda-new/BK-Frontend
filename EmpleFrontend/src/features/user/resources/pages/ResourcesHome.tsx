@@ -62,7 +62,7 @@ const RESOURCES_CARDS = [
   
 ];
 
-export default function ResourcesHome() {
+export default function ResourcesHome({ basePath = "/user/resources" }: { basePath?: string }) {
   return (
     <div className="p-6">
       <div className="mb-8">
@@ -75,8 +75,10 @@ export default function ResourcesHome() {
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "20px" }}>
-        {RESOURCES_CARDS.map((card) => (
-          <Link href={card.href} key={card.title} style={{ textDecoration: "none" }}>
+        {RESOURCES_CARDS.map((card) => {
+          const finalHref = card.href.replace("/user/resources", basePath);
+          return (
+          <Link href={finalHref} key={card.title} style={{ textDecoration: "none" }}>
             <div
               style={{
                 background: "var(--surface)", border: "1px solid var(--border)",
@@ -121,7 +123,7 @@ export default function ResourcesHome() {
               </div>
             </div>
           </Link>
-        ))}
+        )})}
       </div>
     </div>
   );
