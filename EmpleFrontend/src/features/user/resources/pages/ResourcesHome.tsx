@@ -43,6 +43,7 @@ const RESOURCES_CARDS = [
     topics: ["OOP", "DBMS", "CN", "OS", "ML", "Cyber", "DevOps", "System Design"],
     color: "#ff3b30",
   },
+ {
   title: "Certificates",
   href: "/user/resources/certificates",
   description: "Explore certifications in AWS, Cisco, Red Hat, CUDA, TensorFlow, Google, and Cyber Security",
@@ -57,8 +58,15 @@ const RESOURCES_CARDS = [
   icon: "📚",
   topics: ["OS", "DBMS", "CN", "COA"],
   color: "#123456",
-}
-  
+},
+{
+  title: "Career Paths",
+  href: "/user/resources/career-paths",
+  description: "Explore career paths with roadmaps, salaries and quizzes.",
+  icon: "🎯",
+  topics: ["Business Analyst", "Data Analyst", "BD", "Testing"],
+  color: "#f97316",
+},
 ];
 
 export default function ResourcesHome() {
