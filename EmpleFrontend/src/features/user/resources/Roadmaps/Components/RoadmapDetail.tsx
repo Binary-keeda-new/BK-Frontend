@@ -4,6 +4,17 @@ import React, { useState, useEffect } from 'react';
 import { getRoadmapById } from '../data/index';
 import QuizModal from './QuizModal';
 import SectionCard from './SectionCard';
+import { Search, ChevronLeft, ChevronRight, Filter } from 'lucide-react';
+
+const categoryColors: Record<string, { bg: string; text: string }> = {
+  "Aptitude": { bg: "rgba(249, 115, 22, 0.15)", text: "#f97316" },
+  "Core Subjects": { bg: "rgba(16, 185, 129, 0.15)", text: "#10b981" },
+  "Tools": { bg: "rgba(139, 92, 246, 0.15)", text: "#8b5cf6" },
+  "Programming Language": { bg: "rgba(245, 158, 11, 0.15)", text: "#f59e0b" },
+  "DSA": { bg: "rgba(239, 68, 68, 0.15)", text: "#ef4444" },
+  "Full Stack": { bg: "rgba(14, 165, 233, 0.15)", text: "#0ea5e9" },
+  "Rest/Revision": { bg: "rgba(107, 114, 128, 0.15)", text: "#9ca3af" }
+};
 
 interface RoadmapDetailProps {
   roadmapId: string;
@@ -65,6 +76,13 @@ const RoadmapDetail: React.FC<RoadmapDetailProps> = ({ roadmapId, onBack }) => {
   const [totalPoints, setTotalPoints] = useState<number>(0);
   const [selectedSection, setSelectedSection] = useState<any>(null);
   const [selectedLevel, setSelectedLevel] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, selectedCategory]);
 
   const [progressDetails, setProgressDetails] = useState<ProgressDetails>({
     completedContent: [],
@@ -110,6 +128,21 @@ const RoadmapDetail: React.FC<RoadmapDetailProps> = ({ roadmapId, onBack }) => {
   // Synchronize detailed progress with standard completedSections and totalPoints
   useEffect(() => {
     if (!isLoaded || !roadmap) return;
+
+    if (roadmapId === 'placement-roadmap') {
+      const completedDays = progressDetails.completedContent?.filter((id: any) => String(id).startsWith('day-')) || [];
+      const newCompleted = new Set(completedDays);
+      const hasChanged = completedSections.size !== newCompleted.size || 
+                         !Array.from(completedSections).every(val => newCompleted.has(val));
+      if (hasChanged) {
+        setCompletedSections(newCompleted);
+        localStorage.setItem(`roadmap_progress_${roadmapId}`, JSON.stringify({
+          sections: Array.from(newCompleted),
+          points: 0
+        }));
+      }
+      return;
+    }
 
     const newCompleted = new Set<any>();
     let newPoints = 0;
@@ -162,6 +195,22 @@ const RoadmapDetail: React.FC<RoadmapDetailProps> = ({ roadmapId, onBack }) => {
     setSelectedLevel(level || null);
   };
 
+  const handleDayToggle = (dayNumber: number, checked: boolean) => {
+    const dayId = `day-${dayNumber}`;
+    let newCompletedContent = [...(progressDetails.completedContent || [])];
+    if (checked) {
+      if (!newCompletedContent.includes(dayId)) {
+        newCompletedContent.push(dayId);
+      }
+    } else {
+      newCompletedContent = newCompletedContent.filter(id => id !== dayId);
+    }
+    setProgressDetails(prev => ({
+      ...prev,
+      completedContent: newCompletedContent
+    }));
+  };
+
   const handleQuizComplete = (passed: boolean, points: number, percentage: number, level?: string | null) => {
     if (passed && selectedSection) {
       const isNewSchema = selectedSection.resources && !Array.isArray(selectedSection.resources);
@@ -190,8 +239,36 @@ const RoadmapDetail: React.FC<RoadmapDetailProps> = ({ roadmapId, onBack }) => {
 
   if (!roadmap) return <div style={{ color: 'var(--text)', padding: 20 }}>Roadmap not found.</div>;
 
-  const progress = (completedSections.size / roadmap.totalSections) * 100;
+  const progress = (completedSections.size / (roadmap.totalSections || 1)) * 100;
   const hasMultipleDurations = roadmapId === 'ai-ml' || roadmapId === 'full-stack';
+
+  const filteredDays = roadmapId === 'placement-roadmap'
+    ? (roadmap?.sections || []).filter((day: any) => {
+        const query = searchQuery.toLowerCase();
+        
+        const matchesDay = `day ${day.day}`.includes(query);
+        const matchesTarget = day.targets?.some((t: any) => 
+          t.topic.toLowerCase().includes(query) || 
+          t.category.toLowerCase().includes(query)
+        ) || false;
+        
+        const matchesResource = Array.isArray(day.resources)
+          ? day.resources.some((r: any) => r.title.toLowerCase().includes(query))
+          : false;
+          
+        const matchesSearch = !query || matchesDay || matchesTarget || matchesResource;
+
+        const matchesCategory = selectedCategory === "All" || day.targets?.some((t: any) => 
+          t.category === selectedCategory
+        ) || false;
+
+        return matchesSearch && matchesCategory;
+      })
+    : [];
+
+  const itemsPerPage = 30;
+  const totalPages = Math.ceil(filteredDays.length / itemsPerPage);
+  const paginatedDays = filteredDays.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   return (
     <div style={{ padding: '24px 0' }}>
@@ -273,7 +350,6 @@ const RoadmapDetail: React.FC<RoadmapDetailProps> = ({ roadmapId, onBack }) => {
         }}>
           {[
             { value: `${completedSections.size}/${roadmap.totalSections}`, label: 'Sections Completed' },
-            { value: totalPoints, label: 'Points Earned' },
             { value: `${progress.toFixed(0)}%`, label: 'Overall Progress' },
           ].map((s, i) => (
             <div key={i} style={{ textAlign: 'center' }}>
@@ -294,22 +370,305 @@ const RoadmapDetail: React.FC<RoadmapDetailProps> = ({ roadmapId, onBack }) => {
         </div>
       </div>
 
-      {/* Sections */}
+      {/* Sections or Tabular Roadmap */}
       <div style={{ marginBottom: 40 }}>
         <h2 style={{ fontSize: 28, fontWeight: 800, color: t.text, marginBottom: 24 }}>Learning Journey</h2>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          {roadmap.sections.map((section: any) => (
-            <SectionCard
-              key={`${roadmapId}-${duration}-${section.id}`}
-              section={section}
-              isCompleted={completedSections.has(section.id)}
-              onStartQuiz={(sec, level) => handleStartQuiz(sec, level)}
-              progressDetails={progressDetails}
-              onUpdateProgressDetails={setProgressDetails}
-              roadmapId={roadmapId}
-            />
-          ))}
-        </div>
+        
+        {roadmapId === 'placement-roadmap' ? (
+          <div>
+            {/* Search and Filter Controls */}
+            <div style={{
+              display: 'flex',
+              gap: 16,
+              marginBottom: 24,
+              flexWrap: 'wrap',
+              alignItems: 'center'
+            }}>
+              <div style={{ position: 'relative', flex: 1, minWidth: 280 }}>
+                <Search size={18} style={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)', color: 'var(--muted2)' }} />
+                <input
+                  type="text"
+                  placeholder="Search days, topics, or categories..."
+                  value={searchQuery}
+                  onChange={e => setSearchQuery(e.target.value)}
+                  style={{
+                    width: '100%',
+                    padding: '12px 16px 12px 44px',
+                    background: 'var(--surface2)',
+                    border: `1px solid var(--border)`,
+                    borderRadius: 12,
+                    color: 'var(--text)',
+                    outline: 'none',
+                    fontSize: 14,
+                    transition: 'all 0.2s ease',
+                  }}
+                  onFocus={e => e.currentTarget.style.borderColor = 'var(--orange)'}
+                  onBlur={e => e.currentTarget.style.borderColor = 'var(--border)'}
+                />
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'var(--surface2)', padding: '4px 12px', borderRadius: 12, border: `1px solid var(--border)` }}>
+                <Filter size={16} style={{ color: 'var(--muted2)' }} />
+                <select
+                  value={selectedCategory}
+                  onChange={e => setSelectedCategory(e.target.value)}
+                  style={{
+                    padding: '8px 24px 8px 8px',
+                    background: 'transparent',
+                    border: 'none',
+                    color: 'var(--text)',
+                    fontSize: 14,
+                    cursor: 'pointer',
+                    outline: 'none',
+                    fontWeight: 500,
+                    appearance: 'none',
+                    backgroundImage: `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='gray' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>")`,
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'right center',
+                    backgroundSize: '14px'
+                  }}
+                >
+                  <option value="All" style={{ background: 'var(--surface)', color: 'var(--text)' }}>All Categories</option>
+                  {Object.keys(categoryColors).map(cat => (
+                    <option key={cat} value={cat} style={{ background: 'var(--surface)', color: 'var(--text)' }}>{cat}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {/* Table */}
+            {paginatedDays.length > 0 ? (
+              <div style={{ overflowX: 'auto', borderRadius: 16, border: `1px solid var(--border)`, background: 'var(--surface)' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14, minWidth: 800 }}>
+                  <thead>
+                    <tr style={{ background: 'var(--surface2)', borderBottom: `2px solid var(--border)`, textAlign: 'left' }}>
+                      <th style={{ padding: '16px 20px', width: '80px', textAlign: 'center' }}>Status</th>
+                      <th style={{ padding: '16px 20px', width: '120px' }}>Day</th>
+                      <th style={{ padding: '16px 20px', width: '180px' }}>Category</th>
+                      <th style={{ padding: '16px 20px' }}>Target / Topic</th>
+                      <th style={{ padding: '16px 20px', width: '220px' }}>Resources</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {paginatedDays.map((day: any) => {
+                      const isDayChecked = completedSections.has(`day-${day.day}`);
+                      return (
+                        <tr
+                          key={day.day}
+                          style={{
+                            borderBottom: `1px solid var(--border)`,
+                            background: isDayChecked ? 'rgba(16, 185, 129, 0.02)' : 'transparent',
+                            transition: 'background-color 0.2s'
+                          }}
+                        >
+                          <td style={{ padding: '16px 20px', textAlign: 'center', verticalAlign: 'middle' }}>
+                            <input
+                              type="checkbox"
+                              checked={isDayChecked}
+                              onChange={(e) => handleDayToggle(day.day, e.target.checked)}
+                              style={{
+                                width: 18,
+                                height: 18,
+                                cursor: 'pointer',
+                                accentColor: 'var(--orange)'
+                              }}
+                            />
+                          </td>
+                          <td style={{ padding: '16px 20px', fontWeight: 700, verticalAlign: 'middle' }}>
+                            <div style={{ color: 'var(--orange)' }}>Day {day.day}</div>
+                            <div style={{ fontSize: 11, color: 'var(--muted2)', fontWeight: 500, marginTop: 2 }}>{day.dayOfWeek}</div>
+                          </td>
+                          <td style={{ padding: '16px 20px', verticalAlign: 'middle' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                              {day.targets?.map((t: any, idx: number) => {
+                                const badgeColor = categoryColors[t.category] || { bg: "rgba(107, 114, 128, 0.15)", text: "#9ca3af" };
+                                return (
+                                  <span
+                                    key={idx}
+                                    style={{
+                                      padding: '4px 8px',
+                                      borderRadius: 6,
+                                      fontSize: 11,
+                                      fontWeight: 700,
+                                      background: badgeColor.bg,
+                                      color: badgeColor.text,
+                                      display: 'inline-block',
+                                      width: 'fit-content',
+                                      textTransform: 'uppercase',
+                                      letterSpacing: '0.5px'
+                                    }}
+                                  >
+                                    {t.category}
+                                  </span>
+                                );
+                              })}
+                            </div>
+                          </td>
+                          <td style={{ padding: '16px 20px', verticalAlign: 'middle' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                              {day.targets?.map((t: any, idx: number) => (
+                                <div key={idx} style={{ color: 'var(--text)', lineHeight: 1.4 }}>
+                                  {day.targets.length > 1 && <span style={{ fontWeight: 600, color: 'var(--muted2)', marginRight: 6 }}>•</span>}
+                                  {t.topic}
+                                </div>
+                              ))}
+                            </div>
+                          </td>
+                          <td style={{ padding: '16px 20px', verticalAlign: 'middle' }}>
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                              {day.resources && day.resources.length > 0 ? (
+                                day.resources.map((res: any, idx: number) => (
+                                  <a
+                                    key={idx}
+                                    href={res.url || '#'}
+                                    target={res.url ? '_blank' : undefined}
+                                    rel="noopener noreferrer"
+                                    style={{
+                                      display: 'inline-flex',
+                                      alignItems: 'center',
+                                      gap: 4,
+                                      padding: '6px 12px',
+                                      background: res.url ? 'rgba(239, 68, 68, 0.1)' : 'var(--surface2)',
+                                      border: `1px solid ${res.url ? '#ef4444' : 'var(--border)'}`,
+                                      color: res.url ? '#ef4444' : 'var(--text)',
+                                      borderRadius: 20,
+                                      textDecoration: 'none',
+                                      fontSize: 12,
+                                      fontWeight: 600,
+                                      transition: 'all 0.2s',
+                                      cursor: res.url ? 'pointer' : 'default'
+                                    }}
+                                    onMouseOver={(e) => {
+                                      if (res.url) {
+                                        e.currentTarget.style.background = '#ef4444';
+                                        e.currentTarget.style.color = '#fff';
+                                      }
+                                    }}
+                                    onMouseOut={(e) => {
+                                      if (res.url) {
+                                        e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)';
+                                        e.currentTarget.style.color = '#ef4444';
+                                      }
+                                    }}
+                                  >
+                                    {res.url ? (
+                                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'block' }}>
+                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                                        <polyline points="15 3 21 3 21 9"/>
+                                        <line x1="10" y1="14" x2="21" y2="3"/>
+                                      </svg>
+                                    ) : (
+                                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'block', color: 'var(--muted2)' }}>
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                        <polyline points="14 2 14 8 20 8"/>
+                                      </svg>
+                                    )}
+                                    {res.title}
+                                  </a>
+                                ))
+                              ) : (
+                                <span style={{ fontSize: 13, color: 'var(--muted2)', fontStyle: 'italic' }}>None</span>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div style={{ textAlign: 'center', padding: '40px 20px', border: `1px dashed var(--border)`, borderRadius: 16, color: 'var(--muted2)' }}>
+                No days matching search filters.
+              </div>
+            )}
+
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+              <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: 12,
+                marginTop: 24
+              }}>
+                <button
+                  onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                  disabled={currentPage === 1}
+                  style={{
+                    padding: '8px 16px',
+                    borderRadius: 8,
+                    background: 'var(--surface)',
+                    border: `1px solid var(--border)`,
+                    color: 'var(--text)',
+                    cursor: currentPage === 1 ? 'default' : 'pointer',
+                    opacity: currentPage === 1 ? 0.4 : 1,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 6,
+                    fontSize: 13,
+                    fontWeight: 600,
+                    transition: 'all 0.2s'
+                  }}
+                  onMouseOver={(e) => {
+                    if (currentPage !== 1) e.currentTarget.style.background = 'var(--surface2)';
+                  }}
+                  onMouseOut={(e) => {
+                    if (currentPage !== 1) e.currentTarget.style.background = 'var(--surface)';
+                  }}
+                >
+                  <ChevronLeft size={16} />
+                  Prev
+                </button>
+                <span style={{ fontSize: 14, color: 'var(--text)', fontWeight: 500 }}>
+                  Page {currentPage} of {totalPages}
+                </span>
+                <button
+                  onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                  disabled={currentPage === totalPages}
+                  style={{
+                    padding: '8px 16px',
+                    borderRadius: 8,
+                    background: 'var(--surface)',
+                    border: `1px solid var(--border)`,
+                    color: 'var(--text)',
+                    cursor: currentPage === totalPages ? 'default' : 'pointer',
+                    opacity: currentPage === totalPages ? 0.4 : 1,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 6,
+                    fontSize: 13,
+                    fontWeight: 600,
+                    transition: 'all 0.2s'
+                  }}
+                  onMouseOver={(e) => {
+                    if (currentPage !== totalPages) e.currentTarget.style.background = 'var(--surface2)';
+                  }}
+                  onMouseOut={(e) => {
+                    if (currentPage !== totalPages) e.currentTarget.style.background = 'var(--surface)';
+                  }}
+                >
+                  Next
+                  <ChevronRight size={16} />
+                </button>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            {roadmap.sections.map((section: any) => (
+              <SectionCard
+                key={`${roadmapId}-${duration}-${section.id}`}
+                section={section}
+                isCompleted={completedSections.has(section.id)}
+                onStartQuiz={(sec, level) => handleStartQuiz(sec, level)}
+                progressDetails={progressDetails}
+                onUpdateProgressDetails={setProgressDetails}
+                roadmapId={roadmapId}
+              />
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Quiz Modal */}

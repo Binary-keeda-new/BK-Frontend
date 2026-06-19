@@ -1,16 +1,17 @@
 "use client";
 
 import Link from "next/link";
+import { Boxes, Database, Network, Cpu, Brain, Shield, Settings, Server } from "lucide-react";
 
 const SUBJECT_CARDS = [
-  { title: "OOP", href: "/user/resources/interview-questions/oop", description: "Top 50 OOP interview questions with solutions", icon: "🧩", color: "#ff6b35" },
-  { title: "DBMS", href: "/user/resources/interview-questions/dbms", description: "Top 50 Database interview questions with solutions", icon: "🗄️", color: "#22c55e" },
-  { title: "CN", href: "/user/resources/interview-questions/cn", description: "Top 50 Computer Networks questions with solutions", icon: "📡", color: "#6c63ff" },
-  { title: "OS", href: "/user/resources/interview-questions/os", description: "Top 50 Operating Systems questions with solutions", icon: "📂", color: "#f59e0b" },
-  { title: "ML", href: "/user/resources/interview-questions/ml", description: "Top 50 Machine Learning interview questions with solutions", icon: "🤖", color: "#0ea5e9" },
-  { title: "CYBER", href: "/user/resources/interview-questions/cyber", description: "Top 50 Cybersecurity interview questions with solutions", icon: "🔒", color: "#ef4444" },
-  { title: "DEVOPS", href: "/user/resources/interview-questions/devops", description: "Top 50 DevOps interview questions with solutions", icon: "⚙️", color: "#10b981" },
-  { title: "System Design", href: "/user/resources/interview-questions/system-design", description: "Top 50 System Design interview questions with solutions", icon: "🏗️", color: "#f59e0b" },
+  { title: "OOP", href: "/user/resources/interview-questions/oop", description: "Top 50 OOP interview questions with solutions", icon: Boxes, color: "#ff6b35" },
+  { title: "DBMS", href: "/user/resources/interview-questions/dbms", description: "Top 50 Database interview questions with solutions", icon: Database, color: "#22c55e" },
+  { title: "CN", href: "/user/resources/interview-questions/cn", description: "Top 50 Computer Networks questions with solutions", icon: Network, color: "#6c63ff" },
+  { title: "OS", href: "/user/resources/interview-questions/os", description: "Top 50 Operating Systems questions with solutions", icon: Cpu, color: "#f59e0b" },
+  { title: "ML", href: "/user/resources/interview-questions/ml", description: "Top 50 Machine Learning interview questions with solutions", icon: Brain, color: "#0ea5e9" },
+  { title: "CYBER", href: "/user/resources/interview-questions/cyber", description: "Top 50 Cybersecurity interview questions with solutions", icon: Shield, color: "#ef4444" },
+  { title: "DEVOPS", href: "/user/resources/interview-questions/devops", description: "Top 50 DevOps interview questions with solutions", icon: Settings, color: "#10b981" },
+  { title: "System Design", href: "/user/resources/interview-questions/system-design", description: "Top 50 System Design interview questions with solutions", icon: Server, color: "#f59e0b" },
 ];
 
 export default function InterviewQuestionsHome() {
@@ -27,13 +28,14 @@ export default function InterviewQuestionsHome() {
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "20px" }}>
         {SUBJECT_CARDS.map((card) => (
-          <Link href={card.href} key={card.title} style={{ textDecoration: "none" }}>
+          <Link href={card.href} key={card.title} style={{ textDecoration: "none", display: "flex", flexDirection: "column", height: "100%" }}>
             <div
               style={{
                 background: "var(--surface)", border: "1px solid var(--border)",
                 borderRadius: "12px", padding: "20px", cursor: "pointer",
                 transition: "all 0.18s ease", position: "relative",
                 minHeight: "140px",
+                display: "flex", flexDirection: "column", height: "100%", flexGrow: 1,
               }}
               onMouseEnter={e => {
                 (e.currentTarget as HTMLElement).style.border = `1px solid ${card.color}`;
@@ -46,15 +48,20 @@ export default function InterviewQuestionsHome() {
                 (e.currentTarget as HTMLElement).style.boxShadow = "none";
               }}
             >
-              <div style={{ fontSize: "28px", marginBottom: "10px" }}>{card.icon}</div>
-              <h3 style={{ fontSize: "18px", fontWeight: 700, color: "var(--text)", marginBottom: "8px" }}>{card.title}</h3>
-              <p style={{ fontSize: "13px", color: "var(--muted2)", marginBottom: "12px", lineHeight: 1.4 }}>{card.description}</p>
-              <div style={{ position: "absolute", top: "18px", right: "18px", color: "var(--muted2)" }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                  <line x1="5" y1="12" x2="19" y2="12"/>
-                  <polyline points="12 5 19 12 12 19"/>
-                </svg>
+              <div style={{
+                width: "44px",
+                height: "44px",
+                borderRadius: "10px",
+                background: `${card.color}15`,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginBottom: "14px"
+              }}>
+                <card.icon size={22} strokeWidth={2} style={{ color: card.color }} />
               </div>
+              <h3 style={{ fontSize: "18px", fontWeight: 700, color: "var(--text)", marginBottom: "8px" }}>{card.title}</h3>
+              <p style={{ fontSize: "13px", color: "var(--muted2)", marginBottom: "12px", lineHeight: 1.4, flexGrow: 1 }}>{card.description}</p>
             </div>
           </Link>
         ))}

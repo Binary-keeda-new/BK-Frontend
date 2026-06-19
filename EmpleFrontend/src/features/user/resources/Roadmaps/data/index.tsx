@@ -4,8 +4,31 @@ import mlRoadmap from './MLRoadmap';
 import llmRoadmap from './LLMRoadmap';
 import fullStackRoadmap from './FullStackRoadmap';
 import daysOfCodeRoadmap from './120DaysOfCodeRoadmap';
+import placementRoadmap from './PlacementRoadmap';
 
 export const roadmapsListingData = [
+  {
+    id: 'placement-roadmap',
+    slug: 'placement-roadmap',
+    name: 'Placement Roadmap',
+    description: 'Comprehensive 293-day structured guide covering Aptitude, Core Subjects, Tools, Coding, and DSA.',
+    domain: 'Placement Preparation',
+    category: 'Technical',
+    difficulty: 'Intermediate',
+    estimatedDuration: '10 months',
+    sections: 293,
+    targetUsers: ['Global BK', 'Campus'],
+    color: 'purple',
+    points: 0,
+    enrolled: 4892,
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+        <path d="M12 11v6"/>
+        <path d="M9 14h6"/>
+      </svg>
+    )
+  },
   {
     id: 'full-stack',
     slug: 'full-stack',
@@ -58,7 +81,7 @@ export const roadmapsListingData = [
     domain: 'Artificial Intelligence',
     category: 'Technical',
     difficulty: 'Intermediate',
-    estimatedDuration: '3 months',
+    estimatedDuration: '3-6 months',
     sections: 15,
     targetUsers: ['Global BK', 'Campus'],
     color: 'blue',
@@ -111,7 +134,7 @@ export const roadmapsListingData = [
     domain: 'Cybersecurity Governance',
     category: 'Technical',
     difficulty: 'Beginner',
-    estimatedDuration: '3 months',
+    estimatedDuration: '4 months',
     sections: 8,
     targetUsers: ['Global BK'],
     color: 'blue',
@@ -156,6 +179,7 @@ export const getRoadmapById = (roadmapId: string, duration: string = '6 months')
     'llm': llmRoadmap,
     'full-stack': fullStackRoadmap,
     '120-days-of-code': daysOfCodeRoadmap,
+    'placement-roadmap': placementRoadmap,
   };
   
   const baseRoadmap = roadmapMap[roadmapId];
