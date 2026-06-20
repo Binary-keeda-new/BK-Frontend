@@ -31,18 +31,18 @@ export default function PromoCard() {
         className="font-syne font-extrabold relative z-10"
         style={{ fontSize: "clamp(13px, 3.5vw, 16px)", color: "var(--text)" }}
       >
-        Unlock Pro Features
+        Premium Features Coming Soon
       </div>
 
       <div
-        className="leading-relaxed relative z-10"
+        className="leading-relaxed relative z-10 mt-1"
         style={{
           fontSize: "clamp(10px, 2.5vw, 12px)",
-          maxWidth: "clamp(160px, 40vw, 200px)",
+          maxWidth: "clamp(180px, 45vw, 240px)",
           color: "var(--muted2)",
         }}
       >
-        Get unlimited access to premium content, advanced analytics, and exclusive features!
+        Advanced ATS analysis, premium resources, priority mentoring, exclusive career tools, and enhanced placement support are currently in development.
       </div>
 
       <button
@@ -64,7 +64,7 @@ export default function PromoCard() {
           (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 4px 14px rgba(241,90,34,0.4)";
         }}
       >
-        Upgrade Now
+        Notify Me
       </button>
     </div>
   );

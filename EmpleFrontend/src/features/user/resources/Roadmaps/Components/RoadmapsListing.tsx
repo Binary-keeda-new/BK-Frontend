@@ -61,7 +61,7 @@ const RoadmapCard: React.FC<RoadmapCardProps> = ({ roadmap, onView }) => {
 
   const handleShare = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    const url = `${window.location.origin}/user/resources/roadmaps?id=${roadmap.id}`;
+    const url = `${window.location.origin}${window.location.pathname}?id=${roadmap.id}`;
     navigator.clipboard.writeText(url)
       .then(() => {
         setShareText('Copied! ✓');
