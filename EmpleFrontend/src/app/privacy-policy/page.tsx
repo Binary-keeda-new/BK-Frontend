@@ -1,7 +1,7 @@
 import React from 'react';
 import Navbar from "@/features/landing/components/Navbar";
 import Footer from "@/features/landing/components/Footer";
-import "@/features/landing/landing.css";
+import "@/app/landing/landing.css";
 
 export const metadata = { title: "Privacy Policy | Emple" };
 
