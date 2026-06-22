@@ -48,7 +48,7 @@ export default function SignupPage() {
 
   const handleSocialLogin = async (provider: 'google' | 'github' | 'microsoft') => {
     try {
-      const redirectUrl = `${window.location.origin}/auth/callback`
+      const redirectUrl = `${window.location.origin}/auth/callback?from=signup`
       const result = await sdk.oauth.start(provider, redirectUrl)
 
       if (result.ok && result.data?.url) {
@@ -126,7 +126,7 @@ export default function SignupPage() {
         return
       }
 
-      router.replace('/user/dashboard')
+      router.replace('/auth/login')
     } catch (err) {
       console.error('Signup error:', err)
       setError('Something went wrong. Please try again.')

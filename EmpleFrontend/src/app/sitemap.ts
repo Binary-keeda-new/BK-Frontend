@@ -19,7 +19,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   try {
     const jobs = await fetchJobs();
-    let jobsList = [];
+    let jobsList: any[] = [];
     if (Array.isArray(jobs)) {
       jobsList = jobs;
     } else if (Array.isArray((jobs as any).data)) {
@@ -28,7 +28,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       jobsList = (jobs as any).jobs;
     }
 
-    const dynamicJobPages: MetadataRoute.Sitemap = jobsList.map(job => {
+    const dynamicJobPages: MetadataRoute.Sitemap = jobsList.map((job: any) => {
       const slug = job.id || job.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
       return {
         url: `${baseUrl}/jobs/${slug}`,
