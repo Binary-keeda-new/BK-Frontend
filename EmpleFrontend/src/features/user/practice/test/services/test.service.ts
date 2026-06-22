@@ -90,3 +90,23 @@ export const submitTestFeedback = async (
 
   return result.data;
 };
+
+export const getTestAttemptDetails = async (attemptId: string) => {
+  const result = await apiRequest<
+    ApiResponse<{
+      _id: string;
+      testId: string;
+      status: string;
+      startedAt: string;
+      expiresAt?: string | null;
+      sections: {
+        sectionId: string;
+        status: string;
+      }[];
+    }>
+  >(`/api/v1/test-attempts/${attemptId}`, {
+    method: 'GET',
+  });
+
+  return result.data;
+};

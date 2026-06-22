@@ -8,6 +8,7 @@ type TestSecuritySettings = {
   noLostFocus?: boolean;
   noMinimize?: boolean;
   noDevTools?: boolean;
+  noExitScreen?: boolean;
 };
 
 type Props = {
@@ -21,24 +22,41 @@ export default function TestSecurityShell({
   children,
   onViolation,
 }: Props) {
+  const report = (type: string) => {
+    console.log('SECURITY VIOLATION:', type);
+    onViolation?.(type);
+  };
+
+  useEffect(() => {
+    console.log('SECURITY SETTINGS:', settings);
+  }, [settings]);
+
   useEffect(() => {
     if (!settings?.noCopyPaste) return;
 
-    const block = (e: ClipboardEvent) => {
+    const blockClipboard = (e: ClipboardEvent) => {
+      console.log('CLIPBOARD EVENT:', e.type);
       e.preventDefault();
-      onViolation?.('copy_paste');
+      e.stopPropagation();
+      report(`clipboard_${e.type}`);
     };
 
-    document.addEventListener('copy', block);
-    document.addEventListener('cut', block);
-    document.addEventListener('paste', block);
+    window.addEventListener('copy', blockClipboard, true);
+    window.addEventListener('cut', blockClipboard, true);
+    window.addEventListener('paste', blockClipboard, true);
+    document.addEventListener('copy', blockClipboard, true);
+    document.addEventListener('cut', blockClipboard, true);
+    document.addEventListener('paste', blockClipboard, true);
 
     return () => {
-      document.removeEventListener('copy', block);
-      document.removeEventListener('cut', block);
-      document.removeEventListener('paste', block);
+      window.removeEventListener('copy', blockClipboard, true);
+      window.removeEventListener('cut', blockClipboard, true);
+      window.removeEventListener('paste', blockClipboard, true);
+      document.removeEventListener('copy', blockClipboard, true);
+      document.removeEventListener('cut', blockClipboard, true);
+      document.removeEventListener('paste', blockClipboard, true);
     };
-  }, [settings?.noCopyPaste, onViolation]);
+  }, [settings?.noCopyPaste]);
 
   useEffect(() => {
     if (!settings?.blockKeyboard) return;
@@ -48,44 +66,46 @@ export default function TestSecurityShell({
 
       const blocked =
         e.key === 'F12' ||
-        (e.ctrlKey && e.shiftKey && ['i', 'j', 'c'].includes(key)) ||
+        (e.metaKey && ['c', 'v', 'x', 's', 'p', 'u'].includes(key)) ||
+        (e.ctrlKey && ['c', 'v', 'x', 's', 'p', 'u'].includes(key)) ||
         (e.metaKey && e.altKey && ['i', 'j', 'c'].includes(key)) ||
-        (e.ctrlKey && ['u', 's', 'p'].includes(key)) ||
-        (e.metaKey && ['u', 's', 'p'].includes(key));
+        (e.ctrlKey && e.shiftKey && ['i', 'j', 'c'].includes(key));
 
       if (blocked) {
+        console.log('KEYBOARD BLOCKED:', e.key);
         e.preventDefault();
-        onViolation?.('keyboard');
+        e.stopPropagation();
+        report(`keyboard_${e.key}`);
       }
     };
 
-    window.addEventListener('keydown', blockKeys);
+    window.addEventListener('keydown', blockKeys, true);
+    document.addEventListener('keydown', blockKeys, true);
 
     return () => {
-      window.removeEventListener('keydown', blockKeys);
+      window.removeEventListener('keydown', blockKeys, true);
+      document.removeEventListener('keydown', blockKeys, true);
     };
-  }, [settings?.blockKeyboard, onViolation]);
+  }, [settings?.blockKeyboard]);
 
   useEffect(() => {
     if (!settings?.noLostFocus) return;
 
-    const onBlur = () => {
-      onViolation?.('lost_focus');
-    };
+    const onBlur = () => report('lost_focus');
 
     window.addEventListener('blur', onBlur);
 
     return () => {
       window.removeEventListener('blur', onBlur);
     };
-  }, [settings?.noLostFocus, onViolation]);
+  }, [settings?.noLostFocus]);
 
   useEffect(() => {
     if (!settings?.noMinimize) return;
 
     const onVisibilityChange = () => {
       if (document.hidden) {
-        onViolation?.('minimize_or_tab_hidden');
+        report('tab_hidden_or_minimized');
       }
     };
 
@@ -94,7 +114,23 @@ export default function TestSecurityShell({
     return () => {
       document.removeEventListener('visibilitychange', onVisibilityChange);
     };
-  }, [settings?.noMinimize, onViolation]);
+  }, [settings?.noMinimize]);
+
+  useEffect(() => {
+    if (!settings?.noExitScreen) return;
+
+    const onFullscreenChange = () => {
+      if (!document.fullscreenElement) {
+        report('exit_fullscreen');
+      }
+    };
+
+    document.addEventListener('fullscreenchange', onFullscreenChange);
+
+    return () => {
+      document.removeEventListener('fullscreenchange', onFullscreenChange);
+    };
+  }, [settings?.noExitScreen]);
 
   useEffect(() => {
     if (!settings?.noDevTools) return;
@@ -102,17 +138,17 @@ export default function TestSecurityShell({
     const interval = window.setInterval(() => {
       const threshold = 160;
 
-      const devToolsOpen =
+      const open =
         window.outerWidth - window.innerWidth > threshold ||
         window.outerHeight - window.innerHeight > threshold;
 
-      if (devToolsOpen) {
-        onViolation?.('devtools');
+      if (open) {
+        report('devtools_open');
       }
     }, 1500);
 
     return () => window.clearInterval(interval);
-  }, [settings?.noDevTools, onViolation]);
+  }, [settings?.noDevTools]);
 
   return <>{children}</>;
 }

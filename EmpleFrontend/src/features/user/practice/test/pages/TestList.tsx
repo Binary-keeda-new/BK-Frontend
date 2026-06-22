@@ -12,7 +12,10 @@ import {
   getTestAttemptStatus,
   startTestAttempt,
   submitTestFeedback,
+  getTestAttemptDetails,
 } from '../services/test.service';
+import TestFullscreenGate from '../components/TestFullscreenGate';
+
 
 export default function TestList() {
   const [tests, setTests] = useState<UserTest[]>([]);
@@ -22,7 +25,7 @@ export default function TestList() {
 
   const [selectedTest, setSelectedTest] = useState<UserTest | null>(null);
   const [view, setView] = useState<
-    'list' | 'instructions' | 'sections' | 'attempt' | 'feedback'
+    'list' | 'fullscreen' | 'instructions' | 'sections' | 'attempt' | 'feedback'
   >('list');
 
   const [agreed, setAgreed] = useState(false);
@@ -72,7 +75,7 @@ export default function TestList() {
       setEnabledSectionIndex(0);
       setCompletedSectionIds([]);
       setSecurityWarnings(0);
-      setView('instructions');
+      setView(test.settings?.noExitScreen ? 'fullscreen' : 'instructions');
       setShowPasswordPrompt(false);
       setPendingTest(null);
       setPasswordError('');
@@ -83,17 +86,51 @@ export default function TestList() {
     }
   };
 
-  const handleAttempt = async (test: UserTest) => {
-    if (test.settings?.passwordProtected) {
-      setPendingTest(test);
-      setPasswordInput('');
-      setPasswordError('');
-      setShowPasswordPrompt(true);
-      return;
-    }
+const handleAttempt = async (test: UserTest) => {
+  const status = attemptStatusMap[test._id];
 
-    await beginAttempt(test);
-  };
+  if (status?.status === 'in_progress' && status?.attemptId) {
+    try {
+      const attempt = await getTestAttemptDetails(status.attemptId);
+
+      setActiveAttemptId(attempt._id);
+      setAttemptExpiresAt(attempt.expiresAt || null);
+
+      const completedIds = attempt.sections
+        .filter((s) => s.status === 'submitted')
+        .map((s) => s.sectionId);
+
+      setCompletedSectionIds(completedIds);
+
+      const unlockedIndex = attempt.sections.findIndex(
+        (s) =>
+          s.status === 'unlocked' ||
+          s.status === 'in_progress'
+      );
+
+      setEnabledSectionIndex(
+        unlockedIndex >= 0 ? unlockedIndex : completedIds.length
+      );
+
+      setSelectedTest(test);
+      setView('sections');
+
+      return;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  if (test.settings?.passwordProtected) {
+    setPendingTest(test);
+    setPasswordInput('');
+    setPasswordError('');
+    setShowPasswordPrompt(true);
+    return;
+  }
+
+  await beginAttempt(test);
+};
 
   const handleBackToList = () => {
     setSelectedTest(null);
@@ -110,6 +147,16 @@ export default function TestList() {
   if (loading) {
     return <div className="p-6 text-sm text-[var(--muted2)]">Loading tests...</div>;
   }
+
+  if (view === 'fullscreen' && selectedTest) {
+  return (
+    <TestFullscreenGate
+      testTitle={selectedTest.title}
+      onBack={handleBackToList}
+      onEntered={() => setView('instructions')}
+    />
+  );
+}
 
   if (view === 'instructions' && selectedTest) {
     return (
@@ -131,6 +178,7 @@ export default function TestList() {
         completedSectionIds={completedSectionIds}
         onBack={() => setView('instructions')}
         onAttemptSection={handleAttemptSection}
+        navigationMode={selectedTest.settings?.navigationMode || 'sequential'}
       />
     );
   }

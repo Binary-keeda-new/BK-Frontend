@@ -8,6 +8,7 @@ type Props = {
   completedSectionIds: string[];
   onBack: () => void;
   onAttemptSection: (section: UserTestSection, index: number) => void;
+  navigationMode?: 'free' | 'sequential';
 };
 
 function getDotClass(index: number, enabledIndex: number, completed: boolean) {
@@ -24,6 +25,7 @@ export default function TestSectionsPreview({
   completedSectionIds,
   onBack,
   onAttemptSection,
+  navigationMode,
 }: Props) {
   return (
     <div className="mx-auto w-full max-w-[760px] p-6">
@@ -71,7 +73,10 @@ export default function TestSectionsPreview({
         <div className="space-y-3">
           {test.sections.map((section, index) => {
             const completed = completedSectionIds.includes(section._id);
-            const enabled = index === enabledSectionIndex && !completed;
+            const enabled =
+  navigationMode === 'free'
+    ? !completed
+    : index === enabledSectionIndex && !completed;
 
             return (
               <div
