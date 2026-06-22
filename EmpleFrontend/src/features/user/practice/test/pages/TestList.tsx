@@ -151,6 +151,9 @@ export default function TestList() {
           securityWarnings={securityWarnings}
           section={activeSection}
           sectionIndex={activeSectionIndex}
+          minTimeBeforeSubmit={
+  selectedTest.settings?.minTimeBeforeSubmit || 0
+}
           onBackToSections={() => setView('sections')}
           onSectionCompleted={(sectionId) => {
             const nextCompleted = completedSectionIds.includes(sectionId)
