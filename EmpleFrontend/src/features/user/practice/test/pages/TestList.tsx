@@ -15,6 +15,7 @@ import {
   getTestAttemptDetails,
 } from '../services/test.service';
 import TestFullscreenGate from '../components/TestFullscreenGate';
+import TestViolationModal from '../components/TestViolationModal';
 
 
 export default function TestList() {
@@ -43,7 +44,8 @@ export default function TestList() {
   const [showPasswordPrompt, setShowPasswordPrompt] = useState(false);
   const [passwordError, setPasswordError] = useState('');
   const [attemptExpiresAt, setAttemptExpiresAt] = useState<string | null>(null);
-    const [needsFullscreen, setNeedsFullscreen] = useState(false);
+  const [needsFullscreen, setNeedsFullscreen] = useState(false);
+  const [activeViolation, setActiveViolation] = useState<string | null>(null);
 
   useEffect(() => {
     const loadTests = async () => {
@@ -192,12 +194,19 @@ const handleAttempt = async (test: UserTest) => {
   console.warn('Test security violation:', type);
 
   setSecurityWarnings((prev) => prev + 1);
+  setActiveViolation(type);
 
   if (type === 'exit_fullscreen' && selectedTest.settings?.noExitScreen) {
     setNeedsFullscreen(true);
   }
 }}
 >
+  <TestViolationModal
+        violationType={activeViolation}
+        warningCount={securityWarnings}
+        onContinue={() => setActiveViolation(null)}
+      />
+
   {needsFullscreen ? (
   <TestFullscreenGate
     testTitle={selectedTest.title}
