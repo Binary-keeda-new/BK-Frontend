@@ -3,11 +3,15 @@
 import type { TopbarProps } from '../types';
 import { HamburgerIcon, UserCircleIcon } from './icons';
 import { useEffect, useRef, useState } from 'react';
+import { useDescope } from '@descope/nextjs-sdk/client';
+import { useRouter } from 'next/navigation';
 
 export default function Topbar({ onMobileMenuOpen }: TopbarProps) {
   const [profileOpen, setProfileOpen] = useState(false);
   const popoverRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const sdk = useDescope();
+  const router = useRouter();
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -34,8 +38,11 @@ export default function Topbar({ onMobileMenuOpen }: TopbarProps) {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  function handleLogout() {
+  async function handleLogout() {
     setProfileOpen(false);
+    await sdk.logout();
+    localStorage.clear();
+    router.replace('/auth/login');
   }
 
   return (

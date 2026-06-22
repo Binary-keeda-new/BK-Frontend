@@ -171,9 +171,9 @@ interface AboutUsProps {
 }
 
 const defaultStats: Stat[] = [
-  { value: "50+", label: "Interactive Quizzes" },
-  { value: "1000+", label: "Users" },
-  { value: "95%", label: "User Satisfaction" },
+  { value: "10+", label: "Career Roadmaps" },
+  { value: "10+", label: "Tech Blogs" },
+  { value: "24/7", label: "Assistance" },
 ];
 
 const defaultBody = [

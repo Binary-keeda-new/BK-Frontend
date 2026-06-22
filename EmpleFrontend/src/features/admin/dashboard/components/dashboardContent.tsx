@@ -1,9 +1,12 @@
+
 'use client';
 
 import { useState } from 'react';
 import ActionCard from './actionCard';
 import QuizForm from '../../quiz/components/QuizForm';
 import { apiRequest } from '@/shared/utils/api';
+import CreateCodingProblemModal from
+'@/features/admin/coding-problems/components/createCodingProblemModal';
 
 type CreateQuestionBankResponse = {
   success: boolean;
@@ -30,6 +33,8 @@ export default function DashboardContent({
   const [snackbarMessage, setSnackbarMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [isQuizFormOpen, setIsQuizFormOpen] = useState(false);
+  const [isCodingProblemOpen, setIsCodingProblemOpen] =
+  useState(false);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -43,7 +48,15 @@ export default function DashboardContent({
   const handleCreateTest = (): void => {
   onCreateTest?.();
 };
-  const handleCodingProblems = (): void => console.log('Coding Problems');
+
+
+  const handleCodingProblems = (): void => {
+  setIsCodingProblemOpen(true);
+};
+
+const handleCloseCodingProblem = (): void => {
+  setIsCodingProblemOpen(false);
+};
 
   const handleOpenQuestionBank = (): void => {
     setIsQuestionBankOpen(true);
@@ -246,6 +259,17 @@ export default function DashboardContent({
           </div>
         </div>
       )}
+
+      <CreateCodingProblemModal
+  isOpen={isCodingProblemOpen}
+  onClose={handleCloseCodingProblem}
+  onSuccess={() => {
+    setIsCodingProblemOpen(false);
+
+    window.location.href =
+      '/dashboard?section=coding-problems';
+  }}
+/>
 
 
      {snackbarMessage && (

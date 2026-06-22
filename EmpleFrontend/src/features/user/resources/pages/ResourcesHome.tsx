@@ -44,6 +44,14 @@ const RESOURCES_CARDS = [
     color: "#ff3b30",
   },
   {
+  title: "Project Ideas",
+  href: "/user/resources/project-ideas",
+  description: "Curated project ideas for Fullstack, AI/ML, and Cybersecurity to build your portfolio",
+  icon: "💡",
+  topics: ["Fullstack", "AI/ML", "Cybersecurity"],
+  color: "#a855f7",
+  },
+  {
     title: "Certificates",
     href: "/user/resources/certificates",
     description: "Explore certifications in AWS, Cisco, Red Hat, CUDA, TensorFlow, Google, and Cyber Security",
@@ -62,7 +70,7 @@ const RESOURCES_CARDS = [
   
 ];
 
-export default function ResourcesHome() {
+export default function ResourcesHome({ basePath = "/user/resources" }: { basePath?: string }) {
   return (
     <div className="p-6">
       <div className="mb-8">
@@ -75,13 +83,16 @@ export default function ResourcesHome() {
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "20px" }}>
-        {RESOURCES_CARDS.map((card) => (
-          <Link href={card.href} key={card.title} style={{ textDecoration: "none" }}>
+        {RESOURCES_CARDS.map((card) => {
+          const finalHref = card.href.replace("/user/resources", basePath);
+          return (
+          <Link href={finalHref} key={card.title} style={{ textDecoration: "none" }}>
             <div
               style={{
-                background: "var(--surface)", border: "1px solid var(--border)",
-                borderRadius: "16px", padding: "24px", cursor: "pointer",
-                transition: "all 0.2s ease", position: "relative",
+                    background: "var(--surface)", border: "1px solid var(--border)",
+                    borderRadius: "16px", padding: "24px", cursor: "pointer",
+                    transition: "all 0.2s ease", position: "relative",
+                    minHeight: "260px",
               }}
               onMouseEnter={e => {
                 (e.currentTarget as HTMLElement).style.border = `1px solid ${card.color}`;
@@ -121,7 +132,7 @@ export default function ResourcesHome() {
               </div>
             </div>
           </Link>
-        ))}
+        )})}
       </div>
     </div>
   );

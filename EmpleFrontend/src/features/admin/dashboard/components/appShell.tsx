@@ -18,6 +18,8 @@ import QuizForm from '../../quiz/components/QuizForm';
 import TestsContent from '../../test/pages/TestList';
 import TestEdit from '../../test/pages/TestEdit';
 import CreateTest from '../../test/components/CreateTest';
+import CodingProblemsPage from '@/features/admin/coding-problems/pages/codingProblemsPage';
+import CodingProblemEditorPage from '@/features/admin/coding-problems/pages/codingProblemEditorPage';
 
 interface AppShellProps {
   initialSection?: AdminSection;
@@ -49,8 +51,13 @@ export default function AppShell({
     quizId?.toString() || quizIdFromUrl
   );
   const [quizListRefreshKey, setQuizListRefreshKey] = useState(0);
+
 const [testListRefreshKey, setTestListRefreshKey] = useState(0);
 const [selectedTestId, setSelectedTestId] = useState<string | null>(null);
+
+const [selectedProblemId, setSelectedProblemId] = useState<string | null>(
+  null
+);
 
   useEffect(() => {
     if (loading) return;
@@ -209,7 +216,11 @@ const openTestEdit = (id: string) => {
       questionBankId: id,
     });
   };
-
+  
+  const openCodingProblemEdit = (id: string) => {
+  setSelectedProblemId(id);
+  setActiveSection('coding-problem-edit');
+};
   const renderContent = () => {
     switch (activeSection) {
       case 'quiz-preview':
@@ -339,12 +350,24 @@ const openTestEdit = (id: string) => {
       onPreviewTest={(id) => console.log('Preview test:', id)}
     />
   );
-      case 'coding-problems':
-        return (
-          <div className="p-6 text-[var(--clr-text)] md:p-10">
-            Coding problems content goes here.
-          </div>
-        );
+
+        case 'coding-problems':
+           return (
+             <CodingProblemsPage
+               onEditProblem={openCodingProblemEdit}
+             />
+           );
+
+        case 'coding-problem-edit':
+            return selectedProblemId ? (
+              <CodingProblemEditorPage
+                problemId={selectedProblemId}
+              />
+            ) : (
+              <CodingProblemsPage
+                onEditProblem={openCodingProblemEdit}
+              />
+            );
 
       default:
         return (

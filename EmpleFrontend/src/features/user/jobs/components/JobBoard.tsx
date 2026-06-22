@@ -5,6 +5,8 @@ import { Job, FilterType } from '../types/jobs.types';
 import { fetchJobs} from '../services/jobs.service';
 import JobDetails from './JobDetails';
 import InterviewExperience from './InterviewExperience';
+import { useSession } from '@descope/nextjs-sdk/client';
+import LoginGate from '@/shared/components/access/LoginGate';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 // Convert "2d ago", "1 week ago", "3 months ago" → sortable number (ms from epoch, estimated)
@@ -45,7 +47,7 @@ const dropdownStyle: React.CSSProperties = {
 };
 
 // ── Job Card ──────────────────────────────────────────────────────────────────
-function JobCard({ job, onView }: { job: Job; onView: (job: Job) => void }) {
+function JobCard({ job, onView, onApply }: { job: Job; onView: (job: Job) => void; onApply: (link: string) => void }) {
   const isGov = job.type === 'government';
   const releasedCount = job.stages?.filter(s => s.status === 'released').length ?? 0;
   const totalCount = job.stages?.length ?? 0;
@@ -236,10 +238,8 @@ function JobCard({ job, onView }: { job: Job; onView: (job: Job) => void }) {
         </div>
         <div style={{ display: 'flex', gap: 8 }}>
           {/* Apply — primary */}
-          <a
-            href={job.applyLink}
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            onClick={() => onApply(job.applyLink)}
             style={{
               flex: 1,
               padding: '9px 0',
@@ -253,12 +253,14 @@ function JobCard({ job, onView }: { job: Job; onView: (job: Job) => void }) {
               alignItems: 'center',
               justifyContent: 'center',
               transition: 'opacity 0.15s',
+              border: 'none',
+              cursor: 'pointer',
             }}
-            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.opacity = '0.88'; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.opacity = '1'; }}
+            onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.opacity = '0.88'; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.opacity = '1'; }}
           >
             Apply
-          </a>
+          </button>
           {/* View — secondary */}
           <button
             onClick={() => onView(job)}
@@ -347,10 +349,21 @@ function EmptyState({ message }: { message: string }) {
 }
 
 // ── JobBoard ──────────────────────────────────────────────────────────────────
-export default function JobBoard() {
+export default function JobBoard({ initialJobId }: { initialJobId?: string }) {
   const [jobs, setJobs]             = useState<Job[]>([]);
   const [loading, setLoading]       = useState(true);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+  
+  const { isAuthenticated } = useSession() as any;
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
+  const handleApply = (link: string) => {
+    if (!isAuthenticated) {
+      setShowLoginModal(true);
+    } else {
+      window.open(link, '_blank');
+    }
+  };
 
   // Existing type filter
   const [filter, setFilter]         = useState<FilterType>('all');
@@ -368,19 +381,24 @@ export default function JobBoard() {
   fetchJobs()
     .then((res: any) => {
       // HANDLE DIFFERENT API SHAPES
+      let fetchedJobs: Job[] = [];
       if (Array.isArray(res)) {
-        setJobs(res);
+        fetchedJobs = res;
       } else if (Array.isArray(res?.data)) {
-        setJobs(res.data);
+        fetchedJobs = res.data;
       } else if (Array.isArray(res?.jobs)) {
-        setJobs(res.jobs);
-      } else {
-        setJobs([]);
+        fetchedJobs = res.jobs;
+      }
+      setJobs(fetchedJobs);
+
+      if (initialJobId) {
+        const found = fetchedJobs.find(j => j.id === initialJobId || j.title.toLowerCase().replace(/[^a-z0-9]+/g, '-') === initialJobId);
+        if (found) setSelectedJob(found);
       }
     })
     .catch(() => setJobs([]))
     .finally(() => setLoading(false));
-}, []);
+}, [initialJobId]);
 
   // Unique locations for dropdown
   const locationOptions = useMemo(() => {
@@ -425,7 +443,12 @@ export default function JobBoard() {
     <div style={{ minHeight: '100vh', background: 'var(--bg)', padding: '28px 24px' }}>
       {/* Right panel overlay */}
       {selectedJob && (
-        <JobDetails job={selectedJob} onBack={() => setSelectedJob(null)} />
+        <JobDetails job={selectedJob} onApply={handleApply} onBack={() => {
+          setSelectedJob(null);
+          if (initialJobId) {
+             window.history.pushState({}, '', '/jobs');
+          }
+        }} />
       )}
 
       {/* Page header */}
@@ -595,9 +618,32 @@ export default function JobBoard() {
             <EmptyState message="No jobs match your filters." />
           ) : (
             filtered.map((job, index) => (
-              <JobCard key={job.id ?? `${job.title}-${index}`} job={job} onView={setSelectedJob} />
+              <JobCard key={job.id ?? `${job.title}-${index}`} job={job} onView={setSelectedJob} onApply={handleApply} />
             ))
           )}
+        </div>
+      )}
+
+      {showLoginModal && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          zIndex: 99999, padding: '20px'
+        }}>
+          <div style={{ position: 'relative', width: '100%', maxWidth: '500px' }}>
+            <button 
+              onClick={() => setShowLoginModal(false)}
+              style={{
+                position: 'absolute', top: '10px', right: '10px',
+                background: 'transparent', border: 'none', color: 'var(--muted2)',
+                fontSize: '24px', cursor: 'pointer', zIndex: 10
+              }}
+            >
+              &times;
+            </button>
+            <LoginGate title="Free Account Required" message="Create a free Emple account to apply for jobs and track your applications." />
+          </div>
         </div>
       )}
     </div>
