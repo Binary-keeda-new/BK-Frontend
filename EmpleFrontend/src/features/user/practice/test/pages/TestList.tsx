@@ -43,6 +43,7 @@ export default function TestList() {
   const [showPasswordPrompt, setShowPasswordPrompt] = useState(false);
   const [passwordError, setPasswordError] = useState('');
   const [attemptExpiresAt, setAttemptExpiresAt] = useState<string | null>(null);
+    const [needsFullscreen, setNeedsFullscreen] = useState(false);
 
   useEffect(() => {
     const loadTests = async () => {
@@ -186,12 +187,24 @@ const handleAttempt = async (test: UserTest) => {
   if (view === 'attempt' && selectedTest && activeSection) {
     return (
       <TestSecurityShell
-        settings={selectedTest.settings}
-        onViolation={(type) => {
-          console.warn('Test security violation:', type);
-          setSecurityWarnings((prev) => prev + 1);
-        }}
-      >
+  settings={selectedTest.settings}
+  onViolation={(type) => {
+  console.warn('Test security violation:', type);
+
+  setSecurityWarnings((prev) => prev + 1);
+
+  if (type === 'exit_fullscreen' && selectedTest.settings?.noExitScreen) {
+    setNeedsFullscreen(true);
+  }
+}}
+>
+  {needsFullscreen ? (
+  <TestFullscreenGate
+    testTitle={selectedTest.title}
+    onBack={handleBackToList}
+    onEntered={() => setNeedsFullscreen(false)}
+  />
+) : (
         <TestAttempt
           testId={selectedTest._id}
           attemptId={activeAttemptId!}
@@ -223,8 +236,11 @@ const handleAttempt = async (test: UserTest) => {
             setView('sections');
           }}
         />
-      </TestSecurityShell>
-    );
+)}
+          </TestSecurityShell>
+
+        );
+
   }
 
   if (view === 'feedback') {

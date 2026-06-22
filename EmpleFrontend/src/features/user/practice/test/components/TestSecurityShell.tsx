@@ -133,22 +133,29 @@ export default function TestSecurityShell({
   }, [settings?.noExitScreen]);
 
   useEffect(() => {
-    if (!settings?.noDevTools) return;
+  if (!settings?.noDevTools) return;
 
-    const interval = window.setInterval(() => {
-      const threshold = 160;
+  let alreadyReported = false;
 
-      const open =
-        window.outerWidth - window.innerWidth > threshold ||
-        window.outerHeight - window.innerHeight > threshold;
+  const interval = window.setInterval(() => {
+    const threshold = 160;
 
-      if (open) {
-        report('devtools_open');
-      }
-    }, 1500);
+    const open =
+      window.outerWidth - window.innerWidth > threshold ||
+      window.outerHeight - window.innerHeight > threshold;
 
-    return () => window.clearInterval(interval);
-  }, [settings?.noDevTools]);
+    if (open && !alreadyReported) {
+      alreadyReported = true;
+      report('devtools_open');
+    }
+
+    if (!open) {
+      alreadyReported = false;
+    }
+  }, 1500);
+
+  return () => window.clearInterval(interval);
+}, [settings?.noDevTools]);
 
   return <>{children}</>;
 }
