@@ -10,13 +10,72 @@ type Props = {
   onPreview: () => void;
 };
 
-const RULES = [
-  'Read all instructions carefully before starting.',
-  'Each section has its own timer and question set.',
-  'Only the enabled section can be attempted.',
-  'Do not refresh or close the tab during the test.',
-  'After completing one section, you can move to the next section.',
-];
+const buildRules = (test: UserTest) => {
+  const rules: string[] = [];
+
+  rules.push('Read all instructions carefully before starting.');
+  rules.push('Do not refresh or close the tab during the test.');
+
+  if (test.settings?.duration) {
+    rules.push(`Total test duration is ${test.settings.duration} minutes.`);
+  }
+
+  if (test.settings?.navigationMode === 'sequential') {
+    rules.push('Sections must be completed in sequence.');
+  }
+
+  if (test.settings?.navigationMode === 'free') {
+    rules.push('Available sections may be attempted in any order.');
+  }
+
+  if (test.settings?.minTimeBeforeSubmit) {
+    rules.push(
+      `Submit button will be enabled after ${test.settings.minTimeBeforeSubmit} minute(s).`
+    );
+  }
+
+  if (test.settings?.passwordProtected) {
+    rules.push('This test is password protected.');
+  }
+
+  if (test.settings?.noExitScreen) {
+    rules.push('Fullscreen mode is required during this test.');
+  }
+
+  if (test.settings?.noCopyPaste) {
+    rules.push('Copy, paste, and cut actions are not allowed.');
+  }
+
+  if (test.settings?.blockKeyboard) {
+    rules.push('Restricted keyboard shortcuts may be blocked.');
+  }
+
+  if (test.settings?.noLostFocus) {
+    rules.push('Switching away from the test window may be recorded.');
+  }
+
+  if (test.settings?.noMinimize) {
+    rules.push('Minimizing, hiding, or switching tabs may be recorded.');
+  }
+
+  if (test.settings?.noDevTools) {
+    rules.push('Developer tools are not allowed during this test.');
+  }
+
+  if (test.settings?.allowCalculator) {
+    rules.push('Calculator is allowed for this test.');
+  }
+
+  if (test.settings?.allowVirtualKeyboard) {
+    rules.push('Virtual keyboard is allowed for supported input questions.');
+  }
+
+  if (test.settings?.ipBinding) {
+    rules.push('This attempt may be restricted to the current IP address.');
+  }
+
+  return rules;
+};
 
 export default function TestInstructionsView({
   test,
@@ -25,13 +84,15 @@ export default function TestInstructionsView({
   onBack,
   onPreview,
 }: Props) {
+  const rules = buildRules(test);
+
   return (
     <div className="mx-auto w-full max-w-[760px] p-6">
       <button
         onClick={onBack}
         className="mb-5 rounded-xl border border-[var(--border)] px-4 py-2 text-sm font-semibold text-[var(--muted2)]"
       >
-        ← Back to Tests
+        Back to Tests
       </button>
 
       <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6">
@@ -63,7 +124,7 @@ export default function TestInstructionsView({
           </p>
 
           <ul className="m-0 flex list-disc flex-col gap-2 pl-5">
-            {RULES.map((rule) => (
+            {rules.map((rule) => (
               <li key={rule} className="text-sm leading-6 text-[var(--muted2)]">
                 {rule}
               </li>
@@ -111,7 +172,7 @@ export default function TestInstructionsView({
               opacity: agreed ? 1 : 0.5,
             }}
           >
-            Preview Test →
+            Preview Test
           </button>
         </div>
       </div>

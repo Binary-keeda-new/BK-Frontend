@@ -33,7 +33,7 @@ export default function TestSectionsPreview({
         onClick={onBack}
         className="mb-5 rounded-xl border border-[var(--border)] px-4 py-2 text-sm font-semibold text-[var(--muted2)]"
       >
-        ← Back to Instructions
+        Back to Instructions
       </button>
 
       <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6">

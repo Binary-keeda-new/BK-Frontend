@@ -4,6 +4,7 @@ type Props = {
   testTitle: string;
   onEntered: () => void;
   onBack: () => void;
+  warningCount?: number;
 };
 
 export default function TestFullscreenGate({

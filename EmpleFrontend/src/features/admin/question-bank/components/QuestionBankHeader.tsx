@@ -18,7 +18,7 @@ export default function QuestionBankHeader({
           onClick={onBack}
           className="mb-3 text-sm text-white/40 transition hover:text-white/70"
         >
-          ← Back
+          Back
         </button>
 
         <p className="mb-2 inline-block rounded-full bg-[rgb(19,20,27)] px-4 py-1 text-sm text-[rgb(241,90,34)]">

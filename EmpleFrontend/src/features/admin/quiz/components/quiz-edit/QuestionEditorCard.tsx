@@ -124,7 +124,7 @@ export default function QuestionEditorCard({
             cursor: aqIdx > 0 ? "pointer" : "default",
           }}
         >
-          ← Prev
+          Prev
         </button>
 
         <div className="flex gap-2">
@@ -133,7 +133,7 @@ export default function QuestionEditorCard({
               onClick={() => setActiveQ(questions[aqIdx + 1].id)}
               className="rounded-[10px] border-none bg-[var(--clr-accent3)] px-[18px] py-[9px] text-[13px] font-bold text-[var(--clr-accent)]"
             >
-              Next →
+              Next
             </button>
           )}
 

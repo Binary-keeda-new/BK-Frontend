@@ -623,7 +623,7 @@ export default function QuizAttemptPage() {
                   disabled={current === 0}
                   className="rounded-[10px] border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface,#161820)] px-6 py-2.5 text-sm font-semibold text-[var(--text,#f0f0f4)] transition disabled:cursor-not-allowed disabled:opacity-40"
                 >
-                  ← Previous
+                  Previous
                 </button>
 
                 <button

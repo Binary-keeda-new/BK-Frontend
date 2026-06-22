@@ -196,15 +196,25 @@ const handleAttempt = async (test: UserTest) => {
   setSecurityWarnings((prev) => prev + 1);
   setActiveViolation(type);
 
-  if (type === 'exit_fullscreen' && selectedTest.settings?.noExitScreen) {
-    setNeedsFullscreen(true);
+  if (
+    type === 'exit_fullscreen' &&
+    selectedTest.settings?.noExitScreen
+  ) {
+    setNeedsFullscreen(false);
   }
 }}
 >
   <TestViolationModal
         violationType={activeViolation}
         warningCount={securityWarnings}
-        onContinue={() => setActiveViolation(null)}
+        onContinue={() => {
+    const wasFullscreenViolation = activeViolation === 'exit_fullscreen';
+
+    setActiveViolation(null);
+
+    if (wasFullscreenViolation && selectedTest.settings?.noExitScreen) {
+      setNeedsFullscreen(true);
+    } }}
       />
 
   {needsFullscreen ? (
@@ -212,6 +222,7 @@ const handleAttempt = async (test: UserTest) => {
     testTitle={selectedTest.title}
     onBack={handleBackToList}
     onEntered={() => setNeedsFullscreen(false)}
+     warningCount={securityWarnings}
   />
 ) : (
         <TestAttempt
