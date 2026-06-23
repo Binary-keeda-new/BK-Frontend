@@ -1,4 +1,4 @@
-import BlogsHome from "@/features/user/blog/pages/BlogsHome";
+import UserBlogsPage from "@/features/user/blog/pages/UserBlogsPage";
 
 export const metadata = {
   title: 'Tech & Career Blogs | Emple',
@@ -6,5 +6,5 @@ export const metadata = {
 };
 
 export default function BlogsPage() {
-  return <BlogsHome />;
+  return <UserBlogsPage />;
 }
