@@ -1,5 +1,28 @@
 import React, { useState } from 'react';
 
+const getDaysForSection = (sectionId: number): number[] => {
+  const ranges: Record<number, [number, number]> = {
+    1: [1, 10],
+    2: [11, 20],
+    3: [21, 30],
+    4: [31, 40],
+    5: [41, 50],
+    6: [51, 60],
+    7: [61, 75],
+    8: [76, 95],
+    9: [96, 100],
+    10: [101, 120]
+  };
+  const range = ranges[sectionId];
+  if (!range) return [];
+  const [start, end] = range;
+  const days = [];
+  for (let i = start; i <= end; i++) {
+    days.push(i);
+  }
+  return days;
+};
+
 interface SectionCardProps {
   section: any;
   isCompleted: boolean;
@@ -38,6 +61,13 @@ const SectionCard: React.FC<SectionCardProps> = ({
 
   const getProgressStatus = (): 'completed' | 'in-progress' | 'not-attempted' => {
     if (isCompleted) return 'completed';
+    
+    if (roadmapId === '120-days-of-code') {
+      const completedProblems = progressDetails.completedProblems || [];
+      const sectionDays = getDaysForSection(section.id);
+      const hasStarted = sectionDays.some((day: number) => completedProblems.includes(day));
+      if (hasStarted) return 'in-progress';
+    }
     
     if (isNewSchema) {
       const hasStarted = isContentCompleted || 
@@ -145,6 +175,17 @@ const SectionCard: React.FC<SectionCardProps> = ({
     }
     return embedUrl;
   };
+
+  let renderedContent = section.content;
+  if (roadmapId === '120-days-of-code') {
+    const completedProblems = progressDetails.completedProblems || [];
+    completedProblems.forEach((dayNum: number) => {
+      renderedContent = renderedContent.replace(
+        `data-day="${dayNum}"`,
+        `data-day="${dayNum}" checked`
+      );
+    });
+  }
 
   return (
     <div 
@@ -292,7 +333,45 @@ const SectionCard: React.FC<SectionCardProps> = ({
           <div
             className="roadmap-content"
             style={{ marginBottom: 24 }}
-            dangerouslySetInnerHTML={{ __html: section.content }}
+            dangerouslySetInnerHTML={{ __html: renderedContent }}
+            onClick={(e) => {
+              const target = e.target as HTMLElement;
+              
+              if (target.classList.contains('problem-checkbox') || (target.tagName === 'INPUT' && (target as HTMLInputElement).type === 'checkbox')) {
+                const dayStr = target.getAttribute('data-day');
+                if (dayStr) {
+                  const dayNum = parseInt(dayStr, 10);
+                  const isChecked = (target as HTMLInputElement).checked;
+                  
+                  if (onUpdateProgressDetails) {
+                    const completedProblems = progressDetails.completedProblems || [];
+                    let newCompletedProblems = [...completedProblems];
+                    if (isChecked) {
+                      if (!newCompletedProblems.includes(dayNum)) {
+                        newCompletedProblems.push(dayNum);
+                      }
+                    } else {
+                      newCompletedProblems = newCompletedProblems.filter(d => d !== dayNum);
+                    }
+                    
+                    onUpdateProgressDetails({
+                      ...progressDetails,
+                      completedProblems: newCompletedProblems
+                    });
+                  }
+                }
+                return;
+              }
+
+              const anchor = target.closest('a');
+              if (anchor) {
+                const href = anchor.getAttribute('href');
+                if (href && (href.includes('youtube.com') || href.includes('youtu.be'))) {
+                  e.preventDefault();
+                  setSelectedVideo(href);
+                }
+              }
+            }}
           />
 
           {/* Content completion checkbox (only for new schema) */}

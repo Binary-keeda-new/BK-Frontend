@@ -26,7 +26,31 @@ interface ProgressDetails {
   viewedWebsites: Record<string, any>;
   watchedVideos: Record<string, any>;
   passedQuizzes: Record<string, any>;
+  completedProblems?: number[];
 }
+
+const getDaysForSection = (sectionId: number): number[] => {
+  const ranges: Record<number, [number, number]> = {
+    1: [1, 10],
+    2: [11, 20],
+    3: [21, 30],
+    4: [31, 40],
+    5: [41, 50],
+    6: [51, 60],
+    7: [61, 75],
+    8: [76, 95],
+    9: [96, 100],
+    10: [101, 120]
+  };
+  const range = ranges[sectionId];
+  if (!range) return [];
+  const [start, end] = range;
+  const days = [];
+  for (let i = start; i <= end; i++) {
+    days.push(i);
+  }
+  return days;
+};
 
 const RoadmapDetail: React.FC<RoadmapDetailProps> = ({ roadmapId, onBack }) => {
   const t: Record<string, string> = {
@@ -88,7 +112,8 @@ const RoadmapDetail: React.FC<RoadmapDetailProps> = ({ roadmapId, onBack }) => {
     completedContent: [],
     viewedWebsites: {},
     watchedVideos: {},
-    passedQuizzes: {}
+    passedQuizzes: {},
+    completedProblems: []
   });
 
   // Load progress on mount
@@ -106,13 +131,21 @@ const RoadmapDetail: React.FC<RoadmapDetailProps> = ({ roadmapId, onBack }) => {
 
     const savedDetails = localStorage.getItem(`roadmap_progress_details_${roadmapId}`);
     if (savedDetails) {
-      setProgressDetails(JSON.parse(savedDetails));
+      const parsed = JSON.parse(savedDetails);
+      setProgressDetails({
+        completedContent: parsed.completedContent || [],
+        viewedWebsites: parsed.viewedWebsites || {},
+        watchedVideos: parsed.watchedVideos || {},
+        passedQuizzes: parsed.passedQuizzes || {},
+        completedProblems: parsed.completedProblems || []
+      });
     } else {
       setProgressDetails({
         completedContent: [],
         viewedWebsites: {},
         watchedVideos: {},
-        passedQuizzes: {}
+        passedQuizzes: {},
+        completedProblems: []
       });
     }
     setIsLoaded(true);
@@ -139,6 +172,39 @@ const RoadmapDetail: React.FC<RoadmapDetailProps> = ({ roadmapId, onBack }) => {
         localStorage.setItem(`roadmap_progress_${roadmapId}`, JSON.stringify({
           sections: Array.from(newCompleted),
           points: 0
+        }));
+      }
+      return;
+    }
+
+    if (roadmapId === '120-days-of-code') {
+      const completedProblems = progressDetails.completedProblems || [];
+      const newCompleted = new Set<any>();
+      let newPoints = 0;
+
+      roadmap.sections.forEach((section: any) => {
+        const sectionDays = getDaysForSection(section.id);
+        if (sectionDays.length > 0) {
+          const allCompleted = sectionDays.every(day => completedProblems.includes(day));
+          if (allCompleted) {
+            newCompleted.add(section.id);
+            newPoints += (section.points || 0);
+          }
+        }
+      });
+
+      const currentCompletedArr = Array.from(completedSections);
+      const newCompletedArr = Array.from(newCompleted);
+      const hasChanged = currentCompletedArr.length !== newCompletedArr.length || 
+                        !currentCompletedArr.every(val => newCompleted.has(val)) ||
+                        totalPoints !== newPoints;
+
+      if (hasChanged) {
+        setCompletedSections(newCompleted);
+        setTotalPoints(newPoints);
+        localStorage.setItem(`roadmap_progress_${roadmapId}`, JSON.stringify({
+          sections: newCompletedArr,
+          points: newPoints
         }));
       }
       return;

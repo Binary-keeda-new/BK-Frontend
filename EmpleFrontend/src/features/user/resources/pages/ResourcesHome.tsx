@@ -46,7 +46,7 @@ const RESOURCES_CARDS = [
   }
 ];
 
-export default function ResourcesHome() {
+export default function ResourcesHome({ basePath = "/user/resources" }: { basePath?: string }) {
   return (
     <div className="p-6">
       <div className="mb-8">
@@ -59,59 +59,62 @@ export default function ResourcesHome() {
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "20px" }}>
-        {RESOURCES_CARDS.map((card) => (
-          <Link href={card.href} key={card.title} style={{ textDecoration: "none", display: "flex", flexDirection: "column", height: "100%" }}>
-            <div
-              style={{
-                background: "var(--surface)", border: "1px solid var(--border)",
-                borderRadius: "16px", padding: "24px", cursor: "pointer",
-                transition: "all 0.2s ease", position: "relative",
-                display: "flex", flexDirection: "column", height: "100%", flexGrow: 1,
-              }}
-              onMouseEnter={e => {
-                (e.currentTarget as HTMLElement).style.border = `1px solid ${card.color}`;
-                (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)";
-                (e.currentTarget as HTMLElement).style.boxShadow = `0 8px 24px ${card.color}30`;
-              }}
-              onMouseLeave={e => {
-                (e.currentTarget as HTMLElement).style.border = "1px solid var(--border)";
-                (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
-                (e.currentTarget as HTMLElement).style.boxShadow = "none";
-              }}
-            >
-              <div style={{
-                width: "48px",
-                height: "48px",
-                borderRadius: "12px",
-                background: `${card.color}15`,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                marginBottom: "16px"
-              }}>
-                <card.icon size={24} strokeWidth={2} style={{ color: card.color }} />
+        {RESOURCES_CARDS.map((card) => {
+          const finalHref = card.href.replace("/user/resources", basePath);
+          return (
+            <Link href={finalHref} key={card.title} style={{ textDecoration: "none", display: "flex", flexDirection: "column", height: "100%" }}>
+              <div
+                style={{
+                  background: "var(--surface)", border: "1px solid var(--border)",
+                  borderRadius: "16px", padding: "24px", cursor: "pointer",
+                  transition: "all 0.2s ease", position: "relative",
+                  display: "flex", flexDirection: "column", height: "100%", flexGrow: 1,
+                }}
+                onMouseEnter={e => {
+                  (e.currentTarget as HTMLElement).style.border = `1px solid ${card.color}`;
+                  (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)";
+                  (e.currentTarget as HTMLElement).style.boxShadow = `0 8px 24px ${card.color}30`;
+                }}
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLElement).style.border = "1px solid var(--border)";
+                  (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+                  (e.currentTarget as HTMLElement).style.boxShadow = "none";
+                }}
+              >
+                <div style={{
+                  width: "48px",
+                  height: "48px",
+                  borderRadius: "12px",
+                  background: `${card.color}15`,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginBottom: "16px"
+                }}>
+                  <card.icon size={24} strokeWidth={2} style={{ color: card.color }} />
+                </div>
+                <h2 style={{ fontSize: "20px", fontWeight: 700, color: "var(--text)", marginBottom: "8px" }}>
+                  {card.title}
+                </h2>
+                <p style={{ fontSize: "13px", color: "var(--muted2)", marginBottom: "16px", lineHeight: 1.5, flexGrow: 1 }}>
+                  {card.description}
+                </p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+                  {card.topics.map((topic) => (
+                    <span key={topic} style={{
+                      fontSize: "11px", fontWeight: 600,
+                      padding: "4px 10px", borderRadius: "999px",
+                      background: `${card.color}15`, color: card.color,
+                      border: `1px solid ${card.color}30`,
+                    }}>
+                      {topic}
+                    </span>
+                  ))}
+                </div>
               </div>
-              <h2 style={{ fontSize: "20px", fontWeight: 700, color: "var(--text)", marginBottom: "8px" }}>
-                {card.title}
-              </h2>
-              <p style={{ fontSize: "13px", color: "var(--muted2)", marginBottom: "16px", lineHeight: 1.5, flexGrow: 1 }}>
-                {card.description}
-              </p>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
-                {card.topics.map((topic) => (
-                  <span key={topic} style={{
-                    fontSize: "11px", fontWeight: 600,
-                    padding: "4px 10px", borderRadius: "999px",
-                    background: `${card.color}15`, color: card.color,
-                    border: `1px solid ${card.color}30`,
-                  }}>
-                    {topic}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </Link>
-        ))}
+            </Link>
+          );
+        })}
       </div>
     </div>
   );

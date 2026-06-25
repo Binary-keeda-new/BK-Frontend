@@ -1,0 +1,132 @@
+import React, { useState } from "react";
+import { CheckCircle2, Copy } from "lucide-react";
+
+interface BadgeProps {
+  text: string;
+  color: "green" | "red" | "yellow" | "blue" | "purple";
+}
+
+export function Badge({ text, color }: BadgeProps) {
+  const colorMap = {
+    green: "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20",
+    red: "bg-rose-500/10 text-rose-400 border border-rose-500/20",
+    yellow: "bg-amber-500/10 text-amber-400 border border-emerald-500/20", // using standard border alignment
+    blue: "bg-sky-500/10 text-sky-400 border border-sky-500/20",
+    purple: "bg-purple-500/10 text-purple-400 border border-purple-500/20",
+  };
+  return (
+    <span className={`px-2.5 py-1 rounded-full text-xs font-bold font-mono tracking-wide ${colorMap[color]}`}>
+      {text}
+    </span>
+  );
+}
+
+
+interface CodeBlockProps {
+  code: string;
+}
+
+export function CodeBlock({ code }: CodeBlockProps) {
+  const [copied, setCopied] = useState(false);
+
+  const copyToClipboard = () => {
+    navigator.clipboard?.writeText(code);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <div 
+      className="relative rounded-xl overflow-hidden border"
+      style={{ background: "var(--surface2)", borderColor: "var(--border)" }}
+    >
+      <div 
+        className="flex justify-between items-center px-4 py-2 border-b"
+        style={{ background: "rgba(255, 255, 255, 0.01)", borderColor: "var(--border)" }}
+      >
+        <div className="flex gap-1.5">
+          <div className="w-2 h-2 rounded-full bg-rose-500/80" />
+          <div className="w-2 h-2 rounded-full bg-amber-500/80" />
+          <div className="w-2 h-2 rounded-full bg-emerald-500/80" />
+        </div>
+        <button 
+          onClick={copyToClipboard}
+          className="flex items-center gap-1 px-2.5 py-1 text-[#8a8a9a] hover:text-white rounded-lg text-xs font-semibold border active:scale-95 transition-all"
+          style={{ background: "rgba(255,255,255,0.03)", borderColor: "var(--border)" }}
+        >
+          {copied ? (
+            <>
+              <CheckCircle2 size={12} className="text-emerald-400" />
+              <span className="text-emerald-400">Copied</span>
+            </>
+          ) : (
+            <>
+              <Copy size={12} />
+              <span>Copy</span>
+            </>
+          )}
+        </button>
+      </div>
+      <pre className="p-4 overflow-x-auto text-[13px] font-mono text-indigo-300 leading-relaxed max-h-96">
+        <code>{code}</code>
+      </pre>
+    </div>
+  );
+}
+
+export function renderHighlightedText(text: string): React.ReactNode {
+  if (!text) return null;
+
+  // Match text in backticks, <u> tags, operators, or safe programming terms
+  const regex = /(`[^`]+`|<u>[^<]+<\/u>|&&|\|\||==|!=|<=|>=|\+\+|--|\+=|-=|\*=|\/=|%=|\b(?:int|float|double|char|void|boolean|String|printf(?:\(\))?|scanf(?:\(\))?|println(?:\(\))?|print\(\)|sizeof(?:\(\))?|malloc(?:\(\))?|free\(\)|main\(\)|fgets(?:\(\))?|fflush(?:\(\))?|System\.out\.println(?:\(\))?|System\.out\.print(?:\(\))?|#define|#include|stdio\.h|math\.h|string\.h|stdlib\.h|gcc|javac|JVM)\b)/g;
+
+  const parts = text.split(regex);
+
+  return (
+    <>
+      {parts.map((part, i) => {
+        if (!part) return null;
+        
+        if (part.startsWith("`") && part.endsWith("`")) {
+          const content = part.slice(1, -1);
+          return (
+            <code 
+              key={i} 
+              className="px-1.5 py-0.5 rounded font-mono text-[11px] bg-white/[0.08] text-[var(--orange)] border border-white/5 mx-0.5 font-bold whitespace-nowrap"
+            >
+              {content}
+            </code>
+          );
+        }
+
+        if (part.startsWith("<u>") && part.endsWith("</u>")) {
+          const content = part.slice(3, -4);
+          return (
+            <span 
+              key={i} 
+              className="font-bold text-white"
+            >
+              {content}
+            </span>
+          );
+        }
+
+        const isOperator = /^(&&|\|\||==|!=|<=|>=|\+\+|--|\+=|-=|\*=|\/=|%=)$/.test(part);
+        const isAutoKeyword = /^(int|float|double|char|void|boolean|String|printf(?:\(\))?|scanf(?:\(\))?|println(?:\(\))?|print\(\)|sizeof(?:\(\))?|malloc(?:\(\))?|free\(\)|main\(\)|fgets(?:\(\))?|fflush(?:\(\))?|System\.out\.println(?:\(\))?|System\.out\.print\(\)?|System\.out\.println|System\.out\.print|#define|#include|stdio\.h|math\.h|string\.h|stdlib\.h|gcc|javac|JVM)$/.test(part);
+        
+        if (isOperator || isAutoKeyword) {
+          return (
+            <code 
+              key={i} 
+              className="px-1.5 py-0.5 rounded font-mono text-[11px] bg-white/[0.08] text-[var(--orange)] border border-white/5 mx-0.5 font-bold whitespace-nowrap"
+            >
+              {part}
+            </code>
+          );
+        }
+        
+        return part;
+      })}
+    </>
+  );
+}
