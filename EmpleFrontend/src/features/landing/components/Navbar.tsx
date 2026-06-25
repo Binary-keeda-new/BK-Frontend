@@ -9,7 +9,7 @@ export default function Navbar() {
   { id: 'features', label: 'Features' },
   { id: 'how', label: 'How It Works' },
   { id: 'pricing', label: 'Pricing' },
-  { id: 'testimonials', label: 'Testimonials' },
+  /*{ id: 'testimonials', label: 'Testimonials' },*/
   { id: 'faq', label: 'FAQ' },
 ]
   const [drawerOpen, setDrawerOpen] = useState(false)
@@ -55,7 +55,7 @@ export default function Navbar() {
           transition: 'background-color 0.3s ease, box-shadow 0.3s ease'
          }}
       >
-        <div className="nav-inner container">
+        <div className="nav-inner nav-container">
 
           {/* Logo */}
           <div className="flex items-center">
@@ -88,6 +88,10 @@ export default function Navbar() {
                   {item.label}
                 </button>
               ))}
+
+              <Link href="/team" className="nav-link">
+                Team
+              </Link>
             </div>
 
             {/* ACTIONS */}
@@ -129,8 +133,19 @@ export default function Navbar() {
             onClick={() => scrollTo(item.id)}
           >
             {item.label}
+            
           </button>
+          
         ))}
+
+        <Link
+          href="/team"
+          className="nav-link flex justify-center items-center"
+          onClick={closeDrawer}
+        >
+          Team
+        </Link>
+        
 
         <div className="drawer-actions">
           <Link className="btn-outline" href="/auth/login" onClick={closeDrawer}>

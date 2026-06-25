@@ -3,6 +3,9 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useSession } from "@descope/nextjs-sdk/client";
+import { Lock } from "lucide-react";
+import LoginGate from "@/shared/components/access/LoginGate";
 
 const NAV_ITEMS = [
   {
@@ -18,11 +21,7 @@ const NAV_ITEMS = [
     icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>,
   },
   {
-    label: "Tutorials", tip: "Tutorials", href: "/user/tutorials",
-    icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>,
-  },
-  {
-    label: "Jobs & ATS", tip: "ATS", href: "/user/jobs",
+    label: "Jobs", tip: "Jobs", href: "/jobs",
     icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>,
   },
   {
@@ -54,7 +53,9 @@ const itemBase = "has-tip flex items-center gap-[11px] px-[10px] py-[9px] rounde
 
 export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const pathname = usePathname();
+  const { isAuthenticated } = useSession() as any;
 
   useEffect(() => {
     const handleResize = () => {
@@ -81,6 +82,13 @@ export default function Sidebar() {
 
   // On desktop, sidebar is always expanded regardless of collapsed state
   const showLabel = !collapsed; // mobile: depends on collapsed; desktop: always true via CSS override
+
+  const handleItemClick = (e: React.MouseEvent, isPremium: boolean) => {
+    if (isPremium && !isAuthenticated) {
+      e.preventDefault();
+      setShowLoginModal(true);
+    }
+  };
 
   return (
     <aside
@@ -111,9 +119,12 @@ export default function Sidebar() {
       {/* Nav items */}
       <nav className="flex-1 px-[10px] py-1 overflow-y-auto overflow-x-hidden">
         {NAV_ITEMS.map((item) => {
-          const isActive = pathname === item.href;
+          let isActive = pathname === item.href;
+          if (item.label === "Resources" && pathname.startsWith("/resources")) isActive = true;
+          if (item.label === "Jobs" && pathname.startsWith("/jobs")) isActive = true;
+          const isPremium = item.label !== "Resources" && item.label !== "Jobs";
           return (
-            <Link href={item.href} key={item.label} style={{ textDecoration: "none" }}>
+            <Link href={item.href} key={item.label} style={{ textDecoration: "none" }} onClick={(e) => handleItemClick(e, isPremium)}>
               <div
                 data-tip={item.tip}
                 className={`${itemBase} mb-[1px]`}
@@ -122,7 +133,9 @@ export default function Sidebar() {
                 onMouseLeave={e => onHover(e, isActive, false)}
               >
                 <div className={iconClass}>{item.icon}</div>
-                <span className={`flex-1 md:block ${collapsed ? "hidden" : "block"}`}>{item.label}</span>
+                <span className={`flex-1 md:block ${collapsed ? "hidden" : "block"} flex items-center justify-between`}>
+                  {item.label}
+                </span>
               </div>
             </Link>
           );
@@ -132,40 +145,7 @@ export default function Sidebar() {
       {/* Bottom section */}
       <div className="flex-shrink-0 px-[10px] py-2" style={{ borderTop: "1px solid var(--border)" }}>
 
-        {/* Transactions */}
-        {(() => {
-          const isActive = pathname === "/user/transactions";
-          return (
-            <Link href="/user/transactions" style={{ textDecoration: "none" }}>
-              <div
-                data-tip="Transactions"
-                className={itemBase}
-                style={getStyle(isActive)}
-                onMouseEnter={e => onHover(e, isActive, true)}
-                onMouseLeave={e => onHover(e, isActive, false)}
-              >
-                <div className={iconClass}>
-                  {/* E coin: mobile collapsed only */}
-                  <span
-                    className={`md:hidden w-[26px] h-[26px] rounded-full inline-flex items-center justify-center text-[9px] font-extrabold ${collapsed ? "inline-flex" : "hidden"}`}
-                    style={{ background: "#fdd835", color: "#6d4c00" }}
-                  >
-                    E
-                  </span>
-                  {/* Normal icon: desktop always + mobile expanded */}
-                  <svg
-                    className={`md:block ${collapsed ? "hidden" : "block"}`}
-                    width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"
-                  >
-                    <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/>
-                    <line x1="10" y1="7" x2="18" y2="7"/><line x1="10" y1="11" x2="18" y2="11"/><line x1="10" y1="15" x2="14" y2="15"/>
-                  </svg>
-                </div>
-                <span className={`flex-1 md:block ${collapsed ? "hidden" : "block"}`}>Transactions</span>
-              </div>
-            </Link>
-          );
-        })()}
+        {/* Transactions Removed */}
 
         {/* Collapse toggle — mobile only */}
         <button
@@ -188,6 +168,29 @@ export default function Sidebar() {
         </button>
 
       </div>
+
+      {showLoginModal && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          zIndex: 99999, padding: '20px'
+        }}>
+          <div style={{ position: 'relative', width: '100%', maxWidth: '500px' }}>
+            <button 
+              onClick={() => setShowLoginModal(false)}
+              style={{
+                position: 'absolute', top: '10px', right: '10px',
+                background: 'transparent', border: 'none', color: 'var(--muted2)',
+                fontSize: '24px', cursor: 'pointer', zIndex: 10
+              }}
+            >
+              &times;
+            </button>
+            <LoginGate title="Free Account Required" message="Create a free Emple account to access this feature and unlock premium resources." />
+          </div>
+        </div>
+      )}
     </aside>
   );
 }

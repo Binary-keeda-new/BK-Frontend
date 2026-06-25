@@ -15,6 +15,8 @@ import QuizPreviewContent from '@/features/admin/quiz/components/quizPreviewCont
 import QuizzesContent from '../../quiz/components/quizList';
 import QuizEdit from '../../quiz/components/QuizEdit';
 import QuizForm from '../../quiz/components/QuizForm';
+import CodingProblemsPage from '@/features/admin/coding-problems/pages/codingProblemsPage';
+import CodingProblemEditorPage from '@/features/admin/coding-problems/pages/codingProblemEditorPage';
 
 interface AppShellProps {
   initialSection?: AdminSection;
@@ -45,8 +47,13 @@ export default function AppShell({
     quizId?.toString() || quizIdFromUrl
   );
   const [quizListRefreshKey, setQuizListRefreshKey] = useState(0);
+
 const [testListRefreshKey, setTestListRefreshKey] = useState(0);
 const [selectedTestId, setSelectedTestId] = useState<string | null>(null);
+
+const [selectedProblemId, setSelectedProblemId] = useState<string | null>(
+  null
+);
 
   useEffect(() => {
     if (loading) return;
@@ -186,6 +193,11 @@ const [selectedTestId, setSelectedTestId] = useState<string | null>(null);
     });
   };
   
+  const openCodingProblemEdit = (id: string) => {
+  setSelectedProblemId(id);
+  setActiveSection('coding-problem-edit');
+};
+
   const openTestEdit = (id: string) => {
   setSelectedTestId(id);
   setActiveSection('test-edit');
@@ -295,12 +307,33 @@ const [selectedTestId, setSelectedTestId] = useState<string | null>(null);
   );
 
 
-      case 'coding-problems':
+      /*case 'coding-problems':
         return (
           <div className="p-6 text-[var(--clr-text)] md:p-10">
             Coding problems content goes here.
           </div>
-        );
+        );*/
+
+        /*case 'coding-problems':
+          return <CodingProblemsPage />;*/
+
+        case 'coding-problems':
+           return (
+             <CodingProblemsPage
+               onEditProblem={openCodingProblemEdit}
+             />
+           );
+
+        case 'coding-problem-edit':
+            return selectedProblemId ? (
+              <CodingProblemEditorPage
+                problemId={selectedProblemId}
+              />
+            ) : (
+              <CodingProblemsPage
+                onEditProblem={openCodingProblemEdit}
+              />
+            );
 
       default:
         return (

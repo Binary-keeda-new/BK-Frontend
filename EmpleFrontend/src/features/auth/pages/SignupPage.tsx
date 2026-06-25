@@ -369,8 +369,8 @@ export default function SignupPage() {
                 onChange={(e) => setAgreed(e.target.checked)}
               />
               <span className="auth-check-label">
-                I agree to the <Link href="#" className="auth-link">Terms of Service</Link> and{' '}
-                <Link href="#" className="auth-link">Privacy Policy</Link>
+                I agree to the <Link href="/company/terms-and-conditions" className="auth-link">Terms of Service</Link> and{' '}
+                <Link href="/company/privacy-policy" className="auth-link">Privacy Policy</Link>
               </span>
             </label>
 
