@@ -12,6 +12,8 @@ type Props = {
   onBackToSections: () => void;
   onOpenQuestions: () => void;
   onSubmit: () => void;
+  allowCalculator?: boolean;
+  onOpenCalculator?: () => void;
 };
 
 export default function TestAttemptHeader({
@@ -28,6 +30,8 @@ export default function TestAttemptHeader({
   onBackToSections,
   onOpenQuestions,
   onSubmit,
+  allowCalculator = false,
+onOpenCalculator,
 }: Props) {
   return (
     <div className="mb-4 rounded-2xl border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface,#161820)] px-4 py-4 md:px-5">
@@ -82,6 +86,16 @@ export default function TestAttemptHeader({
           >
             Questions
           </button>
+
+          {allowCalculator && (
+          <button
+            type="button"
+            onClick={onOpenCalculator}
+            className="rounded-xl border border-[var(--border)] bg-[var(--surface2)] px-3 py-2 text-sm font-semibold text-[var(--text)]"
+          >
+            🧮 Calculator
+          </button>
+          )}
 
           <button
             type="button"

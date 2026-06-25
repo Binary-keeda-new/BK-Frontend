@@ -273,6 +273,7 @@ if (view === 'resume-fullscreen' && selectedTest) {
           securityWarnings={securityWarnings}
           section={activeSection}
           sectionIndex={activeSectionIndex}
+          allowCalculator={selectedTest.settings?.allowCalculator || false}
           minTimeBeforeSubmit={
   selectedTest.settings?.minTimeBeforeSubmit || 0
 }
@@ -323,10 +324,10 @@ if (view === 'resume-fullscreen' && selectedTest) {
           const interval = setInterval(() => {
             setRedirectCountdown((prev) => {
               if (!prev || prev <= 1) {
-                clearInterval(interval);
-                setRedirectCountdown(null);
-                handleBackToList();
-                return null;
+              clearInterval(interval);
+              setRedirectCountdown(null);
+              window.location.href = '/dashboard';
+              return null;
               }
 
               return prev - 1;

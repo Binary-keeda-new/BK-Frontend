@@ -14,6 +14,7 @@ import SubmitConfirmModal from '../components/test-attempt/SubmitConfirmModal';
 import TestAttemptHeader from '../components/test-attempt/TestAttemptHeader';
 import type { Status } from '../components/test-attempt/testAttempt.types'
 import { formatTimeLeft, getQuestionMode } from '../components/test-attempt/testAttempt.utils';
+import TestCalculator from '../components/test-attempt/TestCalculator';
 
 type Props = {
   attemptId: string;
@@ -25,6 +26,7 @@ type Props = {
   onBackToSections: () => void;
   onSectionCompleted: (sectionId: string) => void;
   minTimeBeforeSubmit?: number;
+  allowCalculator?: boolean;
 };
 
 export default function TestAttempt({
@@ -36,6 +38,7 @@ export default function TestAttempt({
   onBackToSections,
   onSectionCompleted,
   minTimeBeforeSubmit = 0,
+  allowCalculator = false,
 }: Props) {
   const [data, setData] = useState<TestSectionAttemptData | null>(null);
   const [current, setCurrent] = useState(0);
@@ -50,10 +53,12 @@ export default function TestAttempt({
   const [timeLeftMs, setTimeLeftMs] = useState<number | null>(null);
   const [attemptStartedAt] = useState(Date.now());
   const [canSubmit, setCanSubmit] = useState(false);
+  const [showCalculator, setShowCalculator] = useState(false);
 
   const questions = data?.questions ?? [];
   const totalQuestions = questions.length;
   const q = questions[current];
+
 
   useEffect(() => {
     if (!minTimeBeforeSubmit) {
@@ -301,6 +306,8 @@ export default function TestAttempt({
           onBackToSections={onBackToSections}
           onOpenQuestions={() => setSidebarOpen(true)}
           onSubmit={openSubmitConfirm}
+          allowCalculator={allowCalculator}
+          onOpenCalculator={() => setShowCalculator(true)}
         />
 
         <div className="grid min-h-[calc(100vh-2rem)] grid-cols-1 gap-5 md:grid-cols-[minmax(0,1fr)_16rem]">
@@ -369,6 +376,10 @@ export default function TestAttempt({
           onSubmit={() => void handleSubmit()}
         />
       )}
+      <TestCalculator
+    open={showCalculator}
+    onClose={() => setShowCalculator(false)}
+    />
     </>
   );
 }
