@@ -19,7 +19,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   try {
     const jobs = await fetchJobs();
-    let jobsList = [];
+    let jobsList: any[] = [];
     if (Array.isArray(jobs)) {
       jobsList = jobs;
     } else if (Array.isArray((jobs as any).data)) {

@@ -25,7 +25,7 @@ const plans = [
   {
     name: 'Standard',
     tagline: 'For serious job seekers who want every possible advantage.',
-    price: '99',
+    price: '149',
     period: 'per month, 999 per year',
     badge: null,
     perks: [
