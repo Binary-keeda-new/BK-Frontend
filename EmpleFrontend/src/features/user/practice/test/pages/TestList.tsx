@@ -17,8 +17,12 @@ import {
 import TestFullscreenGate from '../components/TestFullscreenGate';
 import TestViolationModal from '../components/TestViolationModal';
 
+type Props = {
+  onFullscreenModeChange?: (value: boolean) => void;
+};
 
-export default function TestList() {
+
+export default function TestList({ onFullscreenModeChange }: Props) {
   const [tests, setTests] = useState<UserTest[]>([]);
   const [loading, setLoading] = useState(true);
   const [attemptStatusMap, setAttemptStatusMap] = useState<Record<string, any>>({});
@@ -26,7 +30,7 @@ export default function TestList() {
 
   const [selectedTest, setSelectedTest] = useState<UserTest | null>(null);
   const [view, setView] = useState<
-    'list' | 'fullscreen' | 'instructions' | 'sections' | 'attempt' | 'feedback'
+   'list' | 'fullscreen' | 'resume-fullscreen' | 'instructions' | 'sections' | 'attempt' | 'feedback'
   >('list');
 
   const [agreed, setAgreed] = useState(false);
@@ -46,6 +50,14 @@ export default function TestList() {
   const [attemptExpiresAt, setAttemptExpiresAt] = useState<string | null>(null);
   const [needsFullscreen, setNeedsFullscreen] = useState(false);
   const [activeViolation, setActiveViolation] = useState<string | null>(null);
+
+  useEffect(() => {
+  const fullscreenViews = ['fullscreen', 'resume-fullscreen', 'attempt'];
+
+  onFullscreenModeChange?.(fullscreenViews.includes(view));
+
+  return () => onFullscreenModeChange?.(false);
+}, [view, onFullscreenModeChange]);
 
   useEffect(() => {
     const loadTests = async () => {
@@ -116,7 +128,13 @@ const handleAttempt = async (test: UserTest) => {
       );
 
       setSelectedTest(test);
-      setView('sections');
+      setAgreed(true);
+
+      if (test.settings?.noExitScreen) {
+        setView('resume-fullscreen');
+      } else {
+        setView('sections');
+      }
 
       return;
     } catch (error) {
@@ -161,6 +179,17 @@ const handleAttempt = async (test: UserTest) => {
   );
 }
 
+if (view === 'resume-fullscreen' && selectedTest) {
+  return (
+    <TestFullscreenGate
+      testTitle={selectedTest.title}
+      warningCount={securityWarnings}
+      onBack={handleBackToList}
+      onEntered={() => setView('sections')}
+    />
+  );
+}
+
   if (view === 'instructions' && selectedTest) {
     return (
       <TestInstructionsView
@@ -190,11 +219,22 @@ const handleAttempt = async (test: UserTest) => {
     return (
       <TestSecurityShell
   settings={selectedTest.settings}
+
   onViolation={(type) => {
   console.warn('Test security violation:', type);
 
-  setSecurityWarnings((prev) => prev + 1);
+  setSecurityWarnings((prev) => {
+  const next = prev + 1;
+
+  if (next >= 5) {
+    setActiveViolation(null);
+    handleBackToList();
+    return next;
+  }
+
   setActiveViolation(type);
+  return next;
+});
 
   if (
     type === 'exit_fullscreen' &&
@@ -204,6 +244,7 @@ const handleAttempt = async (test: UserTest) => {
   }
 }}
 >
+  
   <TestViolationModal
         violationType={activeViolation}
         warningCount={securityWarnings}

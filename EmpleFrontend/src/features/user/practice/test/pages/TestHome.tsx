@@ -1,6 +1,14 @@
+'use client';
+
+import { useState } from 'react';
 import TestList from './TestList';
 
 export default function TestHome() {
-  return <TestList />;
+  const [isTestFullscreenMode, setIsTestFullscreenMode] = useState(false);
+
+  return (
+    <div className={isTestFullscreenMode ? 'fixed inset-0 z-[999] bg-[var(--bg)] overflow-y-auto' : ''}>
+      <TestList onFullscreenModeChange={setIsTestFullscreenMode} />
+    </div>
+  );
 }
-// maybe there might be cards of dsa, aptitude, constitution that will be here. a
