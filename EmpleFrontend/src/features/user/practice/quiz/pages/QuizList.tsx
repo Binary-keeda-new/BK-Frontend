@@ -430,7 +430,7 @@ export default function QuizList() {
                   opacity: agreed ? 1 : 0.5,
                 }}
               >
-                Start Quiz →
+                Start Quiz
               </button>
             </div>
           </div>
