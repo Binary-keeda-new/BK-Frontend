@@ -96,7 +96,10 @@ export default function Topbar() {
         shadow-[0_2px_12px_rgba(0,0,0,0.3)]"
       >
         {/* Logo */}
-        <div className="flex items-center">
+        <div 
+          className="flex items-center cursor-pointer transition-transform hover:scale-105"
+          onClick={() => router.push(isAuthenticated ? "/user/dashboard" : "/landing")}
+        >
           <img
             src="/logo-final.png"
             alt="emple"
@@ -166,7 +169,7 @@ export default function Topbar() {
 
             <div
             className={`fixed right-4 top-20 w-[300px] z-50
-                transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]
+                transition-all duration-500 ease-[linear(cubic-bezier(0.22,1,0.36,1))]
                 ${
                   todoOpen
                     ? "opacity-100 translate-x-0"

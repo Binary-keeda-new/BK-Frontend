@@ -62,8 +62,8 @@ export default function Footer() {
           <div className="flex flex-col gap-4 text-[12px] text-[var(--clr-text2)]">
             <div className="footer-col-head">Company</div>
 
-            <Link href="/company/about-us">About Us</Link>
-            <Link href="/company/contact-us">Contact Us</Link>
+            <Link href="/about">About Us</Link>
+            <Link href="/contact">Contact Us</Link>
             <Link href="/company/help-centre">Help Centre</Link>
           </div>
 

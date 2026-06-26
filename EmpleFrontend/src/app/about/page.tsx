@@ -1,4 +1,10 @@
 import LegalPageLayout from "@/features/landing/components/LegalPageLayout";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About Emple",
+  description: "Learn about Emple and our mission.",
+};
 
 export default function AboutUsPage() {
   return (
