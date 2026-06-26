@@ -16,6 +16,7 @@ import {
 } from '../services/test.service';
 import TestFullscreenGate from '../components/TestFullscreenGate';
 import TestViolationModal from '../components/TestViolationModal';
+import TestMCQReview from './TestMCQReview';
 
 type Props = {
   onFullscreenModeChange?: (value: boolean) => void;
@@ -30,8 +31,17 @@ export default function TestList({ onFullscreenModeChange }: Props) {
 
   const [selectedTest, setSelectedTest] = useState<UserTest | null>(null);
   const [view, setView] = useState<
-   'list' | 'fullscreen' | 'resume-fullscreen' | 'instructions' | 'sections' | 'attempt' | 'feedback'
-  >('list');
+  | 'list'
+  | 'review-sections'
+  | 'review-mcq'
+  | 'review-coding'
+  | 'fullscreen'
+  | 'resume-fullscreen'
+  | 'instructions'
+  | 'sections'
+  | 'attempt'
+  | 'feedback'
+>('list');
 
   const [agreed, setAgreed] = useState(false);
   const [enabledSectionIndex, setEnabledSectionIndex] = useState(0);
@@ -50,6 +60,8 @@ export default function TestList({ onFullscreenModeChange }: Props) {
   const [attemptExpiresAt, setAttemptExpiresAt] = useState<string | null>(null);
   const [needsFullscreen, setNeedsFullscreen] = useState(false);
   const [activeViolation, setActiveViolation] = useState<string | null>(null);
+  const [reviewSection, setreviewSection] = useState<UserTestSection | null>(null);
+const [reviewSectionIndex, setreviewSectionIndex] = useState(0);
 
   useEffect(() => {
   const fullscreenViews = ['fullscreen', 'resume-fullscreen', 'attempt'];
@@ -153,6 +165,35 @@ const handleAttempt = async (test: UserTest) => {
   await beginAttempt(test);
 };
 
+const handleReviewTest = (test: UserTest) => {
+  const status = attemptStatusMap[test._id];
+
+  if (!status?.attemptId) {
+    console.error('No attempt id found for review');
+    return;
+  }
+
+  setActiveAttemptId(status.attemptId);
+  setSelectedTest(test);
+  setreviewSection(null);
+  setreviewSectionIndex(0);
+  setView('review-sections');
+};
+
+const handleReviewSection = (
+  section: UserTestSection,
+  index: number
+) => {
+  setreviewSection(section);
+  setreviewSectionIndex(index);
+
+  if (section.type === 'mcq') {
+    setView('review-mcq');
+  } else {
+    setView('review-coding');
+  }
+};
+
   const handleBackToList = () => {
     setSelectedTest(null);
     setAgreed(false);
@@ -168,6 +209,42 @@ const handleAttempt = async (test: UserTest) => {
   if (loading) {
     return <div className="p-6 text-sm text-[var(--muted2)]">Loading tests...</div>;
   }
+
+  if (view === 'review-sections' && selectedTest) {
+  return (
+    <TestSectionsPreview
+      mode="review"
+      test={selectedTest}
+      enabledSectionIndex={0}
+      completedSectionIds={[]}
+      onBack={handleBackToList}
+      onReviewSection={handleReviewSection}
+      navigationMode={selectedTest.settings?.navigationMode || 'sequential'}
+    />
+  );
+}
+
+if (view === 'review-mcq' && activeAttemptId && reviewSection) {
+  return (
+   <TestMCQReview
+  attemptId={activeAttemptId!}
+  section={reviewSection}
+  sectionIndex={reviewSectionIndex}
+  onBack={() => setView('review-sections')}
+/>
+  );
+}
+// this will be added when coding is added:
+
+// if (view === 'preview-coding' && reviewSection) {
+//   return (
+//     <TestCodingPreview
+//       section={reviewSection}
+//       sectionIndex={reviewSectionIndex}
+//       onBack={() => setView('preview-sections')}
+//     />
+//   );
+// }
 
   if (view === 'fullscreen' && selectedTest) {
   return (
@@ -426,18 +503,26 @@ if (view === 'resume-fullscreen' && selectedTest) {
                     </div>
                   </div>
 
-                  <button
-                    onClick={() => handleAttempt(test)}
-                    className={`rounded-xl px-5 py-3 text-sm font-bold ${
-                      isAttempted
-                        ? 'border border-emerald-500/30 bg-emerald-500/10 text-emerald-300'
-                        : isInProgress
-                        ? 'border border-sky-500/30 bg-sky-500/10 text-sky-300'
-                        : 'bg-[var(--orange)] text-white'
-                    }`}
-                  >
-                    {isAttempted ? 'Preview →' : isInProgress ? 'Resume →' : 'Attempt →'}
-                  </button>
+                 <div className="flex flex-wrap gap-2">
+                <button
+  onClick={() => {
+    if (isAttempted) {
+      handleReviewTest(test);
+    } else {
+      handleAttempt(test);
+    }
+  }}
+  className={`rounded-xl px-5 py-3 text-sm font-bold ${
+    isAttempted
+      ? 'border border-sky-500/30 bg-sky-500/10 text-sky-300'
+      : isInProgress
+      ? 'border border-emerald-500/30 bg-emerald-500/10 text-emerald-300'
+      : 'bg-[var(--orange)] text-white'
+  }`}
+>
+  {isAttempted ? 'Review' : isInProgress ? 'Resume' : 'Attempt'}
+</button>
+                </div>
                 </div>
               </div>
             );

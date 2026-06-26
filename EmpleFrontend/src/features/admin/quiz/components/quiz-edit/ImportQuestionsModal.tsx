@@ -456,7 +456,7 @@ export default function ImportQuestionsModal({
           {importTab === "aiken" && (
             <div>
               <p className="mb-3 text-xs leading-[1.7]" style={{ color: t.subText }}>
-                Format: question text →{" "}
+                Format: question text {" "}
                 <code className="text-[var(--clr-accent)]">A. option</code> lines →{" "}
                 <code className="text-[var(--clr-accent)]">ANSWER: B</code>
               </p>

@@ -111,7 +111,7 @@ export default function TestCard({
               : 'bg-[var(--orange)] text-white'
           }`}
         >
-          {buttonLabel} →
+          {buttonLabel} 
         </button>
       </div>
     </div>

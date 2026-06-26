@@ -110,3 +110,23 @@ export const getTestAttemptDetails = async (attemptId: string) => {
 
   return result.data;
 };
+
+export const getTestSectionReview = async (
+  attemptId: string,
+  sectionId: string
+) => {
+  const result = await apiRequest<
+    ApiResponse<{
+      attemptId: string;
+      sectionId: string;
+      answers: any[];
+    }>
+  >(
+    `/api/v1/test-attempts/${attemptId}/sections/${sectionId}/review`,
+    {
+      method: 'GET',
+    }
+  );
+
+  return result.data;
+};

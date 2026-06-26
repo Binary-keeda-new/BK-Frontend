@@ -7,15 +7,30 @@ type Props = {
   enabledSectionIndex: number;
   completedSectionIds: string[];
   onBack: () => void;
-  onAttemptSection: (section: UserTestSection, index: number) => void;
+  onAttemptSection?: (section: UserTestSection, index: number) => void;
   navigationMode?: 'free' | 'sequential';
+  mode?: 'attempt' | 'review';
+  onReviewSection?: (section: UserTestSection, index: number) => void;
 };
 
-function getDotClass(index: number, enabledIndex: number, completed: boolean) {
-  if (completed) return 'border-emerald-500 bg-emerald-500 text-white';
+function getDotClass(
+  index: number,
+  enabledIndex: number,
+  completed: boolean,
+  mode: 'attempt' | 'review'
+) {
+  if (mode === 'review') {
+    return 'border-sky-500 bg-sky-500 text-white';
+  }
+
+  if (completed) {
+    return 'border-emerald-500 bg-emerald-500 text-white';
+  }
+
   if (index === enabledIndex) {
     return 'border-[var(--orange)] bg-[var(--orange)] text-white';
   }
+
   return 'border-[var(--border)] bg-[var(--surface2,#1e2028)] text-[var(--muted2)]';
 }
 
@@ -25,24 +40,31 @@ export default function TestSectionsPreview({
   completedSectionIds,
   onBack,
   onAttemptSection,
-  navigationMode,
+  navigationMode = 'sequential',
+  onReviewSection,
+  mode = 'attempt',
 }: Props) {
+  const isPreviewMode = mode === 'review';
+
   return (
     <div className="mx-auto w-full max-w-[760px] p-6">
       <button
         onClick={onBack}
         className="mb-5 rounded-xl border border-[var(--border)] px-4 py-2 text-sm font-semibold text-[var(--muted2)]"
       >
-        Back to Instructions
+        {isPreviewMode ? 'Back to Tests' : 'Back to Instructions'}
       </button>
 
       <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6">
         <div className="mb-5">
           <h1 className="text-2xl font-extrabold text-[var(--text)]">
-            Test Sections
+            {isPreviewMode ? 'Review Sections' : 'Test Sections'}
           </h1>
+
           <p className="mt-1 text-sm text-[var(--muted2)]">
-            Complete sections one by one.
+            {isPreviewMode
+              ? 'Review available sections without starting the test.'
+              : 'Complete sections one by one.'}
           </p>
         </div>
 
@@ -56,7 +78,8 @@ export default function TestSectionsPreview({
                   className={`flex h-9 w-9 items-center justify-center rounded-full border text-sm font-bold ${getDotClass(
                     index,
                     enabledSectionIndex,
-                    completed
+                    completed,
+                    mode
                   )}`}
                 >
                   {index + 1}
@@ -73,10 +96,12 @@ export default function TestSectionsPreview({
         <div className="space-y-3">
           {test.sections.map((section, index) => {
             const completed = completedSectionIds.includes(section._id);
-            const enabled =
-  navigationMode === 'free'
-    ? !completed
-    : index === enabledSectionIndex && !completed;
+
+            const enabled = isPreviewMode
+              ? true
+              : navigationMode === 'free'
+                ? !completed
+                : index === enabledSectionIndex && !completed;
 
             return (
               <div
@@ -96,7 +121,9 @@ export default function TestSectionsPreview({
                     </p>
 
                     <p className="mt-2 text-xs font-semibold">
-                      {completed ? (
+                      {isPreviewMode ? (
+                        <span className="text-sky-400">Review available</span>
+                      ) : completed ? (
                         <span className="text-emerald-400">Completed</span>
                       ) : enabled ? (
                         <span className="text-[var(--orange)]">
@@ -110,17 +137,38 @@ export default function TestSectionsPreview({
 
                   <button
                     disabled={!enabled}
-                    onClick={() => onAttemptSection(section, index)}
+                    onClick={() => {
+                      if (isPreviewMode) {
+                        onReviewSection?.(section, index);
+                        return;
+                      }
+
+                      onAttemptSection?.(section, index);
+                    }}
                     className="rounded-xl px-4 py-2 text-sm font-bold disabled:cursor-not-allowed disabled:opacity-50"
                     style={{
-                      background: enabled ? 'var(--orange)' : 'transparent',
+                      background: isPreviewMode
+                        ? 'rgba(14,165,233,0.12)'
+                        : enabled
+                          ? 'var(--orange)'
+                          : 'transparent',
                       border: `1px solid ${
-                        enabled ? 'var(--orange)' : 'var(--border)'
+                        isPreviewMode
+                          ? 'rgba(56,189,248,0.45)'
+                          : enabled
+                            ? 'var(--orange)'
+                            : 'var(--border)'
                       }`,
-                      color: enabled ? '#fff' : 'var(--muted)',
+                      color: isPreviewMode
+                        ? '#38bdf8'
+                        : enabled
+                          ? '#fff'
+                          : 'var(--muted)',
                     }}
                   >
-                    Attempt Section {index + 1}
+                    {isPreviewMode
+                      ? `Review Section ${index + 1}`
+                      : `Attempt Section ${index + 1}`}
                   </button>
                 </div>
               </div>

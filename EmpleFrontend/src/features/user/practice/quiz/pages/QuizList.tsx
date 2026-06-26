@@ -95,7 +95,7 @@ function getQuizAttemptState(
 function getQuizActionLabel(attemptState: AttemptStatusItem | null) {
   if (!attemptState) return "Attempt →";
   if (attemptState.status === "in_progress") return "Resume →";
-  return "Review →";
+  return "Review";
 }
 
 function getQuizBadgeLabel(attemptState: AttemptStatusItem | null) {
@@ -430,7 +430,7 @@ export default function QuizList() {
                   opacity: agreed ? 1 : 0.5,
                 }}
               >
-                Start Quiz →
+                Start Quiz
               </button>
             </div>
           </div>
