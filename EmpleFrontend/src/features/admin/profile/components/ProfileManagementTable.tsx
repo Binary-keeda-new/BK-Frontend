@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { getAdminProfiles, updateAdminProfileStatus, PaginatedProfiles } from '../../services/profile.admin.service';
+import { getAdminProfiles, updateAdminProfileStatus, PaginatedProfiles } from '../services/profile.admin.service';
 import { UserProfile } from '../../../user/profile/types';
 import { Search, Eye, Power, PowerOff } from 'lucide-react';
 

@@ -301,6 +301,7 @@ export type AdminSection =
   | 'coding-problem-edit'
   | 'jobs'
   | 'blogs'
+  | 'sessions'
   | 'events'
   | 'quiz-preview'
   | 'quiz-edit'
@@ -367,6 +368,57 @@ const NAV_ITEMS: {
     ),
   },
   {
+  label: 'Jobs',
+  key: 'jobs',
+  icon: (
+    <svg
+      width="17"
+      height="17"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
+      <rect x="2" y="7" width="20" height="14" rx="2" />
+      <path d="M16 3v4M8 3v4M3 11h18" />
+    </svg>
+  ),
+},
+{
+  label: 'Blogs',
+  key: 'blogs',
+  icon: (
+    <svg
+      width="17"
+      height="17"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
+      <path d="M4 4h16v16H4z" />
+      <path d="M8 8h8M8 12h8M8 16h5" />
+    </svg>
+  ),
+},
+{
+  label: 'Sessions',
+  key: 'sessions',
+  icon: (
+    <svg
+      width="17"
+      height="17"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
+      <rect x="2" y="7" width="20" height="8" rx="2"/>
+      <line x1="12" y1="3" x2="12" y2="7"/>
+      <line x1="12" y1="15" x2="12" y2="21"/>
+    </svg>
+  ),
+},
     label: 'Jobs',
     key: 'jobs',
     icon: (
