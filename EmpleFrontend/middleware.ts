@@ -5,7 +5,19 @@ export function middleware(request: NextRequest) {
   const token = request.cookies.get('DS')
 
   if (!token && request.nextUrl.pathname.startsWith('/user')) {
-    return NextResponse.redirect(new URL('/auth/login', request.url))
+    const publicUserRoutes = [
+      '/user/events',
+      '/user/counselling',
+      '/user/tech-shop',
+    ];
+    
+    const isPublic = publicUserRoutes.some(route => 
+      request.nextUrl.pathname.startsWith(route)
+    );
+    
+    if (!isPublic) {
+      return NextResponse.redirect(new URL('/auth/login', request.url))
+    }
   }
 
   if (!token && request.nextUrl.pathname.startsWith('/dashboard')) {

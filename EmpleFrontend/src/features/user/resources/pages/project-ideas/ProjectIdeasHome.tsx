@@ -26,7 +26,7 @@ const PROJECT_CARDS = [
   },
 ];
 
-export default function ProjectIdeasHome() {
+export default function ProjectIdeasHome({ basePath = "/user/resources/project-ideas" }: { basePath?: string }) {
   return (
     <div className="p-6">
       <div className="mb-8">
@@ -52,8 +52,10 @@ export default function ProjectIdeasHome() {
           gap: "20px",
         }}
       >
-        {PROJECT_CARDS.map((card) => (
-          <Link href={card.href} key={card.title} style={{ textDecoration: "none" }}>
+        {PROJECT_CARDS.map((card) => {
+          const finalHref = basePath ? card.href.replace("/user/resources/project-ideas", basePath) : card.href;
+          return (
+          <Link href={finalHref} key={card.title} style={{ textDecoration: "none" }}>
             <div
               style={{
                 background: "var(--surface)",
@@ -100,7 +102,7 @@ export default function ProjectIdeasHome() {
 
             </div>
           </Link>
-        ))}
+        )})}
       </div>
     </div>
   );

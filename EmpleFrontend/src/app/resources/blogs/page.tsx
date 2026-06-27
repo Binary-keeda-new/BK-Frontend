@@ -6,5 +6,5 @@ export const metadata = {
 };
 
 export default function BlogsPage() {
-  return <UserBlogsPage />;
+  return <UserBlogsPage basePath="/resources/blogs" />;
 }
