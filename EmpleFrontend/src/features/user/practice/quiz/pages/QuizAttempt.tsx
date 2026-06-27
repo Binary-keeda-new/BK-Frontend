@@ -623,17 +623,27 @@ export default function QuizAttemptPage() {
                   disabled={current === 0}
                   className="rounded-[10px] border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface,#161820)] px-6 py-2.5 text-sm font-semibold text-[var(--text,#f0f0f4)] transition disabled:cursor-not-allowed disabled:opacity-40"
                 >
-                  ← Previous
+                  Previous
                 </button>
 
+                {current === totalQuestions - 1 ? (
                 <button
                   type="button"
-                  onClick={() => goTo(current + 1)}
-                  disabled={current === totalQuestions - 1}
-                  className="rounded-[10px] border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface,#161820)] px-6 py-2.5 text-sm font-semibold text-[var(--text,#f0f0f4)] transition disabled:cursor-not-allowed disabled:opacity-40"
+                  onClick={openSubmitConfirm}
+                  disabled={submitting || loading}
+                  className="rounded-[10px] bg-[var(--orange,#f15a22)] px-6 py-2.5 text-sm font-semibold text-white transition disabled:cursor-not-allowed disabled:opacity-40"
                 >
-                  Next →
+                  {submitting ? "Submitting..." : "Submit"}
                 </button>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => goTo(current + 1)}
+                      className="rounded-[10px] border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface,#161820)] px-6 py-2.5 text-sm font-semibold text-[var(--text,#f0f0f4)] transition"
+                    >
+                      Next
+                    </button>
+                  )}
               </div>
             </div>
           </section>
