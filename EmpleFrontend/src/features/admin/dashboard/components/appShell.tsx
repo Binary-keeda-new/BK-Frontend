@@ -11,6 +11,7 @@ import QuestionBankPage from '@/features/admin/question-bank/pages/QuestionBankP
 import QuestionBankDetailPage from '@/features/admin/question-bank/pages/QuestionBankDetail';
 import AdminJobsPage from '@/features/admin/jobs/pages/AdminJobsPage';
 import AdminBlogsPage from '@/features/admin/blogs/pages/AdminBlogsPage';
+import AdminSessionsPage from '@/features/admin/sessions/pages/AdminSessionsPage';
 import QuizPreviewContent from '@/features/admin/quiz/components/quizPreviewContent';
 import QuizzesContent from '../../quiz/components/quizList';
 import QuizEdit from '../../quiz/components/QuizEdit';
@@ -291,6 +292,9 @@ const [selectedProblemId, setSelectedProblemId] = useState<string | null>(
 
       case 'blogs':
         return <AdminBlogsPage />;
+
+      case 'sessions':
+        return <AdminSessionsPage />;
 
       case 'practice':
         return (
