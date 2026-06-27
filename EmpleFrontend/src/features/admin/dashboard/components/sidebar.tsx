@@ -300,6 +300,7 @@ export type AdminSection =
   | 'coding-problem-edit'
   | 'jobs'
   | 'blogs'
+  | 'sessions'
   | 'quiz-preview'
   | 'quiz-edit'
   | 'quiz-create'
@@ -429,6 +430,24 @@ const NAV_ITEMS: {
     >
       <path d="M4 4h16v16H4z" />
       <path d="M8 8h8M8 12h8M8 16h5" />
+    </svg>
+  ),
+},
+{
+  label: 'Sessions',
+  key: 'sessions',
+  icon: (
+    <svg
+      width="17"
+      height="17"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
+      <rect x="2" y="7" width="20" height="8" rx="2"/>
+      <line x1="12" y1="3" x2="12" y2="7"/>
+      <line x1="12" y1="15" x2="12" y2="21"/>
     </svg>
   ),
 },
