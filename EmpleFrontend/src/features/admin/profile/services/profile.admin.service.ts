@@ -1,5 +1,5 @@
 import { apiRequest } from '@/shared/utils/api';
-import { UserProfile } from '../../user/profile/types';
+import { UserProfile } from '@/features/user/profile/types';
 
 export interface PaginatedProfiles {
   profiles: UserProfile[];

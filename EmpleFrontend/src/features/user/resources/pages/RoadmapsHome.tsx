@@ -3,6 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import RoadmapsListing from '../Roadmaps/Components/RoadmapsListing';
 import RoadmapDetail from '../Roadmaps/Components/RoadmapDetail';
+import PersonalizedRoadmapDetail from '../Roadmaps/Components/PersonalizedRoadmapDetail';
+
+const PERSONALIZED_PREFIX = 'personalized-';
 
 export default function RoadmapsHome() {
   const [selectedRoadmapId, setSelectedRoadmapId] = useState<string | null>(null);
@@ -33,10 +36,23 @@ export default function RoadmapsHome() {
     window.history.pushState({}, '', url.toString());
   };
 
+  // ── NEW: Route to the correct detail component based on the ID prefix ──
+  const renderDetail = () => {
+    if (!selectedRoadmapId) return null;
+
+    if (selectedRoadmapId.startsWith(PERSONALIZED_PREFIX)) {
+      // Strip the "personalized-" prefix to get the raw Mongo _id
+      const rawId = selectedRoadmapId.slice(PERSONALIZED_PREFIX.length);
+      return <PersonalizedRoadmapDetail roadmapId={rawId} onBack={handleBack} />;
+    }
+
+    return <RoadmapDetail roadmapId={selectedRoadmapId} onBack={handleBack} />;
+  };
+
   return (
     <div className="p-6 max-w-[1440px] mx-auto w-full">
       {selectedRoadmapId ? (
-        <RoadmapDetail roadmapId={selectedRoadmapId} onBack={handleBack} />
+        renderDetail()
       ) : (
         <RoadmapsListing onView={handleSelect} />
       )}
