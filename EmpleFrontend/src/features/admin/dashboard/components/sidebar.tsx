@@ -298,6 +298,7 @@ export type AdminSection =
   | 'question-bank-detail'
   | 'coding-problems'
   | 'coding-problem-edit'
+  | 'coding-problem-preview'
   | 'jobs'
   | 'blogs'
   | 'quiz-preview'

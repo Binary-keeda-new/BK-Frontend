@@ -17,6 +17,7 @@ import QuizEdit from '../../quiz/components/QuizEdit';
 import QuizForm from '../../quiz/components/QuizForm';
 import CodingProblemsPage from '@/features/admin/coding-problems/pages/codingProblemsPage';
 import CodingProblemEditorPage from '@/features/admin/coding-problems/pages/codingProblemEditorPage';
+import CodingProblemPreviewPage from '@/features/admin/coding-problems/pages/codingProblemPreviewPage';
 
 interface AppShellProps {
   initialSection?: AdminSection;
@@ -36,6 +37,8 @@ export default function AppShell({
     (searchParams.get('section') as AdminSection) || initialSection;
   const quizIdFromUrl = searchParams.get('quizId');
   const questionBankIdFromUrl = searchParams.get('questionBankId');
+  const codingProblemIdFromUrl =
+  searchParams.get('codingProblemId');
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] =
@@ -54,7 +57,10 @@ const [selectedTestId, setSelectedTestId] = useState<string | null>(null);
 const [selectedProblemId, setSelectedProblemId] = useState<string | null>(
   null
 );
-
+const [previewProblemId, setPreviewProblemId] =
+  useState<string | null>(
+    codingProblemIdFromUrl
+  );
   useEffect(() => {
     if (loading) return;
 
@@ -96,14 +102,23 @@ const [selectedProblemId, setSelectedProblemId] = useState<string | null>(
     section,
     quizId,
     questionBankId,
+    codingProblemId,
   }: {
     section: AdminSection;
     quizId?: string | null;
     questionBankId?: string | null;
+    codingProblemId?: string | null;
   }) => {
     const params = new URLSearchParams();
 
     params.set('section', section);
+
+    if (codingProblemId) {
+  params.set(
+    'codingProblemId',
+    codingProblemId
+  );
+}
 
     if (quizId) {
       params.set('quizId', quizId);
@@ -196,6 +211,28 @@ const [selectedProblemId, setSelectedProblemId] = useState<string | null>(
   const openCodingProblemEdit = (id: string) => {
   setSelectedProblemId(id);
   setActiveSection('coding-problem-edit');
+
+   updateUrl({
+    section:
+      'coding-problem-edit',
+    codingProblemId: id,
+  });
+};
+   
+   const openCodingProblemPreview = (
+  id: string
+) => {
+  setPreviewProblemId(id);
+
+  setActiveSection(
+    'coding-problem-preview'
+  );
+
+  updateUrl({
+    section:
+      'coding-problem-preview',
+       codingProblemId: id,
+  });
 };
 
   const openTestEdit = (id: string) => {
@@ -321,6 +358,7 @@ const [selectedProblemId, setSelectedProblemId] = useState<string | null>(
            return (
              <CodingProblemsPage
                onEditProblem={openCodingProblemEdit}
+               onPreviewProblem={openCodingProblemPreview}
              />
            );
 
@@ -332,8 +370,20 @@ const [selectedProblemId, setSelectedProblemId] = useState<string | null>(
             ) : (
               <CodingProblemsPage
                 onEditProblem={openCodingProblemEdit}
+                onPreviewProblem={openCodingProblemPreview}
               />
             );
+          
+        case 'coding-problem-preview':
+            return previewProblemId ? (
+              <CodingProblemPreviewPage
+                problemId={previewProblemId}
+              />
+            ) : (
+              <div className="p-8">
+                No problem selected.
+              </div>
+            );    
 
       default:
         return (

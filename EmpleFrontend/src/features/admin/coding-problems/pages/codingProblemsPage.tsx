@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Eye, Pencil, Trash2 } from 'lucide-react';
+import ConfirmDeleteModal from '../components/confirmDeleteModal';
 
 interface CodingProblem {
   _id: string;
@@ -13,30 +14,81 @@ interface CodingProblem {
 
 interface CodingProblemsPageProps {
   onEditProblem: (id: string) => void;
+  onPreviewProblem: (
+    id: string
+  ) => void;
 }
 
 export default function CodingProblemsPage({
   onEditProblem,
+  onPreviewProblem,
 }: CodingProblemsPageProps) {
   const [problems, setProblems] = useState<CodingProblem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [problemToDelete, setProblemToDelete] =
+  useState<CodingProblem | null>(null);
+
+const [isDeleting, setIsDeleting] =
+  useState(false);
+
+  const fetchProblems = async () => {
+  try {
+    const response = await fetch(
+      'http://localhost:5000/api/v1/coding-problems'
+    );
+
+    const data = await response.json();
+
+    setProblems(data.data || []);
+  } catch (error) {
+    console.error(
+      'Failed to fetch coding problems:',
+      error
+    );
+  } finally {
+    setLoading(false);
+  }
+};
+
+const handleDeleteProblem = async () => {
+  if (!problemToDelete) return;
+
+  try {
+    setIsDeleting(true);
+
+    const response = await fetch(
+      `http://localhost:5000/api/v1/coding-problems/${problemToDelete._id}`,
+      {
+        method: 'DELETE',
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.message || 'Failed to delete problem'
+      );
+    }
+
+    setProblems((prev) =>
+      prev.filter(
+        (problem) =>
+          problem._id !== problemToDelete._id
+      )
+    );
+
+    setProblemToDelete(null);
+  } catch (error) {
+    console.error(error);
+    alert('Failed to delete problem.');
+  } finally {
+    setIsDeleting(false);
+  }
+};
 
   useEffect(() => {
-    const fetchProblems = async () => {
-      try {
-        const response = await fetch(
-          'http://localhost:5000/api/v1/coding-problems'
-        );
-
-        const data = await response.json();
-
-        setProblems(data.data || []);
-      } catch (error) {
-        console.error('Failed to fetch coding problems:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+    
 
     fetchProblems();
   }, []);
@@ -138,8 +190,10 @@ export default function CodingProblemsPage({
                     <div className="flex items-center justify-center gap-3">
                       <button
                         onClick={() =>
-                          console.log('preview', problem._id)
-                        }
+                         onPreviewProblem(
+                           problem._id
+                         )
+                       }
                         className="text-[var(--clr-text2)] transition hover:text-blue-500"
                       >
                         <Eye size={18} />
@@ -155,12 +209,12 @@ export default function CodingProblemsPage({
                         <Pencil size={18} />
                       </button>
                       <button
-                        onClick={() =>
-                          console.log('delete', problem._id)
-                        }
-                        className="text-[var(--clr-text2)] transition hover:text-red-500"
-                      >
-                        <Trash2 size={18} />
+                         onClick={() =>
+                           setProblemToDelete(problem)
+                         }
+                         className="text-[var(--clr-text2)] transition hover:text-red-500"
+                       >  
+                       <Trash2 size={18} />
                       </button>
                     </div>
                   </td>
@@ -170,6 +224,17 @@ export default function CodingProblemsPage({
           </tbody>
         </table>
       </div>
+
+      <ConfirmDeleteModal
+        open={!!problemToDelete}
+        title="Delete Coding Problem"
+        message={`Are you sure you want to delete "${problemToDelete?.title}"? This action cannot be undone.`}
+        loading={isDeleting}
+        onCancel={() =>
+          setProblemToDelete(null)
+        }
+        onConfirm={handleDeleteProblem}
+      />
     </div>
   );
 }
