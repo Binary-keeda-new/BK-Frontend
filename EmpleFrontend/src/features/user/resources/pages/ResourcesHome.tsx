@@ -66,8 +66,15 @@ const RESOURCES_CARDS = [
   icon: "📚",
   topics: ["OS", "DBMS", "CN", "COA"],
   color: "#123456",
-}
-  
+},
+{
+  title: "Career Paths",
+  href: "/user/resources/career-paths",
+  description: "Explore career paths with roadmaps, salaries and quizzes.",
+  icon: "🎯",
+  topics: ["Business Analyst", "Data Analyst", "BD", "Testing"],
+  color: "#f97316",
+},
 ];
 
 export default function ResourcesHome({ basePath = "/user/resources" }: { basePath?: string }) {
