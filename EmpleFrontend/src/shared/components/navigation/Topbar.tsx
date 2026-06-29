@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import SlideDrawer from "@/shared/components/ui/SlideDrawer";
 import MediaFeedWidget from "@/features/user/dashboard/components/MediaFeedWidget";
 import AIAssistantWidget from "@/features/ai-assistant/components/AIAssistantWidget";
+import EmptyState from "@/shared/components/ui/EmptyState";
 
 type Task = {
   text: string;
@@ -27,6 +28,7 @@ export default function Topbar() {
   const [todoOpen, setTodoOpen] = useState(false);
   const [mediaOpen, setMediaOpen] = useState(false);
   const [aiOpen, setAiOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
   const [tasks, setTasks] = useState<Task[]>([{ text: "", done: false }]);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -35,7 +37,7 @@ export default function Topbar() {
   const sdk = useDescope();
   const router = useRouter();
 
-  const { session } = useSession() as any;
+  const { session, isAuthenticated } = useSession() as any;
   const { user, isUserLoading } = useUser();
 
   const userEmail = user?.email || session?.user?.email || session?.token?.email;
@@ -94,7 +96,10 @@ export default function Topbar() {
         shadow-[0_2px_12px_rgba(0,0,0,0.3)]"
       >
         {/* Logo */}
-        <div className="flex items-center">
+        <div 
+          className="flex items-center cursor-pointer transition-transform hover:scale-105"
+          onClick={() => router.push(isAuthenticated ? "/user/dashboard" : "/landing")}
+        >
           <img
             src="/logo-final.png"
             alt="emple"
@@ -105,8 +110,9 @@ export default function Topbar() {
         {/* Right Side */}
         <div className="flex items-center gap-1 sm:gap-3">
           {/* Coin Badge */}
-          <div
-            className="flex items-center gap-2 px-3 py-1.5 rounded-full cursor-pointer
+          {isAuthenticated && (
+            <div
+              className="flex items-center gap-2 px-3 py-1.5 rounded-full cursor-pointer
             bg-yellow-400/10 border border-yellow-400/30 text-yellow-400
             hover:bg-yellow-400/20 transition hover:-translate-y-[1px]"
           >
@@ -119,9 +125,10 @@ export default function Topbar() {
 
             <span className="text-xs font-semibold hidden sm:inline">100</span>
           </div>
+          )}
 
           {/* Icons */}
-          {iconBtns.map(({ title, icon }) => (
+          {isAuthenticated && iconBtns.map(({ title, icon }) => (
             <button
               key={title}
               title={title}
@@ -130,6 +137,8 @@ export default function Topbar() {
                   setMediaOpen(true);
                 } else if (title === "Emple AI") {
                   setAiOpen(true);
+                } else if (title === "Notifications") {
+                  setNotifOpen(true);
                 }
               }}
               className={`w-11 h-11 flex items-center justify-center rounded-full text-[var(--muted2)]
@@ -142,8 +151,9 @@ export default function Topbar() {
           ))}
 
           {/* Todo Button */}
-          <div className="relative" ref={todoRef}>
-            <button
+          {isAuthenticated && (
+            <div className="relative" ref={todoRef}>
+              <button
               onClick={() => setTodoOpen((prev) => !prev)}
               className={`w-10 h-10 rounded-full flex items-center justify-center cursor-pointer
                 transition-all duration-300 ease-out
@@ -159,7 +169,7 @@ export default function Topbar() {
 
             <div
             className={`fixed right-4 top-20 w-[300px] z-50
-                transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]
+                transition-all duration-500 ease-[linear(cubic-bezier(0.22,1,0.36,1))]
                 ${
                   todoOpen
                     ? "opacity-100 translate-x-0"
@@ -248,10 +258,12 @@ export default function Topbar() {
               </div>
             </div>
           </div>
+          )}
 
           {/* Avatar Dropdown */}
-          <div className="relative" ref={dropdownRef}>
-            <div
+          {isAuthenticated ? (
+            <div className="relative" ref={dropdownRef}>
+              <div
               onClick={() => setDropdownOpen((prev) => !prev)}
               className="w-10 h-10 flex items-center justify-center rounded-full font-bold text-sm text-white cursor-pointer
                 border border-[var(--border)]
@@ -300,6 +312,15 @@ export default function Topbar() {
               </div>
             )}
           </div>
+          ) : (
+            <button 
+              onClick={() => router.push("/auth/signup")}
+              className="px-4 py-2 text-sm font-bold text-white rounded-lg transition-transform hover:scale-105 ml-2"
+              style={{ background: "linear-gradient(135deg, #f15a22, #6c63ff)" }}
+            >
+              Sign Up Free
+            </button>
+          )}
         </div>
       </nav>
 
@@ -325,6 +346,22 @@ export default function Topbar() {
       >
         <div className="h-full">
           <AIAssistantWidget onClose={() => setAiOpen(false)} />
+        </div>
+      </SlideDrawer>
+
+      {/* Notifications Drawer */}
+      <SlideDrawer
+        isOpen={notifOpen}
+        onClose={() => setNotifOpen(false)}
+        title="Notifications"
+        width="sm"
+      >
+        <div className="h-full p-4">
+          <EmptyState
+            title="No Notifications Yet"
+            description="You're all caught up. New updates, announcements, and activity alerts will appear here."
+            icon={<Bell size={28} />}
+          />
         </div>
       </SlideDrawer>
     </header>

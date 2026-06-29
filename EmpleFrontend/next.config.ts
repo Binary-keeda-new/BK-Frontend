@@ -1,13 +1,15 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
+import path from 'path';
 
 const nextConfig: NextConfig = {
+  output: 'standalone',
+
   images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "upload.wikimedia.org",
-      },
-    ],
+    domains: ['upload.wikimedia.org'],
+  },
+
+  turbopack: {
+    root: path.resolve(__dirname),
   },
 };
 

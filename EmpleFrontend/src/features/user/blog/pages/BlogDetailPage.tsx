@@ -24,18 +24,14 @@ export default function BlogDetailPage() {
 
   useEffect(() => {
     if (!id) return;
-    const fetchBlog = async () => {
-      try {
-        const res = await blogsService.getBlog(id as string);
-        setBlog(res);
-      } catch (err) {
-        console.error(err);
-        setError('Failed to fetch blog');
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchBlog();
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/blogs/${id}`)
+      .then(res => {
+        if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
+        return res.json();
+      })
+      .then(data => setBlog(data.data ?? data))
+      .catch(err => setError(err.message || 'Failed to load blog.'))
+      .finally(() => setLoading(false));
   }, [id]);
 
   return (

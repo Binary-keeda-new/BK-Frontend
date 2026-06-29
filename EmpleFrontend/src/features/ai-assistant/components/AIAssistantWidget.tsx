@@ -161,6 +161,15 @@ export default function AIAssistantWidget({ onClose }: AIAssistantWidgetProps = 
           <ChevronLeft size={24} />
         </button>
         
+        {onClose && (
+          <button 
+            onClick={onClose}
+            className="absolute top-4 right-4 p-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        )}
+
         <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center p-2 mb-6">
           <img src="/logo-isolated.png" alt="Emple" className="w-full h-full object-contain" />
         </div>
@@ -201,7 +210,15 @@ export default function AIAssistantWidget({ onClose }: AIAssistantWidgetProps = 
   // 2) ONBOARDING
   if (!isConnected) {
     return (
-      <div className="h-full w-full flex flex-col items-center justify-center bg-[var(--surface)] text-white font-sans p-6 text-center">
+      <div className="h-full w-full flex flex-col items-center justify-center bg-[var(--surface)] text-white font-sans p-6 text-center relative">
+        {onClose && (
+          <button 
+            onClick={onClose}
+            className="absolute top-4 right-4 p-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        )}
         <div className="w-20 h-20 bg-[#1b1f23] rounded-full flex items-center justify-center border border-gray-800 mb-6 relative">
           <img src="/logo-isolated.png" alt="Emple Logo" className="w-10 h-10 object-contain scale-110" />
           <div className="absolute -bottom-2 -right-2 bg-blue-500 rounded-full p-1.5 border-4 border-[var(--surface)]">

@@ -1,0 +1,1 @@
+export { default } from '@/features/admin/coding-problems/pages/codingProblemsPage';

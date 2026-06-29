@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@descope/nextjs-sdk": "^0.15.16",
-    "framer-motion": "^12.40.0",
+    "framer-motion": "^12.42.0",
     "lucide-react": "^0.575.0",
     "next": "^16.2.2",
     "pdf-merger-js": "^5.1.2",
