@@ -22,7 +22,7 @@ export default function OopQuestionsPage() {
         }}
       >
         <Link
-          href="/user/resources/interview-questions"
+          href="../"
           style={{
             color: "var(--muted2)",
             textDecoration: "none",

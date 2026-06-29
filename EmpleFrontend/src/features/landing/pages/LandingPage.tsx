@@ -9,7 +9,7 @@ import Marquee from '@/features/landing/components/Marquee'
 import Features from '@/features/landing/components/Features'
 import HowItWorks from '@/features/landing/components/HowItWorks'
 import Pricing from '@/features/landing/components/Pricing'
-import Testimonials from '@/features/landing/components/Testimonials'
+/*import Testimonials from '@/features/landing/components/Testimonials'*/
 import CTABand from '@/features/landing/components/CTABand'
 import Footer from '@/features/landing/components/Footer'
 import AboutUs from '@/features/landing/components/AboutUs'
@@ -40,7 +40,7 @@ export default function LandingPage() {
         <Features />
         <HowItWorks />
         <Pricing />
-        <Testimonials />
+        {/*<Testimonials />*/}
         <FAQ />
         <CTABand />
       </main>

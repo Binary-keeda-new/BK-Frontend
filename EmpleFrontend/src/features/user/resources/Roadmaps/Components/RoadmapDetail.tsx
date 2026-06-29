@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { getRoadmapById } from '../data/index';
 import QuizModal from './QuizModal';
 import SectionCard from './SectionCard';
+import { useSession } from '@descope/nextjs-sdk/client';
+import LoginGate from '@/shared/components/access/LoginGate';
 
 interface RoadmapDetailProps {
   roadmapId: string;
@@ -18,6 +20,8 @@ interface ProgressDetails {
 }
 
 const RoadmapDetail: React.FC<RoadmapDetailProps> = ({ roadmapId, onBack }) => {
+  const { isAuthenticated, isSessionLoading } = useSession();
+
   const t: Record<string, string> = {
     border: 'var(--border)',
     surface: 'var(--surface)',
@@ -298,17 +302,34 @@ const RoadmapDetail: React.FC<RoadmapDetailProps> = ({ roadmapId, onBack }) => {
       <div style={{ marginBottom: 40 }}>
         <h2 style={{ fontSize: 28, fontWeight: 800, color: t.text, marginBottom: 24 }}>Learning Journey</h2>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          {roadmap.sections.map((section: any) => (
-            <SectionCard
-              key={`${roadmapId}-${duration}-${section.id}`}
-              section={section}
-              isCompleted={completedSections.has(section.id)}
-              onStartQuiz={(sec, level) => handleStartQuiz(sec, level)}
-              progressDetails={progressDetails}
-              onUpdateProgressDetails={setProgressDetails}
-              roadmapId={roadmapId}
-            />
-          ))}
+          {roadmap.sections.map((section: any, index: number) => {
+            // Gating Logic
+            if (!isAuthenticated && !isSessionLoading && index >= 3) {
+              return null;
+            }
+            
+            return (
+              <SectionCard
+                key={`${roadmapId}-${duration}-${section.id}`}
+                section={section}
+                isCompleted={completedSections.has(section.id)}
+                onStartQuiz={(sec, level) => handleStartQuiz(sec, level)}
+                progressDetails={progressDetails}
+                onUpdateProgressDetails={setProgressDetails}
+                roadmapId={roadmapId}
+              />
+            );
+          })}
+          
+          {/* Gating CTA */}
+          {!isAuthenticated && !isSessionLoading && roadmap.sections.length > 3 && (
+            <div style={{ marginTop: '24px' }}>
+              <LoginGate 
+                title="Unlock the Complete Roadmap" 
+                message="Create a free Emple account to view all sections, take quizzes, and track your progress."
+              />
+            </div>
+          )}
         </div>
       </div>
 
