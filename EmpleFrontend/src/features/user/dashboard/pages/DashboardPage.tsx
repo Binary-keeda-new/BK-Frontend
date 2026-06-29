@@ -5,7 +5,7 @@ import { useSession } from '@descope/nextjs-sdk/client'
 import { useRouter } from 'next/navigation'
 import ActivityCalendar from '@/features/user/dashboard/components/ActivityCalendar'
 import Leaderboard from '@/features/user/dashboard/components/Leaderboard'
-import PromoCard from '@/features/user/dashboard/components/PromoCard'
+import HealthFinanceCard from '@/features/user/dashboard/components/HealthFinanceCard'
 import SubmissionsPanel from '@/features/user/dashboard/components/SubmissionsPanel'
 
 type User = {
@@ -96,7 +96,7 @@ export default function DashboardPage() {
         <Leaderboard />
 
         <div className="md:col-span-2 xl:col-span-1">
-          <PromoCard />
+          <HealthFinanceCard />
         </div>
 
         <div className="col-span-1 md:col-span-2 xl:col-span-3">
