@@ -93,8 +93,13 @@ function getQuizAttemptState(
 }
 
 function getQuizActionLabel(attemptState: AttemptStatusItem | null) {
+<<<<<<< HEAD
   if (!attemptState) return "Attempt →";
   if (attemptState.status === "in_progress") return "Resume →";
+=======
+  if (!attemptState) return "Attempt";
+  if (attemptState.status === "in_progress") return "Resume";
+>>>>>>> origin/develop
   return "Review";
 }
 
@@ -276,13 +281,13 @@ export default function QuizList() {
               const badgeLabel = getQuizBadgeLabel(attemptState);
               const actionLabel = getQuizActionLabel(attemptState);
 
-              const actionButtonClass =
-                attemptState?.status === "submitted" ||
-                attemptState?.status === "auto_submitted"
-                  ? "border border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
-                  : attemptState?.status === "in_progress"
-                  ? "border border-sky-500/30 bg-sky-500/10 text-sky-300"
-                  : "border-none bg-[var(--orange)] text-white";
+             const actionButtonClass =
+              attemptState?.status === "submitted" ||
+              attemptState?.status === "auto_submitted"
+                ? "border border-sky-500/30 bg-sky-500/10 text-sky-300"
+                : attemptState?.status === "in_progress"
+                ? "border border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
+                : "border-none bg-[var(--orange)] text-white";
 
               return (
                 <div
@@ -303,10 +308,10 @@ export default function QuizList() {
                     {badgeLabel && (
                       <span
                         className={`mt-2 inline-flex rounded-full border px-2.5 py-1 text-[11px] font-semibold ${
-                          attemptState?.status === "in_progress"
-                            ? "border-sky-500/30 bg-sky-500/10 text-sky-300"
-                            : "border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
-                        }`}
+                        attemptState?.status === "in_progress"
+                          ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
+                          : "border-sky-500/30 bg-sky-500/10 text-sky-300"
+                      }`}
                       >
                         {badgeLabel}
                       </span>

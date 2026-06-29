@@ -11,6 +11,7 @@ import QuestionBankPage from '@/features/admin/question-bank/pages/QuestionBankP
 import QuestionBankDetailPage from '@/features/admin/question-bank/pages/QuestionBankDetail';
 import AdminJobsPage from '@/features/admin/jobs/pages/AdminJobsPage';
 import AdminBlogsPage from '@/features/admin/blogs/pages/AdminBlogsPage';
+import AdminSessionsPage from '@/features/admin/sessions/pages/AdminSessionsPage';
 import QuizPreviewContent from '@/features/admin/quiz/components/quizPreviewContent';
 import QuizzesContent from '../../quiz/components/quizList';
 import QuizEdit from '../../quiz/components/QuizEdit';
@@ -20,6 +21,7 @@ import TestEdit from '../../test/pages/TestEdit';
 import CreateTest from '../../test/components/CreateTest';
 import CodingProblemsPage from '@/features/admin/coding-problems/pages/codingProblemsPage';
 import CodingProblemEditorPage from '@/features/admin/coding-problems/pages/codingProblemEditorPage';
+import AdminEventsPage from '@/features/admin/Events/components/AdminEventsPage';
 
 interface AppShellProps {
   initialSection?: AdminSection;
@@ -44,29 +46,22 @@ export default function AppShell({
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] =
     useState<AdminSection>(sectionFromUrl);
-  const [selectedQuestionBankId, setSelectedQuestionBankId] = useState<
-    string | null
-  >(questionBankIdFromUrl);
+const [selectedQuestionBankId, setSelectedQuestionBankId] = useState<string | null>(questionBankIdFromUrl);
   const [selectedQuizId, setSelectedQuizId] = useState<string | null>(
     quizId?.toString() || quizIdFromUrl
   );
   const [quizListRefreshKey, setQuizListRefreshKey] = useState(0);
-
-const [testListRefreshKey, setTestListRefreshKey] = useState(0);
-const [selectedTestId, setSelectedTestId] = useState<string | null>(null);
-
-const [selectedProblemId, setSelectedProblemId] = useState<string | null>(
-  null
-);
+  const [testListRefreshKey, setTestListRefreshKey] = useState(0);
+  const [selectedTestId, setSelectedTestId] = useState<string | null>(null);
+  const [selectedProblemId, setSelectedProblemId] = useState<string | null>(null);
+  const [eventsSubPage, setEventsSubPage] = useState<'hackathon' | 'techfest' | 'our-hackathon' | null>(null);
 
   useEffect(() => {
     if (loading) return;
-
     if (!user) {
       router.replace('/auth/login');
       return;
     }
-
     if (!isAdmin) {
       router.replace('/user/dashboard');
     }
@@ -90,7 +85,6 @@ const [selectedProblemId, setSelectedProblemId] = useState<string | null>(
         setMobileOpen(false);
       }
     };
-
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -114,7 +108,6 @@ const [selectedProblemId, setSelectedProblemId] = useState<string | null>(
     testId?: string | null;
   }) => {
     const params = new URLSearchParams();
-
     params.set('section', section);
 
     if (quizId) {
@@ -134,6 +127,8 @@ const [selectedProblemId, setSelectedProblemId] = useState<string | null>(
   const handleSectionChange = (section: AdminSection) => {
     setActiveSection(section);
     setMobileOpen(false);
+
+    if (section !== 'events') setEventsSubPage(null);
 
     const nextQuizId =
       section === 'quiz-edit' || section === 'quiz-preview'
@@ -161,31 +156,19 @@ const [selectedProblemId, setSelectedProblemId] = useState<string | null>(
   const goToQuestionBankList = () => {
     setActiveSection('question-bank');
     setSelectedQuestionBankId(null);
-
-    updateUrl({
-      section: 'question-bank',
-      questionBankId: null,
-    });
+    updateUrl({ section: 'question-bank', questionBankId: null });
   };
 
   const goToQuizList = () => {
     setActiveSection('quizzes');
     setSelectedQuizId(null);
-
-    updateUrl({
-      section: 'quizzes',
-      quizId: null,
-    });
+    updateUrl({ section: 'quizzes', quizId: null });
   };
 
   const openQuizEdit = (id: string) => {
     setSelectedQuizId(id);
     setActiveSection('quiz-edit');
-
-    updateUrl({
-      section: 'quiz-edit',
-      quizId: id,
-    });
+    updateUrl({ section: 'quiz-edit', quizId: id });
   };
 const openTestEdit = (id: string) => {
   setSelectedTestId(id);
@@ -200,23 +183,15 @@ const openTestEdit = (id: string) => {
   const openQuizPreview = (id: string) => {
     setSelectedQuizId(id);
     setActiveSection('quiz-preview');
-
-    updateUrl({
-      section: 'quiz-preview',
-      quizId: id,
-    });
+    updateUrl({ section: 'quiz-preview', quizId: id });
   };
 
   const openQuestionBankDetail = (id: string) => {
     setSelectedQuestionBankId(id);
     setActiveSection('question-bank-detail');
-
-    updateUrl({
-      section: 'question-bank-detail',
-      questionBankId: id,
-    });
+    updateUrl({ section: 'question-bank-detail', questionBankId: id });
   };
-  
+
   const openCodingProblemEdit = (id: string) => {
   setSelectedProblemId(id);
   setActiveSection('coding-problem-edit');
@@ -318,6 +293,9 @@ const openTestEdit = (id: string) => {
       case 'blogs':
         return <AdminBlogsPage />;
 
+      case 'sessions':
+        return <AdminSessionsPage />;
+
       case 'practice':
         return (
           <div className="p-6 text-[var(--clr-text)] md:p-10">
@@ -351,23 +329,24 @@ const openTestEdit = (id: string) => {
     />
   );
 
-        case 'coding-problems':
-           return (
-             <CodingProblemsPage
-               onEditProblem={openCodingProblemEdit}
-             />
-           );
+      case 'coding-problem-edit':
+        return selectedProblemId ? (
+          <CodingProblemEditorPage
+            problemId={selectedProblemId}
+          />
+        ) : (
+          <CodingProblemsPage
+            onEditProblem={openCodingProblemEdit}
+          />
+        );
 
-        case 'coding-problem-edit':
-            return selectedProblemId ? (
-              <CodingProblemEditorPage
-                problemId={selectedProblemId}
-              />
-            ) : (
-              <CodingProblemsPage
-                onEditProblem={openCodingProblemEdit}
-              />
-            );
+      case 'events':
+        return (
+          <AdminEventsPage
+            subPage={eventsSubPage}
+            onSelectSubPage={setEventsSubPage}
+          />
+        );
 
       default:
         return (

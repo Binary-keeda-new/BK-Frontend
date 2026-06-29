@@ -5,8 +5,7 @@ import { useState } from 'react';
 import ActionCard from './actionCard';
 import QuizForm from '../../quiz/components/QuizForm';
 import { apiRequest } from '@/shared/utils/api';
-import CreateCodingProblemModal from
-'@/features/admin/coding-problems/components/createCodingProblemModal';
+import CreateCodingProblemModal from '@/features/admin/coding-problems/components/createCodingProblemModal';
 
 type CreateQuestionBankResponse = {
   success: boolean;

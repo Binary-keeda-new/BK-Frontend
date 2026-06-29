@@ -66,8 +66,15 @@ const RESOURCES_CARDS = [
   icon: "📚",
   topics: ["OS", "DBMS", "CN", "COA"],
   color: "#123456",
-}
-  
+},
+{
+  title: "Career Paths",
+  href: "/user/resources/career-paths",
+  description: "Explore career paths with roadmaps, salaries and quizzes.",
+  icon: "🎯",
+  topics: ["Business Analyst", "Data Analyst", "BD", "Testing"],
+  color: "#f97316",
+},
 ];
 
 export default function ResourcesHome({ basePath = "/user/resources" }: { basePath?: string }) {
@@ -123,12 +130,6 @@ export default function ResourcesHome({ basePath = "/user/resources" }: { basePa
                     {topic}
                   </span>
                 ))}
-              </div>
-              <div style={{ position: "absolute", top: "24px", right: "24px", color: "var(--muted2)" }}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                  <line x1="5" y1="12" x2="19" y2="12"/>
-                  <polyline points="12 5 19 12 12 19"/>
-                </svg>
               </div>
             </div>
           </Link>
