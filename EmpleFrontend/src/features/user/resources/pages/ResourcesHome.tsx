@@ -67,6 +67,14 @@ const RESOURCES_CARDS = [
   topics: ["Business Analyst", "Data Analyst", "BD", "Testing"],
   color: "#f97316",
 },
+{
+  title: "BK SDE Sheet",
+  href: "/user/resources/bk-sde-sheet",
+  description: "Your SDE prep hub — coding sheet, core CS subjects and aptitude all in one place",
+  icon: "📋",
+  topics: ["Coding", "OS", "DBMS", "CN", "Aptitude"],
+  color: "#f97316",
+},
 ];
 
 export default function ResourcesHome() {
