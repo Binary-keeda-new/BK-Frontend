@@ -22,6 +22,7 @@ import CreateTest from '../../test/components/CreateTest';
 import CodingProblemsPage from '@/features/admin/coding-problems/pages/codingProblemsPage';
 import CodingProblemEditorPage from '@/features/admin/coding-problems/pages/codingProblemEditorPage';
 import AdminEventsPage from '@/features/admin/Events/components/AdminEventsPage';
+import CodingProblemPreviewPage from '@/features/admin/coding-problems/pages/codingProblemPreviewPage';
 
 interface AppShellProps {
   initialSection?: AdminSection;
@@ -42,6 +43,8 @@ export default function AppShell({
   const quizIdFromUrl = searchParams.get('quizId');
   const questionBankIdFromUrl = searchParams.get('questionBankId');
   const testIdFromUrl = searchParams.get('testId');
+  const codingProblemIdFromUrl =
+  searchParams.get('codingProblemId');
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] =
@@ -56,6 +59,10 @@ const [selectedQuestionBankId, setSelectedQuestionBankId] = useState<string | nu
   const [selectedProblemId, setSelectedProblemId] = useState<string | null>(null);
   const [eventsSubPage, setEventsSubPage] = useState<'hackathon' | 'techfest' | 'our-hackathon' | null>(null);
 
+const [previewProblemId, setPreviewProblemId] =
+  useState<string | null>(
+    codingProblemIdFromUrl
+  );
   useEffect(() => {
     if (loading) return;
     if (!user) {
@@ -101,14 +108,23 @@ const [selectedQuestionBankId, setSelectedQuestionBankId] = useState<string | nu
     quizId,
     questionBankId,
     testId,
+    codingProblemId,
   }: {
     section: AdminSection;
     quizId?: string | null;
     questionBankId?: string | null;
     testId?: string | null;
+    codingProblemId?: string | null;
   }) => {
     const params = new URLSearchParams();
     params.set('section', section);
+
+    if (codingProblemId) {
+  params.set(
+    'codingProblemId',
+    codingProblemId
+  );
+}
 
     if (quizId) {
       params.set('quizId', quizId);
@@ -170,7 +186,46 @@ const [selectedQuestionBankId, setSelectedQuestionBankId] = useState<string | nu
     setActiveSection('quiz-edit');
     updateUrl({ section: 'quiz-edit', quizId: id });
   };
-const openTestEdit = (id: string) => {
+
+  const openQuizPreview = (id: string) => {
+    setSelectedQuizId(id);
+    setActiveSection('quiz-preview');
+
+    updateUrl({
+      section: 'quiz-preview',
+      quizId: id,
+    });
+  };
+
+  
+  const openCodingProblemEdit = (id: string) => {
+  setSelectedProblemId(id);
+  setActiveSection('coding-problem-edit');
+
+   updateUrl({
+    section:
+      'coding-problem-edit',
+    codingProblemId: id,
+  });
+};
+   
+   const openCodingProblemPreview = (
+  id: string
+) => {
+  setPreviewProblemId(id);
+
+  setActiveSection(
+    'coding-problem-preview'
+  );
+
+  updateUrl({
+    section:
+      'coding-problem-preview',
+       codingProblemId: id,
+  });
+};
+
+  const openTestEdit = (id: string) => {
   setSelectedTestId(id);
   setActiveSection('test-edit');
 
@@ -180,22 +235,16 @@ const openTestEdit = (id: string) => {
   });
 };
 
-  const openQuizPreview = (id: string) => {
-    setSelectedQuizId(id);
-    setActiveSection('quiz-preview');
-    updateUrl({ section: 'quiz-preview', quizId: id });
-  };
 
   const openQuestionBankDetail = (id: string) => {
     setSelectedQuestionBankId(id);
     setActiveSection('question-bank-detail');
-    updateUrl({ section: 'question-bank-detail', questionBankId: id });
+
+    updateUrl({ section: 'question-bank-detail',
+       questionBankId: id });
   };
 
-  const openCodingProblemEdit = (id: string) => {
-  setSelectedProblemId(id);
-  setActiveSection('coding-problem-edit');
-};
+
   const renderContent = () => {
     switch (activeSection) {
       case 'quiz-preview':
@@ -329,17 +378,6 @@ const openTestEdit = (id: string) => {
     />
   );
 
-      case 'coding-problem-edit':
-        return selectedProblemId ? (
-          <CodingProblemEditorPage
-            problemId={selectedProblemId}
-          />
-        ) : (
-          <CodingProblemsPage
-            onEditProblem={openCodingProblemEdit}
-          />
-        );
-
       case 'events':
         return (
           <AdminEventsPage
@@ -347,6 +385,40 @@ const openTestEdit = (id: string) => {
             onSelectSubPage={setEventsSubPage}
           />
         );
+          
+        /*case 'coding-problems':
+          return <CodingProblemsPage />;*/
+
+        case 'coding-problems':
+           return (
+             <CodingProblemsPage
+               onEditProblem={openCodingProblemEdit}
+               onPreviewProblem={openCodingProblemPreview}
+             />
+           );
+
+        case 'coding-problem-edit':
+            return selectedProblemId ? (
+              <CodingProblemEditorPage
+                problemId={selectedProblemId}
+              />
+            ) : (
+              <CodingProblemsPage
+                onEditProblem={openCodingProblemEdit}
+                onPreviewProblem={openCodingProblemPreview}
+              />
+            );
+          
+        case 'coding-problem-preview':
+            return previewProblemId ? (
+              <CodingProblemPreviewPage
+                problemId={previewProblemId}
+              />
+            ) : (
+              <div className="p-8">
+                No problem selected.
+              </div>
+            );    
 
       default:
         return (

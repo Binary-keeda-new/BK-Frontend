@@ -13,6 +13,7 @@ import TestCasesSection from '../components/testCasesSection';
 import HintsSection from '../components/hintsSection';
 import EditorialSection from '../components/editorialSection';
 import PublishSection from '../components/publishSection';
+import ExecutionSection from '../components/executionSection';
 
 interface Props {
   problemId: string;
@@ -50,6 +51,18 @@ const [codeTemplates, setCodeTemplates] =
     'C++': '',
     C: '',
   });
+
+const [executionConfig, setExecutionConfig] =
+  useState({
+    functionName: '',
+    returnType: '',
+    parameters: [] as {
+      name: string;
+      type: string;
+    }[],
+    timeLimit: 1000,
+    memoryLimit: 256,
+  });  
 
   const DEFAULT_TEMPLATES = {
   Java: `class Solution {
@@ -358,8 +371,7 @@ if (hasEmptyExample) {
           },
           body: JSON.stringify({
             languages,
-            lastEditedSection:
-              'tests',
+            lastEditedSection: 'execution'
           }),
         }
       );
@@ -449,7 +461,7 @@ if (!updated[key]) {
         'Templates saved successfully'
       );
 
-      setActiveTab('tests');
+      setActiveTab('execution');
     } catch (error) {
       console.error(error);
     }
@@ -718,6 +730,39 @@ const handlePublish =
   );
 };
 
+const handleSaveExecution = async () => {
+  try {
+    const response = await fetch(
+      `http://localhost:5000/api/v1/coding-problems/${problemId}`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...executionConfig,
+          lastEditedSection: 'tests',
+        }),
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      alert(data.message);
+      return;
+    }
+
+    setProblem(data.data);
+
+    alert('Execution configuration saved successfully');
+
+    setActiveTab('tests');
+  } catch (error) {
+    console.error(error);
+    alert('Failed to save execution configuration');
+  }
+};
 
   useEffect(() => {
     const fetchProblem = async () => {
@@ -774,6 +819,23 @@ const handlePublish =
         setEditorial(
           data.data.editorial || ''
         );
+
+        setExecutionConfig({
+          functionName:
+            data.data.functionName || '',
+        
+          returnType:
+            data.data.returnType || '',
+        
+          parameters:
+            data.data.parameters || [],
+        
+          timeLimit:
+            data.data.timeLimit || 1000,
+        
+          memoryLimit:
+            data.data.memoryLimit || 256,
+        });
 
         
 
@@ -904,6 +966,14 @@ const handlePublish =
   />
 )}
 
+{activeTab === 'execution' && (
+  <ExecutionSection
+    executionConfig={executionConfig}
+    setExecutionConfig={setExecutionConfig}
+    handleSaveExecution={handleSaveExecution}
+  />
+)}
+
   {activeTab === 'hints' && (
   <HintsSection
     hints={hints}
@@ -924,17 +994,13 @@ const handlePublish =
   />
 )}
 
+  {activeTab === 'publish' && (
   <PublishSection
-  handleSaveDraft={
-    handleSaveDraft
-  }
-  handlePreview={
-    handlePreview
-  }
-  handlePublish={
-    handlePublish
-  }
-/>
+    handleSaveDraft={handleSaveDraft}
+    handlePreview={handlePreview}
+    handlePublish={handlePublish}
+  />
+)}
 </>
     </div>
   );
