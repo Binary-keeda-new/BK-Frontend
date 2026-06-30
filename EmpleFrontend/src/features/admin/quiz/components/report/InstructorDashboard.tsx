@@ -160,7 +160,7 @@ export default function InstructorDashboard({ quizId, onBack, onReviewAttempt }:
   }));
 
   return (
-    <div className="w-full max-w-[1060px] px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+    <div className="w-full max-w-[1400px] px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
       <button
         onClick={onBack}
         className="mb-5 rounded-xl border border-[var(--clr-border)] px-4 py-2 text-sm font-semibold text-[var(--clr-text2)] transition hover:bg-[var(--clr-surface2)]"
