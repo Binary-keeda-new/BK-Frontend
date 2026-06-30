@@ -28,5 +28,6 @@ export type QuizReport = {
     email: string;
     totalQuestions: number;
     submittedAt: string | null;
+    attemptId: string;
   }[];
 };

@@ -20,6 +20,8 @@ import CodingProblemsPage from '@/features/admin/coding-problems/pages/codingPro
 import CodingProblemEditorPage from '@/features/admin/coding-problems/pages/codingProblemEditorPage';
 import AdminEventsPage from '@/features/admin/Events/components/AdminEventsPage';
 import QuizReportPage from '@/features/admin/quiz/pages/QuizReportPage';
+import AdminQuizReview from '../../quiz/pages/adminQuizReview';
+
 
 interface AppShellProps {
   initialSection?: AdminSection;
@@ -51,6 +53,7 @@ const [selectedQuestionBankId, setSelectedQuestionBankId] = useState<string | nu
   const [selectedReportQuizId, setSelectedReportQuizId] = useState<string | null>(
   null
 );
+const [selectedReviewAttemptId, setSelectedReviewAttemptId] = useState<string | null>(null);
   const [testListRefreshKey, setTestListRefreshKey] = useState(0);
   const [selectedTestId, setSelectedTestId] = useState<string | null>(null);
   const [selectedProblemId, setSelectedProblemId] = useState<string | null>(null);
@@ -166,6 +169,11 @@ const [selectedQuestionBankId, setSelectedQuestionBankId] = useState<string | nu
   setActiveSection('quiz-report' as AdminSection);
 };
 
+const openAttemptReview = (attemptId: string) => {
+  setSelectedReviewAttemptId(attemptId);
+  setActiveSection('quiz-attempt-review' as AdminSection);
+};
+
   const openQuestionBankDetail = (id: string) => {
     setSelectedQuestionBankId(id);
     setActiveSection('question-bank-detail');
@@ -220,6 +228,7 @@ const [selectedQuestionBankId, setSelectedQuestionBankId] = useState<string | nu
     <QuizReportPage
       quizId={selectedReportQuizId}
       onBack={goToQuizList}
+      onReviewAttempt={openAttemptReview}
     />
   ) : (
     <QuizzesContent
@@ -260,6 +269,14 @@ const [selectedQuestionBankId, setSelectedQuestionBankId] = useState<string | nu
             }}
           />
         );
+
+        case 'quiz-attempt-review':
+  return selectedReviewAttemptId ? (
+    <AdminQuizReview
+      attemptId={selectedReviewAttemptId}
+      onBack={() => setActiveSection('quiz-report' as AdminSection)}
+    />
+  ) : null;
 
       case 'dashboard':
         return (

@@ -16,10 +16,12 @@ import {
 
 import { getAdminQuizReport } from './adminQuizReport.service';
 import type { QuizReport } from './quizReport.types';
+import { Eye } from 'lucide-react';
 
 type Props = {
   quizId: string;
   onBack: () => void;
+  onReviewAttempt?: (attemptId: string) => void;
 };
 
 const CHART_COLORS = {
@@ -113,7 +115,7 @@ function getAccuracyColor(value: number) {
   return CHART_COLORS.red;
 }
 
-export default function InstructorDashboard({ quizId, onBack }: Props) {
+export default function InstructorDashboard({ quizId, onBack, onReviewAttempt }: Props) {
   const [report, setReport] = useState<QuizReport | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeQ, setActiveQ] = useState<string | null>(null);
@@ -420,7 +422,7 @@ export default function InstructorDashboard({ quizId, onBack }: Props) {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-[var(--clr-border)]">
-                  {['Rank', 'User', 'Score', 'Submitted At'].map((h) => (
+                 {['Rank', 'User', 'Score', 'Submitted At', 'Review'].map((h) => (
                     <th
                       key={h}
                       className="px-3 py-3 text-left text-xs font-bold uppercase tracking-wider text-[var(--clr-text3)]"
@@ -451,6 +453,15 @@ export default function InstructorDashboard({ quizId, onBack }: Props) {
                         ? new Date(student.submittedAt).toLocaleString()
                         : '-'}
                     </td>
+                    <td className="px-3 py-3">
+  <button
+    onClick={() => onReviewAttempt?.(student.attemptId)}
+    title="View Review"
+    className="flex h-8 w-8 items-center justify-center rounded-md border border-[var(--clr-border2)] text-[var(--clr-text3)] transition hover:border-[var(--clr-accent)] hover:bg-[var(--clr-accent3)] hover:text-[var(--clr-accent)]"
+  >
+    <Eye className="h-4 w-4" />
+  </button>
+</td>
                   </tr>
                 ))}
               </tbody>
