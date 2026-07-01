@@ -6,9 +6,10 @@ import { Blog } from '../types/blogs.types';
 
 interface Props {
   blog: Blog;
+  basePath?: string;
 }
 
-export default function BlogCard({ blog }: Props) {
+export default function BlogCard({ blog, basePath = "/user/resources/blogs" }: Props) {
   const initials = blog.title.slice(0, 2).toUpperCase();
   const preview  = blog.content.length > 120 ? blog.content.slice(0, 120) + '…' : blog.content;
   const date     = new Date(blog.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
@@ -23,8 +24,10 @@ export default function BlogCard({ blog }: Props) {
     return `${baseUrl}/uploads/${image}`;
   };
 
+  const finalHref = basePath === "/user/resources/blogs" ? `/user/resources/blogs/${blog._id}` : `${basePath}/${blog._id}`;
+
   return (
-    <Link href={`/user/resources/blogs/${blog._id}`} style={{ textDecoration: 'none', display: 'flex', height: '100%' }}
+    <Link href={finalHref} style={{ textDecoration: 'none', display: 'flex', height: '100%' }}
     >
       <article
         style={{

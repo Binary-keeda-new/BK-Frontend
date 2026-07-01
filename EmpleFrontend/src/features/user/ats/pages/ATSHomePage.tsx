@@ -51,11 +51,11 @@ export default function ATSHomePage() {
           <Sparkles size={14} /> Resume Intelligence
         </div>
         <h1 style={{ fontSize: 'clamp(40px, 6vw, 64px)', fontWeight: 900, color: 'var(--text)', lineHeight: 1.05, letterSpacing: '-0.04em', fontFamily: "'Inter', sans-serif", marginBottom: 20 }}>
-          Beat the ATS with <br />
-          <span style={{ color: 'var(--orange)' }}>AI-Powered</span> Precision.
+          Optimize Your Resume <br />
+          <span style={{ color: 'var(--orange)' }}>for Every Job</span>
         </h1>
         <p style={{ fontSize: '18px', color: 'var(--muted)', maxWidth: 640, margin: '0 auto', lineHeight: 1.6 }}>
-          Analyze your resume against any job description. Uncover missing keywords, fix experience gaps, and instantly boost your interview chances.
+          Compare your resume against the exact job requirements. Identify missing keywords, bridge experience gaps, and submit your application with absolute confidence.
         </p>
 
         {/* Statistics Cards */}

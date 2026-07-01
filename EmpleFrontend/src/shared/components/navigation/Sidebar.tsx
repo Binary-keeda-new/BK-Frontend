@@ -17,7 +17,7 @@ const NAV_ITEMS = [
     icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>,
   },
   {
-    label: "Resources", tip: "Resources", href: "/user/resources",
+    label: "Resources", tip: "Resources", href: "/resources",
     icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>,
   },
   {
@@ -46,7 +46,7 @@ const NAV_ITEMS = [
     icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><circle cx="12" cy="16" r="2" fill="currentColor" stroke="none"/></svg>,
   },
   {
-    label: "Counselling", tip: "Counselling", href: "/user/counselling",
+    label: "Sessions", tip: "Sessions", href: "/user/sessions",
     icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>,
   },
 ];
@@ -62,13 +62,21 @@ export default function Sidebar() {
   const { isAuthenticated } = useSession() as any;
 
   useEffect(() => {
+    if (pathname.includes('/user/profile')) {
+      setCollapsed(true);
+    }
+  }, [pathname]);
+
+  useEffect(() => {
     const handleResize = () => {
-      setCollapsed(window.innerWidth < 768);
+      if (!pathname.includes('/user/profile')) {
+        setCollapsed(window.innerWidth < 768);
+      }
     };
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [pathname]);
 
   const getStyle = (isActive: boolean) => ({
     background: isActive ? "var(--orange)" : "transparent",
@@ -84,9 +92,6 @@ export default function Sidebar() {
     }
   };
 
-  // On desktop, sidebar is always expanded regardless of collapsed state
-  const showLabel = !collapsed; // mobile: depends on collapsed; desktop: always true via CSS override
-
   const handleItemClick = (e: React.MouseEvent, isPremium: boolean) => {
     if (isPremium && !isAuthenticated) {
       e.preventDefault();
@@ -99,7 +104,7 @@ export default function Sidebar() {
       className={`
         relative z-20 flex flex-col flex-shrink-0 overflow-hidden
         transition-all duration-300 ease-in-out
-        md:w-[215px] ${collapsed ? "w-[66px]" : "w-[215px]"}
+        ${collapsed ? "w-[66px]" : "w-[215px]"}
       `}
       style={{ background: "var(--surface)", borderRight: "1px solid var(--border)" }}
     >
@@ -111,9 +116,8 @@ export default function Sidebar() {
         >
           e
         </div>
-        {/* Always show on desktop, conditionally on mobile */}
         <span
-          className={`font-syne text-xl font-extrabold tracking-tight whitespace-nowrap md:block ${collapsed ? "hidden" : "block"}`}
+          className={`font-syne text-xl font-extrabold tracking-tight whitespace-nowrap ${collapsed ? "hidden" : "block"}`}
           style={{ color: "var(--text)" }}
         >
           <em className="not-italic" style={{ color: "var(--orange)" }}>e</em>mple
@@ -126,7 +130,7 @@ export default function Sidebar() {
           let isActive = pathname === item.href;
           if (item.label === "Resources" && pathname.startsWith("/resources")) isActive = true;
           if (item.label === "Jobs" && pathname.startsWith("/jobs")) isActive = true;
-          const isPremium = item.label !== "Resources" && item.label !== "Jobs" && item.label !== "Tutorials";
+          const isPremium = true;
           return (
             <Link href={item.href} key={item.label} style={{ textDecoration: "none" }} onClick={(e) => handleItemClick(e, isPremium)}>
               <div
@@ -137,7 +141,7 @@ export default function Sidebar() {
                 onMouseLeave={e => onHover(e, isActive, false)}
               >
                 <div className={iconClass}>{item.icon}</div>
-                <span className={`flex-1 md:block ${collapsed ? "hidden" : "block"} flex items-center justify-between`}>
+                <span className={`flex-1 ${collapsed ? "hidden" : "flex"} items-center justify-between`}>
                   {item.label}
                 </span>
               </div>
@@ -148,13 +152,10 @@ export default function Sidebar() {
 
       {/* Bottom section */}
       <div className="flex-shrink-0 px-[10px] py-2" style={{ borderTop: "1px solid var(--border)" }}>
-
-        {/* Transactions Removed */}
-
-        {/* Collapse toggle — mobile only */}
+        {/* Collapse toggle */}
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className={`md:hidden ${itemBase} w-full mt-[2px]`}
+          className={`${itemBase} w-full mt-[2px]`}
           style={{ background: "transparent", color: "var(--muted2)", border: "none" }}
           onMouseEnter={e => onHover(e, false, true)}
           onMouseLeave={e => onHover(e, false, false)}
@@ -168,9 +169,8 @@ export default function Sidebar() {
               <polyline points="8,2 4,6 8,10"/>
             </svg>
           </div>
-          <span className={`flex-1 ${collapsed ? "hidden" : "block"}`}>Collapse</span>
+          <span className={`flex-1 ${collapsed ? "hidden" : "block"} text-left`}>Collapse</span>
         </button>
-
       </div>
 
       {showLoginModal && (

@@ -31,9 +31,9 @@ const LEADERSHIP: Member[] = [
 
 const MENTORSHIP: Member[] = [
   { name: "Aryan",  role: "Technical Mentor",     dept: "Mentorship", avatar: "/team/aryansir.jpeg", bio: "", skills: [""], joined: "June 2026", linkedin: "https://linkedin.com", github: "https://github.com" },
-  { name: "Abhinabha Rakshit", role: "Technical Mentor",    dept: "Mentorship", avatar: "AR", bio: "", skills: [""], joined: "June 2026", linkedin: "https://linkedin.com", github: "https://github.com" },
-  { name: "Aryan Bhandari", role: "Ex-Development Lead",   dept: "Mentorship", avatar: "AB", bio: "", skills: [""], joined: "June 2026", linkedin: "https://linkedin.com", github: "https://github.com" },
-  { name: "Himanshu",  role: "Mentor",    dept: "Mentorship", avatar: "H", bio: " ", skills: [""], joined: "jUNE 2026", linkedin: "https://linkedin.com", github: "https://github.com" },
+  { name: "Dr. Suryakant", role: "Marketing Head",    dept: "Mentorship", avatar: "/team/suryakant.jpeg", bio: "", skills: [""], joined: "June 2026", linkedin: "https://linkedin.com", github: "https://github.com" },
+  { name: "Aryan Bhandari", role: "Ex-Development Lead",   dept: "Mentorship", avatar: "/team/aryanbhandari.jpeg", bio: "", skills: [""], joined: "June 2026", linkedin: "https://linkedin.com", github: "https://github.com" },
+  { name: "Himanshu",  role: "Mentor",    dept: "Mentorship", avatar: "/team/himanshu.jpeg", bio: " ", skills: [""], joined: "jUNE 2026", linkedin: "https://linkedin.com", github: "https://github.com" },
 ];
 
 // ─── Interns / Spines (24 cards) ─────────────────────────────────────────────
@@ -174,7 +174,7 @@ function Modal({ member, onClose }: { member: Member; onClose: () => void }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4"
       style={{ background: "rgba(0,0,0,0.88)" }} onClick={onClose}>
-      <div className="relative w-full max-w-md max-h-[90vh] overflow-y-auto rounded-3xl"
+      <div className="relative w-full max-w-md rounded-3xl overflow-hidden"
         style={{ background: "#111", border: `1px solid ${col.border}77`, boxShadow: `0 0 60px ${col.border}33` }}
         onClick={e => e.stopPropagation()}>
         {/* Cover */}
@@ -199,43 +199,49 @@ function Modal({ member, onClose }: { member: Member; onClose: () => void }) {
         {/* Close */}
         <button onClick={onClose} className="absolute top-3 right-4 text-gray-500 hover:text-white text-2xl leading-none transition-colors">×</button>
         {/* Content */}
-        <div className="px-6 pt-16 pb-6">
+       <div className="px-6 pt-16 pb-6">
           <div className="mb-4">
             <h2 className="text-white text-xl font-black">{member.name}</h2>
             <p className="text-sm mt-0.5" style={{ color: col.text }}>{member.role}</p>
             <div className="flex items-center gap-2 mt-2 flex-wrap">
               <span className="text-[11px] font-semibold px-3 py-1 rounded-full"
                 style={{ background: `${col.badge}18`, color: col.text, border: `1px solid ${col.badge}44` }}>
-                {member.dept} · Joined {member.joined}
+                {member.dept}
               </span>
-             {member.dept !== "Leadership" && member.dept !== "Mentorship" && (
-  <>
-    <a href={member.linkedin} target="_blank" rel="noopener noreferrer"
-      className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1 rounded-full transition-all hover:scale-105"
-      style={{ background: "#0A66C218", color: "#0A66C2", border: "1px solid #0A66C244" }}>
-      <LinkedInIcon /> LinkedIn
-    </a>
-    <a href={member.github} target="_blank" rel="noopener noreferrer"
-      className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1 rounded-full transition-all hover:scale-105"
-      style={{ background: "#ffffff12", color: "#ccc", border: "1px solid #ffffff22" }}>
-      <GitHubIcon /> GitHub
-    </a>
-  </>
-)}
             </div>
           </div>
-          <p className="text-sm leading-relaxed mb-5" style={{ color: "#aaa" }}>{member.bio}</p>
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: "#555" }}>Skills</p>
-            <div className="flex flex-wrap gap-2">
-              {member.skills.map(s => (
-                <span key={s} className="text-xs px-3 py-1 rounded-full"
-                  style={{ background: "#1a1a1a", color: col.text, border: `1px solid ${col.border}33` }}>
-                  {s}
+          {member.dept !== "Leadership" && member.dept !== "Mentorship" && (
+            <>
+              <p className="text-sm leading-relaxed mb-5" style={{ color: "#aaa" }}>{member.bio}</p>
+              <div className="flex items-center gap-2 mb-5 flex-wrap">
+                <span className="text-[11px] font-semibold px-3 py-1 rounded-full"
+                  style={{ background: `${col.badge}18`, color: col.text, border: `1px solid ${col.badge}44` }}>
+                  Joined {member.joined}
                 </span>
-              ))}
-            </div>
-          </div>
+                <a href={member.linkedin} target="_blank" rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1 rounded-full transition-all hover:scale-105"
+                  style={{ background: "#0A66C218", color: "#0A66C2", border: "1px solid #0A66C244" }}>
+                  <LinkedInIcon /> LinkedIn
+                </a>
+                <a href={member.github} target="_blank" rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1 rounded-full transition-all hover:scale-105"
+                  style={{ background: "#ffffff12", color: "#ccc", border: "1px solid #ffffff22" }}>
+                  <GitHubIcon /> GitHub
+                </a>
+              </div>
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: "#555" }}>Skills</p>
+                <div className="flex flex-wrap gap-2">
+                  {member.skills.map(s => (
+                    <span key={s} className="text-xs px-3 py-1 rounded-full"
+                      style={{ background: "#1a1a1a", color: col.text, border: `1px solid ${col.border}33` }}>
+                      {s}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
@@ -246,7 +252,7 @@ function Modal({ member, onClose }: { member: Member; onClose: () => void }) {
 
 function CardRow({ members, onSelect, showSocial = true }: { members: Member[]; onSelect: (m: Member) => void; showSocial?: boolean }) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+    <div className="grid grid-cols-4 gap-4 mb-4">
       {members.map(m => (
         <MemberCard key={m.name + m.role} member={m} onClick={() => onSelect(m)} showSocial={showSocial} />
       ))}
@@ -281,7 +287,7 @@ export default function TeamPage() {
             style={{ background: "rgba(255,107,53,0.12)", color: "#FF6B35", border: "1px solid rgba(255,107,53,0.25)" }}>
             ● Our Team
           </span>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight">
+          <h1 className="text-5xl font-black text-white tracking-tight">
             People behind <span style={{ color: "#FF6B35" }}>Emple</span>
           </h1>
           <p className="text-sm mt-3" style={{ color: "#555" }}>Click any card to learn more about the team.</p>
@@ -306,7 +312,7 @@ export default function TeamPage() {
         </div>
 
         <p className="text-center mt-12 text-xs" style={{ color: "#2a2a2a" }}>
-          © 2026 Emple · AI-Powered Educational Platform 
+          © 2026 Emple · AI-Powered Placement Ecosystem
         </p>
       </div>
 
