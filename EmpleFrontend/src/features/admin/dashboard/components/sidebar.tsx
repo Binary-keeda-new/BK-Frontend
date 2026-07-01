@@ -20,7 +20,9 @@ export type AdminSection =
   | 'quiz-preview'
   | 'quiz-edit'
   | 'quiz-create'
-  | 'test-edit';
+  | 'test-edit'
+  | 'quiz-report'
+  |'quiz-attempt-review';
 
 const NAV_ITEMS: {
   label: string;
