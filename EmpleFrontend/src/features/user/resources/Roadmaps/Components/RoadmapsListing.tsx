@@ -43,13 +43,16 @@ const RoadmapCard: React.FC<RoadmapCardProps> = ({ roadmap, onView, onDelete }) 
   };
   
   const colorMap: Record<string, string> = {
-    orange: 'var(--orange, #ff6b35)',
+    orange: '#ff6b35',
     red: '#ef4444',
     blue: '#3b82f6',
     purple: '#a855f7',
+    green: '#10b981',
+    pink: '#ec4899',
+    teal: '#14b8a6',
   };
   
-  const roadmapColor = colorMap[roadmap.color] || 'var(--orange)';
+  const roadmapColor = colorMap[roadmap.color] || '#ff6b35';
 
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [shareText, setShareText] = useState<string>('Share Path');
@@ -210,13 +213,22 @@ const RoadmapCard: React.FC<RoadmapCardProps> = ({ roadmap, onView, onDelete }) 
         }}>
           {roadmap.icon}
         </div>
-        <span style={{
-          padding: '4px 12px', borderRadius: 20, fontSize: '0.7rem',
-          fontWeight: 700, background: `${roadmapColor}15`, color: roadmapColor, height: 'fit-content',
-          border: `1px solid ${roadmapColor}30`
-        }}>
-          {roadmap.difficulty}
-        </span>
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+          <span style={{
+            padding: '4px 12px', borderRadius: 20, fontSize: '0.7rem',
+            fontWeight: 700, background: 'var(--surface2)', color: 'var(--text)', height: 'fit-content',
+            border: '1px solid var(--border)'
+          }}>
+            {roadmap.estimatedDuration}
+          </span>
+          <span style={{
+            padding: '4px 12px', borderRadius: 20, fontSize: '0.7rem',
+            fontWeight: 700, background: `${roadmapColor}15`, color: roadmapColor, height: 'fit-content',
+            border: `1px solid ${roadmapColor}30`
+          }}>
+            {roadmap.difficulty}
+          </span>
+        </div>
       </div>
 
       <h2 style={{ marginBottom: '0.5rem', fontSize: '18px', fontWeight: 700, color: 'var(--text)' }}>{roadmap.name}</h2>
@@ -338,11 +350,43 @@ const RoadmapsListing: React.FC<RoadmapsListingProps> = ({ onView }) => {
     border: 'var(--border)', surface: 'var(--surface)', surface2: 'var(--surface2)',
     text: 'var(--text)', muted: 'var(--muted2)', brand: 'var(--orange)',
   };
+<<<<<<< Updated upstream
+=======
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [sortBy, setSortBy] = useState<string>('alphabetical');
+  const [category, setCategory] = useState<string>('All');
+  const [activePathsCount, setActivePathsCount] = useState<number>(0);
+
+  useEffect(() => {
+    let count = 0;
+    roadmapsListingData.forEach(r => {
+      const legacyData = localStorage.getItem(`roadmap_progress_${r.id}`);
+      const detailsData = localStorage.getItem(`roadmap_progress_details_${r.id}`);
+      if (legacyData || detailsData) {
+        count++;
+      }
+    });
+    setActivePathsCount(count);
+  }, []);
+>>>>>>> Stashed changes
 
   const { sessionToken } = useSession();
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [sortBy, setSortBy] = useState<string>('popular');
+  const [sortBy, setSortBy] = useState<string>('alphabetical');
   const [category, setCategory] = useState<string>('All');
+  const [activePathsCount, setActivePathsCount] = useState<number>(0);
+
+  useEffect(() => {
+    let count = 0;
+    roadmapsListingData.forEach(r => {
+      const legacyData = localStorage.getItem(`roadmap_progress_${r.id}`);
+      const detailsData = localStorage.getItem(`roadmap_progress_details_${r.id}`);
+      if (legacyData || detailsData) {
+        count++;
+      }
+    });
+    setActivePathsCount(count);
+  }, []);
   const [isPanelOpen, setIsPanelOpen] = useState<boolean>(false);
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
   const [personalizedRoadmaps, setPersonalizedRoadmaps] = useState<PersonalizedRoadmapSummary[]>([]);
@@ -417,6 +461,8 @@ const RoadmapsListing: React.FC<RoadmapsListingProps> = ({ onView }) => {
     if (!a.isPersonalized && b.isPersonalized) return 1;
     if (sortBy === 'popular') return b.enrolled - a.enrolled;
     if (sortBy === 'newest') return b.id.localeCompare(a.id);
+    if (sortBy === 'alphabetical') return a.name.localeCompare(b.name);
+    if (sortBy === 'reverse-alphabetical') return b.name.localeCompare(a.name);
     return 0;
   });
 
@@ -502,7 +548,7 @@ const RoadmapsListing: React.FC<RoadmapsListingProps> = ({ onView }) => {
         marginBottom: '3rem'
       }}>
         {[
-          { label: 'Active Paths', value: '6', color: '#ff6b35', icon: Route },
+          { label: 'Active Paths', value: activePathsCount.toString(), color: '#ff6b35', icon: Route },
           { label: 'Learners', value: '12.4k', color: '#22c55e', icon: Users },
           { label: 'Avg Rating', value: '4.9', color: '#fbbf24', icon: Star },
         ].map((s, i) => (
@@ -607,6 +653,8 @@ const RoadmapsListing: React.FC<RoadmapsListingProps> = ({ onView }) => {
               backgroundSize: '16px'
             }}
           >
+            <option value="alphabetical" style={{ background: t.surface, color: t.text }}>Sort A-Z</option>
+            <option value="reverse-alphabetical" style={{ background: t.surface, color: t.text }}>Sort Z-A</option>
             <option value="popular" style={{ background: t.surface, color: t.text }}>Most Popular</option>
             <option value="newest" style={{ background: t.surface, color: t.text }}>Newest</option>
           </select>

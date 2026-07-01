@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Map, Newspaper, HelpCircle, Award, BookOpen } from "lucide-react";
+import { Map, Newspaper, HelpCircle, Award, BookOpen, Lightbulb, Lightbulb } from "lucide-react";
 
 const RESOURCES_CARDS = [
   {
@@ -29,12 +29,18 @@ const RESOURCES_CARDS = [
     color: "#ff3b30",
   },
   {
-  title: "Project Ideas",
-  href: "/user/resources/project-ideas",
-  description: "Curated project ideas for Fullstack, AI/ML, and Cybersecurity to build your portfolio",
-  icon: "💡",
-  topics: ["Fullstack", "AI/ML", "Cybersecurity"],
-  color: "#a855f7",
+    title: "Project Ideas",
+    href: "/user/resources/project-ideas",
+    description: "Curated project ideas for Fullstack, AI/ML, and Cybersecurity to build your portfolio",
+    icon: Lightbulb,
+    topics: ["Fullstack", "AI/ML", "Cybersecurity"],
+    color: "#a855f7",
+    title: "Project Ideas",
+    href: "/user/resources/project-ideas",
+    description: "Curated project ideas for Fullstack, AI/ML, and Cybersecurity to build your portfolio",
+    icon: Lightbulb,
+    topics: ["Fullstack", "AI/ML", "Cybersecurity"],
+    color: "#a855f7",
   },
   {
     title: "Certificates",

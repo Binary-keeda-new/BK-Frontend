@@ -56,7 +56,7 @@ export default function JavaTutorialPage({ onBack }: JavaTutorialPageProps) {
   const resetProgress = () => {
     if (window.confirm("Are you sure you want to reset all your Java Programming tutorial progress?")) {
       setCompletedMap({});
-      localStorage.removeItem("java_tutorial_a");
+      localStorage.removeItem("java_tutorial_progress");
     }
   };
 
@@ -111,16 +111,14 @@ export default function JavaTutorialPage({ onBack }: JavaTutorialPageProps) {
                 >
                   {Object.keys(completedMap).length} / {CHAPTERS.length * 5} Done
                 </span>
-                {Object.keys(completedMap).length > 0 && (
-                  <button 
-                    onClick={resetProgress}
-                    title="Reset Progress"
-                    className="p-1 rounded-full text-[var(--muted2)] hover:text-red-500 hover:bg-red-500/10 transition active:scale-90 outline-none flex items-center justify-center"
-                    style={{ border: "1px solid var(--border)" }}
-                  >
-                    <RotateCcw className="w-3.5 h-3.5" />
-                  </button>
-                )}
+                <button 
+                  onClick={resetProgress}
+                  title="Reset Progress"
+                  className="p-1 rounded-full text-[var(--muted2)] hover:text-red-500 hover:bg-red-500/10 transition active:scale-90 outline-none flex items-center justify-center"
+                  style={{ border: "1px solid var(--border)" }}
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                </button>
               </div>
             </div>
           </div>

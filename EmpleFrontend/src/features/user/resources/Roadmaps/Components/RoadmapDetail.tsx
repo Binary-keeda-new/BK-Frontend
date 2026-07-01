@@ -103,6 +103,7 @@ const RoadmapDetail: React.FC<RoadmapDetailProps> = ({ roadmapId, onBack }) => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [activeIframeUrl, setActiveIframeUrl] = useState<string | null>(null);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -357,23 +358,18 @@ const RoadmapDetail: React.FC<RoadmapDetailProps> = ({ roadmapId, onBack }) => {
           <p style={{ fontSize: '1.1rem', color: t.textMuted, marginBottom: 20, maxWidth: 800 }}>
             {roadmap.description}
           </p>
-          <div style={{ display: 'flex', gap: 12 }}>
+          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+            <span style={{
+              padding: '6px 16px', borderRadius: 20, fontSize: 13,
+              fontWeight: 700, color: 'white', background: '#10b981'
+            }}>
+              {roadmap.estimatedDuration}
+            </span>
             <span style={{
               padding: '6px 16px', borderRadius: 20, fontSize: 13,
               fontWeight: 700, color: 'white', background: '#10b981'
             }}>
               {roadmap.difficulty}
-            </span>
-            <span style={{
-              padding: '6px 16px', borderRadius: 20, fontSize: 13,
-              fontWeight: 700, background: t.surface2, color: t.brand,
-              display: 'inline-flex', alignItems: 'center', gap: 6
-            }}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--orange)' }}>
-                <circle cx="12" cy="12" r="10" />
-                <polyline points="12 6 12 12 16 14" />
-              </svg>
-              {roadmap.activeDuration || duration}
             </span>
           </div>
         </div>
@@ -583,55 +579,91 @@ const RoadmapDetail: React.FC<RoadmapDetailProps> = ({ roadmapId, onBack }) => {
                           <td style={{ padding: '16px 20px', verticalAlign: 'middle' }}>
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                               {day.resources && day.resources.length > 0 ? (
-                                day.resources.map((res: any, idx: number) => (
-                                  <a
-                                    key={idx}
-                                    href={res.url || '#'}
-                                    target={res.url ? '_blank' : undefined}
-                                    rel="noopener noreferrer"
-                                    style={{
-                                      display: 'inline-flex',
-                                      alignItems: 'center',
-                                      gap: 4,
-                                      padding: '6px 12px',
-                                      background: res.url ? 'rgba(239, 68, 68, 0.1)' : 'var(--surface2)',
-                                      border: `1px solid ${res.url ? '#ef4444' : 'var(--border)'}`,
-                                      color: res.url ? '#ef4444' : 'var(--text)',
-                                      borderRadius: 20,
-                                      textDecoration: 'none',
-                                      fontSize: 12,
-                                      fontWeight: 600,
-                                      transition: 'all 0.2s',
-                                      cursor: res.url ? 'pointer' : 'default'
-                                    }}
-                                    onMouseOver={(e) => {
-                                      if (res.url) {
+                                day.resources.map((res: any, idx: number) => {
+                                  const isIframe = res.type === 'iframe' || (res.url && res.url.includes('youtube.com/embed'));
+                                  return isIframe ? (
+                                    <button
+                                      key={idx}
+                                      onClick={() => setActiveIframeUrl(res.url)}
+                                      style={{
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        gap: 4,
+                                        padding: '6px 12px',
+                                        background: 'rgba(239, 68, 68, 0.1)',
+                                        border: '1px solid #ef4444',
+                                        color: '#ef4444',
+                                        borderRadius: 20,
+                                        textDecoration: 'none',
+                                        fontSize: 12,
+                                        fontWeight: 600,
+                                        transition: 'all 0.2s',
+                                        cursor: 'pointer'
+                                      }}
+                                      onMouseOver={(e) => {
                                         e.currentTarget.style.background = '#ef4444';
                                         e.currentTarget.style.color = '#fff';
-                                      }
-                                    }}
-                                    onMouseOut={(e) => {
-                                      if (res.url) {
+                                      }}
+                                      onMouseOut={(e) => {
                                         e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)';
                                         e.currentTarget.style.color = '#ef4444';
-                                      }
-                                    }}
-                                  >
-                                    {res.url ? (
+                                      }}
+                                    >
                                       <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'block' }}>
-                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                                        <polyline points="15 3 21 3 21 9"/>
-                                        <line x1="10" y1="14" x2="21" y2="3"/>
+                                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
                                       </svg>
-                                    ) : (
-                                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'block', color: 'var(--muted2)' }}>
-                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                                        <polyline points="14 2 14 8 20 8"/>
-                                      </svg>
-                                    )}
-                                    {res.title}
-                                  </a>
-                                ))
+                                      {res.title}
+                                    </button>
+                                  ) : (
+                                    <a
+                                      key={idx}
+                                      href={res.url || '#'}
+                                      target={res.url ? '_blank' : undefined}
+                                      rel="noopener noreferrer"
+                                      style={{
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        gap: 4,
+                                        padding: '6px 12px',
+                                        background: res.url ? 'rgba(239, 68, 68, 0.1)' : 'var(--surface2)',
+                                        border: `1px solid ${res.url ? '#ef4444' : 'var(--border)'}`,
+                                        color: res.url ? '#ef4444' : 'var(--text)',
+                                        borderRadius: 20,
+                                        textDecoration: 'none',
+                                        fontSize: 12,
+                                        fontWeight: 600,
+                                        transition: 'all 0.2s',
+                                        cursor: res.url ? 'pointer' : 'default'
+                                      }}
+                                      onMouseOver={(e) => {
+                                        if (res.url) {
+                                          e.currentTarget.style.background = '#ef4444';
+                                          e.currentTarget.style.color = '#fff';
+                                        }
+                                      }}
+                                      onMouseOut={(e) => {
+                                        if (res.url) {
+                                          e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)';
+                                          e.currentTarget.style.color = '#ef4444';
+                                        }
+                                      }}
+                                    >
+                                      {res.url ? (
+                                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'block' }}>
+                                          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                                          <polyline points="15 3 21 3 21 9"/>
+                                          <line x1="10" y1="14" x2="21" y2="3"/>
+                                        </svg>
+                                      ) : (
+                                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'block', color: 'var(--muted2)' }}>
+                                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                          <polyline points="14 2 14 8 20 8"/>
+                                        </svg>
+                                      )}
+                                      {res.title}
+                                    </a>
+                                  );
+                                })
                               ) : (
                                 <span style={{ fontSize: 13, color: 'var(--muted2)', fontStyle: 'italic' }}>None</span>
                               )}
@@ -745,6 +777,63 @@ const RoadmapDetail: React.FC<RoadmapDetailProps> = ({ roadmapId, onBack }) => {
           onClose={() => { setSelectedSection(null); setSelectedLevel(null); }}
           onComplete={handleQuizComplete}
         />
+      )}
+
+      {/* Iframe Modal */}
+      {activeIframeUrl && (
+        <div style={{
+          position: 'fixed',
+          top: 0, left: 0, right: 0, bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.8)',
+          zIndex: 9999,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '20px'
+        }} onClick={() => setActiveIframeUrl(null)}>
+          <div style={{
+            position: 'relative',
+            width: '100%',
+            maxWidth: '900px',
+            aspectRatio: '16/9',
+            backgroundColor: '#000',
+            borderRadius: '12px',
+            overflow: 'hidden',
+            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
+          }} onClick={e => e.stopPropagation()}>
+            <button 
+              onClick={() => setActiveIframeUrl(null)}
+              style={{
+                position: 'absolute',
+                top: '12px',
+                right: '12px',
+                background: 'rgba(255,255,255,0.2)',
+                border: 'none',
+                color: 'white',
+                width: '32px',
+                height: '32px',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                zIndex: 10,
+                backdropFilter: 'blur(4px)'
+              }}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+            <iframe 
+              src={activeIframeUrl} 
+              style={{ width: '100%', height: '100%', border: 'none' }}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowFullScreen
+            ></iframe>
+          </div>
+        </div>
       )}
     </div>
   );

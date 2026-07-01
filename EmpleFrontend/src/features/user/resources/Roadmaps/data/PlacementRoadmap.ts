@@ -11,17 +11,13 @@ const rawDays = [
       {
         "category": "Aptitude",
         "topic": "Complete playlist of Career Ride YouTube channel and make notes"
-      },
-      {
-        "category": "Core Subjects",
-        "topic": "Dont Touch this section for now"
       }
     ],
     "resources": [
       {
-        "type": "text",
-        "title": "Carrer Ride",
-        "url": null
+        "type": "iframe",
+        "title": "Career Ride",
+        "url": "https://www.youtube.com/embed/ZuMJFleXmiw?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
       }
     ]
   },
@@ -34,7 +30,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Career Ride",
+        "url": "https://www.youtube.com/embed/jAbpPTpz2bQ?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
+      }
+    ]
   },
   {
     "day": 3,
@@ -45,7 +47,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Career Ride",
+        "url": "https://www.youtube.com/embed/ETiRE7N7pEI?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
+      }
+    ]
   },
   {
     "day": 4,
@@ -56,7 +64,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Career Ride",
+        "url": "https://www.youtube.com/embed/ximxxERGSUc?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
+      }
+    ]
   },
   {
     "day": 5,
@@ -67,7 +81,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Career Ride",
+        "url": "https://www.youtube.com/embed/OKSJDDAyqP0?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
+      }
+    ]
   },
   {
     "day": 6,
@@ -78,7 +98,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Career Ride",
+        "url": "https://www.youtube.com/embed/jfoJBivWlnQ?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
+      }
+    ]
   },
   {
     "day": 7,
@@ -89,7 +115,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Career Ride",
+        "url": "https://www.youtube.com/embed/xyyejJYeILM?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
+      }
+    ]
   },
   {
     "day": 8,
@@ -100,7 +132,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Career Ride",
+        "url": "https://www.youtube.com/embed/8OOBo5C7dsc?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
+      }
+    ]
   },
   {
     "day": 9,
@@ -111,7 +149,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Career Ride",
+        "url": "https://www.youtube.com/embed/vsBpWgNYjtQ?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt9876543210"
+      }
+    ]
   },
   {
     "day": 10,
@@ -122,7 +166,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Career Ride",
+        "url": "https://www.youtube.com/embed/tJHl73PBnwY?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
+      }
+    ]
   },
   {
     "day": 11,
@@ -133,7 +183,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Career Ride",
+        "url": "https://www.youtube.com/embed/hn9TKnr8L_8?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
+      }
+    ]
   },
   {
     "day": 12,
@@ -144,7 +200,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Career Ride",
+        "url": "https://www.youtube.com/embed/_HyhwS8P9KY?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
+      }
+    ]
   },
   {
     "day": 13,
@@ -155,7 +217,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Career Ride",
+        "url": "https://www.youtube.com/embed/rhSxQ4ieAYc?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
+      }
+    ]
   },
   {
     "day": 14,
@@ -166,7 +234,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Career Ride",
+        "url": "https://www.youtube.com/embed/pYL2843EEuQ?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
+      }
+    ]
   },
   {
     "day": 15,
@@ -177,7 +251,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Career Ride",
+        "url": "https://www.youtube.com/embed/x3FZCLVNzaw?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
+      }
+    ]
   },
   {
     "day": 16,
@@ -188,7 +268,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Career Ride",
+        "url": "https://www.youtube.com/embed/VnosX2IQxU8?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
+      }
+    ]
   },
   {
     "day": 17,
@@ -199,7 +285,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Career Ride",
+        "url": "https://www.youtube.com/embed/tnc9ojITRg4?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
+      }
+    ]
   },
   {
     "day": 18,
@@ -210,7 +302,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Career Ride",
+        "url": "https://www.youtube.com/embed/videoseries?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt&index=1"
+      }
+    ]
   },
   {
     "day": 19,
@@ -221,7 +319,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Career Ride",
+        "url": "https://www.youtube.com/embed/videoseries?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt&index=1"
+      }
+    ]
   },
   {
     "day": 20,
@@ -232,7 +336,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Career Ride",
+        "url": "https://www.youtube.com/embed/videoseries?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt&index=1"
+      }
+    ]
   },
   {
     "day": 21,
@@ -243,7 +353,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Career Ride",
+        "url": "https://www.youtube.com/embed/videoseries?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt&index=1"
+      }
+    ]
   },
   {
     "day": 22,
@@ -254,7 +370,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Career Ride",
+        "url": "https://www.youtube.com/embed/videoseries?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt&index=1"
+      }
+    ]
   },
   {
     "day": 23,
@@ -265,7 +387,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Career Ride",
+        "url": "https://www.youtube.com/embed/videoseries?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt&index=1"
+      }
+    ]
   },
   {
     "day": 24,
@@ -276,7 +404,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Career Ride",
+        "url": "https://www.youtube.com/embed/videoseries?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt&index=1"
+      }
+    ]
   },
   {
     "day": 25,
@@ -287,7 +421,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Career Ride",
+        "url": "https://www.youtube.com/embed/videoseries?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt&index=1"
+      }
+    ]
   },
   {
     "day": 26,
@@ -298,7 +438,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Career Ride",
+        "url": "https://www.youtube.com/embed/videoseries?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt&index=1"
+      }
+    ]
   },
   {
     "day": 27,
@@ -309,7 +455,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Career Ride",
+        "url": "https://www.youtube.com/embed/videoseries?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt&index=1"
+      }
+    ]
   },
   {
     "day": 28,

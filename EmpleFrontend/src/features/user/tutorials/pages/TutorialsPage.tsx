@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import { Cpu } from "lucide-react";
+import { Cpu, Workflow, BookOpen, Users, Star, Search, Clock, ListCollapse } from "lucide-react";
 import CTutorialPage from "../c/pages/CTutorialPage"; // Import C tutorial feature directly
 import JavaTutorialPage from "../java/pages/JavaTutorialPage"; // Import Java tutorial feature
+import DAATutorialPage from "../daa/pages/DAATutorialPage";
 
 // Official stylized programming language logo SVGs
 const CLogo = (props: any) => (
@@ -27,141 +28,265 @@ const JavaLogo = (props: any) => (
   </svg>
 );
 
-const CppLogo = (props: any) => (
-  <svg viewBox="0 0 306 344.35" width="22" height="22" className={props.className} style={props.style}>
-    <path fill="#00599C" d="M302.107,258.262c2.401-4.159,3.893-8.845,3.893-13.053V99.14c0-4.208-1.49-8.893-3.892-13.052L153,172.175 L302.107,258.262z"/>
-    <path fill="#004482" d="M166.25,341.193l126.5-73.034c3.644-2.104,6.956-5.737,9.357-9.897L153,172.175L3.893,258.263 c2.401,4.159,5.714,7.793,9.357,9.896l126.5,73.034C147.037,345.401,158.963,345.401,166.25,341.193z"/>
-    <path fill="#659AD2" d="M302.108,86.087c-2.402-4.16-5.715-7.793-9.358-9.897L166.25,3.156c-7.287-4.208-19.213-4.208-26.5,0 L13.25,76.19C5.962,80.397,0,90.725,0,99.14v146.069c0,4.208,1.491,8.894,3.893,13.053L153,172.175L302.108,86.087z"/>
-    <g>
-      <path fill="#FFFFFF" d="M153,274.175c-56.243,0-102-45.757-102-102s45.757-102,102-102c36.292,0,70.139,19.53,88.331,50.968 l-44.143,25.544c-9.105-15.736-26.038-25.512-44.188-25.512c-28.122,0-51,22.878-51,51c0,28.121,22.878,51,51,51 c18.152,0,35.085-9.776,44.191-25.515l44.143,25.543C223.142,254.644,189.294,274.175,153,274.175z"/>
-    </g>
-    <g>
-      <polygon fill="#FFFFFF" points="255,166.508 243.666,166.508 243.666,155.175 232.334,155.175 232.334,166.508 221,166.508 221,177.841 232.334,177.841 232.334,189.175 243.666,189.175 243.666,177.841 255,177.841"/>
-    </g>
-    <g>
-      <polygon fill="#FFFFFF" points="297.5,166.508 286.166,166.508 286.166,155.175 274.834,155.175 274.834,166.508 263.5,166.508 263.5,177.841 274.834,177.841 274.834,189.175 286.166,189.175 286.166,177.841 297.5,177.841"/>
-    </g>
-  </svg>
-);
-
 const SUBJECTS = [
   { 
     id: "c",
     title: "C Programming", 
     description: "Learn pointers, dynamic allocations, and syntax structure with interview questions.", 
     icon: CLogo, 
-    color: "#ff6b35" 
+    color: "#ff6b35",
+    difficulty: "Beginner",
+    duration: "2-4 Weeks",
+    chapters: 12
   },
   {
     id: "java",
     title: "Java Programming",
     description: "Master classes, objects, exception handling, and collections with interactive exercises.",
     icon: JavaLogo,
-    color: "#e2433b"
+    color: "#e2433b",
+    difficulty: "Intermediate",
+    duration: "4-8 Weeks",
+    chapters: 18
   },
   { 
-    id: "oop",
-    title: "OOP Principles", 
-    description: "Understand classes, interfaces, inheritance, and polymorphism patterns.", 
-    icon: Cpu, 
+    id: "daa",
+    title: "DAA", 
+    description: "Design and Analysis of Algorithms - Learn complexity, sorting, and advanced algorithmic patterns.", 
+    icon: Workflow, 
     color: "#a855f7",
-    disabled: true 
+    disabled: false,
+    difficulty: "Advanced",
+    duration: "6-10 Weeks",
+    chapters: 15
   },
   { 
-    id: "cpp",
-    title: "C++ Programming", 
-    description: "Master STL, memory handling, template arguments, and class scopes.", 
-    icon: CppLogo, 
+    id: "dbms",
+    title: "DBMS", 
+    description: "Database Management Systems - Master SQL, normalization, and database architecture.", 
+    icon: Cpu, 
     color: "#6c63ff",
-    disabled: true 
+    disabled: true,
+    difficulty: "Intermediate",
+    duration: "4-6 Weeks",
+    chapters: 10
   },
 ];
 
 export default function TutorialsPage() {
-  // Add state to track which subject is active (null means show cards list)
   const [activeSubject, setActiveSubject] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
-  // If a subject is selected, render it instead of the landing list
-  if (activeSubject === "c") {
-    return <CTutorialPage onBack={() => setActiveSubject(null)} />;
-  }
+  const t: Record<string, string> = {
+    border: 'var(--border)',
+    surface: 'var(--surface)',
+    surface2: 'var(--surface2)',
+    text: 'var(--text)',
+    muted: 'var(--muted2)',
+    brand: 'var(--orange)',
+  };
 
-  if (activeSubject === "java") {
-    return <JavaTutorialPage onBack={() => setActiveSubject(null)} />;
-  }
+  if (activeSubject === "c") return <CTutorialPage onBack={() => setActiveSubject(null)} />;
+  if (activeSubject === "java") return <JavaTutorialPage onBack={() => setActiveSubject(null)} />;
+  if (activeSubject === "daa") return <DAATutorialPage onBack={() => setActiveSubject(null)} />;
+
+  const filteredSubjects = SUBJECTS.filter(s => 
+    s.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    s.description.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
-    <div className="p-6 animate-fadeIn">
+    <div className="fade-in" style={{ padding: '24px 0', maxWidth: '1200px', margin: '0 auto', paddingLeft: 24, paddingRight: 24 }}>
       {/* Header Section */}
-      <div className="mb-8">
-        <h1 style={{ fontFamily: "var(--font-syne, sans-serif)", fontSize: "24px", fontWeight: 800, color: "var(--text)" }}>
-           Tutorials
+      <div style={{ marginBottom: '2rem' }}>
+        <h1 style={{ fontFamily: "var(--font-syne, sans-serif)", fontSize: "28px", fontWeight: 800, color: "var(--text)", marginBottom: '4px', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+          Learning <span style={{ color: t.brand }}>Tutorials</span>
         </h1>
-        <p style={{ color: "var(--muted2)", fontSize: "14px", marginTop: "4px" }}>
+        <p style={{ color: t.muted, fontSize: "14px", marginTop: "4px" }}>
           Step-by-step programming language guides and high-frequency interview questions
         </p>
       </div>
 
+      {/* Stats Overview */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+        gap: 20,
+        marginBottom: '3rem'
+      }}>
+        {[
+          { label: 'Available Tutorials', value: '4', color: '#ff6b35', icon: BookOpen },
+          { label: 'Learners', value: '15.2k', color: '#22c55e', icon: Users },
+          { label: 'Avg Rating', value: '4.8', color: '#fbbf24', icon: Star },
+        ].map((s, i) => (
+          <div key={i} style={{
+            background: t.surface, padding: '20px 24px', borderRadius: 20,
+            border: `1px solid ${t.border}`, display: 'flex', flexDirection: 'column', gap: 8,
+            transition: 'transform 0.3s ease'
+          }} className="stat-card">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <small style={{ color: t.muted, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '11px' }}>{s.label}</small>
+              <div style={{
+                width: 32, height: 32, borderRadius: '8px',
+                background: `${s.color}15`, display: 'flex', alignItems: 'center', justifyContent: 'center'
+              }}>
+                <s.icon size={16} style={{ color: s.color }} />
+              </div>
+            </div>
+            <div style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--text)' }}>{s.value}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Toolbar */}
+      <div style={{
+        display: 'flex',
+        gap: 16,
+        marginBottom: 40,
+        flexWrap: 'wrap',
+        alignItems: 'center',
+        padding: '20px',
+        background: t.surface,
+        borderRadius: 16,
+        border: `1px solid ${t.border}`
+      }}>
+        <div style={{
+          flex: '1 1 300px',
+          position: 'relative',
+          display: 'flex',
+          alignItems: 'center'
+        }}>
+          <Search size={18} style={{ position: 'absolute', left: 16, color: t.muted }} />
+          <input
+            type="text"
+            placeholder="Search tutorials..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            style={{
+              width: '100%',
+              background: 'rgba(0,0,0,0.2)',
+              border: `1px solid ${t.border}`,
+              borderRadius: 12,
+              padding: '12px 16px 12px 44px',
+              color: t.text,
+              fontSize: '14px',
+              outline: 'none',
+              transition: 'border-color 0.2s'
+            }}
+            onFocus={(e) => e.target.style.borderColor = t.brand}
+            onBlur={(e) => e.target.style.borderColor = t.border}
+          />
+        </div>
+      </div>
+
       {/* Grid List */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "20px" }}>
-        {SUBJECTS.map((sub) => {
-          const cardContent = (
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "24px" }}>
+        {filteredSubjects.map((sub) => {
+          return (
             <div
+              key={sub.id}
               onClick={() => {
                 if (!sub.disabled) setActiveSubject(sub.id);
               }}
               style={{
-                background: "var(--surface)", 
-                border: "1px solid var(--border)",
-                borderRadius: "12px", 
-                padding: "20px", 
+                background: t.surface,
+                border: `1px solid ${t.border}`,
+                borderRadius: '16px',
+                padding: '24px',
                 cursor: sub.disabled ? "not-allowed" : "pointer",
-                transition: "all 0.18s ease", 
-                opacity: sub.disabled ? 0.5 : 1,
-                minHeight: "150px",
-                display: "flex", 
-                flexDirection: "column", 
-                height: "100%", 
-                flexGrow: 1,
+                transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                opacity: sub.disabled ? 0.6 : 1,
+                display: "flex",
+                flexDirection: "column",
+                position: 'relative',
+                overflow: 'hidden',
+                minHeight: '280px'
               }}
               onMouseEnter={e => {
                 if (!sub.disabled) {
-                  (e.currentTarget as HTMLElement).style.border = `1px solid ${sub.color}`;
+                  (e.currentTarget as HTMLElement).style.borderColor = sub.color;
                   (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)";
-                  (e.currentTarget as HTMLElement).style.boxShadow = `0 8px 24px ${sub.color}30`;
+                  (e.currentTarget as HTMLElement).style.boxShadow = `0 12px 24px -10px ${sub.color}40`;
                 }
               }}
               onMouseLeave={e => {
                 if (!sub.disabled) {
-                  (e.currentTarget as HTMLElement).style.border = "1px solid var(--border)";
+                  (e.currentTarget as HTMLElement).style.borderColor = t.border;
                   (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
                   (e.currentTarget as HTMLElement).style.boxShadow = "none";
                 }
               }}
             >
-              <div style={{
-                width: "44px",
-                height: "44px",
-                borderRadius: "10px",
-                background: `${sub.color}15`,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                marginBottom: "14px"
-              }}>
-                <sub.icon size={22} strokeWidth={2} style={{ color: sub.color }} />
+              {/* Header */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
+                <div style={{
+                  width: "56px",
+                  height: "56px",
+                  borderRadius: "14px",
+                  background: `${sub.color}15`,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  border: `1px solid ${sub.color}30`
+                }}>
+                  <sub.icon size={28} strokeWidth={2} style={{ color: sub.color }} />
+                </div>
+                
+                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+                  <span style={{
+                    padding: '4px 12px', borderRadius: 20, fontSize: '0.7rem',
+                    fontWeight: 700, background: `${sub.color}15`, color: sub.color, height: 'fit-content',
+                    border: `1px solid ${sub.color}30`
+                  }}>
+                    {sub.difficulty}
+                  </span>
+                </div>
               </div>
-              <div className="flex justify-between items-center mb-2">
-                <h3 style={{ fontSize: "18px", fontWeight: 700, color: "var(--text)", margin: 0 }}>{sub.title}</h3>
+
+              <h2 style={{ marginBottom: '0.5rem', fontSize: '20px', fontWeight: 700, color: 'var(--text)' }}>
+                {sub.title}
                 {sub.disabled && (
-                  <span className="text-[10px] bg-white/5 border border-white/10 text-gray-500 px-1.5 py-0.5 rounded font-bold">Soon</span>
+                  <span style={{ marginLeft: 8, fontSize: '10px', background: 'rgba(255,255,255,0.1)', padding: '2px 6px', borderRadius: 4, verticalAlign: 'middle' }}>SOON</span>
                 )}
+              </h2>
+              
+              <p style={{ color: t.muted, marginBottom: '1.25rem', lineHeight: 1.5, fontSize: '14px', flexGrow: 1 }}>
+                {sub.description}
+              </p>
+
+              <div style={{
+                display: 'flex', gap: 16, padding: '12px 14px',
+                background: 'var(--surface2)',
+                borderRadius: '10px',
+                marginBottom: '1.25rem', alignItems: 'center'
+              }}>
+                <small style={{ color: t.muted, display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: '12px', fontWeight: 500 }}>
+                  <Clock size={14} style={{ color: sub.color }} />
+                  {sub.duration}
+                </small>
+                <small style={{ color: t.muted, display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: '12px', fontWeight: 500 }}>
+                  <ListCollapse size={14} style={{ color: sub.color }} />
+                  {sub.chapters} Chapters
+                </small>
               </div>
-              <p style={{ fontSize: "13px", color: "var(--muted2)", margin: 0, lineHeight: 1.4, flexGrow: 1 }}>{sub.description}</p>
+
+              <div style={{ display: 'flex', gap: 12 }}>
+                <button 
+                  disabled={sub.disabled}
+                  style={{ 
+                    flex: 1, background: sub.disabled ? t.surface2 : 'var(--orange)', border: 'none', 
+                    padding: '10px 16px', borderRadius: 10, color: sub.disabled ? t.muted : 'white', 
+                    fontWeight: 700, cursor: sub.disabled ? 'not-allowed' : 'pointer', height: 42, fontSize: '14px',
+                    transition: 'all 0.2s'
+                  }}
+                  onMouseOver={(e) => { if(!sub.disabled) e.currentTarget.style.filter = 'brightness(1.1)'; }}
+                  onMouseOut={(e) => { if(!sub.disabled) e.currentTarget.style.filter = 'brightness(1)'; }}
+                >
+                  {sub.disabled ? 'Coming Soon' : 'Start Tutorial'}
+                </button>
+              </div>
             </div>
           );
-
-          return <div key={sub.title}>{cardContent}</div>;
         })}
       </div>
     </div>
