@@ -1,8 +1,6 @@
 "use client";
-
 import Link from "next/link";
-import { Map, Newspaper, HelpCircle, Award, BookOpen, Lightbulb, Lightbulb } from "lucide-react";
-
+import { Map, Newspaper, HelpCircle, Award, BookOpen, Lightbulb, Target } from "lucide-react";
 const RESOURCES_CARDS = [
   {
     title: "Roadmaps",
@@ -35,12 +33,6 @@ const RESOURCES_CARDS = [
     icon: Lightbulb,
     topics: ["Fullstack", "AI/ML", "Cybersecurity"],
     color: "#a855f7",
-    title: "Project Ideas",
-    href: "/user/resources/project-ideas",
-    description: "Curated project ideas for Fullstack, AI/ML, and Cybersecurity to build your portfolio",
-    icon: Lightbulb,
-    topics: ["Fullstack", "AI/ML", "Cybersecurity"],
-    color: "#a855f7",
   },
   {
     title: "Certificates",
@@ -50,32 +42,23 @@ const RESOURCES_CARDS = [
     topics: ["AWS", "Cyber Security", "Cisco", "Google Cloud", "TensorFlow", "Red Hat", "CUDA"],
     color: "#fbbf24",
   },
-{
-  title: "GATE Notes",
-  href: "/user/resources/gate-notes",
-  description: "Access GATE preparation notes and study material.",
-  icon: "📚",
-  topics: ["OS", "DBMS", "CN", "COA"],
-  color: "#123456",
-},
-{
-  title: "Career Paths",
-  href: "/user/resources/career-paths",
-  description: "Explore career paths with roadmaps, salaries and quizzes.",
-  icon: "🎯",
-  topics: ["Business Analyst", "Data Analyst", "BD", "Testing"],
-  color: "#f97316",
-},
+  {
+    title: "Career Paths",
+    href: "/user/resources/career-paths",
+    description: "Explore career paths with roadmaps, salaries and quizzes.",
+    icon: Target,
+    topics: ["Business Analyst", "Data Analyst", "BD", "Testing"],
+    color: "#f97316",
+  },
   {
     title: "GATE Notes",
     href: "/user/resources/gate-notes",
     description: "Access GATE preparation notes and study material.",
     icon: BookOpen,
-    topics: ["CD", "CN", "COA", "DS", "DAA", "OS", "TOC"],
+    topics: ["CD", "CN", "COA", "DS", "DAA", "OS", "TOC", "DBMS"],
     color: "#0ea5e9",
   }
 ];
-
 export default function ResourcesHome({ basePath = "/user/resources" }: { basePath?: string }) {
   return (
     <div className="p-6">
@@ -87,52 +70,10 @@ export default function ResourcesHome({ basePath = "/user/resources" }: { basePa
           Everything you need to ace your placement
         </p>
       </div>
-
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "20px" }}>
         {RESOURCES_CARDS.map((card) => {
           const finalHref = card.href.replace("/user/resources", basePath);
           return (
-          <Link href={finalHref} key={card.title} style={{ textDecoration: "none" }}>
-            <div
-              style={{
-                    background: "var(--surface)", border: "1px solid var(--border)",
-                    borderRadius: "16px", padding: "24px", cursor: "pointer",
-                    transition: "all 0.2s ease", position: "relative",
-                    minHeight: "260px",
-              }}
-              onMouseEnter={e => {
-                (e.currentTarget as HTMLElement).style.border = `1px solid ${card.color}`;
-                (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)";
-                (e.currentTarget as HTMLElement).style.boxShadow = `0 8px 24px ${card.color}30`;
-              }}
-              onMouseLeave={e => {
-                (e.currentTarget as HTMLElement).style.border = "1px solid var(--border)";
-                (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
-                (e.currentTarget as HTMLElement).style.boxShadow = "none";
-              }}
-            >
-              <div style={{ fontSize: "32px", marginBottom: "12px" }}>{card.icon}</div>
-              <h2 style={{ fontSize: "20px", fontWeight: 700, color: "var(--text)", marginBottom: "8px" }}>
-                {card.title}
-              </h2>
-              <p style={{ fontSize: "13px", color: "var(--muted2)", marginBottom: "16px", lineHeight: 1.5 }}>
-                {card.description}
-              </p>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
-                {card.topics.map((topic) => (
-                  <span key={topic} style={{
-                    fontSize: "11px", fontWeight: 600,
-                    padding: "4px 10px", borderRadius: "999px",
-                    background: `${card.color}15`, color: card.color,
-                    border: `1px solid ${card.color}30`,
-                  }}>
-                    {topic}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </Link>
-        )})}
             <Link href={finalHref} key={card.title} style={{ textDecoration: "none", display: "flex", flexDirection: "column", height: "100%" }}>
               <div
                 style={{
@@ -162,7 +103,11 @@ export default function ResourcesHome({ basePath = "/user/resources" }: { basePa
                   justifyContent: "center",
                   marginBottom: "16px"
                 }}>
-                  <card.icon size={24} strokeWidth={2} style={{ color: card.color }} />
+                  {typeof card.icon === 'string' ? (
+                    <span style={{ fontSize: "24px" }}>{card.icon}</span>
+                  ) : (
+                    <card.icon size={24} strokeWidth={2} style={{ color: card.color }} />
+                  )}
                 </div>
                 <h2 style={{ fontSize: "20px", fontWeight: 700, color: "var(--text)", marginBottom: "8px" }}>
                   {card.title}
