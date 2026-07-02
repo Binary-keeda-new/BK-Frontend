@@ -80,12 +80,7 @@ const NavBtn = ({
 }) => (
   <button
     onClick={onClick}
-    className="px-[clamp(6px,2vw,8px)] py-[clamp(2px,0.8vw,3px)] rounded-[7px] text-[clamp(11px,3vw,13px)] cursor-pointer transition-all duration-150"
-    style={{
-      background: "var(--surface2)",
-      border: "1px solid var(--border)",
-      color: "var(--muted2)",
-    }}
+    className="cursor-pointer rounded-md border border-[var(--border)] bg-[var(--surface2)] px-2 py-1 text-xs text-[var(--muted2)] transition-all duration-150 hover:bg-white/5"
   >
     {children}
   </button>
@@ -135,66 +130,35 @@ export default function ActivityCalendar({
 
   return (
     <div className="animated-border h-full">
-      <div
-        className="animated-border-inner overflow-hidden h-full flex flex-col"
-        style={{ padding: "clamp(14px, 4vw, 22px)" }}
-      >
-        <div
-          className="flex justify-between items-start"
-          style={{ marginBottom: "clamp(10px, 3vw, 14px)" }}
-        >
-          <div
-            className="font-syne font-bold"
-            style={{
-              fontSize: "clamp(13px, 3.5vw, 15px)",
-              color: "var(--text)",
-            }}
-          >
-            Activity Calendar
-          </div>
-
-          <div className="text-right">
-            <div
-              className="font-semibold flex items-center gap-1 justify-end"
-              style={{
-                fontSize: "clamp(9px, 2.5vw, 11px)",
-                color: "var(--muted2)",
-              }}
-            >
-              🔥 Streak
+      <div className="animated-border-inner flex h-full flex-col overflow-hidden p-4 sm:p-5">
+        <div className="mb-[clamp(10px,3vw,14px)] flex items-start justify-between">
+          <div>
+            <div className="font-syne text-[clamp(13px,3.5vw,15px)] font-bold text-[var(--text)]">
+              Activity Calendar
             </div>
 
-           <div
-              className="font-syne font-extrabold"
-              style={{
-                fontSize: "clamp(17px, 4.5vw, 20px)",
-                color: "var(--muted)",
-                lineHeight: 1.1,
-              }}
-            >
+            <div className="font-syne mt-0.5 bg-gradient-to-br from-[#FFB366] to-[#F15A22] bg-clip-text text-[clamp(17px,4.5vw,20px)] font-extrabold leading-[1.2] text-transparent drop-shadow-[0_0_12px_rgba(241,90,34,0.35)] transition-all duration-200">
               {highestStreak} {highestStreak === 1 ? "day" : "days"}
             </div>
-            <div
-              style={{
-                fontSize: "clamp(9px, 2.2vw, 11px)",
-                color: "var(--orange)",
-                marginTop: "4px",
-              }}
+          </div>
+
+          <div className="group relative">
+            <button
+              type="button"
+              className="inline-flex h-[18px] w-[18px] cursor-help items-center justify-center rounded-full border border-[var(--border)] bg-[var(--surface2)] text-[11px] text-[var(--muted2)]"
             >
-              {highestStreak > 0
-                ? "Keep going — your best streak is growing."
-                : "Start practicing to build your streak."}
+              i
+            </button>
+
+            <div className="absolute right-0 top-[26px] z-50 hidden w-[220px] rounded-[10px] border border-[var(--border)] bg-[rgba(20,20,20,0.96)] px-3 py-2.5 text-[11px] leading-[1.4] text-[var(--text)] shadow-[0_12px_30px_rgba(0,0,0,0.35)] group-hover:block">
+              Your streak is based on consecutive daily dashboard visits. If
+              you miss a day, your current streak resets, but your highest
+              streak remains saved.
             </div>
           </div>
         </div>
 
-        <div
-          className="relative flex items-center"
-          style={{
-            gap: "clamp(4px, 1.5vw, 6px)",
-            marginBottom: "clamp(10px, 3vw, 14px)",
-          }}
-        >
+        <div className="relative mb-[clamp(10px,3vw,14px)] flex items-center gap-[clamp(4px,1.5vw,6px)]">
           <NavBtn
             onClick={() =>
               setCurrentMonth(
@@ -223,20 +187,11 @@ export default function ActivityCalendar({
             ‹
           </NavBtn>
 
-          <div
-            className="absolute left-1/2 -translate-x-1/2 font-semibold whitespace-nowrap"
-            style={{
-              fontSize: "clamp(12px, 3vw, 13px)",
-              color: "var(--text)",
-            }}
-          >
+          <div className="absolute left-1/2 -translate-x-1/2 whitespace-nowrap text-[clamp(12px,3vw,13px)] font-semibold text-[var(--text)]">
             {monthLabel}
           </div>
 
-          <div
-            className="flex ml-auto"
-            style={{ gap: "clamp(4px, 1.5vw, 6px)" }}
-          >
+          <div className="ml-auto flex gap-[clamp(4px,1.5vw,6px)]">
             <NavBtn
               onClick={() =>
                 setCurrentMonth(
@@ -267,20 +222,14 @@ export default function ActivityCalendar({
           </div>
         </div>
 
-        <div className="flex-1 flex items-center justify-center">
-          <div
-            className="grid grid-cols-7 text-center w-full"
-            style={{ gap: "clamp(2px, 0.8vw, 3px)" }}
-          >
+        <div className="flex flex-1 items-center justify-center">
+          <div className="grid w-full grid-cols-7 gap-[clamp(2px,0.8vw,3px)] text-center">
             {DAYS.map((d, i) => (
               <div
                 key={d}
-                className="font-bold uppercase tracking-[0.05em]"
-                style={{
-                  fontSize: "clamp(7px, 2vw, 9.5px)",
-                  padding: "clamp(3px, 1vw, 4px) 0",
-                  color: i >= 5 ? "rgba(241,90,34,0.7)" : "var(--muted)",
-                }}
+                className={`py-[clamp(3px,1vw,4px)] text-[clamp(7px,2vw,9.5px)] font-bold uppercase tracking-[0.05em] ${
+                  i >= 5 ? "text-[rgba(241,90,34,0.7)]" : "text-[var(--muted)]"
+                }`}
               >
                 {d}
               </div>
@@ -291,70 +240,33 @@ export default function ActivityCalendar({
                 const isWeekend = ci >= 5;
                 const isVisited = visitedDates.includes(cell.date);
 
-                const baseColor =
-                  cell.isToday || isVisited
-                    ? "#fff"
-                    : cell.otherMonth
-                    ? "var(--muted)"
-                    : isWeekend
-                    ? "rgba(241,90,34,0.85)"
-                    : "var(--text)";
+                const dayClass = [
+                  "relative mx-auto flex cursor-pointer items-center justify-center rounded-full",
+                  "h-[clamp(28px,6vw,36px)] w-[clamp(28px,6vw,36px)]",
+                  "text-[clamp(10px,2.8vw,12px)] transition-all duration-150",
 
-                const bgColor = cell.isToday
-                          ? "var(--orange)"
-                          : isVisited
-                          ? "rgba(34, 197, 94, 0.08)"
-                          : "transparent";
+                  cell.isToday || isVisited ? "font-bold" : "font-normal",
+
+                  cell.isToday || isVisited
+                    ? "text-white backdrop-blur-[10px]"
+                    : cell.otherMonth
+                    ? "text-[var(--muted)]"
+                    : isWeekend
+                    ? "text-[rgba(241,90,34,0.85)]"
+                    : "text-[var(--text)]",
+
+                  cell.otherMonth && !isVisited ? "opacity-40" : "opacity-100",
+
+                  cell.isToday
+                    ? "border-2 border-[#22c55e] bg-[rgba(34,197,94,0.18)] shadow-[0_0_12px_rgba(34,197,94,0.25)]"
+                    : isVisited
+                    ? "border-2 border-[#f15a22] bg-transparent shadow-[0_0_10px_rgba(241,90,34,0.18)]"
+                    : "border border-transparent bg-transparent shadow-none",
+                ].join(" ");
 
                 return (
-                  <div
-                    key={`${wi}-${ci}-${cell.date}`}
-                    className="relative rounded-[8px] cursor-pointer transition-all duration-150"
-                    style={{
-                      fontSize: "clamp(10px, 2.8vw, 12px)",
-                      padding: "clamp(4px, 1.5vw, 6px) 0",
-                      color: baseColor,
-                      opacity: cell.otherMonth && !isVisited ? 0.4 : 1,
-                      background: bgColor,
-                      backdropFilter:
-                        cell.isToday || isVisited ? "blur(10px)" : "none",
-                      WebkitBackdropFilter:
-                        cell.isToday || isVisited ? "blur(10px)" : "none",
-                      border: isVisited
-                    ? "0.5px solid green"
-                  : cell.isToday
-              ? "1px solid rgba(255,255,255,0.18)"
-                       : "1px solid transparent",
-                      fontWeight: cell.isToday || isVisited ? 700 : 400,
-                      boxShadow: cell.isToday
-                        ? `
-                          inset 0 1px 0 rgba(255,255,255,0.16),
-                          0 0 0 1px rgba(241,90,34,0.25),
-                          0 8px 22px rgba(241,90,34,0.22)
-                        `
-                        : isVisited
-                        ? `
-                          inset 0 1px 0 rgba(255,255,255,0.08),
-                          0 0 0 1px rgba(34,197,94,0.25),
-                          0 8px 20px rgba(34,197,94,0.15)
-                        `
-                        : "none",
-                    }}
-                  >
+                  <div key={`${wi}-${ci}-${cell.date}`} className={dayClass}>
                     {cell.day}
-
-                    {isVisited && (
-                      <span
-                        className="absolute left-1/2 -translate-x-1/2 rounded-full block"
-                        style={{
-                          bottom: "2px",
-                          width: "clamp(4px, 1vw, 5px)",
-                          height: "clamp(4px, 1vw, 5px)",
-                          background: "#22c55e",
-                          boxShadow: "0 0 8px rgba(34,197,94,0.8)",
-                        }}
-                      />
-                    )}
                   </div>
                 );
               })
