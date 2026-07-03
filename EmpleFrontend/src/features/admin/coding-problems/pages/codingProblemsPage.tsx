@@ -34,7 +34,7 @@ const [isDeleting, setIsDeleting] =
   const fetchProblems = async () => {
   try {
     const response = await fetch(
-      'http://localhost:5000/api/v1/coding-problems'
+      'http://localhost:5000/api/v1/admin/coding-problems'
     );
 
     const data = await response.json();
@@ -57,7 +57,7 @@ const handleDeleteProblem = async () => {
     setIsDeleting(true);
 
     const response = await fetch(
-      `http://localhost:5000/api/v1/coding-problems/${problemToDelete._id}`,
+      `http://localhost:5000/api/v1/admin/coding-problems/${problemToDelete._id}`,
       {
         method: 'DELETE',
       }

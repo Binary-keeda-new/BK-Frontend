@@ -1,8 +1,8 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useEventsByCategory } from '@/features/user/Events/hooks/useEvents'
-import EventCard from '@/features/user/Events/components/EventCard'
+import { useEventsByCategory } from '@/features/user/events/hooks/useEvents'
+import EventCard from '@/features/user/events/components/EventCard'
 import { Sparkles } from 'lucide-react'
 
 export default function TechfestPage() {

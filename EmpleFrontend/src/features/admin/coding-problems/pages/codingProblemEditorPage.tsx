@@ -149,7 +149,7 @@ const [activeTab, setActiveTab] =
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/v1/coding-problems/${problemId}`,
+        `http://localhost:5000/api/v1/admin/coding-problems/${problemId}`,
         {
           method: 'PATCH',
           headers: {
@@ -194,7 +194,7 @@ const [activeTab, setActiveTab] =
   }
   try {
     const response = await fetch(
-      `http://localhost:5000/api/v1/coding-problems/${problemId}`,
+      `http://localhost:5000/api/v1/admin/coding-problems/${problemId}`,
       {
         method: 'PATCH',
         headers: {
@@ -255,7 +255,7 @@ if (hasEmptyExample) {
 }
   try {
     const response = await fetch(
-      `http://localhost:5000/api/v1/coding-problems/${problemId}`,
+      `http://localhost:5000/api/v1/admin/coding-problems/${problemId}`,
       {
         method: 'PATCH',
         headers: {
@@ -308,7 +308,7 @@ if (hasEmptyExample) {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/v1/coding-problems/${problemId}`,
+        `http://localhost:5000/api/v1/admin/coding-problems/${problemId}`,
         {
           method: 'PATCH',
           headers: {
@@ -362,7 +362,7 @@ if (hasEmptyExample) {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/v1/coding-problems/${problemId}`,
+        `http://localhost:5000/api/v1/admin/coding-problems/${problemId}`,
         {
           method: 'PATCH',
           headers: {
@@ -431,7 +431,7 @@ if (!updated[key]) {
 }
     try {
       const response = await fetch(
-        `http://localhost:5000/api/v1/coding-problems/${problemId}`,
+        `http://localhost:5000/api/v1/admin/coding-problems/${problemId}`,
         {
           method: 'PATCH',
           headers: {
@@ -508,7 +508,7 @@ if (!updated[key]) {
 
   try {
     const response = await fetch(
-      `http://localhost:5000/api/v1/coding-problems/${problemId}`,
+      `http://localhost:5000/api/v1/admin/coding-problems/${problemId}`,
       {
         method: 'PATCH',
         headers: {
@@ -558,7 +558,7 @@ const handleSaveHints = async () => {
 
   try {
     const response = await fetch(
-      `http://localhost:5000/api/v1/coding-problems/${problemId}`,
+      `http://localhost:5000/api/v1/admin/coding-problems/${problemId}`,
       {
         method: 'PATCH',
         headers: {
@@ -604,7 +604,7 @@ const handleSaveEditorial =
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/v1/coding-problems/${problemId}`,
+        `http://localhost:5000/api/v1/admin/coding-problems/${problemId}`,
         {
           method: 'PATCH',
           headers: {
@@ -644,7 +644,7 @@ const handleSaveEditorial =
   async () => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/v1/coding-problems/${problemId}`,
+        `http://localhost:5000/api/v1/admin/coding-problems/${problemId}`,
         {
           method: 'PATCH',
           headers: {
@@ -694,7 +694,7 @@ const handlePublish =
 }
     try {
       const response = await fetch(
-        `http://localhost:5000/api/v1/coding-problems/${problemId}`,
+        `http://localhost:5000/api/v1/admin/coding-problems/${problemId}`,
         {
           method: 'PATCH',
           headers: {
@@ -733,7 +733,7 @@ const handlePublish =
 const handleSaveExecution = async () => {
   try {
     const response = await fetch(
-      `http://localhost:5000/api/v1/coding-problems/${problemId}`,
+      `http://localhost:5000/api/v1/admin/coding-problems/${problemId}`,
       {
         method: 'PATCH',
         headers: {
@@ -768,7 +768,7 @@ const handleSaveExecution = async () => {
     const fetchProblem = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/v1/coding-problems/${problemId}`
+          `http://localhost:5000/api/v1/admin/coding-problems/${problemId}`
         );
 
         const data = await response.json();

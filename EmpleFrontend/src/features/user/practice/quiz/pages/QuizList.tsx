@@ -93,13 +93,8 @@ function getQuizAttemptState(
 }
 
 function getQuizActionLabel(attemptState: AttemptStatusItem | null) {
-<<<<<<< HEAD
-  if (!attemptState) return "Attempt →";
-  if (attemptState.status === "in_progress") return "Resume →";
-=======
   if (!attemptState) return "Attempt";
   if (attemptState.status === "in_progress") return "Resume";
->>>>>>> origin/develop
   return "Review";
 }
 

@@ -16,7 +16,7 @@ export default function CodingProblemPreviewPage({
   useEffect(() => {
     const fetchProblem = async () => {
       const response = await fetch(
-        `http://localhost:5000/api/v1/coding-problems/${problemId}`
+        `http://localhost:5000/api/v1/admin/coding-problems/${problemId}`
       );
 
       const data =
