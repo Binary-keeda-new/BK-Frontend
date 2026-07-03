@@ -97,11 +97,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
       {/* Footer strip */}
       <div className="auth-footer">
         <span>© 2026 <em style={{ color: 'var(--clr-accent)', fontStyle: 'normal' }}>Emple</em>. All rights reserved.</span>
-        <div className="auth-footer-links">
-          <Link href="#">Privacy</Link>
-          <Link href="#">Terms</Link>
-          <Link href="#">Help</Link>
-        </div>
+        
       </div>
     </div>
   )

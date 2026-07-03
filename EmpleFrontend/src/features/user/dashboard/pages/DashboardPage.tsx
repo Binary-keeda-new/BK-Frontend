@@ -71,20 +71,19 @@ export default function DashboardPage() {
     return <div className="p-6">Loading dashboard...</div>
   }
 
-  const displayName =
-    user.name ||
-    (user.email
-      ? user.email.split('@')[0].charAt(0).toUpperCase() +
-        user.email.split('@')[0].slice(1)
-      : 'User')
+  const fullName = user.name?.trim() || ''
+  const firstName = fullName ? fullName.split(' ')[0] : ''
 
   return (
     <main className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-[22px_24px]">
       <h2 className="text-white text-lg font-medium drop-shadow-[0_0_8px_rgba(255,255,255,0.5)] mb-4">
-        Welcome,{' '}
-        <span className="underline decoration-orange-500 underline-offset-4">
-          {displayName}
-        </span>
+        Welcome back{firstName ? `, ` : ''}
+        {firstName && (
+          <span className="underline decoration-orange-500 underline-offset-4">
+            {firstName}
+          </span>
+        )}
+        {' '}👋
       </h2>
 
       <div
