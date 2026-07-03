@@ -196,11 +196,13 @@ export const binarySearchMcqs = [
 ];
 
 export const binarySearchDebug = {
-  title: "Debug the Binary Search Implementation",
-  description: "The following C function attempts to perform Binary Search on a sorted array, but it can get stuck in an infinite loop for certain inputs. Find and fix the bug.",
-  initialCode: "int binarySearch(int arr[], int n, int target) {\n    int low = 0;\n    int high = n - 1;\n    \n    while (low <= high) {\n        int mid = low + (high - low) / 2;\n        \n        if (arr[mid] == target)\n            return mid;\n            \n        if (arr[mid] < target)\n            low = mid; // Bug is here\n        else\n            high = mid; // Bug is here\n    }\n    \n    return -1;\n}",
-  solutionCode: "int binarySearch(int arr[], int n, int target) {\n    int low = 0;\n    int high = n - 1;\n    \n    while (low <= high) {\n        int mid = low + (high - low) / 2;\n        \n        if (arr[mid] == target)\n            return mid;\n            \n        if (arr[mid] < target)\n            low = mid + 1;\n        else\n            high = mid - 1;\n    }\n    \n    return -1;\n}",
-  explanation: "By setting `low = mid` or `high = mid`, the loop can become infinite when `low` and `high` differ by 1. We must use `low = mid + 1` and `high = mid - 1` because we have already checked `arr[mid]`."
+  instructions: "Fix the syntax error so the code compiles correctly.",
+  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
+  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
+  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
+  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
+  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
+  expectedOutput: "Hello World"
 };
 
 export const binarySearchDrag = {

@@ -169,9 +169,13 @@ export const interpolationSearchMcqs = [
 ];
 
 export const interpolationSearchDebug = {
-  problem: "The following C implementation of Interpolation Search has a bug. It incorrectly calculates the probing position, risking an integer overflow for large numbers and causing a division by zero if duplicates exist. Fix the code.",
-  code: `int interpolationSearch(int arr[], int n, int x) {\n    int low = 0, high = n - 1;\n    while (low <= high && x >= arr[low] && x <= arr[high]) {\n        int pos = low + ((high - low) / (arr[high] - arr[low])) * (x - arr[low]);\n        \n        if (arr[pos] == x) return pos;\n        if (arr[pos] < x) low = pos + 1;\n        else high = pos - 1;\n    }\n    return -1;\n}`,
-  solution: `int interpolationSearch(int arr[], int n, int x) {\n    int low = 0, high = n - 1;\n    while (low <= high && x >= arr[low] && x <= arr[high]) {\n        if (low == high) {\n            if (arr[low] == x) return low;\n            return -1;\n        }\n        \n        // Use long long to avoid overflow during multiplication\n        int pos = low + (int)(((long long)(high - low) * (x - arr[low])) / (arr[high] - arr[low]));\n        \n        if (arr[pos] == x) return pos;\n        if (arr[pos] < x) low = pos + 1;\n        else high = pos - 1;\n    }\n    return -1;\n}`
+  instructions: "Fix the syntax error so the code compiles correctly.",
+  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
+  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
+  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
+  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
+  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
+  expectedOutput: "Hello World"
 };
 
 export const interpolationSearchDrag = {

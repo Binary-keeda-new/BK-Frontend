@@ -204,10 +204,13 @@ export const jumpSearchMcqs = [
 ];
 
 export const jumpSearchDebug = {
-  title: "Jump Search Debugging",
-  problem: "This Java implementation of Jump Search throws an IndexOutOfBoundsException for certain target values and arrays. Find and fix the boundary oversight.",
-  code: "public class JumpSearch {\n    public static int jumpSearch(int[] arr, int x) {\n        int n = arr.length;\n        int step = (int)Math.floor(Math.sqrt(n));\n        int prev = 0;\n        \n        // Bug: Potential out of bounds when jumping\n        while (arr[step - 1] < x) {\n            prev = step;\n            step += (int)Math.floor(Math.sqrt(n));\n            if (prev >= n) return -1;\n        }\n        \n        while (arr[prev] < x) {\n            prev++;\n            if (prev == Math.min(step, n)) return -1;\n        }\n        \n        if (arr[prev] == x) return prev;\n        return -1;\n    }\n}",
-  solution: "public class JumpSearch {\n    public static int jumpSearch(int[] arr, int x) {\n        int n = arr.length;\n        int step = (int)Math.floor(Math.sqrt(n));\n        int prev = 0;\n        \n        // Fix: Use Math.min(step, n) to prevent IndexOutOfBounds\n        while (arr[Math.min(step, n) - 1] < x) {\n            prev = step;\n            step += (int)Math.floor(Math.sqrt(n));\n            if (prev >= n) return -1;\n        }\n        \n        while (arr[prev] < x) {\n            prev++;\n            if (prev == Math.min(step, n)) return -1;\n        }\n        \n        if (arr[prev] == x) return prev;\n        return -1;\n    }\n}"
+  instructions: "Fix the syntax error so the code compiles correctly.",
+  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
+  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
+  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
+  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
+  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
+  expectedOutput: "Hello World"
 };
 
 export const jumpSearchDrag = {

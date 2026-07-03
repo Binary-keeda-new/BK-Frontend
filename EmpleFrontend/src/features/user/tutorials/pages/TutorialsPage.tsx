@@ -1,10 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
-import { Cpu, Workflow, BookOpen, Users, Star, Search, Clock, ListCollapse } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Cpu, Workflow, BookOpen, Users, Star, Search, Clock, ListCollapse, ArrowLeft } from "lucide-react";
 import CTutorialPage from "../c/pages/CTutorialPage"; // Import C tutorial feature directly
 import JavaTutorialPage from "../java/pages/JavaTutorialPage"; // Import Java tutorial feature
 import DAATutorialPage from "../daa/pages/DAATutorialPage";
+import TutorialsLandingPage from "./TutorialsLandingPage";
+import VideosPlaceholderPage from "./VideosPlaceholderPage";
 
 // Official stylized programming language logo SVGs
 const CLogo = (props: any) => (
@@ -58,7 +60,7 @@ const SUBJECTS = [
     disabled: false,
     difficulty: "Advanced",
     duration: "6-10 Weeks",
-    chapters: 15
+    chapters: 18
   },
   { 
     id: "dbms",
@@ -73,9 +75,26 @@ const SUBJECTS = [
   },
 ];
 
-export default function TutorialsPage() {
+export function TutorialsNotesPage({ onBackToLanding }: { onBackToLanding: () => void }) {
   const [activeSubject, setActiveSubject] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [progressStatus, setProgressStatus] = useState<Record<string, boolean>>({});
+
+  useEffect(() => {
+    const status: Record<string, boolean> = {};
+    SUBJECTS.forEach(sub => {
+      try {
+        const stored = localStorage.getItem(`${sub.id}_tutorial_progress`);
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (Object.keys(parsed).length > 0) {
+            status[sub.id] = true;
+          }
+        }
+      } catch (e) {}
+    });
+    setProgressStatus(status);
+  }, []);
 
   const t: Record<string, string> = {
     border: 'var(--border)',
@@ -97,6 +116,21 @@ export default function TutorialsPage() {
 
   return (
     <div className="fade-in" style={{ padding: '24px 0', maxWidth: '1200px', margin: '0 auto', paddingLeft: 24, paddingRight: 24 }}>
+      {/* Back Button */}
+      <button 
+        onClick={onBackToLanding}
+        style={{
+          display: 'inline-flex', alignItems: 'center', gap: 8, background: 'transparent',
+          border: 'none', color: t.muted, cursor: 'pointer', fontSize: '14px',
+          fontWeight: 600, padding: 0, marginBottom: '24px',
+          transition: 'color 0.2s'
+        }}
+        onMouseEnter={e => (e.currentTarget.style.color = t.text)}
+        onMouseLeave={e => (e.currentTarget.style.color = t.muted)}
+      >
+        Back to Tutorials
+      </button>
+
       {/* Header Section */}
       <div style={{ marginBottom: '2rem' }}>
         <h1 style={{ fontFamily: "var(--font-syne, sans-serif)", fontSize: "28px", fontWeight: 800, color: "var(--text)", marginBottom: '4px', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
@@ -107,36 +141,6 @@ export default function TutorialsPage() {
         </p>
       </div>
 
-      {/* Stats Overview */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-        gap: 20,
-        marginBottom: '3rem'
-      }}>
-        {[
-          { label: 'Available Tutorials', value: '4', color: '#ff6b35', icon: BookOpen },
-          { label: 'Learners', value: '15.2k', color: '#22c55e', icon: Users },
-          { label: 'Avg Rating', value: '4.8', color: '#fbbf24', icon: Star },
-        ].map((s, i) => (
-          <div key={i} style={{
-            background: t.surface, padding: '20px 24px', borderRadius: 20,
-            border: `1px solid ${t.border}`, display: 'flex', flexDirection: 'column', gap: 8,
-            transition: 'transform 0.3s ease'
-          }} className="stat-card">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <small style={{ color: t.muted, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '11px' }}>{s.label}</small>
-              <div style={{
-                width: 32, height: 32, borderRadius: '8px',
-                background: `${s.color}15`, display: 'flex', alignItems: 'center', justifyContent: 'center'
-              }}>
-                <s.icon size={16} style={{ color: s.color }} />
-              </div>
-            </div>
-            <div style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--text)' }}>{s.value}</div>
-          </div>
-        ))}
-      </div>
 
       {/* Toolbar */}
       <div style={{
@@ -261,10 +265,6 @@ export default function TutorialsPage() {
                 marginBottom: '1.25rem', alignItems: 'center'
               }}>
                 <small style={{ color: t.muted, display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: '12px', fontWeight: 500 }}>
-                  <Clock size={14} style={{ color: sub.color }} />
-                  {sub.duration}
-                </small>
-                <small style={{ color: t.muted, display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: '12px', fontWeight: 500 }}>
                   <ListCollapse size={14} style={{ color: sub.color }} />
                   {sub.chapters} Chapters
                 </small>
@@ -282,13 +282,31 @@ export default function TutorialsPage() {
                   onMouseOver={(e) => { if(!sub.disabled) e.currentTarget.style.filter = 'brightness(1.1)'; }}
                   onMouseOut={(e) => { if(!sub.disabled) e.currentTarget.style.filter = 'brightness(1)'; }}
                 >
-                  {sub.disabled ? 'Coming Soon' : 'Start Tutorial'}
+                  {sub.disabled ? 'Coming Soon' : (progressStatus[sub.id] ? 'Continue' : 'Start Tutorial')}
                 </button>
               </div>
             </div>
           );
         })}
       </div>
+    </div>
+  );
+}
+
+export default function TutorialsPage() {
+  const [viewMode, setViewMode] = useState<"landing" | "notes" | "videos">("landing");
+
+  if (viewMode === "landing") {
+    return <TutorialsLandingPage onSelect={setViewMode} />;
+  }
+
+  if (viewMode === "videos") {
+    return <VideosPlaceholderPage onBack={() => setViewMode("landing")} />;
+  }
+
+  return (
+    <div style={{ position: 'relative' }}>
+      <TutorialsNotesPage onBackToLanding={() => setViewMode("landing")} />
     </div>
   );
 }

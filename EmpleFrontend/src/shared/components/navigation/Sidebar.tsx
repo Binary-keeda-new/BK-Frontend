@@ -92,10 +92,15 @@ export default function Sidebar() {
     }
   };
 
-  const handleItemClick = (e: React.MouseEvent, isPremium: boolean) => {
+  const handleItemClick = (e: React.MouseEvent, isPremium: boolean, isActive: boolean, href: string) => {
     if (isPremium && !isAuthenticated) {
       e.preventDefault();
       setShowLoginModal(true);
+      return;
+    }
+    if (isActive) {
+      e.preventDefault();
+      window.location.href = href;
     }
   };
 
@@ -132,7 +137,7 @@ export default function Sidebar() {
           if (item.label === "Jobs" && pathname.startsWith("/jobs")) isActive = true;
           const isPremium = true;
           return (
-            <Link href={item.href} key={item.label} style={{ textDecoration: "none" }} onClick={(e) => handleItemClick(e, isPremium)}>
+            <Link href={item.href} key={item.label} style={{ textDecoration: "none" }} onClick={(e) => handleItemClick(e, isPremium, isActive, item.href)}>
               <div
                 data-tip={item.tip}
                 className={`${itemBase} mb-[1px]`}

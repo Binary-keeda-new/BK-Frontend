@@ -15,7 +15,7 @@ import {
   RotateCcw,
   ChevronDown,
   ChevronUp,
-  Map
+  TrendingUp
 } from "lucide-react";
 
 interface DAATutorialPageProps {
@@ -28,7 +28,7 @@ const TABS = [
   { id: "debug", label: "Debug", icon: Bug },
   { id: "complete", label: "Complete", icon: Edit3 },
   { id: "arrange", label: "Arrange", icon: Shuffle },
-  { id: "roadmap", label: "Roadmap", icon: Map },
+  { id: "roadmap", label: "Progress", icon: TrendingUp },
 ];
 
 export default function DAATutorialPage({ onBack }: DAATutorialPageProps) {
@@ -67,6 +67,12 @@ export default function DAATutorialPage({ onBack }: DAATutorialPageProps) {
     }
   };
 
+  const currentModuleChapters = CHAPTERS.filter(c => c.module === expandedModule);
+  const currentModuleTotalSteps = currentModuleChapters.length * 5;
+  const currentModuleCompletedSteps = Object.keys(completedMap).filter(key => 
+    currentModuleChapters.some(c => key.startsWith(`${c.id}-`))
+  ).length;
+
   return (
     <div className="min-h-screen text-[var(--text)] pb-12 animate-fadeIn bg-transparent">
       {/* Container: wider max-w for two-column support */}
@@ -101,32 +107,50 @@ export default function DAATutorialPage({ onBack }: DAATutorialPageProps) {
             </p>
           </div>
 
-          {/* User Stats Card */}
-          <div 
-            className="p-4 rounded-xl border w-full md:w-56 shrink-0"
-            style={{ background: "var(--surface)", borderColor: "var(--border)" }}
-          >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-1.5">
-                <Target className="w-4 h-4" style={{ color: "var(--orange)" }} />
-                <span className="text-xs font-bold text-[var(--text)]">Progress</span>
-              </div>
-              <div className="flex items-center gap-2">
-                  <span 
-                    className="text-xs px-2 py-0.5 rounded font-bold border"
-                    style={{ background: "rgba(255,255,255,0.03)", borderColor: "var(--border)", color: "var(--orange)" }}
-                  >
-                    {Object.keys(completedMap).length} / {CHAPTERS.length * 5} Done
-                  </span>
-                  <button 
-                    onClick={resetProgress}
-                    title="Reset Progress"
-                    className="p-1 rounded-full text-[var(--muted2)] hover:text-red-500 hover:bg-red-500/10 transition active:scale-90 outline-none flex items-center justify-center"
-                    style={{ border: "1px solid var(--border)" }}
-                  >
-                    <RotateCcw className="w-3.5 h-3.5" />
-                  </button>
+          {/* User Stats Card - Modernized */}
+          <div className="relative group w-full md:w-64 shrink-0 rounded-2xl overflow-hidden shadow-lg">
+            {/* Dynamic AI Gradient Border (visible on hover) */}
+            <div className="absolute inset-0 bg-gradient-to-r from-[var(--orange)] via-purple-500 to-[var(--orange)] opacity-0 group-hover:opacity-30 transition-opacity duration-500 animate-gradient-xy blur-[2px]"></div>
+            
+            <div 
+              className="relative p-4 rounded-2xl border flex flex-col gap-3 backdrop-blur-md transition-all duration-300 group-hover:border-transparent group-hover:bg-white/5"
+              style={{ background: "rgba(255, 255, 255, 0.02)", borderColor: "var(--border)" }}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="p-1.5 rounded-lg bg-[var(--orange)]/10">
+                    <Target className="w-4 h-4" style={{ color: "var(--orange)" }} />
+                  </div>
+                  <span className="text-sm font-bold text-[var(--text)]">Module Progress</span>
                 </div>
+                <button 
+                  onClick={resetProgress}
+                  title="Reset Progress"
+                  className="p-1.5 rounded-lg text-[var(--muted2)] hover:text-red-400 hover:bg-red-400/10 transition-all duration-200 active:scale-95 outline-none flex items-center justify-center"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
+              {/* Progress Bar & Text */}
+              <div className="space-y-2 mt-1">
+                <div className="flex items-center justify-between text-xs font-semibold">
+                  <span style={{ color: "var(--muted2)" }}>Tasks Completed</span>
+                  <span style={{ color: "var(--orange)" }}>
+                    {currentModuleCompletedSteps} / {currentModuleTotalSteps}
+                  </span>
+                </div>
+                {/* Sleek Progress Bar */}
+                <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden border" style={{ borderColor: "rgba(255,255,255,0.05)" }}>
+                  <div 
+                    className="h-full rounded-full transition-all duration-700 ease-out"
+                    style={{ 
+                      width: `${currentModuleTotalSteps > 0 ? (currentModuleCompletedSteps / currentModuleTotalSteps) * 100 : 0}%`,
+                      background: "linear-gradient(90deg, var(--orange), #ff8a00)"
+                    }}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -298,11 +322,11 @@ export default function DAATutorialPage({ onBack }: DAATutorialPageProps) {
               {activeTab === "roadmap"  && (
                 <div className="space-y-6">
                   <div className="pb-4 border-b" style={{ borderColor: "var(--border)" }}>
-                    <h3 className="text-xl font-bold mb-2">Syllabus Roadmap</h3>
-                    <p className="text-sm text-[var(--muted2)]">Track your progress across all {CHAPTERS.length} chapters.</p>
+                    <h3 className="text-xl font-bold mb-2">Syllabus Progress</h3>
+                    <p className="text-sm text-[var(--muted2)]">Track your progress across the {expandedModule} module.</p>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {CHAPTERS.map(ch => {
+                    {CHAPTERS.filter(c => (c.module || "") === expandedModule).map(ch => {
                       const isCurrent = chapter === ch.id;
                       const completed = ["learn", "mcq", "debug", "complete", "arrange"].every(
                         tId => completedMap[`${ch.id}-${tId}`]

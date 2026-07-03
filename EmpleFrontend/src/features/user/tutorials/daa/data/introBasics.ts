@@ -183,28 +183,13 @@ export const introBasicsMcqs = [
 ];
 
 export const introBasicsDebug = {
-  problemStatement: "The following C function is supposed to return the maximum of three integers, but it has a logical flaw. Fix the code so it works correctly.",
-  code: `int findMaxOfThree(int a, int b, int c) {
-    int max = a;
-    if (b > a) {
-        max = b;
-    }
-    if (c > a) {
-        max = c;
-    }
-    return max;
-}`,
-  solution: `int findMaxOfThree(int a, int b, int c) {
-    int max = a;
-    if (b > max) {
-        max = b;
-    }
-    if (c > max) {
-        max = c;
-    }
-    return max;
-}`,
-  explanation: "The original code compared `c` with `a` instead of `max`. If `b` was the largest, but `c` was greater than `a` yet smaller than `b`, `max` would incorrectly be updated to `c`."
+  instructions: "Fix the logical bug in findMaxOfThree. It should correctly return the maximum of a, b, and c.",
+  buggyC: "#include <stdio.h>\n\nint findMaxOfThree(int a, int b, int c) {\n    int max = a;\n    if (b > a) {\n        max = b;\n    }\n    if (c > a) {\n        max = c;\n    }\n    return max;\n}\n\nint main() {\n    printf(\"%d\\n\", findMaxOfThree(10, 20, 15));\n    return 0;\n}",
+  fixedC: "#include <stdio.h>\n\nint findMaxOfThree(int a, int b, int c) {\n    int max = a;\n    if (b > max) {\n        max = b;\n    }\n    if (c > max) {\n        max = c;\n    }\n    return max;\n}\n\nint main() {\n    printf(\"%d\\n\", findMaxOfThree(10, 20, 15));\n    return 0;\n}",
+  buggyJava: "public class Main {\n    public static int findMaxOfThree(int a, int b, int c) {\n        int max = a;\n        if (b > a) {\n            max = b;\n        }\n        if (c > a) {\n            max = c;\n        }\n        return max;\n    }\n    public static void main(String[] args) {\n        System.out.println(findMaxOfThree(10, 20, 15));\n    }\n}",
+  fixedJava: "public class Main {\n    public static int findMaxOfThree(int a, int b, int c) {\n        int max = a;\n        if (b > max) {\n            max = b;\n        }\n        if (c > max) {\n            max = c;\n        }\n        return max;\n    }\n    public static void main(String[] args) {\n        System.out.println(findMaxOfThree(10, 20, 15));\n    }\n}",
+  hints: ["Check the second if-condition.","Are you comparing 'c' with 'a' or 'max'?","Change 'c > a' to 'c > max'."],
+  expectedOutput: "20"
 };
 
 export const introBasicsDrag = {

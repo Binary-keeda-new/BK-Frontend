@@ -59,6 +59,12 @@ import { sortSelectionContent, sortSelectionMcqs, sortSelectionDebug, sortSelect
 import { sortInsertionContent, sortInsertionMcqs, sortInsertionDebug, sortInsertionDrag, sortInsertionComplete } from "./sortInsertion";
 import { sortMergeContent, sortMergeMcqs, sortMergeDebug, sortMergeDrag, sortMergeComplete } from "./sortMerge";
 import { sortQuickContent, sortQuickMcqs, sortQuickDebug, sortQuickDrag, sortQuickComplete } from "./sortQuick";
+import { dpFibonacciContent, dpFibonacciMcqs, dpFibonacciDebug, dpFibonacciDrag, dpFibonacciComplete } from "./dpFibonacci";
+import { dpLCSContent, dpLCSMcqs, dpLCSDebug, dpLCSDrag, dpLCSComplete } from "./dpLCS";
+import { dpKnapsackContent, dpKnapsackMcqs, dpKnapsackDebug, dpKnapsackDrag, dpKnapsackComplete } from "./dpKnapsack";
+import { dpCoinContent, dpCoinMcqs, dpCoinDebug, dpCoinDrag, dpCoinComplete } from "./dpCoin";
+import { dpEditDistanceContent, dpEditDistanceMcqs, dpEditDistanceDebug, dpEditDistanceDrag, dpEditDistanceComplete } from "./dpEditDistance";
+import { dpMatrixContent, dpMatrixMcqs, dpMatrixDebug, dpMatrixDrag, dpMatrixComplete } from "./dpMatrix";
 
 export const CHAPTERS = [
   // Module 1
@@ -77,22 +83,43 @@ export const CHAPTERS = [
   { id: "sort_selection", label: "Selection Sort", module: "Module 3: Sorting Algorithms" },
   { id: "sort_insertion", label: "Insertion Sort", module: "Module 3: Sorting Algorithms" },
   { id: "sort_merge", label: "Merge Sort", module: "Module 3: Sorting Algorithms" },
-  { id: "sort_quick", label: "Quick Sort", module: "Module 3: Sorting Algorithms" }
+  { id: "sort_quick", label: "Quick Sort", module: "Module 3: Sorting Algorithms" },
+
+  // Module 4
+  { id: "dp_fibonacci", label: "Fibonacci Numbers", module: "Module 4: Dynamic Programming" },
+  { id: "dp_lcs", label: "Longest Common Subsequence", module: "Module 4: Dynamic Programming" },
+  { id: "dp_knapsack", label: "0/1 Knapsack", module: "Module 4: Dynamic Programming" },
+  { id: "dp_coin", label: "Coin Change", module: "Module 4: Dynamic Programming" },
+  { id: "dp_edit", label: "Edit Distance", module: "Module 4: Dynamic Programming" },
+  { id: "dp_matrix", label: "Matrix Chain Multiplication", module: "Module 4: Dynamic Programming" }
 ];
 
+function formatContent(content: any, defaultTitle: string) {
+  if (Array.isArray(content)) {
+    return { title: defaultTitle, description: "Learn about this topic in detail.", points: content, code: "" };
+  }
+  return content;
+}
+
 export const CONTENT: Record<string, any> = {
-  intro_basics: introBasicsContent,
-  intro_asymptotic: asymptoticContent,
-  search_linear: linearSearchContent,
-  search_binary: binarySearchContent,
-  search_jump: jumpSearchContent,
-  search_interpolation: interpolationSearchContent,
-  search_exponential: exponentialSearchContent,
-  sort_bubble: { title: "Bubble Sort", description: "Learn the simplest sorting algorithm that repeatedly steps through the list, comparing adjacent elements and swapping them if they are in the wrong order.", points: sortBubbleContent as any, code: "" },
-  sort_selection: { title: "Selection Sort", description: "Understand how to sort an array by repeatedly finding the minimum element from the unsorted part and putting it at the beginning.", points: sortSelectionContent as any, code: "" },
-  sort_insertion: { title: "Insertion Sort", description: "Master the algorithm that builds the final sorted array one item at a time, much like sorting playing cards in your hands.", points: sortInsertionContent as any, code: "" },
-  sort_merge: { title: "Merge Sort", description: "Explore the Divide and Conquer algorithm that divides the array into halves, sorts them, and then merges the sorted halves.", points: sortMergeContent as any, code: "" },
-  sort_quick: { title: "Quick Sort", description: "Learn the highly efficient sorting algorithm that picks an element as pivot and partitions the given array around the picked pivot.", points: sortQuickContent as any, code: "" },
+  intro_basics: formatContent(introBasicsContent, "Basics of Algorithms"),
+  intro_asymptotic: formatContent(asymptoticContent, "Asymptotic Analysis"),
+  search_linear: formatContent(linearSearchContent, "Linear Search"),
+  search_binary: formatContent(binarySearchContent, "Binary Search"),
+  search_jump: formatContent(jumpSearchContent, "Jump Search"),
+  search_interpolation: formatContent(interpolationSearchContent, "Interpolation Search"),
+  search_exponential: formatContent(exponentialSearchContent, "Exponential Search"),
+  sort_bubble: formatContent(sortBubbleContent, "Bubble Sort"),
+  sort_selection: formatContent(sortSelectionContent, "Selection Sort"),
+  sort_insertion: formatContent(sortInsertionContent, "Insertion Sort"),
+  sort_merge: formatContent(sortMergeContent, "Merge Sort"),
+  sort_quick: formatContent(sortQuickContent, "Quick Sort"),
+  dp_fibonacci: formatContent(dpFibonacciContent, "Fibonacci Numbers"),
+  dp_lcs: formatContent(dpLCSContent, "Longest Common Subsequence"),
+  dp_knapsack: formatContent(dpKnapsackContent, "0/1 Knapsack"),
+  dp_coin: formatContent(dpCoinContent, "Coin Change"),
+  dp_edit: formatContent(dpEditDistanceContent, "Edit Distance"),
+  dp_matrix: formatContent(dpMatrixContent, "Matrix Chain Multiplication"),
 };
 
 export const MCQS: Record<string, any> = {
@@ -108,6 +135,12 @@ export const MCQS: Record<string, any> = {
   sort_insertion: sortInsertionMcqs,
   sort_merge: sortMergeMcqs,
   sort_quick: sortQuickMcqs,
+  dp_fibonacci: dpFibonacciMcqs,
+  dp_lcs: dpLCSMcqs,
+  dp_knapsack: dpKnapsackMcqs,
+  dp_coin: dpCoinMcqs,
+  dp_edit: dpEditDistanceMcqs,
+  dp_matrix: dpMatrixMcqs,
 };
 
 export const DEBUG_EXERCISES: Record<string, any> = {
@@ -123,6 +156,12 @@ export const DEBUG_EXERCISES: Record<string, any> = {
   sort_insertion: sortInsertionDebug,
   sort_merge: sortMergeDebug,
   sort_quick: sortQuickDebug,
+  dp_fibonacci: dpFibonacciDebug,
+  dp_lcs: dpLCSDebug,
+  dp_knapsack: dpKnapsackDebug,
+  dp_coin: dpCoinDebug,
+  dp_edit: dpEditDistanceDebug,
+  dp_matrix: dpMatrixDebug,
 };
 
 export const DRAG_EXERCISES: Record<string, any> = {
@@ -138,6 +177,12 @@ export const DRAG_EXERCISES: Record<string, any> = {
   sort_insertion: sortInsertionDrag,
   sort_merge: sortMergeDrag,
   sort_quick: sortQuickDrag,
+  dp_fibonacci: dpFibonacciDrag,
+  dp_lcs: dpLCSDrag,
+  dp_knapsack: dpKnapsackDrag,
+  dp_coin: dpCoinDrag,
+  dp_edit: dpEditDistanceDrag,
+  dp_matrix: dpMatrixDrag,
 };
 
 export const COMPLETE_EXERCISES: Record<string, any> = {
@@ -153,4 +198,10 @@ export const COMPLETE_EXERCISES: Record<string, any> = {
   sort_insertion: sortInsertionComplete,
   sort_merge: sortMergeComplete,
   sort_quick: sortQuickComplete,
+  dp_fibonacci: dpFibonacciComplete,
+  dp_lcs: dpLCSComplete,
+  dp_knapsack: dpKnapsackComplete,
+  dp_coin: dpCoinComplete,
+  dp_edit: dpEditDistanceComplete,
+  dp_matrix: dpMatrixComplete,
 };

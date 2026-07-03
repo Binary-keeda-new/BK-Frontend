@@ -132,31 +132,13 @@ export const exponentialSearchMcqs = [
 ];
 
 export const exponentialSearchDebug = {
-  title: "Debug the Exponential Search",
-  code: `int exponentialSearch(int arr[], int n, int x) {
-    if (arr[0] == x) return 0;
-    int i = 1;
-    // Find range for binary search
-    while (i < n && arr[i] <= x) {
-        i = i + 2; // Bug 1
-    }
-    
-    // Call binary search for the found range
-    return binarySearch(arr, i / 2, i, x); // Bug 2
-}`,
-  solution: `int exponentialSearch(int arr[], int n, int x) {
-    if (arr[0] == x) return 0;
-    int i = 1;
-    // Find range for binary search
-    while (i < n && arr[i] <= x) {
-        i = i * 2; 
-    }
-    
-    // Call binary search for the found range
-    int right_bound = (i < n - 1) ? i : n - 1;
-    return binarySearch(arr, i / 2, right_bound, x); 
-}`,
-  explanation: "Bug 1: \`i\` should grow exponentially by multiplying by 2 (\`i = i * 2\`), not by adding 2.\nBug 2: The upper bound for binary search should not exceed the array's maximum index. So it must be bounded by \`n - 1\`."
+  instructions: "Fix the syntax error so the code compiles correctly.",
+  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
+  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
+  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
+  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
+  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
+  expectedOutput: "Hello World"
 };
 
 export const exponentialSearchDrag = {

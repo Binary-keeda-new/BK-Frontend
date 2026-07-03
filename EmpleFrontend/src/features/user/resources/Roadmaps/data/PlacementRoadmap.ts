@@ -17,7 +17,7 @@ const rawDays = [
       {
         "type": "iframe",
         "title": "Career Ride",
-        "url": "https://www.youtube.com/embed/ZuMJFleXmiw?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
+        "url": "https://www.youtube.com/embed/videoseries?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
       }
     ]
   },
@@ -34,7 +34,7 @@ const rawDays = [
       {
         "type": "iframe",
         "title": "Career Ride",
-        "url": "https://www.youtube.com/embed/jAbpPTpz2bQ?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
+        "url": "https://www.youtube.com/embed/videoseries?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
       }
     ]
   },
@@ -51,7 +51,7 @@ const rawDays = [
       {
         "type": "iframe",
         "title": "Career Ride",
-        "url": "https://www.youtube.com/embed/ETiRE7N7pEI?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
+        "url": "https://www.youtube.com/embed/videoseries?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
       }
     ]
   },
@@ -68,7 +68,7 @@ const rawDays = [
       {
         "type": "iframe",
         "title": "Career Ride",
-        "url": "https://www.youtube.com/embed/ximxxERGSUc?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
+        "url": "https://www.youtube.com/embed/videoseries?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
       }
     ]
   },
@@ -85,7 +85,7 @@ const rawDays = [
       {
         "type": "iframe",
         "title": "Career Ride",
-        "url": "https://www.youtube.com/embed/OKSJDDAyqP0?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
+        "url": "https://www.youtube.com/embed/videoseries?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
       }
     ]
   },
@@ -102,7 +102,7 @@ const rawDays = [
       {
         "type": "iframe",
         "title": "Career Ride",
-        "url": "https://www.youtube.com/embed/jfoJBivWlnQ?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
+        "url": "https://www.youtube.com/embed/videoseries?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
       }
     ]
   },
@@ -119,7 +119,7 @@ const rawDays = [
       {
         "type": "iframe",
         "title": "Career Ride",
-        "url": "https://www.youtube.com/embed/xyyejJYeILM?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
+        "url": "https://www.youtube.com/embed/videoseries?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
       }
     ]
   },
@@ -136,7 +136,7 @@ const rawDays = [
       {
         "type": "iframe",
         "title": "Career Ride",
-        "url": "https://www.youtube.com/embed/8OOBo5C7dsc?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
+        "url": "https://www.youtube.com/embed/videoseries?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
       }
     ]
   },
@@ -153,7 +153,7 @@ const rawDays = [
       {
         "type": "iframe",
         "title": "Career Ride",
-        "url": "https://www.youtube.com/embed/vsBpWgNYjtQ?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt9876543210"
+        "url": "https://www.youtube.com/embed/videoseries?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt9876543210"
       }
     ]
   },
@@ -170,7 +170,7 @@ const rawDays = [
       {
         "type": "iframe",
         "title": "Career Ride",
-        "url": "https://www.youtube.com/embed/tJHl73PBnwY?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
+        "url": "https://www.youtube.com/embed/videoseries?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
       }
     ]
   },
@@ -187,7 +187,7 @@ const rawDays = [
       {
         "type": "iframe",
         "title": "Career Ride",
-        "url": "https://www.youtube.com/embed/hn9TKnr8L_8?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
+        "url": "https://www.youtube.com/embed/videoseries?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
       }
     ]
   },
@@ -204,7 +204,7 @@ const rawDays = [
       {
         "type": "iframe",
         "title": "Career Ride",
-        "url": "https://www.youtube.com/embed/_HyhwS8P9KY?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
+        "url": "https://www.youtube.com/embed/videoseries?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
       }
     ]
   },
@@ -221,7 +221,7 @@ const rawDays = [
       {
         "type": "iframe",
         "title": "Career Ride",
-        "url": "https://www.youtube.com/embed/rhSxQ4ieAYc?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
+        "url": "https://www.youtube.com/embed/videoseries?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
       }
     ]
   },
@@ -238,7 +238,7 @@ const rawDays = [
       {
         "type": "iframe",
         "title": "Career Ride",
-        "url": "https://www.youtube.com/embed/pYL2843EEuQ?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
+        "url": "https://www.youtube.com/embed/videoseries?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
       }
     ]
   },
@@ -255,7 +255,7 @@ const rawDays = [
       {
         "type": "iframe",
         "title": "Career Ride",
-        "url": "https://www.youtube.com/embed/x3FZCLVNzaw?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
+        "url": "https://www.youtube.com/embed/videoseries?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
       }
     ]
   },
@@ -272,7 +272,7 @@ const rawDays = [
       {
         "type": "iframe",
         "title": "Career Ride",
-        "url": "https://www.youtube.com/embed/VnosX2IQxU8?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
+        "url": "https://www.youtube.com/embed/videoseries?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
       }
     ]
   },
@@ -289,7 +289,7 @@ const rawDays = [
       {
         "type": "iframe",
         "title": "Career Ride",
-        "url": "https://www.youtube.com/embed/tnc9ojITRg4?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
+        "url": "https://www.youtube.com/embed/videoseries?list=PLpyc33gOcbVA4qXMoQ5vmhefTruk5t9lt"
       }
     ]
   },
@@ -474,6 +474,11 @@ const rawDays = [
     ],
     "resources": [
       {
+        "type": "iframe",
+        "title": "DBMS Playlist",
+        "url": "https://www.youtube.com/embed/videoseries?list=PLDzeHZWIZsTpukecmA2p5rhHM14bl2dHU"
+      },
+      {
         "type": "text",
         "title": "DBMS Lec: DBMS",
         "url": null
@@ -504,7 +509,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "DBMS Playlist",
+        "url": "https://www.youtube.com/embed/videoseries?list=PLDzeHZWIZsTpukecmA2p5rhHM14bl2dHU"
+      }
+    ]
   },
   {
     "day": 30,
@@ -515,7 +526,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "DBMS Playlist",
+        "url": "https://www.youtube.com/embed/videoseries?list=PLDzeHZWIZsTpukecmA2p5rhHM14bl2dHU"
+      }
+    ]
   },
   {
     "day": 31,
@@ -526,7 +543,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "DBMS Playlist",
+        "url": "https://www.youtube.com/embed/videoseries?list=PLDzeHZWIZsTpukecmA2p5rhHM14bl2dHU"
+      }
+    ]
   },
   {
     "day": 32,
@@ -537,7 +560,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "DBMS Playlist",
+        "url": "https://www.youtube.com/embed/videoseries?list=PLDzeHZWIZsTpukecmA2p5rhHM14bl2dHU"
+      }
+    ]
   },
   {
     "day": 33,
@@ -548,7 +577,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "DBMS Playlist",
+        "url": "https://www.youtube.com/embed/videoseries?list=PLDzeHZWIZsTpukecmA2p5rhHM14bl2dHU"
+      }
+    ]
   },
   {
     "day": 34,
@@ -559,7 +594,13 @@ const rawDays = [
         "topic": "Aptitude Practice"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "DBMS Playlist",
+        "url": "https://www.youtube.com/embed/videoseries?list=PLDzeHZWIZsTpukecmA2p5rhHM14bl2dHU"
+      }
+    ]
   },
   {
     "day": 35,
@@ -570,7 +611,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "DBMS Playlist",
+        "url": "https://www.youtube.com/embed/videoseries?list=PLDzeHZWIZsTpukecmA2p5rhHM14bl2dHU"
+      }
+    ]
   },
   {
     "day": 36,
@@ -581,7 +628,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "DBMS Playlist",
+        "url": "https://www.youtube.com/embed/videoseries?list=PLDzeHZWIZsTpukecmA2p5rhHM14bl2dHU"
+      }
+    ]
   },
   {
     "day": 37,
@@ -592,7 +645,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "DBMS Playlist",
+        "url": "https://www.youtube.com/embed/videoseries?list=PLDzeHZWIZsTpukecmA2p5rhHM14bl2dHU"
+      }
+    ]
   },
   {
     "day": 38,
@@ -603,7 +662,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "DBMS Playlist",
+        "url": "https://www.youtube.com/embed/videoseries?list=PLDzeHZWIZsTpukecmA2p5rhHM14bl2dHU"
+      }
+    ]
   },
   {
     "day": 39,
@@ -614,7 +679,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "DBMS Playlist",
+        "url": "https://www.youtube.com/embed/videoseries?list=PLDzeHZWIZsTpukecmA2p5rhHM14bl2dHU"
+      }
+    ]
   },
   {
     "day": 40,
@@ -625,7 +696,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "DBMS Playlist",
+        "url": "https://www.youtube.com/embed/videoseries?list=PLDzeHZWIZsTpukecmA2p5rhHM14bl2dHU"
+      }
+    ]
   },
   {
     "day": 41,
@@ -636,7 +713,13 @@ const rawDays = [
         "topic": "Aptitude Practice"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "DBMS Playlist",
+        "url": "https://www.youtube.com/embed/videoseries?list=PLDzeHZWIZsTpukecmA2p5rhHM14bl2dHU"
+      }
+    ]
   },
   {
     "day": 42,

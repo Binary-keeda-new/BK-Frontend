@@ -77,8 +77,8 @@ export function CodeBlock({ code }: CodeBlockProps) {
 export function renderHighlightedText(text: string): React.ReactNode {
   if (!text) return null;
 
-  // Match markdown images, text in triple backticks, single backticks, **bold**, $math$, <u> tags, operators, or safe programming terms
-  const regex = /(!\[.*?\]\(.*?\)|```[\s\S]*?```|`[^`]+`|\*\*[^*]+\*\*|\$[^$]+\$|<u>[^<]+<\/u>|&&|\|\||==|!=|<=|>=|\+\+|--|\+=|-=|\*=|\/=|%=|\b(?:int|float|double|char|void|boolean|String|printf(?:\(\))?|scanf(?:\(\))?|println(?:\(\))?|print\(\)|sizeof(?:\(\))?|malloc(?:\(\))?|free\(\)|main\(\)|fgets(?:\(\))?|fflush(?:\(\))?|System\.out\.println(?:\(\))?|System\.out\.print(?:\(\))?|#define|#include|stdio\.h|math\.h|string\.h|stdlib\.h|gcc|javac|JVM)\b)/g;
+  // Match markdown images, text in triple backticks, single backticks, **bold**, $math$, <u> tags, (GATE...), operators, or safe programming terms
+  const regex = /(!\[.*?\]\(.*?\)|```[\s\S]*?```|`[^`]+`|\*\*[^*]+\*\*|\$[^$]+\$|<u>[^<]+<\/u>|\(\s*GATE[^)]+\)|&&|\|\||==|!=|<=|>=|\+\+|--|\+=|-=|\*=|\/=|%=|\b(?:int|float|double|char|void|boolean|String|printf(?:\(\))?|scanf(?:\(\))?|println(?:\(\))?|print\(\)|sizeof(?:\(\))?|malloc(?:\(\))?|free\(\)|main\(\)|fgets(?:\(\))?|fflush(?:\(\))?|System\.out\.println(?:\(\))?|System\.out\.print(?:\(\))?|#define|#include|stdio\.h|math\.h|string\.h|stdlib\.h|gcc|javac|JVM)\b)/gi;
 
   const parts = text.split(regex);
 
@@ -123,12 +123,33 @@ export function renderHighlightedText(text: string): React.ReactNode {
 
         if (part.startsWith("**") && part.endsWith("**")) {
           const content = part.slice(2, -2);
+          if (content.toUpperCase().includes("GATE")) {
+            return (
+              <strong 
+                key={i} 
+                className="font-extrabold text-[var(--orange)] bg-[rgba(255,100,0,0.1)] px-1.5 py-0.5 rounded border border-[var(--orange)] whitespace-nowrap ml-1 mr-1 text-[11px]"
+              >
+                {content}
+              </strong>
+            );
+          }
           return (
             <strong 
               key={i} 
               className="font-bold text-white"
             >
               {content}
+            </strong>
+          );
+        }
+
+        if (part.startsWith("(") && part.toUpperCase().includes("GATE") && part.endsWith(")")) {
+          return (
+            <strong 
+              key={i} 
+              className="font-extrabold text-[var(--orange)] bg-[rgba(255,100,0,0.1)] px-1.5 py-0.5 rounded border border-[var(--orange)] whitespace-nowrap ml-1 mr-1 text-[11px]"
+            >
+              {part}
             </strong>
           );
         }

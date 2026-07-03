@@ -102,12 +102,7 @@ const RoadmapDetail: React.FC<RoadmapDetailProps> = ({ roadmapId, onBack }) => {
   const [selectedLevel, setSelectedLevel] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
-  const [currentPage, setCurrentPage] = useState<number>(1);
   const [activeIframeUrl, setActiveIframeUrl] = useState<string | null>(null);
-
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [searchQuery, selectedCategory]);
 
   const [progressDetails, setProgressDetails] = useState<ProgressDetails>({
     completedContent: [],
@@ -333,9 +328,7 @@ const RoadmapDetail: React.FC<RoadmapDetailProps> = ({ roadmapId, onBack }) => {
       })
     : [];
 
-  const itemsPerPage = 30;
-  const totalPages = Math.ceil(filteredDays.length / itemsPerPage);
-  const paginatedDays = filteredDays.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+  const paginatedDays = filteredDays;
 
   return (
     <div style={{ padding: '24px 0' }}>
@@ -597,6 +590,7 @@ const RoadmapDetail: React.FC<RoadmapDetailProps> = ({ roadmapId, onBack }) => {
                                         textDecoration: 'none',
                                         fontSize: 12,
                                         fontWeight: 600,
+                                        whiteSpace: 'nowrap',
                                         transition: 'all 0.2s',
                                         cursor: 'pointer'
                                       }}
@@ -632,6 +626,7 @@ const RoadmapDetail: React.FC<RoadmapDetailProps> = ({ roadmapId, onBack }) => {
                                         textDecoration: 'none',
                                         fontSize: 12,
                                         fontWeight: 600,
+                                        whiteSpace: 'nowrap',
                                         transition: 'all 0.2s',
                                         cursor: res.url ? 'pointer' : 'default'
                                       }}
@@ -681,76 +676,6 @@ const RoadmapDetail: React.FC<RoadmapDetailProps> = ({ roadmapId, onBack }) => {
               </div>
             )}
 
-            {/* Pagination Controls */}
-            {totalPages > 1 && (
-              <div style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: 12,
-                marginTop: 24
-              }}>
-                <button
-                  onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                  disabled={currentPage === 1}
-                  style={{
-                    padding: '8px 16px',
-                    borderRadius: 8,
-                    background: 'var(--surface)',
-                    border: `1px solid var(--border)`,
-                    color: 'var(--text)',
-                    cursor: currentPage === 1 ? 'default' : 'pointer',
-                    opacity: currentPage === 1 ? 0.4 : 1,
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: 6,
-                    fontSize: 13,
-                    fontWeight: 600,
-                    transition: 'all 0.2s'
-                  }}
-                  onMouseOver={(e) => {
-                    if (currentPage !== 1) e.currentTarget.style.background = 'var(--surface2)';
-                  }}
-                  onMouseOut={(e) => {
-                    if (currentPage !== 1) e.currentTarget.style.background = 'var(--surface)';
-                  }}
-                >
-                  <ChevronLeft size={16} />
-                  Prev
-                </button>
-                <span style={{ fontSize: 14, color: 'var(--text)', fontWeight: 500 }}>
-                  Page {currentPage} of {totalPages}
-                </span>
-                <button
-                  onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-                  disabled={currentPage === totalPages}
-                  style={{
-                    padding: '8px 16px',
-                    borderRadius: 8,
-                    background: 'var(--surface)',
-                    border: `1px solid var(--border)`,
-                    color: 'var(--text)',
-                    cursor: currentPage === totalPages ? 'default' : 'pointer',
-                    opacity: currentPage === totalPages ? 0.4 : 1,
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: 6,
-                    fontSize: 13,
-                    fontWeight: 600,
-                    transition: 'all 0.2s'
-                  }}
-                  onMouseOver={(e) => {
-                    if (currentPage !== totalPages) e.currentTarget.style.background = 'var(--surface2)';
-                  }}
-                  onMouseOut={(e) => {
-                    if (currentPage !== totalPages) e.currentTarget.style.background = 'var(--surface)';
-                  }}
-                >
-                  Next
-                  <ChevronRight size={16} />
-                </button>
-              </div>
-            )}
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>

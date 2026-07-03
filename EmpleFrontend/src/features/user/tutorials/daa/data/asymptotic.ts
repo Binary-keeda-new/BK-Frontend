@@ -142,28 +142,13 @@ export const asymptoticMcqs = [
 ];
 
 export const asymptoticDebug = {
-  title: "Debug Duplicates Finder (O(n^2))",
-  description: "The following C function checks if an array has duplicate elements. It is intended to run in O(n^2) time by comparing every pair. However, there's a logical flaw causing it to always return 1 (true) on the first iteration. Fix the inner loop initialization.",
-  code: `int hasDuplicates(int arr[], int n) {
-    for (int i = 0; i < n; i++) {
-        for (int j = i; j < n; j++) {
-            if (arr[i] == arr[j]) {
-                return 1;
-            }
-        }
-    }
-    return 0;
-}`,
-  solution: `int hasDuplicates(int arr[], int n) {
-    for (int i = 0; i < n; i++) {
-        for (int j = i + 1; j < n; j++) {
-            if (arr[i] == arr[j]) {
-                return 1;
-            }
-        }
-    }
-    return 0;
-}`
+  instructions: "Fix the sumOfArray function. It should return the sum of all elements in the array.",
+  buggyC: "#include <stdio.h>\n\nint sumOfArray(int arr[], int n) {\n    int sum = 0;\n    for (int i = 1; i <= n; i++) {\n        sum += arr[i];\n    }\n    return sum;\n}\n\nint main() {\n    int arr[] = {1, 2, 3, 4, 5};\n    printf(\"%d\\n\", sumOfArray(arr, 5));\n    return 0;\n}",
+  fixedC: "#include <stdio.h>\n\nint sumOfArray(int arr[], int n) {\n    int sum = 0;\n    for (int i = 0; i < n; i++) {\n        sum += arr[i];\n    }\n    return sum;\n}\n\nint main() {\n    int arr[] = {1, 2, 3, 4, 5};\n    printf(\"%d\\n\", sumOfArray(arr, 5));\n    return 0;\n}",
+  buggyJava: "public class Main {\n    public static int sumOfArray(int[] arr, int n) {\n        int sum = 0;\n        for (int i = 1; i <= n; i++) {\n            sum += arr[i];\n        }\n        return sum;\n    }\n    public static void main(String[] args) {\n        int[] arr = {1, 2, 3, 4, 5};\n        System.out.println(sumOfArray(arr, 5));\n    }\n}",
+  fixedJava: "public class Main {\n    public static int sumOfArray(int[] arr, int n) {\n        int sum = 0;\n        for (int i = 0; i < n; i++) {\n            sum += arr[i];\n        }\n        return sum;\n    }\n    public static void main(String[] args) {\n        int[] arr = {1, 2, 3, 4, 5};\n        System.out.println(sumOfArray(arr, 5));\n    }\n}",
+  hints: ["Arrays are zero-indexed.","Check the starting value of 'i'.","Change 'i = 1; i <= n' to 'i = 0; i < n'."],
+  expectedOutput: "15"
 };
 
 export const asymptoticDrag = {

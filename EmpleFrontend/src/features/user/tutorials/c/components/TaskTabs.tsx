@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { CONTENT, MCQ, DEBUG, DRAG_DROP, COMPLETE_EXERCISES, shuffle } from "../data/cTutorial";
 import { Badge, CodeBlock, renderHighlightedText } from "./CommonComponents";
-import { BookOpen, Brain, Bug, Edit3, Shuffle, ChevronRight, RotateCcw, CheckCircle2, AlertCircle } from "lucide-react";
+import { BookOpen, Brain, Bug, Edit3, Shuffle, ChevronRight, RotateCcw, CheckCircle2, AlertCircle, Trophy, Target, ThumbsUp } from "lucide-react";
 
 interface TabProps {
   chapter: string;
@@ -44,7 +44,7 @@ export function LearnTab({
             style={{ background: "var(--surface2)", borderColor: "var(--border)" }}
           >
             <h5 className="text-xs font-bold text-[var(--text)] mb-1.5">{p.heading}</h5>
-            <p className="text-[12px] text-[var(--muted2)] leading-relaxed whitespace-pre-wrap">{renderHighlightedText(p.body)}</p>
+            <div className="text-[12px] text-[var(--muted2)] leading-relaxed whitespace-pre-wrap">{renderHighlightedText(p.body)}</div>
           </div>
         ))}
       </div>
@@ -101,7 +101,8 @@ export function MCQTab({ chapter, onXP }: TabProps) {
     if (answered) return;
     setSelected(idx);
     setAnswered(true);
-    if (idx === questions[current].ans) setScore(s => s + 1);
+    const correctAns = (questions[current] as any).ans !== undefined ? (questions[current] as any).ans : (questions[current] as any).correctAnswer;
+    if (idx === correctAns) setScore(s => s + 1);
   };
 
   const handleNext = () => {
@@ -117,34 +118,59 @@ export function MCQTab({ chapter, onXP }: TabProps) {
 
   if (done) {
     const pct = Math.round((score / questions.length) * 100);
+    
+    let config = { color: "#f43f5e", icon: BookOpen, message: "Keep practicing! Review the material and try again.", title: "Needs Work" };
+    if (pct >= 90) config = { color: "#10b981", icon: Trophy, message: "Outstanding! You're a true master of this topic.", title: "Excellent!" };
+    else if (pct >= 70) config = { color: "var(--orange)", icon: Target, message: "Great job! You have a solid understanding.", title: "Good Job!" };
+    else if (pct >= 50) config = { color: "#eab308", icon: ThumbsUp, message: "Good effort! A little more practice will help.", title: "Not Bad!" };
+    
+    const Icon = config.icon;
+
     return (
-      <div className="text-center py-10 space-y-6 animate-fadeIn">
-        <div className="text-5xl">
-          {pct === 100 ? "🏆" : pct >= 75 ? "🎉" : pct >= 50 ? "👍" : "📚"}
+      <div className="py-8 animate-fadeIn flex flex-col items-center justify-center">
+        <div className="relative w-32 h-32 mb-6 flex items-center justify-center">
+          <svg className="absolute inset-0 w-full h-full transform -rotate-90">
+            <circle cx="64" cy="64" r="56" fill="transparent" stroke="rgba(255,255,255,0.05)" strokeWidth="8" />
+            <circle cx="64" cy="64" r="56" fill="transparent" stroke={config.color} strokeWidth="8" strokeDasharray="351.86" strokeDashoffset={351.86 - (351.86 * pct) / 100} strokeLinecap="round" className="transition-all duration-1000 ease-out" />
+          </svg>
+          <div className="absolute inset-0 flex flex-col items-center justify-center rounded-full shadow-[inset_0_0_20px_rgba(0,0,0,0.2)] bg-[#0f111a]">
+             <Icon size={32} color={config.color} />
+             <span className="text-xl font-bold mt-1 text-white">{pct}%</span>
+          </div>
         </div>
-        <div>
-          <h3 className="text-lg font-bold text-[var(--text)]">{score} / {questions.length} Correct</h3>
-          <p className="text-xs text-[var(--muted2)] mt-1">
-            {pct}% — {pct === 100 ? "Perfect score!" : pct >= 75 ? "Great job!" : "Keep practicing!"}
-          </p>
+        
+        <h3 className="text-xl font-bold text-white mb-2">{config.title}</h3>
+        <p className="text-sm text-[var(--muted2)] text-center max-w-[250px] leading-relaxed mb-6">
+          {config.message}
+        </p>
+
+        <div className="flex items-center gap-4 mb-8 w-full max-w-xs p-4 rounded-xl border" style={{ background: "var(--surface2)", borderColor: "var(--border)" }}>
+           <div className="flex-1 text-center">
+             <div className="text-xs text-[var(--muted2)] mb-1 uppercase tracking-wider font-mono">Score</div>
+             <div className="text-lg font-bold text-white">{score} <span className="text-xs text-[var(--muted2)] font-normal">/ {questions.length}</span></div>
+           </div>
+           <div className="w-px h-10 bg-white/10" />
+           <div className="flex-1 text-center">
+             <div className="text-xs text-[var(--muted2)] mb-1 uppercase tracking-wider font-mono">Status</div>
+             <Badge text="Completed" color="purple" />
+           </div>
         </div>
-        <div className="inline-block">
-          <Badge text="Quiz Completed" color="purple" />
-        </div>
-        <div className="pt-2">
-          <button 
-            onClick={reset}
-            className="px-6 py-2 bg-gradient-to-r hover:opacity-95 active:scale-95 transition text-xs font-bold rounded-lg text-white shadow-md"
-            style={{ background: "var(--orange)" }}
-          >
-            Try Again
-          </button>
-        </div>
+
+        <button 
+          onClick={reset}
+          className="w-full max-w-xs py-3 hover:opacity-95 active:scale-95 transition text-sm font-bold rounded-xl text-white shadow-[0_0_15px_rgba(255,100,0,0.2)]"
+          style={{ background: "var(--orange)" }}
+        >
+          Try Again
+        </button>
       </div>
     );
   }
 
   const q = questions[current];
+  const questionText = q.q || (q as any).question || "";
+  const correctAns = (q as any).ans !== undefined ? (q as any).ans : (q as any).correctAnswer;
+
   return (
     <div className="space-y-6 animate-fadeIn">
       <div className="flex justify-between items-center">
@@ -156,7 +182,7 @@ export function MCQTab({ chapter, onXP }: TabProps) {
         className="p-5 rounded-xl border"
         style={{ background: "var(--surface2)", borderColor: "var(--border)" }}
       >
-        <h4 className="text-sm font-semibold text-[var(--text)] leading-relaxed">{q.q}</h4>
+        <h4 className="text-sm font-semibold text-[var(--text)] leading-relaxed">{renderHighlightedText(questionText)}</h4>
       </div>
 
       <div className="space-y-3">
@@ -166,7 +192,7 @@ export function MCQTab({ chapter, onXP }: TabProps) {
           let color = "var(--muted2)";
           
           if (answered) {
-            if (i === q.ans) {
+            if (i === correctAns) {
               bg = "rgba(16, 185, 129, 0.08)";
               border = "rgba(16, 185, 129, 0.25)";
               color = "#34d399";
@@ -195,9 +221,9 @@ export function MCQTab({ chapter, onXP }: TabProps) {
               >
                 {["A", "B", "C", "D"][i]}
               </span>
-              <span className="flex-1">{opt}</span>
-              {answered && i === q.ans && <span className="text-emerald-400">✓</span>}
-              {answered && i === selected && i !== q.ans && <span className="text-rose-400">✗</span>}
+              <span className="flex-1">{renderHighlightedText(opt)}</span>
+              {answered && i === correctAns && <span className="text-emerald-400">✓</span>}
+              {answered && i === selected && i !== correctAns && <span className="text-rose-400">✗</span>}
             </button>
           );
         })}
@@ -238,7 +264,7 @@ export function MCQTab({ chapter, onXP }: TabProps) {
           className="w-full py-2.5 hover:opacity-95 active:scale-95 transition text-xs font-bold rounded-lg text-white shadow-md"
           style={{ background: "var(--orange)" }}
         >
-          {current + 1 < questions.length ? "Next Question →" : "See Results"}
+          {current + 1 < questions.length ? "Next Question" : "See Results"}
         </button>
       )}
     </div>
@@ -391,7 +417,7 @@ export function CompleteTab({ chapter, onXP }: TabProps) {
   };
 
   const handleCheck = () => {
-    const ok = inputs.every((v, i) => v.trim() === ex.blanks[i]);
+    const ok = inputs.every((v, i) => ex.blanks[i]?.split("|").includes(v.trim()));
     setCorrect(ok);
     setSubmitted(true);
     if (ok) onXP(20);
@@ -423,16 +449,17 @@ export function CompleteTab({ chapter, onXP }: TabProps) {
         className="p-5 rounded-xl border text-xs font-mono leading-loose whitespace-pre overflow-x-auto"
         style={{ background: "var(--surface2)", borderColor: "var(--border)", color: "var(--text)" }}
       >
-        {parts.map((part, pi) => (
+        {parts.map((part: any, pi: any) => (
           <span key={pi}>
             <span>{part}</span>
             {pi < parts.length - 1 && (() => {
               const bi = blankCount++;
-              const isCellCorrect = inputs[bi]?.trim() === ex.blanks[bi];
+              const isCellCorrect = ex.blanks[bi]?.split("|").includes(inputs[bi]?.trim());
               
-              let bg = "rgba(255,255,255,0.02)";
+              let bg = "var(--surface)";
               let border = "var(--border)";
-              let color = "var(--text)";
+              let color = "var(--orange)";
+              
               if (submitted) {
                 bg = isCellCorrect ? "rgba(16,185,129,0.08)" : "rgba(239,68,68,0.08)";
                 border = isCellCorrect ? "rgba(16,185,129,0.25)" : "rgba(239,68,68,0.25)";
@@ -444,14 +471,17 @@ export function CompleteTab({ chapter, onXP }: TabProps) {
                   key={bi}
                   value={inputs[bi] || ""}
                   onChange={e => updateInput(bi, e.target.value)}
-                  placeholder="???"
+                  placeholder="?"
                   style={{ 
                     width: `${Math.max(ex.blanks[bi]?.length || 4, 3) + 2}ch`,
                     background: bg,
-                    borderColor: border,
-                    color
+                    borderBottom: `2px solid ${border}`,
+                    color,
+                    borderTop: "none",
+                    borderLeft: "none",
+                    borderRight: "none"
                   }}
-                  className="mx-1.5 px-2 py-0.5 rounded-lg border text-center font-bold font-mono outline-none transition text-xs"
+                  className="mx-1.5 px-2 py-0.5 rounded-none text-center font-bold font-mono outline-none transition text-xs shadow-none focus:border-[var(--orange)] focus:bg-white/5"
                 />
               );
             })()}
@@ -469,6 +499,13 @@ export function CompleteTab({ chapter, onXP }: TabProps) {
           }}
         >
           {correct ? "✅ Code compiles successfully!" : `❌ Compilation error. Incorrect inputs.`}
+        </div>
+      )}
+
+      {submitted && !correct && ex.answer && (
+        <div className="space-y-2 animate-fadeIn">
+          <span className="text-[10px] font-bold uppercase tracking-wider font-mono block text-[var(--muted2)]">Correct Solution Reference</span>
+          <CodeBlock code={ex.answer} />
         </div>
       )}
 

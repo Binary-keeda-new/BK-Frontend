@@ -154,11 +154,13 @@ export const sortInsertionMcqs = [
 ];
 
 export const sortInsertionDebug = {
-  instructions: "Fix the bug in the algorithm implementation.",
-  buggy: "void sort() {\n  // buggy code\n}",
-  fixed: "void sort() {\n  // fixed code\n}",
-  hints: ["Check the loop bounds.", "Verify the swap logic."],
-  expectedOutput: "11 12 22 25 64 "
+  instructions: "Fix the syntax error so the code compiles correctly.",
+  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
+  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
+  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
+  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
+  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
+  expectedOutput: "Hello World"
 };
 
 export const sortInsertionDrag = {

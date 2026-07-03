@@ -77,8 +77,8 @@ export function CodeBlock({ code }: CodeBlockProps) {
 export function renderHighlightedText(text: string): React.ReactNode {
   if (!text) return null;
 
-  // Match text in backticks, <u> tags, operators, or safe programming terms
-  const regex = /(`[^`]+`|<u>[^<]+<\/u>|&&|\|\||==|!=|<=|>=|\+\+|--|\+=|-=|\*=|\/=|%=|\b(?:int|float|double|char|void|boolean|String|printf(?:\(\))?|scanf(?:\(\))?|println(?:\(\))?|print\(\)|sizeof(?:\(\))?|malloc(?:\(\))?|free\(\)|main\(\)|fgets(?:\(\))?|fflush(?:\(\))?|System\.out\.println(?:\(\))?|System\.out\.print(?:\(\))?|#define|#include|stdio\.h|math\.h|string\.h|stdlib\.h|gcc|javac|JVM)\b)/g;
+  // Match markdown images, text in triple backticks, single backticks, **bold**, $math$, <u> tags, (GATE...), operators, or safe programming terms
+  const regex = /(!\[.*?\]\(.*?\)|```[\s\S]*?```|`[^`]+`|\*\*[^*]+\*\*|\$[^$]+\$|<u>[^<]+<\/u>|\(\s*GATE[^)]+\)|&&|\|\||==|!=|<=|>=|\+\+|--|\+=|-=|\*=|\/=|%=|\b(?:int|float|double|char|void|boolean|String|printf(?:\(\))?|scanf(?:\(\))?|println(?:\(\))?|print\(\)|sizeof(?:\(\))?|malloc(?:\(\))?|free\(\)|main\(\)|fgets(?:\(\))?|fflush(?:\(\))?|System\.out\.println(?:\(\))?|System\.out\.print(?:\(\))?|#define|#include|stdio\.h|math\.h|string\.h|stdlib\.h|gcc|javac|JVM)\b)/gi;
 
   const parts = text.split(regex);
 
@@ -86,16 +86,83 @@ export function renderHighlightedText(text: string): React.ReactNode {
     <>
       {parts.map((part, i) => {
         if (!part) return null;
+
+        if (part.match(/^!\[(.*?)\]\((.*?)\)$/)) {
+          const m = part.match(/^!\[(.*?)\]\((.*?)\)$/);
+          return (
+             <img key={i} src={m![2]} alt={m![1]} className="my-4 rounded-xl border max-w-full shadow-lg" style={{ borderColor: "var(--border)" }} />
+          );
+        }
+
+        if (part.startsWith("```") && part.endsWith("```")) {
+          let content = part.slice(3, -3).trim();
+          const firstLine = content.split('\n')[0].trim();
+          if (firstLine.match(/^[a-z]+$/i)) {
+             content = content.substring(content.indexOf('\n') + 1);
+          }
+          return (
+            <div key={i} className="my-4 overflow-x-auto w-full">
+              <pre className="p-4 rounded-xl border font-mono text-[11px] leading-tight" style={{ background: "var(--surface)", borderColor: "var(--border)", color: "var(--orange)" }}>
+                {content}
+              </pre>
+            </div>
+          );
+        }
         
         if (part.startsWith("`") && part.endsWith("`")) {
           const content = part.slice(1, -1);
           return (
             <code 
               key={i} 
-              className="px-1.5 py-0.5 rounded font-mono text-[11px] bg-white/[0.08] text-[var(--orange)] border border-white/5 mx-0.5 font-bold whitespace-nowrap"
+              className="px-1.5 py-0.5 rounded font-mono text-[11px] bg-white/[0.08] text-[var(--orange)] border border-white/5 mx-0.5 font-bold whitespace-pre-wrap break-words"
             >
               {content}
             </code>
+          );
+        }
+
+        if (part.startsWith("**") && part.endsWith("**")) {
+          const content = part.slice(2, -2);
+          if (content.toUpperCase().includes("GATE")) {
+            return (
+              <strong 
+                key={i} 
+                className="font-extrabold text-[var(--orange)] bg-[rgba(255,100,0,0.1)] px-1.5 py-0.5 rounded border border-[var(--orange)] whitespace-nowrap ml-1 mr-1 text-[11px]"
+              >
+                {content}
+              </strong>
+            );
+          }
+          return (
+            <strong 
+              key={i} 
+              className="font-bold text-white"
+            >
+              {content}
+            </strong>
+          );
+        }
+
+        if (part.startsWith("(") && part.toUpperCase().includes("GATE") && part.endsWith(")")) {
+          return (
+            <strong 
+              key={i} 
+              className="font-extrabold text-[var(--orange)] bg-[rgba(255,100,0,0.1)] px-1.5 py-0.5 rounded border border-[var(--orange)] whitespace-nowrap ml-1 mr-1 text-[11px]"
+            >
+              {part}
+            </strong>
+          );
+        }
+
+        if (part.startsWith("$") && part.endsWith("$") && part.length > 1) {
+          const content = part.slice(1, -1);
+          return (
+            <span 
+              key={i} 
+              className="font-serif italic text-white/90 text-[14px]"
+            >
+              {content}
+            </span>
           );
         }
 
@@ -118,7 +185,7 @@ export function renderHighlightedText(text: string): React.ReactNode {
           return (
             <code 
               key={i} 
-              className="px-1.5 py-0.5 rounded font-mono text-[11px] bg-white/[0.08] text-[var(--orange)] border border-white/5 mx-0.5 font-bold whitespace-nowrap"
+              className="px-1.5 py-0.5 rounded font-mono text-[11px] bg-white/[0.08] text-[var(--orange)] border border-white/5 mx-0.5 font-bold whitespace-pre-wrap break-words"
             >
               {part}
             </code>

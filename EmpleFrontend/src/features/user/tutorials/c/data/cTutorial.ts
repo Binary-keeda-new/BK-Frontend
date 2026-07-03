@@ -220,84 +220,2177 @@ export const CONTENT: Record<string, ChapterContent> = {
 };
 
 export const MCQ: Record<string, MCQQuestion[]> = {
-  basics: [
-    { q: "What does every C program require as the entry point?", options: ["start()", "main()", "begin()", "run()"], ans: 1, explanation: "Every C program must have a main() function, which serves as the starting point of execution." },
-    { q: "Which symbol ends a C statement?", options: [".", ":", ";", ","], ans: 2, explanation: "A semicolon (;) is used in C to mark the end of a statement." },
-    { q: "Which header is needed for printf?", options: ["stdlib.h", "math.h", "stdio.h", "string.h"], ans: 2, explanation: "stdio.h stands for Standard Input/Output, which declares core I/O functions like printf()." },
-    { q: "What value does main() return to signal success?", options: ["1", "-1", "null", "0"], ans: 3, explanation: "Returning 0 from main() traditionally indicates to the operating system that the program executed successfully." },
+  "basics": [
+      {
+          "q": "Which of the following is true about C program execution? **GATE 2005**",
+          "options": [
+              "Execution begins at the main() function",
+              "Execution begins at the first function defined in the file",
+              "Execution begins at the #include directive",
+              "Execution begins at the global variable declarations"
+          ],
+          "ans": 0,
+          "explanation": "In C, the execution of a program always begins at the main() function, regardless of where it is defined in the source file."
+      },
+      {
+          "q": "What is the standard return type of main() in C according to C99? **GATE 2015**",
+          "options": [
+              "void",
+              "int",
+              "float",
+              "char"
+          ],
+          "ans": 1,
+          "explanation": "According to the C99 standard, the main() function must return an integer value to the operating system, making 'int' the standard return type."
+      },
+      {
+          "q": "Which of the following is not a valid C token? **GATE 2011**",
+          "options": [
+              "Keywords",
+              "Identifiers",
+              "Constants",
+              "Macros"
+          ],
+          "ans": 3,
+          "explanation": "Macros are preprocessor directives, not C tokens. The basic C tokens are keywords, identifiers, constants, strings, operators, and special symbols."
+      },
+      {
+          "q": "Which phase of the compilation process is responsible for macro expansion? **GATE 2017**",
+          "options": [
+              "Lexical analysis",
+              "Syntax analysis",
+              "Preprocessing",
+              "Code generation"
+          ],
+          "ans": 2,
+          "explanation": "The preprocessor handles macro expansion, file inclusion, and conditional compilation before the actual compilation begins."
+      },
+      {
+          "q": "What is the typical output of the lexical analyzer during C compilation? **GATE 2004**",
+          "options": [
+              "Parse tree",
+              "Machine code",
+              "Stream of tokens",
+              "Object code"
+          ],
+          "ans": 2,
+          "explanation": "The lexical analyzer (scanner) reads the source code character by character and groups them into meaningful units called tokens."
+      },
+      {
+          "q": "Which of the following is true regarding comments in C? **GATE 2010**",
+          "options": [
+              "Comments are processed by the compiler",
+              "Comments are removed by the preprocessor",
+              "Comments increase the size of the executable",
+              "Nested comments are always allowed in standard C"
+          ],
+          "ans": 1,
+          "explanation": "The preprocessor removes comments and replaces them with a single space before the code is sent to the compiler."
+      },
+      {
+          "q": "During the compilation of a C program, what does the linker do? **GATE 2016**",
+          "options": [
+              "Translates C code to assembly",
+              "Translates assembly to machine code",
+              "Combines object files and resolves external references",
+              "Executes the program"
+          ],
+          "ans": 2,
+          "explanation": "The linker's primary job is to combine one or more object files and library files into a single executable, resolving external symbols and addresses."
+      },
+      {
+          "q": "Which of the following is not a standard keyword in C? **GATE 2018**",
+          "options": [
+              "volatile",
+              "sizeof",
+              "typeof",
+              "typedef"
+          ],
+          "ans": 2,
+          "explanation": "While 'typeof' is provided as an extension by some compilers like GCC, it is not a standard keyword in ANSI C / C99."
+      },
+      {
+          "q": "What does the `#include` directive do in a C program? **GATE 2006**",
+          "options": [
+              "Links the library file to the executable",
+              "Copies the contents of the included file into the source file",
+              "Compiles the included file",
+              "Optimizes the source code"
+          ],
+          "ans": 1,
+          "explanation": "The #include directive tells the preprocessor to physically insert the contents of the specified file into the source code at that point."
+      },
+      {
+          "q": "Which tool translates assembly language into machine code in the C toolchain? **GATE 2012**",
+          "options": [
+              "Compiler",
+              "Linker",
+              "Assembler",
+              "Preprocessor"
+          ],
+          "ans": 2,
+          "explanation": "The assembler takes the assembly language code produced by the compiler and translates it into machine code (object file)."
+      },
+      {
+          "q": "What is the extension of an object file generated by a C compiler on Unix-like systems? **GATE 2014**",
+          "options": [
+              ".exe",
+              ".o",
+              ".obj",
+              ".out"
+          ],
+          "ans": 1,
+          "explanation": "On Unix-like systems, object files typically have a '.o' extension, whereas Windows uses '.obj'."
+      },
+      {
+          "q": "Which standard initially established the C programming language as ANSI C? **GATE 2020**",
+          "options": [
+              "C89/C90",
+              "C99",
+              "C11",
+              "C18"
+          ],
+          "ans": 0,
+          "explanation": "The ANSI C standard was first published in 1989 and adopted by ISO in 1990, commonly referred to as C89 or C90."
+      },
+      {
+          "q": "Which of the following is correct for a multi-line comment in C? **GATE 2019**",
+          "options": [
+              "// comment //",
+              "/* comment */",
+              "<!-- comment -->",
+              "# comment #"
+          ],
+          "ans": 1,
+          "explanation": "Multi-line comments in C begin with /* and end with */."
+      },
+      {
+          "q": "In C, what is the significance of the `return 0;` statement in main()? **GATE 2008**",
+          "options": [
+              "It terminates the program abnormally",
+              "It indicates successful termination of the program",
+              "It restarts the program",
+              "It throws an exception"
+          ],
+          "ans": 1,
+          "explanation": "Returning 0 from main() conventionally indicates to the operating system that the program executed successfully without errors."
+      },
+      {
+          "q": "What error will be generated if a semicolon is missing at the end of a statement? **GATE 2013**",
+          "options": [
+              "Lexical error",
+              "Syntax error",
+              "Semantic error",
+              "Linker error"
+          ],
+          "ans": 1,
+          "explanation": "A missing semicolon is a syntax error, which is caught during the syntax analysis (parsing) phase of the compiler."
+      }
   ],
-  variables: [
-    { q: "Which type stores a single character?", options: ["string", "char", "letter", "byte"], ans: 1, explanation: "The char data type is used to store a single character, occupying 1 byte of memory." },
-    { q: "What format specifier prints an int?", options: ["%f", "%c", "%d", "%s"], ans: 2, explanation: "%d (or %i) is the standard format specifier used to print signed decimal integers." },
-    { q: "How do you declare a constant in C?", options: ["static int X=1;", "const int X=1;", "final int X=1;", "fixed int X=1;"], ans: 1, explanation: "The 'const' prefix declares a read-only variable whose value cannot be altered after initialization." },
-    { q: "Which type holds the largest decimal value?", options: ["float", "int", "short", "double"], ans: 3, explanation: "A double offers double-precision floating-point precision, storing much larger/more precise decimals than a float." },
+  "variables": [
+      {
+          "q": "What is the size of `int` as per the standard C language specification? **GATE 2004**",
+          "options": [
+              "2 bytes",
+              "4 bytes",
+              "8 bytes",
+              "Compiler dependent"
+          ],
+          "ans": 3,
+          "explanation": "The C standard does not strictly define the exact size of 'int', only that it must be at least 16 bits (2 bytes). Its actual size depends on the compiler and architecture."
+      },
+      {
+          "q": "Which of the following is true for the `extern` storage class? **GATE 2013**",
+          "options": [
+              "It allocates memory for the variable",
+              "It declares the variable without allocating memory",
+              "It limits the scope of the variable to the local block",
+              "It makes the variable constant"
+          ],
+          "ans": 1,
+          "explanation": "The 'extern' keyword is used to declare a global variable or function in another file, meaning it tells the compiler that the variable exists, but does not allocate memory for it here."
+      },
+      {
+          "q": "What is the default initial value of an uninitialized static variable? **GATE 2017**",
+          "options": [
+              "Garbage value",
+              "0",
+              "Null",
+              "Compiler error"
+          ],
+          "ans": 1,
+          "explanation": "Static variables are initialized to zero (or NULL for pointers) by default if not explicitly initialized."
+      },
+      {
+          "q": "What does the `register` storage class hint to the compiler? **GATE 2002**",
+          "options": [
+              "Store the variable in RAM",
+              "Store the variable in cache",
+              "Store the variable in CPU registers for fast access",
+              "Allocate memory on the heap"
+          ],
+          "ans": 2,
+          "explanation": "The 'register' keyword suggests to the compiler to store the variable in a CPU register rather than memory to speed up access."
+      },
+      {
+          "q": "A variable declared inside a function without any storage class specifier defaults to? **GATE 2009**",
+          "options": [
+              "static",
+              "extern",
+              "auto",
+              "register"
+          ],
+          "ans": 2,
+          "explanation": "By default, local variables defined inside a function have the 'auto' storage class."
+      },
+      {
+          "q": "Which datatype provides the largest range of floating-point numbers in standard C? **GATE 2021**",
+          "options": [
+              "float",
+              "double",
+              "long double",
+              "extended double"
+          ],
+          "ans": 2,
+          "explanation": "The 'long double' type provides the highest precision and range among floating-point types in standard C."
+      },
+      {
+          "q": "How is a negative integer stored in memory in C by default? **GATE 2019**",
+          "options": [
+              "Sign-magnitude",
+              "1's complement",
+              "2's complement",
+              "BCD"
+          ],
+          "ans": 2,
+          "explanation": "Modern systems use 2's complement representation to store negative integers, which simplifies arithmetic operations."
+      },
+      {
+          "q": "Which of the following is an invalid variable name in C? **GATE 2010**",
+          "options": [
+              "_myVar",
+              "my_Var1",
+              "1stVar",
+              "var_1"
+          ],
+          "ans": 2,
+          "explanation": "Variable names in C cannot start with a digit."
+      },
+      {
+          "q": "What is the scope of a variable declared at the file level with the `static` keyword? **GATE 2014**",
+          "options": [
+              "Global across all files",
+              "Limited to the file in which it is declared",
+              "Limited to the main function",
+              "Limited to the block it is declared in"
+          ],
+          "ans": 1,
+          "explanation": "A file-scoped variable declared as 'static' has internal linkage, meaning it is only accessible within the translation unit (file) where it is defined."
+      },
+      {
+          "q": "Consider code: `int x = 10; { int x = 20; printf(\"%d\", x); }`. What is printed? **GATE 2018**",
+          "options": [
+              "10",
+              "20",
+              "Error",
+              "Garbage"
+          ],
+          "ans": 1,
+          "explanation": "Inner block variables shadow outer block variables. The inner 'x' has block scope, so 20 is printed."
+      },
+      {
+          "q": "Consider `void foo() { static int count = 0; count++; printf(\"%d\", count); }`. If called twice, what is the output? **GATE 2011**",
+          "options": [
+              "1 1",
+              "0 1",
+              "1 2",
+              "Error"
+          ],
+          "ans": 2,
+          "explanation": "Static variables retain their value between function calls. The first call sets it to 1, the second to 2."
+      },
+      {
+          "q": "What happens when a variable is declared as `const volatile`? **GATE 2007**",
+          "options": [
+              "Compilation error",
+              "It is a constant and cannot change by the program, but can change by hardware",
+              "It can be modified by the program anytime",
+              "It optimizes the variable aggressively"
+          ],
+          "ans": 1,
+          "explanation": "A variable can be both const (cannot be modified by the program code) and volatile (may be modified by external events/hardware, so compiler shouldn't optimize it)."
+      },
+      {
+          "q": "Consider a global variable `int a;` and local variable `int a = 5;`. Which 'a' is accessed inside the local block? **GATE 2016**",
+          "options": [
+              "Global 'a'",
+              "Local 'a'",
+              "Compilation error due to redefinition",
+              "Garbage value"
+          ],
+          "ans": 1,
+          "explanation": "Local variables shadow global variables with the same name."
+      },
+      {
+          "q": "What is the range of a signed char in C? **GATE 2006**",
+          "options": [
+              "0 to 255",
+              "-127 to 128",
+              "-128 to 127",
+              "0 to 65535"
+          ],
+          "ans": 2,
+          "explanation": "A signed char is typically 8 bits. In 2's complement representation, it ranges from -128 to 127."
+      },
+      {
+          "q": "What is the output of `printf(\"%d\", sizeof(void));` in GCC? **GATE 2015**",
+          "options": [
+              "0",
+              "1",
+              "4",
+              "Compilation Error"
+          ],
+          "ans": 1,
+          "explanation": "In standard C, sizeof(void) is incomplete and causes an error. However, as an extension in GCC, it yields 1."
+      }
   ],
-  io: [
-    { q: "What does & mean in scanf(\"%d\",&x)?", options: ["Multiply x", "Address of x", "Value of x", "Pointer type"], ans: 1, explanation: "The address-of operator (&) passes the memory address of x, letting scanf write the input directly into that variable." },
-    { q: "Which function reads a full line including spaces?", options: ["scanf", "getchar", "fgets", "gets"], ans: 2, explanation: "fgets() reads a specified number of characters until a newline or EOF, safely preventing buffer overflow." },
-    { q: "What does \\n do in printf?", options: ["Tab", "Backspace", "New line", "Space"], ans: 2, explanation: "\\n is an escape sequence representing a newline, shifting the output cursor to the next line." },
-    { q: "Which specifier prints a float to 2 decimal places?", options: ["%.2d", "%2f", "%.2f", "%f.2"], ans: 2, explanation: "%.2f specifies a floating-point number formatted with exactly 2 digits after the decimal point." },
+  "io": [
+      {
+          "q": "What does the `printf` function return upon successful execution? **GATE 2012**",
+          "options": [
+              "The string it printed",
+              "The number of characters printed",
+              "Zero",
+              "The number of arguments provided"
+          ],
+          "ans": 1,
+          "explanation": "The printf function returns the total number of characters written to the standard output."
+      },
+      {
+          "q": "What is the return value of `scanf`? **GATE 2014**",
+          "options": [
+              "The number of items successfully read and assigned",
+              "The total number of characters read",
+              "Zero always",
+              "The memory address of the first variable"
+          ],
+          "ans": 0,
+          "explanation": "scanf returns the number of input items successfully matched and assigned, which can be fewer than provided, or EOF on error."
+      },
+      {
+          "q": "Which format specifier is used to read a single character ignoring leading whitespace? **GATE 2016**",
+          "options": [
+              "%c",
+              " %c",
+              "%s",
+              "%w"
+          ],
+          "ans": 1,
+          "explanation": "A space before %c in scanf(\" %c\", &ch) tells scanf to skip any leading whitespace characters before reading the character."
+      },
+      {
+          "q": "What is the output of `printf(\"%d\", printf(\"GATE\"));`? **GATE 2010**",
+          "options": [
+              "GATE4",
+              "GATE",
+              "4",
+              "Error"
+          ],
+          "ans": 0,
+          "explanation": "The inner printf prints 'GATE' and returns 4. The outer printf then prints the return value, resulting in 'GATE4'."
+      },
+      {
+          "q": "What does the `%x` format specifier do in `printf`? **GATE 2008**",
+          "options": [
+              "Prints integer in octal format",
+              "Prints integer in lowercase hexadecimal format",
+              "Prints floating point number in exponential format",
+              "Prints integer in uppercase hexadecimal format"
+          ],
+          "ans": 1,
+          "explanation": "The %x specifier prints an unsigned integer in hexadecimal format using lowercase letters (a-f)."
+      },
+      {
+          "q": "What is the output of `printf(\"%10s\", \"hello\");`? **GATE 2019**",
+          "options": [
+              "'hello' followed by 5 spaces",
+              "5 spaces followed by 'hello'",
+              "Error",
+              "Only 10 characters are printed"
+          ],
+          "ans": 1,
+          "explanation": "The format '%10s' right-aligns the string 'hello' in a field of 10 characters, padding with 5 spaces on the left."
+      },
+      {
+          "q": "Which of the following functions is best suited to read a string containing spaces from standard input? **GATE 2005**",
+          "options": [
+              "scanf(\"%s\", str)",
+              "gets(str)",
+              "fgets(str, n, stdin)",
+              "getchar()"
+          ],
+          "ans": 2,
+          "explanation": "fgets() reads a string until a newline or EOF is reached (up to n-1 characters), making it safe and capable of reading spaces. gets() is deprecated and unsafe."
+      },
+      {
+          "q": "What happens if `scanf(\"%d\", a)` is executed instead of `scanf(\"%d\", &a)` where a is an int? **GATE 2015**",
+          "options": [
+              "It reads the value into variable 'a'",
+              "Compilation error",
+              "Runtime error (Segmentation fault)",
+              "It stores the value at address 0"
+          ],
+          "ans": 2,
+          "explanation": "scanf expects a memory address. Passing the value of 'a' treats its value as an address, likely leading to a segmentation fault."
+      },
+      {
+          "q": "What is the output of `printf(\"%f\", 9/5);`? **GATE 2020**",
+          "options": [
+              "1.800000",
+              "1.000000",
+              "0.000000",
+              "Undefined behavior / 0.000000"
+          ],
+          "ans": 3,
+          "explanation": "9/5 is an integer division resulting in 1 (an int). Passing an int to %f (which expects a double) causes undefined behavior, often printing 0.000000."
+      },
+      {
+          "q": "What does the `%p` format specifier print? **GATE 2017**",
+          "options": [
+              "A floating-point number",
+              "A memory address / pointer value",
+              "A character array",
+              "A percentage sign"
+          ],
+          "ans": 1,
+          "explanation": "The %p specifier is used to print the value of a pointer (a memory address), usually in hexadecimal format."
+      },
+      {
+          "q": "How to print the `%` symbol using `printf`? **GATE 2013**",
+          "options": [
+              "printf(\"%\");",
+              "printf(\"\\%\");",
+              "printf(\"%%\");",
+              "printf(\"%s\", \"%\");"
+          ],
+          "ans": 2,
+          "explanation": "To print a percent sign in printf, you must escape it using a double percent sign '%%'."
+      },
+      {
+          "q": "What is the output of `printf(\"%05d\", 42);`? **GATE 2011**",
+          "options": [
+              "42000",
+              "   42",
+              "00042",
+              "42"
+          ],
+          "ans": 2,
+          "explanation": "The '0' flag pads the integer with leading zeroes up to a field width of 5, resulting in '00042'."
+      },
+      {
+          "q": "Which header file must be included to use standard I/O functions like printf and scanf? **GATE 2004**",
+          "options": [
+              "<stdlib.h>",
+              "<conio.h>",
+              "<stdio.h>",
+              "<math.h>"
+          ],
+          "ans": 2,
+          "explanation": "The standard input/output functions are declared in the <stdio.h> header file."
+      },
+      {
+          "q": "What is the primary difference between `getchar()` and `getch()`? **GATE 2018**",
+          "options": [
+              "They are identical",
+              "getchar() is standard and buffered, getch() is non-standard and unbuffered",
+              "getch() echoes the character, getchar() does not",
+              "getchar() reads strings, getch() reads characters"
+          ],
+          "ans": 1,
+          "explanation": "getchar() is a standard C function that reads buffered input. getch() is a non-standard function (from conio.h) that reads a character immediately without buffering."
+      },
+      {
+          "q": "What is the output of `printf(\"%*d\", 5, 10);`? **GATE 2022**",
+          "options": [
+              "10",
+              "   10",
+              "10000",
+              "Error"
+          ],
+          "ans": 1,
+          "explanation": "The '*' allows the field width to be specified as an argument. Thus, it formats '10' with a width of 5, adding 3 leading spaces."
+      }
   ],
-  operators: [
-    { q: "What does the % operator do in C?", options: ["Divides two numbers", "Returns the remainder of division", "Multiplies by a percentage", "Compares two numbers"], ans: 1, explanation: "The modulus operator (%) calculates the remainder after dividing one integer by another." },
-    { q: "What is the result of 7 / 2 in C when both operands are ints?", options: ["3.5", "4", "3", "2"], ans: 2, explanation: "Integer division in C truncates any decimal part, meaning 7 / 2 evaluates to 3 instead of 3.5." },
-    { q: "What does x++ (post-increment) do?", options: ["Increments x then returns the new value", "Returns the current value of x, then increments it", "Decrements x", "Has no effect"], ans: 1, explanation: "Post-increment returns the value of x for the current expression first, then increments x by 1." },
-    { q: "Which operator checks if two values are equal?", options: ["=", "==", "!=", "==="], ans: 1, explanation: "In C, == is the equality operator, whereas a single = is used for value assignment." },
+  "operators": [
+      {
+          "q": "What is the output of `int a = 5, b = 10; a = a ^ b; b = a ^ b; a = a ^ b;`? **GATE 2008**",
+          "options": [
+              "a=5, b=10",
+              "a=10, b=5",
+              "a=15, b=15",
+              "a=0, b=0"
+          ],
+          "ans": 1,
+          "explanation": "This sequence of XOR operations swaps the values of the two variables without using a temporary variable."
+      },
+      {
+          "q": "What is the result of `sizeof(int)` when used in an expression? **GATE 2016**",
+          "options": [
+              "An integer value",
+              "A long integer value",
+              "A value of type size_t",
+              "A string"
+          ],
+          "ans": 2,
+          "explanation": "The sizeof operator always evaluates to an unsigned integer type defined as size_t."
+      },
+      {
+          "q": "Consider `int x = 0, y = 5; if(x && ++y) {}`. What is the value of y after execution? **GATE 2013**",
+          "options": [
+              "5",
+              "6",
+              "0",
+              "Undefined"
+          ],
+          "ans": 0,
+          "explanation": "The logical AND '&&' uses short-circuit evaluation. Since x is 0 (false), the right side (++y) is not evaluated, so y remains 5."
+      },
+      {
+          "q": "What is the output of `1 << 3`? **GATE 2011**",
+          "options": [
+              "3",
+              "4",
+              "8",
+              "9"
+          ],
+          "ans": 2,
+          "explanation": "Left shifting by 3 is equivalent to multiplying by 2^3 (8). 1 * 8 = 8."
+      },
+      {
+          "q": "Which operator has the highest precedence among the following? **GATE 2014**",
+          "options": [
+              "+",
+              "*",
+              "()",
+              "=="
+          ],
+          "ans": 2,
+          "explanation": "Parentheses '()' have the highest precedence in C, allowing overriding of default precedence rules."
+      },
+      {
+          "q": "What is the value of `x` after `x = 5; x = x++ + ++x;`? **GATE 2005**",
+          "options": [
+              "10",
+              "11",
+              "12",
+              "Undefined behavior"
+          ],
+          "ans": 3,
+          "explanation": "Modifying a variable multiple times without an intervening sequence point results in undefined behavior in C."
+      },
+      {
+          "q": "What is the output of `sizeof('A')` in standard C? **GATE 2019**",
+          "options": [
+              "1",
+              "2",
+              "4 (on 32-bit/64-bit systems)",
+              "8"
+          ],
+          "ans": 2,
+          "explanation": "In standard C, character constants like 'A' have type 'int', so sizeof('A') is the size of an int (usually 4 bytes)."
+      },
+      {
+          "q": "What is the result of applying the bitwise right shift operator `>>` on a negative integer? **GATE 2021**",
+          "options": [
+              "Logical shift (pads with 0)",
+              "Arithmetic shift (pads with sign bit)",
+              "Implementation-defined",
+              "Compilation error"
+          ],
+          "ans": 2,
+          "explanation": "In C, right-shifting a signed negative integer is implementation-defined (usually it's an arithmetic shift, but not guaranteed by the standard)."
+      },
+      {
+          "q": "What is the output of `int x = (1, 2, 3);`? **GATE 2018**",
+          "options": [
+              "1",
+              "2",
+              "3",
+              "Error"
+          ],
+          "ans": 2,
+          "explanation": "The comma operator evaluates all operands from left to right and returns the value of the rightmost operand, assigning 3 to x."
+      },
+      {
+          "q": "What does the bitwise NOT `~` operator do to a binary number? **GATE 2015**",
+          "options": [
+              "Adds 1 to the number",
+              "Flips all bits (1 to 0 and 0 to 1)",
+              "Multiplies by -1",
+              "Shifts bits to the left"
+          ],
+          "ans": 1,
+          "explanation": "The bitwise NOT operator (~) is a unary operator that performs a one's complement, flipping all 0s to 1s and 1s to 0s."
+      },
+      {
+          "q": "What is the output of `int a = 10, b = 20; int max = (a > b) ? a : b;`? **GATE 2012**",
+          "options": [
+              "10",
+              "20",
+              "30",
+              "Error"
+          ],
+          "ans": 1,
+          "explanation": "The ternary operator evaluates (a > b) which is false, so it returns the second expression 'b', assigning 20 to max."
+      },
+      {
+          "q": "What is the output of `-1 % 5` in C99? **GATE 2022**",
+          "options": [
+              "4",
+              "-1",
+              "1",
+              "-4"
+          ],
+          "ans": 1,
+          "explanation": "In C99, the result of the modulo operator takes the sign of the dividend. Thus, -1 % 5 is -1."
+      },
+      {
+          "q": "Which of the following operators cannot be used with floating-point numbers in C? **GATE 2009**",
+          "options": [
+              "+",
+              "-",
+              "%",
+              "*"
+          ],
+          "ans": 2,
+          "explanation": "The modulo operator (%) requires integer operands. Attempting to use it with floats causes a compilation error."
+      },
+      {
+          "q": "What is the result of `3 ^ 5`? **GATE 2017**",
+          "options": [
+              "6",
+              "8",
+              "15",
+              "2"
+          ],
+          "ans": 0,
+          "explanation": "Bitwise XOR compares binary representations: 3 is 011, 5 is 101. 011 ^ 101 = 110, which is 6 in decimal."
+      },
+      {
+          "q": "What is the associativity of the assignment operator `=`? **GATE 2010**",
+          "options": [
+              "Left to Right",
+              "Right to Left",
+              "None",
+              "Depends on compiler"
+          ],
+          "ans": 1,
+          "explanation": "The assignment operator evaluates from right to left, allowing chains like a = b = c = 5."
+      }
   ],
   "control-flow": [
-    { q: "What does an if statement check?", options: ["A string", "A condition that evaluates to true or false", "A loop count", "A function name"], ans: 1, explanation: "An if statement evaluates a boolean condition; any non-zero value is true, and zero is false." },
-    { q: "Which keyword prevents fall-through in a switch statement?", options: ["continue", "break", "return", "stop"], ans: 1, explanation: "The break keyword exits the switch block, preventing execution from continuing into subsequent cases." },
-    { q: "What does the ternary operator `cond ? a : b` return?", options: ["Always a", "a if cond is true, otherwise b", "Always b", "Nothing"], ans: 1, explanation: "The ternary operator evaluates cond. If true, it returns expression 'a'; otherwise, it returns 'b'." },
-    { q: "Which value does C treat as 'false' in a condition?", options: ["Any negative number", "0", "An empty string", "1"], ans: 1, explanation: "In C, a value of 0 represents false, while any non-zero value represents true." },
+      {
+          "q": "What is the output of a `switch` statement if a `break` is omitted in a matching case? **GATE 2012**",
+          "options": [
+              "Compilation error",
+              "Execution exits the switch statement immediately",
+              "Fall-through to the next case statements until a break or end is reached",
+              "Skips all remaining cases"
+          ],
+          "ans": 2,
+          "explanation": "Without a break statement, the execution falls through to subsequent case blocks, regardless of whether their condition matches."
+      },
+      {
+          "q": "How many times does the loop `for(i=0; i<10; i++)` execute? **GATE 2016**",
+          "options": [
+              "9",
+              "10",
+              "11",
+              "Infinite"
+          ],
+          "ans": 1,
+          "explanation": "The loop initializes i to 0 and runs as long as i < 10. It executes exactly 10 times (from i=0 to i=9)."
+      },
+      {
+          "q": "Which loop guarantees that its body is executed at least once? **GATE 2005**",
+          "options": [
+              "for loop",
+              "while loop",
+              "do-while loop",
+              "None"
+          ],
+          "ans": 2,
+          "explanation": "The do-while loop evaluates its condition after the loop body is executed, guaranteeing at least one execution."
+      },
+      {
+          "q": "What is the effect of the `continue` statement inside a loop? **GATE 2013**",
+          "options": [
+              "Exits the loop entirely",
+              "Skips the remaining statements in the current iteration and jumps to the next iteration",
+              "Exits the program",
+              "Restarts the loop from the beginning"
+          ],
+          "ans": 1,
+          "explanation": "The continue statement forces the loop to skip the rest of its body and immediately evaluate the next iteration."
+      },
+      {
+          "q": "In the dangling `else` problem, an `else` is matched with which `if`? **GATE 2011**",
+          "options": [
+              "The first if in the block",
+              "The closest preceding unmatched if",
+              "The outermost if",
+              "Depends on indentation"
+          ],
+          "ans": 1,
+          "explanation": "C language resolves the dangling else by matching it with the nearest unmatched preceding 'if' statement in the same block."
+      },
+      {
+          "q": "What does the loop `for(;;)` do? **GATE 2018**",
+          "options": [
+              "Compilation error",
+              "Executes zero times",
+              "Creates an infinite loop",
+              "Executes once"
+          ],
+          "ans": 2,
+          "explanation": "A for loop with empty condition statements acts as a loop with a universally true condition, creating an infinite loop."
+      },
+      {
+          "q": "What is the output of `if(a = 0) printf(\"True\"); else printf(\"False\");`? **GATE 2009**",
+          "options": [
+              "True",
+              "False",
+              "Compilation error",
+              "Runtime error"
+          ],
+          "ans": 1,
+          "explanation": "The assignment 'a = 0' returns 0, which evaluates to false in C. Therefore, the 'else' block is executed."
+      },
+      {
+          "q": "What is the role of the `default` case in a `switch` statement? **GATE 2017**",
+          "options": [
+              "It must be the first case",
+              "It catches any values not matched by other cases",
+              "It terminates the switch statement",
+              "It is executed regardless of the match"
+          ],
+          "ans": 1,
+          "explanation": "The default case acts as a fallback and is executed if none of the explicit case values match the switch expression."
+      },
+      {
+          "q": "Which of the following types can be used in a `switch` expression? **GATE 2020**",
+          "options": [
+              "float",
+              "double",
+              "int or char",
+              "strings"
+          ],
+          "ans": 2,
+          "explanation": "A switch expression must evaluate to an integral type, such as int or char. Floating-point numbers and strings are not allowed."
+      },
+      {
+          "q": "What does a `break` statement inside an inner loop do? **GATE 2015**",
+          "options": [
+              "Breaks out of all nested loops",
+              "Breaks out of the inner loop only",
+              "Skips the current iteration of the inner loop",
+              "Causes a compilation error"
+          ],
+          "ans": 1,
+          "explanation": "A break statement only terminates the innermost enclosing loop or switch statement."
+      },
+      {
+          "q": "How many times does the loop body of `while(0)` execute? **GATE 2014**",
+          "options": [
+              "1",
+              "0",
+              "Infinite",
+              "Compiler error"
+          ],
+          "ans": 1,
+          "explanation": "The condition is 0 (false) from the start, so the loop body never executes."
+      },
+      {
+          "q": "Which of the following is true about the `goto` statement? **GATE 2010**",
+          "options": [
+              "It can jump between different functions",
+              "It can only jump within the same function",
+              "It is recommended for good program structure",
+              "It can jump to a different C file"
+          ],
+          "ans": 1,
+          "explanation": "The goto statement transfers control to a labeled statement within the same function block."
+      },
+      {
+          "q": "Is `for(i=0, j=10; i<10; i++, j--)` a valid C statement? **GATE 2019**",
+          "options": [
+              "Yes, it is valid",
+              "No, comma operator cannot be used here",
+              "No, too many initialization variables",
+              "No, multiple increments are invalid"
+          ],
+          "ans": 0,
+          "explanation": "The comma operator is perfectly valid in the initialization and iteration parts of a for loop, allowing multiple variables to be updated."
+      },
+      {
+          "q": "What happens if a `switch` statement has duplicate case values? **GATE 2021**",
+          "options": [
+              "The first case is executed",
+              "The last case is executed",
+              "Compilation error",
+              "Runtime error"
+          ],
+          "ans": 2,
+          "explanation": "C requires all case labels in a switch statement to be unique. Duplicate cases result in a compilation error."
+      },
+      {
+          "q": "What is the output of `if(1) printf(\"A\"); else printf(\"B\");`? **GATE 2022**",
+          "options": [
+              "A",
+              "B",
+              "AB",
+              "Error"
+          ],
+          "ans": 0,
+          "explanation": "The condition '1' evaluates to true, so the 'if' block executes and prints 'A'."
+      }
   ],
-  loops: [
-    { q: "Which loop guarantees its body runs at least once?", options: ["for", "while", "do-while", "switch"], ans: 2, explanation: "A do-while loop evaluates its conditional statement at the end of the iteration, guaranteeing at least one execution." },
-    { q: "What does break do inside a loop?", options: ["Skips to the next iteration", "Exits the loop immediately", "Restarts the loop", "Pauses execution"], ans: 1, explanation: "The break statement terminates the current loop execution instantly and passes control to the next block." },
-    { q: "In `for (init; cond; update)`, when does update run?", options: ["Before each iteration begins", "After each iteration's body finishes", "Only once at the start", "Never"], ans: 1, explanation: "The update statement runs at the very end of each iteration loop body before the condition is re-evaluated." },
-    { q: "What happens if a while loop's condition is false from the very start?", options: ["It runs once", "It runs forever", "The body never executes", "It throws an error"], ans: 2, explanation: "A while loop is a pre-test loop; if the condition is false initially, the body is skipped entirely." },
+  "loops": [
+      {
+          "q": "Consider the following C program:\n```c\n#include<stdio.h>\nint main() {\n  int i = 0;\n  for(i=0; i<5; i++);\n  printf(\"%d\", i);\n  return 0;\n}\n```\nWhat will be the output? **GATE 2014**",
+          "options": [
+              "0",
+              "4",
+              "5",
+              "Compilation error"
+          ],
+          "ans": 2,
+          "explanation": "The loop terminates when i becomes 5. Because of the semicolon after the for loop, the printf statement is outside the loop and prints 5."
+      },
+      {
+          "q": "Consider the following C code:\n```c\nint j, n;\nj = 1;\nwhile (j <= n) {\n  j = j * 2;\n}\n```\nWhat is the time complexity of the above loop? **GATE 2008**",
+          "options": [
+              "O(n)",
+              "O(n^2)",
+              "O(log n)",
+              "O(n log n)"
+          ],
+          "ans": 2,
+          "explanation": "The variable j is multiplied by 2 in each iteration. It will exceed n after log2(n) iterations. Hence, the time complexity is O(log n)."
+      },
+      {
+          "q": "What is the output of the following C program snippet?\n```c\nint i;\nfor (i = 0; i < 10; i++) {\n  if (i == 5) continue;\n  printf(\"%d \", i);\n}\n```\n**GATE 2016**",
+          "options": [
+              "0 1 2 3 4 5 6 7 8 9",
+              "0 1 2 3 4",
+              "0 1 2 3 4 6 7 8 9",
+              "Infinite loop"
+          ],
+          "ans": 2,
+          "explanation": "The continue statement skips the current iteration when i == 5, so 5 is not printed. The rest of the numbers from 0 to 9 are printed."
+      },
+      {
+          "q": "Consider the following C function:\n```c\nint fun(int n) {\n  int count = 0;\n  for (int i = n; i > 0; i /= 2)\n    for (int j = 0; j < i; j++)\n      count++;\n  return count;\n}\n```\nThe time complexity of fun(n) is: **GATE 2017**",
+          "options": [
+              "O(n^2)",
+              "O(n log n)",
+              "O(n)",
+              "O(log n)"
+          ],
+          "ans": 2,
+          "explanation": "The inner loop runs i times. The outer loop runs for i = n, n/2, n/4, ..., 1. Total count = n + n/2 + n/4 + ... = O(n)."
+      },
+      {
+          "q": "What will be the output of the following C program?\n```c\nint main() {\n  int c = 5;\n  while (c--) {\n    printf(\"%d \", c);\n  }\n  return 0;\n}\n```\n**GATE 2018**",
+          "options": [
+              "4 3 2 1 0",
+              "5 4 3 2 1",
+              "4 3 2 1",
+              "5 4 3 2 1 0"
+          ],
+          "ans": 0,
+          "explanation": "The post-decrement operator checks the condition with c=5, then decrements c to 4. So it prints 4, 3, 2, 1, and 0."
+      },
+      {
+          "q": "Consider the following C program:\n```c\nint main() {\n  int i = 0;\n  do {\n    i++;\n    if (i == 2) continue;\n    printf(\"%d \", i);\n  } while (i < 5);\n  return 0;\n}\n```\nWhat is the output? **GATE 2021**",
+          "options": [
+              "1 3 4 5",
+              "1 3 4",
+              "1 2 3 4",
+              "1 2 3 4 5"
+          ],
+          "ans": 0,
+          "explanation": "The loop runs for i=0 to 4 initially. i is incremented before printing. When i is 2, it continues to the next iteration. Output is 1 3 4 5."
+      },
+      {
+          "q": "Which of the following loops will result in an infinite loop? **GATE 2015**",
+          "options": [
+              "for (int i = 0; i < 10; i--) {}",
+              "for (int i = 0; i < 10; i++) {}",
+              "while (0) {}",
+              "do {} while (0);"
+          ],
+          "ans": 0,
+          "explanation": "The variable i is decremented, so the condition i < 10 will always be true (ignoring overflow/underflow specifics leading to negative values indefinitely in normal context)."
+      },
+      {
+          "q": "Consider the following nested loops:\n```c\nint n = 10, count = 0;\nfor (int i = 1; i <= n; i *= 2) {\n  for (int j = 1; j <= n; j++) {\n    count++;\n  }\n}\n```\nWhat is the time complexity? **GATE 2019**",
+          "options": [
+              "O(n)",
+              "O(n^2)",
+              "O(n log n)",
+              "O(log n)"
+          ],
+          "ans": 2,
+          "explanation": "The outer loop runs log(n) times. The inner loop runs n times. Therefore, the total time complexity is O(n log n)."
+      },
+      {
+          "q": "What is the output of the following C program?\n```c\n#include <stdio.h>\nint main() {\n  int x = 1;\n  switch (x) {\n    case 1:\n      for (int i = 0; i < 2; i++) {\n        printf(\"A \");\n        break;\n      }\n    case 2:\n      printf(\"B \");\n  }\n  return 0;\n}\n```\n**GATE 2013**",
+          "options": [
+              "A",
+              "A B",
+              "A A B",
+              "Compilation error"
+          ],
+          "ans": 1,
+          "explanation": "The break statement only exits the for loop, not the switch case. Fallthrough occurs to case 2, printing 'A B '."
+      },
+      {
+          "q": "What is the value of `i` after the following loop terminates?\n```c\nint i;\nfor (i = 0; i < 10; i += 3) {\n  // empty body\n}\n```\n**GATE 2005**",
+          "options": [
+              "9",
+              "10",
+              "12",
+              "13"
+          ],
+          "ans": 2,
+          "explanation": "The loop iterations give i = 0, 3, 6, 9. After i becomes 12, the condition i < 10 becomes false and the loop terminates with i = 12."
+      },
+      {
+          "q": "Consider the following code snippet:\n```c\nint i = 0;\nwhile (+(+i--) != 0) {\n  i -= i;\n}\n```\nHow many times does the loop body execute? **GATE 2020**",
+          "options": [
+              "0",
+              "1",
+              "Infinite",
+              "Compilation error"
+          ],
+          "ans": 0,
+          "explanation": "The initial value of i is 0. The post-decrement returns 0, which makes the condition false immediately. Loop body executes 0 times."
+      },
+      {
+          "q": "Consider the following C program:\n```c\nint main() {\n  int i, j;\n  for (i = 1, j = 1; i <= 5, j <= 3; i++, j++) {\n    printf(\"%d %d \", i, j);\n  }\n  return 0;\n}\n```\nWhat is the output? **GATE 2012**",
+          "options": [
+              "1 1 2 2 3 3",
+              "1 1 2 2 3 3 4 4 5 5",
+              "1 1 2 2",
+              "Syntax Error"
+          ],
+          "ans": 0,
+          "explanation": "The condition part is an expression `i <= 5, j <= 3`. The comma operator returns the value of the rightmost operand, so the loop continues as long as `j <= 3`. Thus, it prints '1 1 2 2 3 3'."
+      },
+      {
+          "q": "What is the output of the given C code snippet?\n```c\nint x = 3;\ndo {\n  printf(\"%d \", x);\n  x -= 2;\n} while (x > 0);\n```\n**GATE 2011**",
+          "options": [
+              "3 1",
+              "3",
+              "3 1 -1",
+              "Infinite loop"
+          ],
+          "ans": 0,
+          "explanation": "First iteration prints 3, x becomes 1. Condition x > 0 holds. Second iteration prints 1, x becomes -1. Condition x > 0 fails. Output: 3 1."
+      },
+      {
+          "q": "What does the following C loop do?\n```c\nwhile (printf(\"0\")) {\n  break;\n}\n```\n**GATE 2004**",
+          "options": [
+              "Prints 0 infinite times",
+              "Prints 0 once",
+              "Compilation error",
+              "Nothing is printed"
+          ],
+          "ans": 1,
+          "explanation": "printf returns the number of characters printed, which is 1. The condition is true, it enters the loop, and the break statement terminates it immediately. Output is '0' once."
+      },
+      {
+          "q": "Consider this loop structure:\n```c\nint i = 5;\nwhile (i || printf(\"A\")) {\n  i--;\n  if (i == 0) break;\n}\n```\nWhat is printed? **GATE 2022**",
+          "options": [
+              "AAAA",
+              "A",
+              "Nothing is printed",
+              "Infinite loop"
+          ],
+          "ans": 2,
+          "explanation": "Initially i=5. Since i is non-zero, the short-circuit || operator does not evaluate printf(\"A\"). Inside the loop, i becomes 4, 3, 2, 1, 0, and when i==0 it breaks. Nothing is printed."
+      }
   ],
-  functions: [
-    { q: "Why write a function prototype before main()?", options: ["It runs the function early", "It tells the compiler the function's signature ahead of its full definition", "It makes the function run faster", "It is required for every C program"], ans: 1, explanation: "Prototypes declare a function's parameters and return type so the compiler can validate calls before the function is defined." },
-    { q: "What does 'pass by value' mean?", options: ["The function modifies the original variable", "A copy of the argument is passed into the function", "Only pointers can be passed", "Arguments are passed by reference"], ans: 1, explanation: "Pass-by-value makes a local copy of the parameter. Changes inside the function do not affect the original variable." },
-    { q: "What must every recursive function have to avoid infinite recursion?", options: ["A loop", "A base case", "A pointer", "A global variable"], ans: 1, explanation: "A base case specifies the condition under which a recursive function stops calling itself." },
-    { q: "Which return type is used when a function returns no value?", options: ["int", "null", "void", "empty"], ans: 2, explanation: "The void keyword indicates that a function does not return any value to the caller." },
+  "functions": [
+      {
+          "q": "Consider the following C function:\n```c\nint f(int n) {\n  static int i = 1;\n  if (n >= 5) return n;\n  n = n + i;\n  i++;\n  return f(n);\n}\n```\nWhat is the value returned by `f(1)`? **GATE 2015**",
+          "options": [
+              "5",
+              "6",
+              "7",
+              "8"
+          ],
+          "ans": 2,
+          "explanation": "f(1): i=1, n=2, i=2; calls f(2)\nf(2): i=2, n=4, i=3; calls f(4)\nf(4): i=3, n=7, i=4; calls f(7)\nf(7): returns 7."
+      },
+      {
+          "q": "Consider the following C function:\n```c\nvoid swap(int x, int y) {\n  int temp = x;\n  x = y;\n  y = temp;\n}\n```\nIf called with `swap(a, b)`, what happens to variables a and b? **GATE 2007**",
+          "options": [
+              "They are swapped",
+              "They remain unchanged",
+              "Compilation error",
+              "Runtime error"
+          ],
+          "ans": 1,
+          "explanation": "C uses pass by value. The changes made to x and y inside the function do not affect the original variables a and b."
+      },
+      {
+          "q": "What is the output of the following C program?\n```c\nint func(int x) {\n  return x > 0 ? x + func(x - 1) : 0;\n}\nint main() {\n  printf(\"%d\", func(5));\n  return 0;\n}\n```\n**GATE 2011**",
+          "options": [
+              "15",
+              "10",
+              "5",
+              "0"
+          ],
+          "ans": 0,
+          "explanation": "The function calculates the sum of the first x natural numbers. For x=5, sum is 5+4+3+2+1 = 15."
+      },
+      {
+          "q": "Consider the following C function:\n```c\nint f(int *a, int n) {\n  if (n <= 0) return 0;\n  else if (*a % 2 == 0) return *a + f(a + 1, n - 1);\n  else return *a - f(a + 1, n - 1);\n}\n```\nFor an array `a = {12, 7, 13, 4, 11, 6}` and `n = 6`, what is the returned value? **GATE 2018**",
+          "options": [
+              "15",
+              "14",
+              "33",
+              "19"
+          ],
+          "ans": 0,
+          "explanation": "f({12,...}, 6) = 12 + f({7,...}, 5)\nf({7,...}, 5) = 7 - f({13,...}, 4)\nf({13,...}, 4) = 13 - f({4,...}, 3)\nf({4,...}, 3) = 4 + f({11,...}, 2)\nf({11,...}, 2) = 11 - f({6}, 1)\nf({6}, 1) = 6 + 0 = 6\nWorking backwards: f(11)=11-6=5; f(4)=4+5=9; f(13)=13-9=4; f(7)=7-4=3; f(12)=12+3=15."
+      },
+      {
+          "q": "Consider the program:\n```c\nint f(int n) {\n  static int r = 0;\n  if (n <= 0) return 1;\n  if (n > 3) {\n    r = n;\n    return f(n-2) + 2;\n  }\n  return f(n-1) + r;\n}\n```\nWhat is the value of `f(5)`? **GATE 2014**",
+          "options": [
+              "16",
+              "18",
+              "19",
+              "21"
+          ],
+          "ans": 1,
+          "explanation": "f(5) sets r=5, returns f(3)+2.\nf(3) returns f(2)+5.\nf(2) returns f(1)+5.\nf(1) returns f(0)+5.\nf(0) returns 1.\nf(1) = 1+5=6; f(2) = 6+5=11; f(3) = 11+5=16; f(5) = 16+2=18."
+      },
+      {
+          "q": "Which of the following is true about inline functions in C? **GATE 2008**",
+          "options": [
+              "They must be recursive",
+              "They reduce function call overhead",
+              "They cannot return a value",
+              "They cannot take parameters"
+          ],
+          "ans": 1,
+          "explanation": "Inline functions are expanded in line when they are invoked, which eliminates the function call overhead."
+      },
+      {
+          "q": "Consider the following recursive C function:\n```c\nvoid get(int n) {\n  if (n < 1) return;\n  get(n - 1);\n  get(n - 3);\n  printf(\"%d \", n);\n}\n```\nIf `get(6)` is called, how many times will `get()` be invoked? **GATE 2010**",
+          "options": [
+              "15",
+              "25",
+              "21",
+              "29"
+          ],
+          "ans": 1,
+          "explanation": "T(n) = 1 + T(n-1) + T(n-3). Base cases T(n)=1 for n<1.\nT(0)=1, T(-1)=1, T(-2)=1\nT(1) = 1 + 1 + 1 = 3\nT(2) = 1 + T(1) + T(-1) = 1 + 3 + 1 = 5\nT(3) = 1 + T(2) + T(0) = 1 + 5 + 1 = 7\nT(4) = 1 + T(3) + T(1) = 1 + 7 + 3 = 11\nT(5) = 1 + T(4) + T(2) = 1 + 11 + 5 = 17\nT(6) = 1 + T(5) + T(3) = 1 + 17 + 7 = 25 calls total."
+      },
+      {
+          "q": "Consider the following C function:\n```c\nint fun(int n) {\n  if (n == 4) return n;\n  else return 2 * fun(n + 1);\n}\n```\nWhat is returned by `fun(2)`? **GATE 2021**",
+          "options": [
+              "4",
+              "8",
+              "16",
+              "32"
+          ],
+          "ans": 2,
+          "explanation": "fun(2) = 2 * fun(3)\nfun(3) = 2 * fun(4)\nfun(4) = 4\nSo, fun(3) = 2 * 4 = 8, and fun(2) = 2 * 8 = 16."
+      },
+      {
+          "q": "Consider the following program:\n```c\nvoid printxy(int x, int y) {\n  int *ptr;\n  x = 0;\n  ptr = &x;\n  y = *ptr;\n  *ptr = 1;\n  printf(\"%d,%d\", x, y);\n}\n```\nWhat is the output? **GATE 2004**",
+          "options": [
+              "0,0",
+              "1,0",
+              "0,1",
+              "1,1"
+          ],
+          "ans": 1,
+          "explanation": "x=0. ptr points to x. y = *ptr = 0. *ptr = 1, so x becomes 1. Output is x=1, y=0. Thus, 1,0."
+      },
+      {
+          "q": "What happens if a function is declared without a return type in C90? **GATE 2006**",
+          "options": [
+              "It defaults to returning void",
+              "It defaults to returning int",
+              "Compilation error",
+              "Warning and defaults to void"
+          ],
+          "ans": 1,
+          "explanation": "In older C standards (C89/C90), if a function has no explicit return type, it defaults to returning 'int'."
+      },
+      {
+          "q": "Consider the program:\n```c\nint f(int n) {\n  int x = 1, k;\n  if (n == 1) return x;\n  for (k = 1; k < n; ++k)\n    x = x + f(k) * f(n - k);\n  return x;\n}\n```\nWhat is the value of `f(5)`? **GATE 2016**",
+          "options": [
+              "51",
+              "52",
+              "53",
+              "54"
+          ],
+          "ans": 0,
+          "explanation": "f(1)=1\nf(2) = 1 + f(1)f(1) = 2\nf(3) = 1 + f(1)f(2) + f(2)f(1) = 1 + 2 + 2 = 5\nf(4) = 1 + f(1)f(3) + f(2)f(2) + f(3)f(1) = 1 + 5 + 4 + 5 = 15\nf(5) = 1 + f(1)f(4) + f(2)f(3) + f(3)f(2) + f(4)f(1) = 1 + 15 + 10 + 10 + 15 = 51."
+      },
+      {
+          "q": "Consider the following function:\n```c\nint f(int j) {\n  static int i = 50;\n  int k;\n  if (i == j) {\n    printf(\"something\");\n    k = f(i);\n    return 0;\n  }\n  else return 0;\n}\n```\nWhich statement is true? **GATE 2005**",
+          "options": [
+              "The function returns 0 for all values of j",
+              "The function results in infinite recursion if j = 50",
+              "The function prints 'something' multiple times",
+              "Compilation error"
+          ],
+          "ans": 1,
+          "explanation": "If j = 50, i == j is true. The function calls f(i) i.e., f(50). This again matches i == j since i is static and unchanged. Thus it leads to infinite recursion."
+      },
+      {
+          "q": "Which of the following passing mechanisms allows a function to modify a variable passed by the caller? **GATE 2003**",
+          "options": [
+              "Call by value",
+              "Call by reference using pointers",
+              "Call by name",
+              "Call by value-result"
+          ],
+          "ans": 1,
+          "explanation": "In C, passing pointers to a variable (simulating call by reference) allows the called function to modify the caller's variable."
+      },
+      {
+          "q": "Consider the following macro and function:\n```c\n#define SQR(x) (x*x)\nint main() {\n  int a = 3, b;\n  b = SQR(a + 1);\n  printf(\"%d\", b);\n  return 0;\n}\n```\nWhat is the output? **GATE 2012**",
+          "options": [
+              "16",
+              "7",
+              "11",
+              "9"
+          ],
+          "ans": 1,
+          "explanation": "Macro expansion: (a + 1 * a + 1) -> (3 + 1 * 3 + 1) = 3 + 3 + 1 = 7."
+      },
+      {
+          "q": "What will be the output?\n```c\nint foo(int val) {\n  int x = 0;\n  while (val > 0) {\n    x = x + foo(val--);\n  }\n  return val;\n}\n```\n**GATE 2013**",
+          "options": [
+              "Returns 0",
+              "Infinite recursion",
+              "Returns val",
+              "Compilation error"
+          ],
+          "ans": 1,
+          "explanation": "val-- is a post-decrement. The function foo is called recursively with the same value of val (e.g., if initial val is 1, foo(1) is called, which calls foo(1) again). This leads to infinite recursion."
+      }
   ],
-  arrays: [
-    { q: "What is the index of the first element in a C array?", options: ["1", "0", "-1", "Depends on the array"], ans: 1, explanation: "C uses zero-based indexing, meaning the first element of an array is accessed at index 0." },
-    { q: "Given `int a[5];`, what is the valid index range?", options: ["1 to 5", "0 to 4", "0 to 5", "1 to 4"], ans: 1, explanation: "An array of size N has valid indices running from 0 up to N-1." },
-    { q: "How do you access row 1, column 2 of a 2D array called grid?", options: ["grid(1,2)", "grid[1][2]", "grid[1,2]", "grid->1->2"], ans: 1, explanation: "2D array elements are accessed using double square brackets: grid[row][column]." },
-    { q: "What happens if you access an index outside an array's bounds in C?", options: ["The compiler stops you", "C automatically resizes the array", "Undefined behavior — C does not check bounds", "It returns 0"], ans: 2, explanation: "C does not perform bounds checking at runtime; out-of-bounds access leads to undefined behavior or memory corruption." },
+  "arrays": [
+      {
+          "q": "Consider the following C program:\n```c\nint main() {\n  int a[] = {1, 2, 3, 4, 5, 6};\n  int *ptr = (int*)(&a + 1);\n  printf(\"%d \", *(ptr - 1));\n  return 0;\n}\n```\nWhat is the output? **GATE 2011**",
+          "options": [
+              "1",
+              "5",
+              "6",
+              "Garbage value"
+          ],
+          "ans": 2,
+          "explanation": "&a points to the entire array. &a + 1 increments the pointer by the size of the whole array (6 integers). Casting it to int* and subtracting 1 points it to the last element of the array, which is 6."
+      },
+      {
+          "q": "Consider a 2D array `int A[10][20];`. The base address of A is 1000. Assuming the size of an integer is 4 bytes and elements are stored in row-major order, what is the address of `A[5][15]`? **GATE 2004**",
+          "options": [
+              "1460",
+              "1540",
+              "1260",
+              "1480"
+          ],
+          "ans": 0,
+          "explanation": "Address = Base + (RowIndex * NumCols + ColIndex) * Size = 1000 + (5 * 20 + 15) * 4 = 1000 + (115) * 4 = 1000 + 460 = 1460."
+      },
+      {
+          "q": "What is the output of the following C code?\n```c\nint main() {\n  int arr[] = {10, 20, 30, 40, 50};\n  int *p = arr;\n  printf(\"%d \", *p++ );\n  printf(\"%d \", *p);\n  return 0;\n}\n```\n**GATE 2010**",
+          "options": [
+              "10 10",
+              "20 20",
+              "10 20",
+              "20 30"
+          ],
+          "ans": 2,
+          "explanation": "*p++ first dereferences p (giving 10) and then increments the pointer p. The next printf prints the value at the new pointer location (20)."
+      },
+      {
+          "q": "In C, what does the expression `arr[i]` internally evaluate to? **GATE 2008**",
+          "options": [
+              "*(arr + i)",
+              "*arr + i",
+              "&arr + i",
+              "arr + *i"
+          ],
+          "ans": 0,
+          "explanation": "In C, array indexing is a syntactic sugar for pointer arithmetic. `arr[i]` is exactly equivalent to `*(arr + i)`."
+      },
+      {
+          "q": "Consider the declaration `int a[5] = {1, 2};`. What will be the value of `a[3]`? **GATE 2015**",
+          "options": [
+              "Garbage value",
+              "3",
+              "0",
+              "Compilation error"
+          ],
+          "ans": 2,
+          "explanation": "When an array is partially initialized, the remaining elements are automatically initialized to 0. So a[3] is 0."
+      },
+      {
+          "q": "Consider a 2D array `A[m][n]`. Which of the following is equivalent to `A[i][j]`? **GATE 2013**",
+          "options": [
+              "*(*(A + i) + j)",
+              "*(A + i + j)",
+              "*(A + i) + j",
+              "&A[i][j]"
+          ],
+          "ans": 0,
+          "explanation": "A[i] is equivalent to *(A+i). Thus A[i][j] is equivalent to *(*(A+i) + j)."
+      },
+      {
+          "q": "What will be the output?\n```c\n#include <stdio.h>\nvoid print(int arr[]) {\n  printf(\"%lu\", sizeof(arr));\n}\nint main() {\n  int arr[10];\n  print(arr);\n  return 0;\n}\n```\nAssume a 64-bit system. **GATE 2017**",
+          "options": [
+              "40",
+              "8",
+              "10",
+              "4"
+          ],
+          "ans": 1,
+          "explanation": "When an array is passed to a function, it decays into a pointer. On a 64-bit system, the size of a pointer is typically 8 bytes."
+      },
+      {
+          "q": "Consider the array declaration: `int arr[3][4] = {1,2,3,4,5,6,7,8,9,10,11,12};`. What is the value of `*(*(arr + 2) + 1)`? **GATE 2009**",
+          "options": [
+              "7",
+              "9",
+              "10",
+              "11"
+          ],
+          "ans": 2,
+          "explanation": "`*(*(arr + 2) + 1)` is equivalent to `arr[2][1]`. The 3rd row (index 2) starts at 9, and the 2nd element (index 1) of that row is 10."
+      },
+      {
+          "q": "What is the result of `&arr[4] - &arr[0]` for an integer array `arr`? **GATE 2021**",
+          "options": [
+              "16",
+              "4",
+              "Garbage",
+              "0"
+          ],
+          "ans": 1,
+          "explanation": "Pointer subtraction in C yields the number of elements between the two pointers, not the number of bytes. So, 4 - 0 = 4."
+      },
+      {
+          "q": "Which of the following array initializations is incorrect? **GATE 2006**",
+          "options": [
+              "int a[] = {1, 2, 3};",
+              "int a[3] = {1, 2, 3};",
+              "int a[3] = {1, 2};",
+              "int a[];"
+          ],
+          "ans": 3,
+          "explanation": "The size of the array must be specified if it is not initialized at the time of declaration."
+      },
+      {
+          "q": "Consider the following C program:\n```c\nint main() {\n  int arr[] = {1, 2, 3, 4, 5};\n  int *p = arr;\n  ++*p;\n  p += 2;\n  printf(\"%d\", *p);\n  return 0;\n}\n```\nWhat is the output? **GATE 2016**",
+          "options": [
+              "2",
+              "3",
+              "4",
+              "5"
+          ],
+          "ans": 1,
+          "explanation": "++*p increments the first element (arr[0] becomes 2). Then p += 2 moves the pointer to arr[2], which is 3. The output is 3."
+      },
+      {
+          "q": "Consider `int a[10];`. What is the type of `&a`? **GATE 2018**",
+          "options": [
+              "int *",
+              "int **",
+              "int (*)[10]",
+              "int *[10]"
+          ],
+          "ans": 2,
+          "explanation": "`&a` gives the address of the whole array, so its type is a pointer to an array of 10 integers, which is `int (*)[10]`."
+      },
+      {
+          "q": "Consider the following C snippet:\n```c\nint arr[5] = {1, 2, 3, 4, 5};\nprintf(\"%d\", 2[arr]);\n```\nWhat is the output? **GATE 2005**",
+          "options": [
+              "1",
+              "2",
+              "3",
+              "Syntax error"
+          ],
+          "ans": 2,
+          "explanation": "In C, `2[arr]` is evaluated as `*(2 + arr)`, which is identical to `*(arr + 2)` or `arr[2]`. The output is 3."
+      },
+      {
+          "q": "Given an array `int A[] = {10, 20, 30};`, what does `A` represent? **GATE 2007**",
+          "options": [
+              "Value of the first element",
+              "Pointer to the first element",
+              "Size of the array",
+              "Address of the last element"
+          ],
+          "ans": 1,
+          "explanation": "The array name `A` acts as a constant pointer to the first element of the array."
+      },
+      {
+          "q": "What will be the output?\n```c\nint a[5] = {5, 1, 15, 20, 25};\nint i, j, m;\ni = ++a[1];\nj = a[1]++;\nm = a[i++];\nprintf(\"%d, %d, %d\", i, j, m);\n```\n**GATE 2012**",
+          "options": [
+              "2, 2, 15",
+              "3, 2, 15",
+              "3, 2, 20",
+              "2, 3, 20"
+          ],
+          "ans": 1,
+          "explanation": "a = {5, 1, 15, 20, 25}. i = ++a[1] -> a[1] becomes 2, so i=2.\nj = a[1]++ -> j gets 2, a[1] becomes 3.\nm = a[i++] -> m = a[2++] -> m = a[2] = 15, i becomes 3.\nOutput is 3, 2, 15."
+      }
   ],
-  strings: [
-    { q: "What character marks the end of a C string?", options: ["'\\n'", "' '", "'\\0'", "'\\e'"], ans: 2, explanation: "The null-terminator character '\\0' marks the boundary and end of a character string in C." },
-    { q: "Which function returns the number of characters in a string, excluding the terminator?", options: ["strcpy", "strlen", "strcmp", "strcat"], ans: 1, explanation: "strlen() counts characters in a string up to, but not including, the terminating null character." },
-    { q: "What does strcmp(a, b) return when the two strings are equal?", options: ["1", "-1", "0", "true"], ans: 2, explanation: "strcmp() compares strings lexicographically and returns 0 if they are identical." },
-    { q: "Why is fgets often preferred over scanf(\"%s\", ...) for reading strings?", options: ["fgets is always faster", "fgets can read a full line including spaces", "scanf cannot read strings at all", "fgets compiles smaller code"], ans: 1, explanation: "fgets() accepts spaces and limits the maximum characters read, making it much safer against buffer overflows." },
+  "strings": [
+      {
+          "q": "Consider the following C code:\n```c\nchar str[] = \"GATE2024\";\nprintf(\"%c\", *(&str[2]));\n```\nWhat is the output? **GATE 2019**",
+          "options": [
+              "G",
+              "A",
+              "T",
+              "E"
+          ],
+          "ans": 2,
+          "explanation": "str[2] is 'T'. The address of str[2] is &str[2]. Dereferencing it using * gives the value 'T'."
+      },
+      {
+          "q": "What will be the output of the following C program?\n```c\n#include <stdio.h>\n#include <string.h>\nint main() {\n  char p[] = \"assignment\";\n  printf(\"%lu\", strlen(p));\n  printf(\"%lu\", sizeof(p));\n  return 0;\n}\n```\n**GATE 2014**",
+          "options": [
+              "10 10",
+              "10 11",
+              "11 11",
+              "11 10"
+          ],
+          "ans": 1,
+          "explanation": "strlen() counts characters up to the null terminator, so 10. sizeof() returns the size of the array, which includes the null terminator, so 11."
+      },
+      {
+          "q": "Consider the following C program:\n```c\nchar *c = \"GATECSIT\";\nchar *p = c;\nprintf(\"%c %c\", *p, *(p+3));\n```\nWhat is the output? **GATE 2017**",
+          "options": [
+              "G E",
+              "G C",
+              "G A",
+              "G T"
+          ],
+          "ans": 0,
+          "explanation": "*p points to the first character 'G'. *(p+3) points to the 4th character, which is 'E'."
+      },
+      {
+          "q": "Consider the string declaration `char str[20] = \"Hello\";`. What is the value of `str[5]`? **GATE 2008**",
+          "options": [
+              "'o'",
+              "'\\0'",
+              "Garbage",
+              "Space"
+          ],
+          "ans": 1,
+          "explanation": "The string is null-terminated, so the character immediately following 'o' (at index 4) is the null character '\\0' at index 5."
+      },
+      {
+          "q": "Consider the following snippet:\n```c\nchar s1[] = \"Cisco\";\nchar s2[] = \"Systems\";\nprintf(\"%s\", s1);\n```\nHow can you concatenate s2 to s1 using standard C library? **GATE 2010**",
+          "options": [
+              "strcat(s1, s2)",
+              "s1 = s1 + s2",
+              "strcpy(s1, s2)",
+              "strncat(s1, s2) - assuming sufficient size"
+          ],
+          "ans": 0,
+          "explanation": "strcat is the standard C function to concatenate two strings, provided the destination has enough space. (Note: Here s1 array size is not large enough, but functionally strcat is the answer)."
+      },
+      {
+          "q": "What is the output of the following code?\n```c\nchar *s = \"hello\";\nchar *p = s;\nprintf(\"%c\\t%c\", p[0], s[1]);\n```\n**GATE 2004**",
+          "options": [
+              "h\\te",
+              "h\\tl",
+              "e\\tl",
+              "h\\to"
+          ],
+          "ans": 0,
+          "explanation": "p points to the same string literal. p[0] is 'h' and s[1] is 'e'. Output: h\\te."
+      },
+      {
+          "q": "Consider the following C program:\n```c\n#include <stdio.h>\nvoid foo(char *a) {\n  if (*a && *a != ' ') {\n    foo(a + 1);\n    putchar(*a);\n  }\n}\nint main() {\n  foo(\"GATE EXAM\");\n  return 0;\n}\n```\nWhat is the output? **GATE 2016**",
+          "options": [
+              "GATE",
+              "ETAG",
+              "MAXE ETAG",
+              "GATE EXAM"
+          ],
+          "ans": 1,
+          "explanation": "The function uses recursion to print characters in reverse until it hits a null character or a space. The first space occurs after \"GATE\". So it prints \"GATE\" in reverse, i.e., ETAG."
+      },
+      {
+          "q": "Consider the following C statement: `char *p = \"Hello\";`. Which of the following operations is invalid? **GATE 2013**",
+          "options": [
+              "p++;",
+              "*p = 'M';",
+              "char c = *p;",
+              "printf(\"%s\", p);"
+          ],
+          "ans": 1,
+          "explanation": "String literals are stored in read-only memory. Attempting to modify them (e.g., *p = 'M') leads to undefined behavior or a segmentation fault."
+      },
+      {
+          "q": "What is the return value of `strcmp(\"apple\", \"apple\")`? **GATE 2011**",
+          "options": [
+              "1",
+              "-1",
+              "0",
+              "Garbage"
+          ],
+          "ans": 2,
+          "explanation": "The strcmp function returns 0 if both strings are exactly equal."
+      },
+      {
+          "q": "What will be printed by the following code?\n```c\nchar str[20] = \"123456789\";\nprintf(\"%s\", str + 4);\n```\n**GATE 2015**",
+          "options": [
+              "1234",
+              "56789",
+              "456789",
+              "5"
+          ],
+          "ans": 1,
+          "explanation": "str + 4 points to the 5th character of the string (index 4). So it prints from '5' up to the null terminator, outputting '56789'."
+      },
+      {
+          "q": "Consider the following code snippet:\n```c\nchar s1[] = \"Hello\";\nchar s2[] = \"Hello\";\nif (s1 == s2)\n  printf(\"Equal\");\nelse\n  printf(\"Unequal\");\n```\nWhat is the output? **GATE 2007**",
+          "options": [
+              "Equal",
+              "Unequal",
+              "Compilation error",
+              "Undefined behavior"
+          ],
+          "ans": 1,
+          "explanation": "s1 and s2 are two different arrays in memory. Comparing them with == compares their base addresses, which are different. Thus, they are Unequal."
+      },
+      {
+          "q": "What is the output of this C code snippet?\n```c\nchar str[] = \"GATE\\0CSIT\";\nprintf(\"%d\", strlen(str));\n```\n**GATE 2021**",
+          "options": [
+              "8",
+              "4",
+              "5",
+              "9"
+          ],
+          "ans": 1,
+          "explanation": "strlen counts characters until the first null character '\\0'. So it counts G, A, T, E and stops. The length is 4."
+      },
+      {
+          "q": "What happens in the following code snippet?\n```c\nchar dest[5];\nstrcpy(dest, \"Programming\");\n```\n**GATE 2009**",
+          "options": [
+              "It securely copies 'Prog'",
+              "It raises a compilation error",
+              "Buffer overflow occurs",
+              "It copies 'Progr'"
+          ],
+          "ans": 2,
+          "explanation": "The destination array size is 5, but the source string requires 12 bytes (including '\\0'). strcpy does not check bounds, causing a buffer overflow."
+      },
+      {
+          "q": "Which format specifier is used to read a string with spaces in C (like `scanf` without regex magic or gets)? **GATE 2012**",
+          "options": [
+              "%s",
+              "%c",
+              "%[^\\n]",
+              "%d"
+          ],
+          "ans": 2,
+          "explanation": "The specifier `%[^\\n]` tells scanf to read characters until it encounters a newline character, effectively allowing spaces in the input."
+      },
+      {
+          "q": "Consider the following code snippet:\n```c\nchar *str = \"Hello\";\nprintf(\"%c\", *str++);\n```\nWhat will be printed? **GATE 2005**",
+          "options": [
+              "H",
+              "e",
+              "Hello",
+              "ello"
+          ],
+          "ans": 0,
+          "explanation": "The post-increment operator increments the pointer str, but the dereference uses the original value of the pointer. Thus, it prints 'H'."
+      }
   ],
-  pointers: [
-    { q: "What does the & operator do?", options: ["Dereferences a pointer", "Returns the memory address of a variable", "Adds two numbers", "Declares a pointer"], ans: 1, explanation: "The address-of operator (&) extracts the memory location where a variable is stored." },
-    { q: "What does *ptr do when ptr is a pointer?", options: ["Multiplies ptr by something", "Declares a new pointer", "Accesses the value ptr points to", "Returns the address of ptr"], ans: 2, explanation: "The dereference operator (*) accesses or modifies the value stored at the address pointed to by ptr." },
-    { q: "Why pass a pointer to a function instead of a regular variable?", options: ["Pointers are always faster", "It lets the function modify the caller's original variable", "It is required for all function arguments", "Pointers always use less memory"], ans: 1, explanation: "Passing pointers shares the memory address, allowing modifications to propagate back to the caller." },
-    { q: "For `int arr[3]`, what does `*(arr + 1)` access?", options: ["arr[0]", "arr[1]", "arr[2]", "The address of arr"], ans: 1, explanation: "By pointer arithmetic, adding 1 to the array name points to the next element, which is dereferenced as arr[1]." },
+  "pointers": [
+      {
+          "q": "What is the output of the following C code snippet? **GATE 2004**\n```c\n#include <stdio.h>\nint main() {\n  char *p = \"GATE2004\";\n  printf(\"%s\", p + p[3] - p[1]);\n  return 0;\n}\n```",
+          "options": [
+              "2004",
+              "GATE",
+              "E200",
+              "004"
+          ],
+          "ans": 0,
+          "explanation": "p[3] is 'E' (ASCII 69) and p[1] is 'A' (ASCII 65). p[3] - p[1] = 4. The expression evaluates to p + 4, which points to the substring '2004'."
+      },
+      {
+          "q": "Consider the following C function. **GATE 2015**\n```c\nint f(int *a, int n) {\n  if(n <= 0) return 0;\n  else if(*a % 2 == 0) return *a + f(a+1, n-1);\n  else return *a - f(a+1, n-1);\n}\n```\nFor an array `a = {12, 7, 13, 4, 11, 6}` and `n = 6`, what is the output of `f(a, n)`?",
+          "options": [
+              "15",
+              "14",
+              "9",
+              "20"
+          ],
+          "ans": 0,
+          "explanation": "Recursively computes: 12 + f({7,13,4,11,6}, 5) -> 12 + (7 - f({13,4,11,6}, 4)) -> 12 + 7 - (13 - f({4,11,6}, 3)) -> 12 + 7 - 13 + (4 + f({11,6}, 2)) -> 12 + 7 - 13 + 4 + (11 - f({6}, 1)) -> 12 + 7 - 13 + 4 + 11 - (6 + 0) = 15."
+      },
+      {
+          "q": "Consider the following declaration in C. **GATE 2011**\n```c\nint (*f)(int *);\n```\nWhat does it signify?",
+          "options": [
+              "f is a pointer to a function that takes an integer pointer as argument and returns an integer.",
+              "f is a function that returns a pointer to an integer.",
+              "f is a pointer to an array of integers.",
+              "f is an array of function pointers."
+          ],
+          "ans": 0,
+          "explanation": "The parentheses around *f indicate it is a pointer to a function. The `(int *)` indicates it takes an integer pointer parameter, and `int` at the beginning indicates it returns an integer."
+      },
+      {
+          "q": "Consider the following C program: **GATE 2016**\n```c\n#include <stdio.h>\nvoid f(int *p, int *m) {\n  m = p;\n  *m = 2;\n}\nint main() {\n  int i = 3, j = 5;\n  f(&i, &j);\n  printf(\"%d %d\", i, j);\n  return 0;\n}\n```\nWhat is the output?",
+          "options": [
+              "2 5",
+              "3 5",
+              "2 2",
+              "3 2"
+          ],
+          "ans": 0,
+          "explanation": "In `f`, `m` is initially pointing to `j`. `m = p` makes `m` point to `i`. `*m = 2` changes the value of `i` to 2. `j` remains unchanged (5). The output is '2 5'."
+      },
+      {
+          "q": "Consider the following C declaration. **GATE 2000**\n```c\nstruct node {\n  int i;\n  float j;\n};\nstruct node *s[10];\n```\nWhat does `s` represent?",
+          "options": [
+              "An array of 10 pointers to struct node.",
+              "A pointer to an array of 10 struct nodes.",
+              "An array of 10 struct nodes.",
+              "A struct node containing an array of 10 pointers."
+          ],
+          "ans": 0,
+          "explanation": "`[]` has higher precedence than `*`. Therefore, `s` is an array of 10 elements, and each element is a pointer to a `struct node`."
+      },
+      {
+          "q": "Consider the C program below. **GATE 2014**\n```c\n#include <stdio.h>\nint main() {\n  int a[] = {2, 4, 6, 8, 10};\n  int i, sum = 0, *b = a + 4;\n  for(i = 0; i < 5; i++)\n    sum = sum + (*b - i) - *(b - i);\n  printf(\"%d\", sum);\n  return 0;\n}\n```\nWhat is the output?",
+          "options": [
+              "10",
+              "15",
+              "20",
+              "25"
+          ],
+          "ans": 0,
+          "explanation": "`b` points to `a[4]`, which is 10. `*b` is always 10. `*(b-i)` gives `a[4-i]`. The sum evaluated is (10-0-10) + (10-1-8) + (10-2-6) + (10-3-4) + (10-4-2) = 0 + 1 + 2 + 3 + 4 = 10."
+      },
+      {
+          "q": "What is the output of the following C program? **GATE 2005**\n```c\nvoid swap(int *x, int *y) {\n  static int *temp;\n  temp = x;\n  x = y;\n  y = temp;\n}\nvoid main() {\n  int a = 1, b = 2;\n  swap(&a, &b);\n  printf(\"%d %d\", a, b);\n}\n```",
+          "options": [
+              "1 2",
+              "2 1",
+              "0 0",
+              "Compile error"
+          ],
+          "ans": 0,
+          "explanation": "The `swap` function only exchanges the local copies of the pointers `x` and `y`. It does not dereference them to change the values of `a` and `b`. Thus, `a` and `b` remain 1 and 2."
+      },
+      {
+          "q": "Consider the following C snippet. **GATE 2008**\n```c\nint a[5] = {1, 2, 3, 4, 5};\nint *p = (int*)(&a + 1);\nprintf(\"%d\", *(p - 1));\n```\nWhat is the output?",
+          "options": [
+              "5",
+              "1",
+              "Garbage value",
+              "Compile error"
+          ],
+          "ans": 0,
+          "explanation": "`&a` is a pointer to the entire array of 5 integers. `&a + 1` increments the pointer by `sizeof(int[5])`, pointing to the memory just past the array. Cast to `int*`, `p - 1` points back to the last element of the array, which is 5."
+      },
+      {
+          "q": "What is printed by the following program? **GATE 2017**\n```c\n#include <stdio.h>\n#include <string.h>\nint main() {\n  char *c = \"GATECSIT2017\";\n  char *p = c;\n  printf(\"%d\", (int)strlen(c + 2[p] - 6[p] - 1));\n  return 0;\n}\n```",
+          "options": [
+              "2",
+              "4",
+              "6",
+              "8"
+          ],
+          "ans": 0,
+          "explanation": "`2[p]` is equivalent to `*(2 + p)` which is `c[2]` ('T' or ASCII 84). `6[p]` is `c[6]` ('I' or ASCII 73). `84 - 73 - 1 = 10`. The expression `c + 10` points to \"17\". `strlen(\"17\")` is 2."
+      },
+      {
+          "q": "Assume `int` is 4 bytes and pointer is 8 bytes. What is the output? **GATE 2019**\n```c\nint a[3][4];\nprintf(\"%lu\", sizeof(*a));\n```",
+          "options": [
+              "16",
+              "4",
+              "8",
+              "12"
+          ],
+          "ans": 0,
+          "explanation": "`a` is a 2D array (array of 3 arrays of 4 ints). `*a` gives the first element, which is a 1D array of 4 ints. Its size is `4 * sizeof(int) = 4 * 4 = 16`."
+      },
+      {
+          "q": "Consider the following C code: **GATE 2012**\n```c\nint x[] = {1, 2, 3, 4, 5};\nint *p = x;\nint *q = x + 3;\nprintf(\"%d\", (int)(q - p));\n```\nWhat is the output?",
+          "options": [
+              "3",
+              "12",
+              "4",
+              "Error"
+          ],
+          "ans": 0,
+          "explanation": "Pointer subtraction yields the number of elements between the two pointers. `q` points to `x[3]` and `p` points to `x[0]`. Thus, `q - p` evaluates to 3."
+      },
+      {
+          "q": "What does the following declaration mean? **GATE 2003**\n```c\nvoid *(*f)(int*);\n```",
+          "options": [
+              "f is a pointer to a function taking an int pointer and returning a void pointer.",
+              "f is a function returning a pointer to void.",
+              "f is a pointer to void function.",
+              "f is a void pointer."
+          ],
+          "ans": 0,
+          "explanation": "`*f` in parentheses means `f` is a pointer to a function. `(int*)` specifies it takes an integer pointer parameter. `void *` at the beginning specifies it returns a void pointer."
+      },
+      {
+          "q": "Consider the C program: **GATE 2001**\n```c\n#include<stdio.h>\nint main() {\n  int i = 10;\n  int *p = &i;\n  int **q = &p;\n  printf(\"%d %d\", *p, **q);\n  return 0;\n}\n```\nWhat is the output?",
+          "options": [
+              "10 10",
+              "Address of i",
+              "Error",
+              "10 Address"
+          ],
+          "ans": 0,
+          "explanation": "`p` holds the address of `i`, so `*p` is the value of `i` (10). `q` holds the address of `p`, so `**q` dereferences twice, also yielding the value of `i` (10)."
+      },
+      {
+          "q": "Consider the following code. **GATE 1999**\n```c\nchar *str = \"Hello\";\nstr[0] = 'M';\nprintf(\"%s\", str);\n```\nWhat will happen at runtime?",
+          "options": [
+              "Segmentation fault / Undefined behavior",
+              "Mello",
+              "Hello",
+              "Compile error"
+          ],
+          "ans": 0,
+          "explanation": "String literals are stored in read-only memory. Attempting to modify them using a pointer (like `str[0] = 'M'`) causes a segmentation fault or undefined behavior."
+      },
+      {
+          "q": "Which of the following is true about pointers in C? **GATE 1998**",
+          "options": [
+              "An array name acts as a constant pointer to its first element.",
+              "Pointers cannot point to another pointer.",
+              "Pointers are always 4 bytes long.",
+              "Pointer arithmetic is allowed for void pointers."
+          ],
+          "ans": 0,
+          "explanation": "In most expressions, the name of an array decays into a constant pointer to its first element. Void pointer arithmetic is not allowed in standard C, and pointer size depends on the architecture."
+      }
   ],
-  structures: [
-    { q: "What does a struct let you do in C?", options: ["Define a new function", "Group related variables of different types under one name", "Create a loop", "Allocate memory automatically"], ans: 1, explanation: "A struct is a user-defined type that aggregates variables of various data types into a single unit." },
-    { q: "Which operator accesses a struct member through a regular struct variable?", options: ["->", "::", ".", "&"], ans: 2, explanation: "The dot operator (.) is used to access members directly from a struct variable." },
-    { q: "Which operator accesses a struct member through a pointer to the struct?", options: [".", "->", "*", "&"], ans: 1, explanation: "The arrow operator (->) dereferences a struct pointer and accesses the member in one step." },
-    { q: "What is the main benefit of using typedef with a struct?", options: ["It makes the struct faster", "You can use the type name without writing 'struct' each time", "It is required to compile structs", "It automatically initializes members to 0"], ans: 1, explanation: "typedef creates an alias, letting you write 'Point p;' instead of 'struct Point p;' for cleaner code." },
+  "structures": [
+      {
+          "q": "Consider the following C code. **GATE 2015**\n```c\nstruct student {\n  int roll;\n  char name[20];\n};\nstruct student s1 = {1, \"Alice\"};\nstruct student s2 = s1;\n```\nWhat happens when `s2 = s1` is executed?",
+          "options": [
+              "s2 receives a copy of the contents of s1.",
+              "Compile error because structs cannot be assigned directly.",
+              "s2 becomes a pointer to s1.",
+              "Runtime error."
+          ],
+          "ans": 0,
+          "explanation": "In C, structure variables can be directly assigned. This results in a shallow copy of all members from `s1` to `s2`."
+      },
+      {
+          "q": "Consider the following definition: **GATE 2007**\n```c\nstruct node {\n  int data;\n  struct node *next;\n};\n```\nWhat type of structure is this?",
+          "options": [
+              "Self-referential structure",
+              "Nested structure",
+              "Anonymous structure",
+              "Union"
+          ],
+          "ans": 0,
+          "explanation": "A structure that contains a pointer to a structure of its own type is known as a self-referential structure, heavily used in linked lists and trees."
+      },
+      {
+          "q": "Consider the C code: **GATE 2004**\n```c\nstruct test {\n  unsigned int x: 2;\n  unsigned int y: 2;\n  unsigned int z: 2;\n};\nint main() {\n  struct test t;\n  t.x = 5;\n  printf(\"%d\", t.x);\n  return 0;\n}\n```\nWhat will be the output?",
+          "options": [
+              "1",
+              "5",
+              "Compile error",
+              "0"
+          ],
+          "ans": 0,
+          "explanation": "`x` is a 2-bit bit-field. Assigning 5 (binary 101) to it results in overflow, and only the lower 2 bits (01) are stored. The value of 01 in binary is 1."
+      },
+      {
+          "q": "Consider the following C declaration. **GATE 2001**\n```c\nstruct {\n  short s[5];\n  union {\n    float y;\n    long z;\n  } u;\n} t;\n```\nAssume short, float, and long occupy 2, 4, and 8 bytes respectively. What is the size of `t` in bytes (ignoring alignment and padding)?",
+          "options": [
+              "18",
+              "14",
+              "22",
+              "10"
+          ],
+          "ans": 0,
+          "explanation": "The array `s[5]` takes `5 * 2 = 10` bytes. The union `u` shares memory among its members, so its size is the maximum of its members, which is `sizeof(long) = 8` bytes. The total size is `10 + 8 = 18` bytes."
+      },
+      {
+          "q": "Which of the following operators is used to access members of a structure using a pointer? **GATE 1996**",
+          "options": [
+              "->",
+              ".",
+              "&",
+              "*"
+          ],
+          "ans": 0,
+          "explanation": "The arrow operator `->` is used to access structure members using a pointer to the structure. It is equivalent to `(*ptr).member`."
+      },
+      {
+          "q": "Consider the following snippet: **GATE 2010**\n```c\ntypedef struct {\n  int a;\n} s1;\n```\nWhat is `s1`?",
+          "options": [
+              "A type representing a structure.",
+              "A variable of type struct.",
+              "A pointer to a struct.",
+              "A function returning a struct."
+          ],
+          "ans": 0,
+          "explanation": "`typedef` is used to create an alias for a type. Thus, `s1` becomes a new type name representing this anonymous structure."
+      },
+      {
+          "q": "What will be the output? **GATE 2003**\n```c\n#include <stdio.h>\nstruct Point { int x, y; };\nint main() {\n  struct Point p1 = {10, 20};\n  struct Point *p2 = &p1;\n  printf(\"%d\", p2->x);\n  return 0;\n}\n```",
+          "options": [
+              "10",
+              "20",
+              "Compile error",
+              "Garbage value"
+          ],
+          "ans": 0,
+          "explanation": "`p2` is a pointer to `p1`. `p2->x` accesses the member `x` of the structure pointed to by `p2`, which is 10."
+      },
+      {
+          "q": "Which of the following is true about bit-fields in C? **GATE 2014**",
+          "options": [
+              "We cannot have pointers to bit-field members.",
+              "Bit-fields can be of any type including arrays.",
+              "Bit-fields must be signed.",
+              "Bit-fields size can exceed the size of their type."
+          ],
+          "ans": 0,
+          "explanation": "Because bit-fields may not start at a byte boundary, you cannot take their address using the `&` operator, and therefore cannot have pointers to them."
+      },
+      {
+          "q": "Consider the code: **GATE 2008**\n```c\nstruct S {\n  int a;\n  char b;\n};\n```\nIf sizeof(int) is 4 and sizeof(char) is 1, what is typically the sizeof(struct S) on a 32-bit machine with 4-byte word alignment?",
+          "options": [
+              "8",
+              "5",
+              "4",
+              "1"
+          ],
+          "ans": 0,
+          "explanation": "`a` takes 4 bytes. `b` takes 1 byte. Due to 4-byte word alignment (padding), 3 bytes of padding are added at the end. Total size is `4 + 1 + 3 = 8` bytes."
+      },
+      {
+          "q": "Consider the following code: **GATE 2000**\n```c\nstruct node {\n  int i;\n  struct node *next;\n} *p;\n```\nWhich of the following correctly allocates memory for the node?",
+          "options": [
+              "p = malloc(sizeof(struct node));",
+              "p = malloc(sizeof(node));",
+              "p = malloc(struct node);",
+              "p = malloc(*p);"
+          ],
+          "ans": 0,
+          "explanation": "Using `sizeof(struct node)` is the correct way to specify the size. `sizeof(node)` fails since there is no `typedef`."
+      },
+      {
+          "q": "Can two structures in C contain members with the same name? **GATE 2018**",
+          "options": [
+              "Yes, members in different structures have different namespaces.",
+              "No, it causes naming collisions.",
+              "Yes, but only if they have different data types.",
+              "No, struct member names must be globally unique."
+          ],
+          "ans": 0,
+          "explanation": "Each struct creates its own namespace for its members. Therefore, two different structures can have members with the exact same name without conflict."
+      },
+      {
+          "q": "Consider the snippet: **GATE 1999**\n```c\nunion U {\n  int x;\n  char y[4];\n};\nunion U u;\nu.x = 0x12345678;\n```\nAssuming a little-endian architecture, what is the value of `u.y[0]`?",
+          "options": [
+              "0x78",
+              "0x12",
+              "0x34",
+              "0x56"
+          ],
+          "ans": 0,
+          "explanation": "In a little-endian machine, the least significant byte is stored at the lowest memory address. The least significant byte of `0x12345678` is `0x78`, which goes into `u.y[0]`."
+      },
+      {
+          "q": "What happens if a structure member is itself a structure? **GATE 2002**",
+          "options": [
+              "It is called a nested structure.",
+              "It is illegal in C.",
+              "The inner structure must be declared after the outer.",
+              "It is called a union."
+          ],
+          "ans": 0,
+          "explanation": "Having a structure as a member of another structure is a common concept in C, referred to as a nested structure."
+      },
+      {
+          "q": "Which of the following is NOT allowed in C? **GATE 2011**",
+          "options": [
+              "Comparing two structures using `==` operator.",
+              "Assigning one structure variable to another of the same type.",
+              "Passing a structure to a function by value.",
+              "Returning a structure from a function."
+          ],
+          "ans": 0,
+          "explanation": "C does not support direct comparison of two structures using `==` because of potential padding bytes. They must be compared member by member."
+      },
+      {
+          "q": "How are the members of a union allocated in memory? **GATE 2006**",
+          "options": [
+              "They share the same memory location.",
+              "They are allocated at contiguous memory locations.",
+              "They are allocated at non-contiguous memory locations.",
+              "The compiler decides."
+          ],
+          "ans": 0,
+          "explanation": "A union allows storing different data types in the same memory location. The total size of a union is determined by its largest member, and all members overlap."
+      }
   ],
   "file-handling": [
-    { q: "What does fopen return if the file cannot be opened?", options: ["0", "An empty string", "NULL", "-1 cast as a pointer"], ans: 2, explanation: "fopen() returns NULL to signal that the file could not be opened due to missing files, permissions, or issues." },
-    { q: "Which file mode appends new data to the end of an existing file instead of overwriting it?", options: ["\"r\"", "\"w\"", "\"a\"", "\"x\""], ans: 2, explanation: "The append mode (\"a\") positions the file write pointer at the end of the file, preserving existing content." },
-    { q: "Why must you always call fclose() on an open file?", options: ["It is optional but recommended", "To free the FILE pointer's resources and flush data to disk", "To delete the file", "To rename the file"], ans: 1, explanation: "fclose() releases system file locks, frees buffers, and ensures all written data is saved to disk." },
-    { q: "What does fgets(line, sizeof(line), fp) do?", options: ["Writes a line to the file", "Reads one line from the file into the buffer", "Counts the lines in the file", "Closes the file"], ans: 1, explanation: "fgets() reads characters from a file stream until a newline is found or the buffer size limit is reached." },
+      {
+          "q": "Which function is used to open a file in C? **GATE 2001**",
+          "options": [
+              "fopen()",
+              "file_open()",
+              "open()",
+              "fopen_s()"
+          ],
+          "ans": 0,
+          "explanation": "The standard C library uses `fopen()` declared in `<stdio.h>` to open files."
+      },
+      {
+          "q": "What is the return type of fopen() on success? **GATE 2005**",
+          "options": [
+              "FILE pointer",
+              "Integer file descriptor",
+              "void pointer",
+              "char pointer"
+          ],
+          "ans": 0,
+          "explanation": "`fopen()` returns a pointer to a `FILE` structure, which contains information about the file being accessed."
+      },
+      {
+          "q": "What does `fopen(\"file.txt\", \"a+\")` do? **GATE 2008**",
+          "options": [
+              "Opens for reading and appending.",
+              "Opens for reading and writing at the beginning.",
+              "Creates a new file for writing only.",
+              "Opens for reading only."
+          ],
+          "ans": 0,
+          "explanation": "The mode `\"a+\"` opens the file for reading and appending (writing at the end of the file). If the file does not exist, it is created."
+      },
+      {
+          "q": "Which of the following functions sets the file position indicator? **GATE 2010**",
+          "options": [
+              "fseek()",
+              "ftell()",
+              "fgetc()",
+              "fputc()"
+          ],
+          "ans": 0,
+          "explanation": "`fseek()` is used to move the file pointer to a specific location within the file."
+      },
+      {
+          "q": "What does `ftell()` return? **GATE 2015**",
+          "options": [
+              "The current file position indicator.",
+              "The end of file position.",
+              "The beginning of file position.",
+              "Error status."
+          ],
+          "ans": 0,
+          "explanation": "`ftell()` returns the current value of the position indicator of the stream, usually representing the number of bytes from the beginning of the file."
+      },
+      {
+          "q": "Which predefined file pointer is associated with the standard input stream? **GATE 1999**",
+          "options": [
+              "stdin",
+              "stdout",
+              "stderr",
+              "stdfile"
+          ],
+          "ans": 0,
+          "explanation": "`stdin` is a predefined standard input stream in C, typically linked to the keyboard."
+      },
+      {
+          "q": "What does EOF stand for in C file handling? **GATE 2003**",
+          "options": [
+              "End Of File",
+              "Error On File",
+              "End Of Folder",
+              "Execute On File"
+          ],
+          "ans": 0,
+          "explanation": "EOF stands for End Of File. It indicates that the end of the file has been reached during reading."
+      },
+      {
+          "q": "What is the typical value of EOF defined in `<stdio.h>`? **GATE 2012**",
+          "options": [
+              "-1",
+              "0",
+              "1",
+              "Null"
+          ],
+          "ans": 0,
+          "explanation": "EOF is typically defined as an integer constant with a negative value, usually -1, to distinguish it from any valid character code."
+      },
+      {
+          "q": "Which function reads a single character from a file? **GATE 2007**",
+          "options": [
+              "fgetc()",
+              "fgets()",
+              "fread()",
+              "fscanf()"
+          ],
+          "ans": 0,
+          "explanation": "`fgetc()` reads the next character from a stream and returns it as an unsigned char cast to an int, or EOF on end of file or error."
+      },
+      {
+          "q": "In `fseek(fp, offset, whence)`, what does `SEEK_END` signify for `whence`? **GATE 2014**",
+          "options": [
+              "End of file",
+              "Current position",
+              "Beginning of file",
+              "Next line"
+          ],
+          "ans": 0,
+          "explanation": "`SEEK_END` means the offset is applied relative to the end of the file. `SEEK_SET` is for beginning, and `SEEK_CUR` is for current position."
+      },
+      {
+          "q": "Which function is used to write formatted data to a file? **GATE 2000**",
+          "options": [
+              "fprintf()",
+              "fputs()",
+              "fwrite()",
+              "fputc()"
+          ],
+          "ans": 0,
+          "explanation": "`fprintf()` is used to write formatted text to the file stream."
+      },
+      {
+          "q": "How can you check if the end of file is reached while reading? **GATE 2017**",
+          "options": [
+              "Using the feof() function",
+              "Using ferror() function",
+              "Using fseek() return value",
+              "Using fflush()"
+          ],
+          "ans": 0,
+          "explanation": "`feof()` is used to test the end-of-file indicator for a given stream, returning non-zero if it is set."
+      },
+      {
+          "q": "What happens if you open an existing file in `\"w\"` mode? **GATE 2006**",
+          "options": [
+              "The file's contents are truncated to zero length.",
+              "Data is appended to the file.",
+              "The open fails.",
+              "The file is opened for reading."
+          ],
+          "ans": 0,
+          "explanation": "Opening in `\"w\"` mode truncates the file if it exists, erasing its contents, or creates a new file if it doesn't."
+      },
+      {
+          "q": "Which function writes a block of data to a stream, useful for binary files? **GATE 2011**",
+          "options": [
+              "fwrite()",
+              "fprintf()",
+              "fputs()",
+              "fputc()"
+          ],
+          "ans": 0,
+          "explanation": "`fwrite()` writes an array of elements (a block of data) directly to the stream."
+      },
+      {
+          "q": "What is the purpose of `fflush(FILE *stream)`? **GATE 2004**",
+          "options": [
+              "Flushes the output buffer of a stream.",
+              "Closes the stream.",
+              "Reads remaining data from the stream.",
+              "Deletes the file."
+          ],
+          "ans": 0,
+          "explanation": "`fflush()` forces a write of all user-space buffered data for the given output or update stream."
+      }
   ],
-  memory: [
-    { q: "Which header declares malloc, calloc, realloc, and free?", options: ["stdio.h", "stdlib.h", "string.h", "math.h"], ans: 1, explanation: "Memory management functions are declared inside the standard library header <stdlib.h>." },
-    { q: "What does malloc return if it cannot allocate the requested memory?", options: ["0", "NULL", "-1", "An empty array"], ans: 1, explanation: "If the heap is full or the request cannot be met, malloc() returns NULL to signal failure." },
-    { q: "What is the key difference between malloc and calloc?", options: ["calloc's memory cannot be freed", "malloc only works for arrays", "calloc zero-initializes the memory it allocates", "malloc is always faster"], ans: 2, explanation: "Unlike malloc which leaves memory uninitialized (garbage values), calloc sets all allocated bytes to zero." },
-    { q: "Why must every malloc/calloc be matched with a free?", options: ["It's just a style preference", "To avoid memory leaks", "Because the compiler requires it", "To make the program run faster"], ans: 1, explanation: "Dynamically allocated memory remains reserved until explicitly released; failing to free it causes memory leaks." },
-    ],
+  "memory": [
+      {
+          "q": "Which function allocates memory and initializes it to zero? **GATE 2001**",
+          "options": [
+              "calloc()",
+              "malloc()",
+              "realloc()",
+              "free()"
+          ],
+          "ans": 0,
+          "explanation": "`calloc()` allocates memory for an array of elements and initializes all bytes to zero. `malloc()` does not initialize memory."
+      },
+      {
+          "q": "What does `malloc(size_t size)` return if memory allocation fails? **GATE 2005**",
+          "options": [
+              "NULL",
+              "-1",
+              "0",
+              "Garbage value"
+          ],
+          "ans": 0,
+          "explanation": "If `malloc()` fails to allocate the requested block of memory (e.g., memory is exhausted), it returns a `NULL` pointer."
+      },
+      {
+          "q": "Which header file is required to use dynamic memory allocation functions in C? **GATE 2008**",
+          "options": [
+              "<stdlib.h>",
+              "<stdio.h>",
+              "<memory.h>",
+              "<malloc.h>"
+          ],
+          "ans": 0,
+          "explanation": "The declarations for `malloc`, `calloc`, `realloc`, and `free` are available in the `<stdlib.h>` standard library header."
+      },
+      {
+          "q": "Consider `ptr = (int*)realloc(ptr, new_size);`. What happens if `ptr` is NULL? **GATE 2014**",
+          "options": [
+              "It behaves like malloc(new_size).",
+              "It causes a segmentation fault.",
+              "It returns NULL.",
+              "It does nothing."
+          ],
+          "ans": 0,
+          "explanation": "In standard C, if the pointer passed to `realloc()` is NULL, it behaves exactly like `malloc(new_size)`."
+      },
+      {
+          "q": "What happens when a dynamically allocated memory block is not freed after its use? **GATE 2010**",
+          "options": [
+              "Memory leak",
+              "Dangling pointer",
+              "Buffer overflow",
+              "Segmentation fault"
+          ],
+          "ans": 0,
+          "explanation": "Failure to free dynamically allocated memory results in a memory leak, where the memory remains allocated but unreachable, potentially exhausting memory over time."
+      },
+      {
+          "q": "What is a dangling pointer? **GATE 2007**",
+          "options": [
+              "A pointer pointing to a memory location that has been deleted (freed).",
+              "A pointer that points to NULL.",
+              "An uninitialized pointer.",
+              "A pointer to a function."
+          ],
+          "ans": 0,
+          "explanation": "A dangling pointer arises when memory is deallocated (e.g. using `free`), but the pointer itself still holds the address of the deallocated memory."
+      },
+      {
+          "q": "Which segment of memory is used for dynamic memory allocation? **GATE 2012**",
+          "options": [
+              "Heap",
+              "Stack",
+              "Data segment",
+              "BSS segment"
+          ],
+          "ans": 0,
+          "explanation": "Dynamic memory allocation (using `malloc`, `calloc`, etc.) occurs on the heap, which grows upwards in the typical memory layout."
+      },
+      {
+          "q": "Consider the code snippet: **GATE 2015**\n```c\nint *p = malloc(sizeof(int));\nfree(p);\n*p = 10;\n```\nWhat is this an example of?",
+          "options": [
+              "Dangling pointer dereference",
+              "Memory leak",
+              "Valid memory access",
+              "Syntax error"
+          ],
+          "ans": 0,
+          "explanation": "After `free(p)`, `p` becomes a dangling pointer. Dereferencing it with `*p = 10` causes undefined behavior."
+      },
+      {
+          "q": "What is the correct syntax to allocate memory for an array of 10 integers using malloc? **GATE 2004**",
+          "options": [
+              "malloc(10 * sizeof(int));",
+              "malloc(10);",
+              "calloc(10 * sizeof(int));",
+              "malloc(10, sizeof(int));"
+          ],
+          "ans": 0,
+          "explanation": "`malloc` takes a single argument: the total number of bytes. For 10 integers, it is `10 * sizeof(int)`."
+      },
+      {
+          "q": "If `malloc` returns a `void*`, why do we traditionally cast it in C (e.g., `(int*)malloc(...)`)? **GATE 2003**",
+          "options": [
+              "In standard C, the cast is not required as void* promotes automatically, but it was required in C++ and older C versions.",
+              "The cast is mandatory in standard C for correct compilation.",
+              "It prevents memory leaks.",
+              "It makes the execution faster."
+          ],
+          "ans": 0,
+          "explanation": "In standard C, a `void*` is automatically implicitly converted to any other pointer type. The cast is unnecessary in C but required in C++."
+      },
+      {
+          "q": "Consider the following memory allocation: `int *a = calloc(5, sizeof(int));`. What is the value of `a[3]`? **GATE 2018**",
+          "options": [
+              "0",
+              "Garbage value",
+              "NULL",
+              "Depends on compiler"
+          ],
+          "ans": 0,
+          "explanation": "`calloc` initializes the allocated memory blocks to zero. Therefore, `a[3]` will be initialized to 0."
+      },
+      {
+          "q": "What happens if we pass `NULL` to the `free()` function? **GATE 2011**",
+          "options": [
+              "No action occurs.",
+              "Segmentation fault.",
+              "Runtime error.",
+              "Compilation error."
+          ],
+          "ans": 0,
+          "explanation": "According to the C standard, if `NULL` is passed to `free()`, the function does nothing and returns safely."
+      },
+      {
+          "q": "Which function changes the size of a previously dynamically allocated memory block? **GATE 2006**",
+          "options": [
+              "realloc()",
+              "malloc()",
+              "calloc()",
+              "resize()"
+          ],
+          "ans": 0,
+          "explanation": "`realloc()` reallocates memory, changing the size of an existing memory block while preserving its contents up to the minimum of the old and new sizes."
+      },
+      {
+          "q": "Local variables of a function are typically stored in which memory segment? **GATE 2000**",
+          "options": [
+              "Stack",
+              "Heap",
+              "Data segment",
+              "Code segment"
+          ],
+          "ans": 0,
+          "explanation": "Local (automatic) variables are typically stored on the stack, which automatically allocates and deallocates them upon function entry and exit."
+      },
+      {
+          "q": "Where are global and static variables initialized to zero stored? **GATE 2019**",
+          "options": [
+              "BSS segment",
+              "Data segment",
+              "Stack",
+              "Heap"
+          ],
+          "ans": 0,
+          "explanation": "Uninitialized global/static variables or those initialized to zero are stored in the BSS (Block Started by Symbol) segment."
+      }
+  ],
 };
 
 export const DEBUG: Record<string, DebugExercise> = {
