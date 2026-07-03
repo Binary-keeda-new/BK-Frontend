@@ -16,11 +16,19 @@ type User = {
 const baseurl =
   process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
 
+type Activity = {
+  visitedDates: string[]
+  currentStreak: number
+  highestStreak: number
+  lastVisitedDate: string | null
+}
+
 
 export default function DashboardPage() {
   const { sessionToken, isAuthenticated, isSessionLoading } = useSession()
   const router = useRouter()
   const [user, setUser] = useState<User | null>(null)
+  const [activity, setActivity] = useState<Activity | null>(null)
   
   useEffect(() => {
 
@@ -56,6 +64,19 @@ export default function DashboardPage() {
         const data = JSON.parse(text)
 
         setUser(data.user)
+        const activityRes = await fetch(`${baseurl}/api/v1/activity/visit`, {
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+})
+
+        const activityText = await activityRes.text()
+
+        if (activityRes.ok) {
+          const activityData = JSON.parse(activityText)
+          setActivity(activityData.data)
+        }
       } catch (error) {
         console.error('Error fetching /me ->', error)
         router.replace('/auth/login')
@@ -67,12 +88,14 @@ export default function DashboardPage() {
     }
   }, [sessionToken, isAuthenticated, isSessionLoading, router])
 
-  if (isSessionLoading || !user) {
-    return <div className="p-6">Loading dashboard...</div>
-  }
+  if (isSessionLoading || !user || !activity) {
+  return <div className="p-6">Loading dashboard...</div>
+}
 
   const fullName = user.name?.trim() || ''
   const firstName = fullName ? fullName.split(' ')[0] : ''
+
+
 
   return (
     <main className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-[22px_24px]">
@@ -92,7 +115,12 @@ export default function DashboardPage() {
         md:grid-cols-2
         xl:grid-cols-[1fr_1fr_300px]"
       >
-        <ActivityCalendar />
+       <ActivityCalendar
+  activity={activity}
+  token={sessionToken}
+  baseurl={baseurl}
+  onActivityUpdate={setActivity}
+/>
         <Leaderboard />
 
         <div className="md:col-span-2 xl:col-span-1">

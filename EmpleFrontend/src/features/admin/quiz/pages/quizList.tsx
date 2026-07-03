@@ -2,9 +2,15 @@
 
 import { useEffect, useRef, useState } from 'react';
 import ToastContainer from '@/features/admin/question-bank/components/ToastContainer';
-import { EyeIcon, EditIcon, TrashIcon } from '../../dashboard/components/icons';
+import {
+  EyeIcon,
+  EditIcon,
+  TrashIcon,
+} from '../../dashboard/components/icons';
 import { QUIZ_CATEGORIES } from '@/shared/constants/quizCategories';
 import { apiRequest } from '@/shared/utils/api';
+import { FileBarChart2 } from "lucide-react";
+
 
 interface Quiz {
   _id: string;
@@ -22,6 +28,7 @@ type QuizzesContentProps = {
   onEditQuiz?: (quizId: string) => void;
   onCreateQuiz?: () => void;
   onPreviewQuiz?: (quizId: string) => void;
+   onViewReport?: (quizId: string) => void;
 };
 
 interface QuizListResponse {
@@ -43,6 +50,7 @@ export default function QuizzesContent({
   onEditQuiz,
   onCreateQuiz,
   onPreviewQuiz,
+  onViewReport,
 }: QuizzesContentProps) {
   const [page, setPage] = useState(1);
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
@@ -312,6 +320,13 @@ export default function QuizzesContent({
                           >
                             <EditIcon className="h-4 w-4" />
                           </button>
+                         <button
+                          onClick={() => onViewReport?.(quiz._id)}
+                          title="View Report"
+                          className="flex h-8 w-8 items-center justify-center rounded-md border border-[var(--clr-border2)] text-emerald-500 transition hover:bg-emerald-100"
+                        >
+                          <FileBarChart2 className="h-4 w-4" />
+                        </button>
 
                           <button
                             onClick={() => setQuizToDelete(quiz)}
