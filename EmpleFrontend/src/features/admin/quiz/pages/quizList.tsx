@@ -10,6 +10,7 @@ import {
 import { QUIZ_CATEGORIES } from '@/shared/constants/quizCategories';
 import { apiRequest } from '@/shared/utils/api';
 import { FileBarChart2 } from "lucide-react";
+import { Share2 } from 'lucide-react';
 
 
 interface Quiz {
@@ -327,6 +328,17 @@ export default function QuizzesContent({
                         >
                           <FileBarChart2 className="h-4 w-4" />
                         </button>
+                           <button
+                              onClick={() => {
+                                const link = `${window.location.origin}/user/practice/quiz/shared/${quiz._id}`;
+                                navigator.clipboard.writeText(link);
+                                addToast('Quiz link copied!', 'success');
+                              }}
+                              title="Copy Share Link"
+                              className="flex h-8 w-8 items-center justify-center rounded-md border border-[var(--clr-border2)] text-purple-500 transition hover:bg-purple-100"
+                            >
+                              <Share2 className="h-4 w-4" />
+                            </button>
 
                           <button
                             onClick={() => setQuizToDelete(quiz)}
