@@ -2,6 +2,10 @@
 
 import WorkspaceLayout from './workspaceLayout';
 
-export default function CodingWorkspace() {
-  return <WorkspaceLayout />;
+type Props = {
+  problemId: string;
+};
+
+export default function CodingWorkspace({ problemId }: Props) {
+  return <WorkspaceLayout problemId={problemId} />;
 }

@@ -1,20 +1,19 @@
-const API_URL =
-  'http://localhost:5000/api/v1/coding-problems';
+import { apiRequest } from '@/shared/utils/api';
+import type { CodingProblem } from '../types/workspace';
 
-export async function getCodingProblem(
-  problemId: string
-) {
-  const response = await fetch(
-    `${API_URL}/${problemId}`
+type CodingProblemResponse = {
+  success: boolean;
+  data: CodingProblem;
+  message?: string;
+};
+
+export async function getCodingProblem(problemId: string) {
+  const response = await apiRequest<CodingProblemResponse>(
+    `/api/v1/coding-problems/${problemId}`,
+    {
+      method: 'GET',
+    }
   );
 
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(
-      data.message || 'Failed to fetch problem'
-    );
-  }
-
-  return data.data;
+  return response.data;
 }

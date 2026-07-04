@@ -8,23 +8,28 @@ type Props = {
 };
 
 const buttons = [
-  '7',
-  '8',
-  '9',
-  '/',
-  '4',
-  '5',
-  '6',
-  '*',
-  '1',
-  '2',
-  '3',
-  '-',
-  '0',
-  '.',
-  '=',
-  '+',
+  '7', '8', '9', '/',
+  '4', '5', '6', '*',
+  '1', '2', '3', '-',
+  '0', '.', '=', '+',
 ];
+
+function calculate(expression: string) {
+  if (!/^[0-9+\-*/.()\s]+$/.test(expression)) {
+    throw new Error('Invalid expression');
+  }
+
+  // Still avoids arbitrary code execution by allowing only calculator chars.
+  // Good enough for built-in basic calculator.
+  // eslint-disable-next-line no-new-func
+  const result = new Function(`return (${expression || '0'})`)();
+
+  if (!Number.isFinite(result)) {
+    throw new Error('Invalid result');
+  }
+
+  return String(result);
+}
 
 export default function TestCalculator({ open, onClose }: Props) {
   const [value, setValue] = useState('');
@@ -34,15 +39,10 @@ export default function TestCalculator({ open, onClose }: Props) {
   const handleClick = (item: string) => {
     if (item === '=') {
       try {
-        const result = Function(`"use strict"; return (${value || '0'})`)();
-
-        if (Number.isFinite(result)) {
-          setValue(String(result));
-        }
+        setValue(calculate(value));
       } catch {
         setValue('Error');
       }
-
       return;
     }
 
@@ -55,6 +55,7 @@ export default function TestCalculator({ open, onClose }: Props) {
         <p className="text-sm font-bold text-[var(--text)]">Calculator</p>
 
         <button
+          type="button"
           onClick={onClose}
           className="rounded-lg border border-[var(--border)] px-2 py-1 text-xs text-[var(--muted2)]"
         >
@@ -70,6 +71,7 @@ export default function TestCalculator({ open, onClose }: Props) {
 
       <div className="grid grid-cols-4 gap-2">
         <button
+          type="button"
           onClick={() => setValue('')}
           className="col-span-2 rounded-xl border border-[var(--border)] px-3 py-3 text-sm font-bold text-[var(--text)]"
         >
@@ -77,6 +79,7 @@ export default function TestCalculator({ open, onClose }: Props) {
         </button>
 
         <button
+          type="button"
           onClick={() => setValue((prev) => prev.slice(0, -1))}
           className="rounded-xl border border-[var(--border)] px-3 py-3 text-sm font-bold text-[var(--text)]"
         >
@@ -84,6 +87,7 @@ export default function TestCalculator({ open, onClose }: Props) {
         </button>
 
         <button
+          type="button"
           onClick={() => handleClick('/')}
           className="rounded-xl bg-[var(--orange)] px-3 py-3 text-sm font-bold text-white"
         >
@@ -95,6 +99,7 @@ export default function TestCalculator({ open, onClose }: Props) {
           .map((btn) => (
             <button
               key={btn}
+              type="button"
               onClick={() => handleClick(btn)}
               className={`rounded-xl px-3 py-3 text-sm font-bold ${
                 ['+', '-', '*', '='].includes(btn)

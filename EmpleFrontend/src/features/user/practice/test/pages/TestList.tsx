@@ -63,6 +63,7 @@ export default function TestList({ onFullscreenModeChange }: Props) {
   const [reviewSection, setreviewSection] = useState<UserTestSection | null>(null);
 const [reviewSectionIndex, setreviewSectionIndex] = useState(0);
 
+
   useEffect(() => {
   const fullscreenViews = ['fullscreen', 'resume-fullscreen', 'attempt'];
 
