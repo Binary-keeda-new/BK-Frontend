@@ -10,6 +10,7 @@ import {
 import { QUIZ_CATEGORIES } from '@/shared/constants/quizCategories';
 import { apiRequest } from '@/shared/utils/api';
 import { FileBarChart2 } from "lucide-react";
+import { Share2 } from 'lucide-react';
 
 
 interface Quiz {
@@ -171,6 +172,12 @@ export default function QuizzesContent({
   };
 
   const start = (page - 1) * PAGE_SIZE;
+  const slugify = (value: string) =>
+  value
+    .toLowerCase()
+    .trim()
+    .replace(/&/g, 'and')
+    .replace(/\s+/g, '-');
 
   return (
     <>
@@ -283,6 +290,7 @@ export default function QuizzesContent({
                   </tr>
                 ) : (
                   quizzes.map((quiz) => (
+                    
                     <tr
                       key={quiz._id}
                       className="border-b border-[var(--clr-border)] transition hover:bg-[var(--clr-surface2)]"
@@ -304,6 +312,7 @@ export default function QuizzesContent({
                           {quiz.totalMarks}
                         </span>
                       </td>
+            
 
                       <td className="px-4 py-3">
                         <div className="flex justify-end gap-2">
@@ -327,6 +336,25 @@ export default function QuizzesContent({
                         >
                           <FileBarChart2 className="h-4 w-4" />
                         </button>
+                           <button
+                             onClick={() => {
+                              if (!/^[0-9a-fA-F]{24}$/.test(quiz._id)) {
+                                addToast('Invalid quiz id. Cannot copy link.', 'error');
+                                return;
+                              }
+
+                              const category = slugify(quiz.category);
+                              const topic = slugify(quiz.subcategory);
+
+                              const link = `${window.location.origin}/user/practice/quiz/${category}/${topic}`;
+                              navigator.clipboard.writeText(link);
+                              addToast('Quiz link copied!', 'success');
+                            }}
+                              title="Copy Share Link"
+                              className="flex h-8 w-8 items-center justify-center rounded-md border border-[var(--clr-border2)] text-purple-500 transition hover:bg-purple-100"
+                            >
+                              <Share2 className="h-4 w-4" />
+                            </button>
 
                           <button
                             onClick={() => setQuizToDelete(quiz)}
@@ -337,10 +365,12 @@ export default function QuizzesContent({
                         </div>
                       </td>
                     </tr>
+                    
                   ))
                 )}
               </tbody>
             </table>
+           
           </div>
 
           <div className="flex flex-col gap-3 border-t border-[var(--clr-border)] px-4 py-3 sm:flex-row sm:items-center sm:justify-between">

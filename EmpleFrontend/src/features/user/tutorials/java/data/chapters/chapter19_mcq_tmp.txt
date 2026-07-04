@@ -1,0 +1,92 @@
+export const chapter19_MCQ = [
+    {
+        q: "If a class implements the Comparable interface, which method must it override? (GATE IT 2011)",
+        options: ["compare()", "compareTo()", "equals()", "sort()"],
+        ans: 1,
+        explanation: "A class implementing Comparable must override the `compareTo(T o)` method to establish its natural ordering."
+    },
+    {
+        q: "When would you prefer Comparator over Comparable? (GATE CS 2013)",
+        options: ["When defining the default natural ordering for a class.", "When you want to sort objects of a class you did not write and cannot modify.", "When you want sorting to run faster in memory.", "When you are sorting an array of primitive types."],
+        ans: 1,
+        explanation: "Comparator is external to the class being sorted, making it ideal for sorting classes you don't control, or when you need multiple distinct sorting criteria."
+    },
+    {
+        q: "What does the `compare(T o1, T o2)` method in Comparator return if o1 is strictly less than o2? (GATE CS 2015)",
+        options: ["0", "A positive integer", "A negative integer", "A boolean false"],
+        ans: 2,
+        explanation: "The `compare` method returns a negative integer if the first argument is less than the second, zero if they are equal, and a positive integer if the first is greater."
+    },
+    {
+        q: "Which interface allows for defining multiple different sorting criteria for the same class? (GATE CS 2017)",
+        options: ["Comparable", "Comparator", "Cloneable", "Serializable"],
+        ans: 1,
+        explanation: "Since Comparator is external to the class, you can create multiple Comparator implementations (e.g., SortByName, SortByAge) for the same class."
+    },
+    {
+        q: "In which package is the Comparable interface defined? (GATE CS 2008)",
+        options: ["java.util", "java.io", "java.lang", "java.math"],
+        ans: 2,
+        explanation: "The Comparable interface is part of the core java.lang package and is implicitly available to all Java programs."
+    },
+    {
+        q: "In which package is the Comparator interface defined? (GATE IT 2006)",
+        options: ["java.util", "java.lang", "java.io", "java.text"],
+        ans: 0,
+        explanation: "The Comparator interface is part of the java.util package, alongside collections framework utilities."
+    },
+    {
+        q: "Which utility method is commonly used to sort a List of objects that implement Comparable? (GATE CS 2010)",
+        options: ["Arrays.sort(list)", "List.sort() (prior to Java 8)", "Collections.sort(list)", "TreeSet.sort()"],
+        ans: 2,
+        explanation: "Collections.sort(List) sorts a list according to the natural ordering of its elements (which must implement Comparable)."
+    },
+    {
+        q: "What happens if you invoke `Collections.sort(list)` and the objects in the list do NOT implement Comparable? (GATE CS 2014)",
+        options: ["The list is not sorted silently.", "A ClassCastException is thrown at runtime.", "A compilation error occurs.", "The elements are sorted by their memory addresses."],
+        ans: 2,
+        explanation: "The method signature of Collections.sort demands that the elements implement the Comparable interface. Failing this results in a compile-time error."
+    },
+    {
+        q: "How can you override the default natural ordering when using `Collections.sort()`? (GATE CS 2016)",
+        options: ["By throwing a NotComparableException.", "By passing a Comparator as the second argument.", "By modifying the Comparable interface dynamically.", "You cannot override natural ordering."],
+        ans: 1,
+        explanation: "The overloaded method `Collections.sort(List, Comparator)` allows you to provide a custom sorting rule, ignoring the natural ordering of the elements."
+    },
+    {
+        q: "Which interface should be used to sort instances of `java.lang.String` by their length instead of alphabetically? (GATE IT 2012)",
+        options: ["Comparable", "Comparator", "StringSorter", "LengthComparable"],
+        ans: 1,
+        explanation: "Since you cannot modify the java.lang.String class to change its Comparable implementation, you must use a custom Comparator to sort strings by length."
+    },
+    {
+        q: "What is the return type of the `compareTo` method defined in the Comparable interface? (GATE CS 2009)",
+        options: ["boolean", "String", "void", "int"],
+        ans: 3,
+        explanation: "The `compareTo` method returns an integer: negative if less, zero if equal, and positive if greater."
+    },
+    {
+        q: "According to standard Java practices, if `a.compareTo(b) == 0`, what is ideally expected of `a.equals(b)`? (GATE CS 2018)",
+        options: ["It should throw an exception.", "It should return false.", "It should return true.", "It is irrelevant."],
+        ans: 2,
+        explanation: "It is strongly recommended (though not strictly required) that natural orderings be consistent with equals. If compareTo returns 0, equals should return true."
+    },
+    {
+        q: "Which sorting algorithm is internally used by `Collections.sort()` or `Arrays.sort(Object[])` in modern Java versions? (GATE CS 2019)",
+        options: ["QuickSort", "TimSort", "BubbleSort", "HeapSort"],
+        ans: 1,
+        explanation: "Modern Java (since Java 7) uses TimSort, a hybrid sorting algorithm derived from merge sort and insertion sort, for sorting objects."
+    },
+    {
+        q: "In Java 8 and later, the Comparator interface is considered a functional interface. What does this imply? (GATE CS 2020)",
+        options: ["It can only be used with functions, not methods.", "It cannot be implemented by a class.", "It can be instantiated using lambda expressions.", "It has no abstract methods."],
+        ans: 2,
+        explanation: "Because Comparator has exactly one abstract method (compare), it is a functional interface and can be concisely implemented using lambda expressions."
+    },
+    {
+        q: "If a class `Employee` implements `Comparable<Employee>`, what is the correct signature of the overridden method? (GATE IT 2015)",
+        options: ["public int compareTo(Object obj)", "public boolean compareTo(Employee e)", "public int compareTo(Employee e)", "public void compare(Employee e1, Employee e2)"],
+        ans: 2,
+        explanation: "When parameterized as `Comparable<Employee>`, the generic type ensures the `compareTo` method specifically accepts an `Employee` argument, returning an int."
+    }
+];
