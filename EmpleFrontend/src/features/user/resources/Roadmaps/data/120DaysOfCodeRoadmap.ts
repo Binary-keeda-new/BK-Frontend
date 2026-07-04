@@ -40,16 +40,20 @@ const makePhaseTable = (phaseName: string, days: any[]) => {
   days.forEach((day: any) => {
     rowsHtml += `
       <tr style="border-bottom: 1px solid var(--border); transition: background-color 0.2s;">
-        <!-- Column 1: Days (Separated & Centered) -->
+        <!-- Column 1: Status Checkbox -->
+        <td style="border: 1px solid var(--border); padding: 12px; text-align: center; vertical-align: middle; width: 8%;">
+          <input type="checkbox" data-day="${day.day}" class="problem-checkbox" style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--orange);" />
+        </td>
+        <!-- Column 2: Days (Separated & Centered) -->
         <td style="border: 1px solid var(--border); padding: 12px; font-weight: 700; color: var(--orange); text-align: center; vertical-align: middle; font-size: 14px; width: 10%;">
           Day ${day.day}
         </td>
-        <!-- Column 2: Problem Description -->
-        <td style="border: 1px solid var(--border); padding: 12px; color: var(--text); vertical-align: middle; line-height: 1.5; width: 45%;">
+        <!-- Column 3: Problem Description -->
+        <td style="border: 1px solid var(--border); padding: 12px; color: var(--text); vertical-align: middle; line-height: 1.5; width: 42%;">
           ${day.title}
         </td>
-        <!-- Column 3: Practice Links (LeetCode, Coding Ninjas, GFG - YouTube Button Removed) -->
-        <td style="border: 1px solid var(--border); padding: 12px; text-align: center; vertical-align: middle; white-space: nowrap; width: 20%;">
+        <!-- Column 4: Practice Links (LeetCode, Coding Ninjas, GFG - YouTube Button Removed) -->
+        <td style="border: 1px solid var(--border); padding: 12px; text-align: center; vertical-align: middle; white-space: nowrap; width: 18%;">
           <div style="display: inline-flex; gap: 8px; justify-content: center; align-items: center;">
             <!-- LeetCode (Round Button) -->
             <a href="${day.leetcode}" target="_blank" rel="noopener noreferrer" title="LeetCode" style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; background-color: var(--surface2); border: 1.5px solid var(--border); transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='scale(1.1)';this.style.borderColor='#FFA116';this.style.boxShadow='0 0 8px rgba(255, 161, 22, 0.3)';" onmouseout="this.style.transform='scale(1)';this.style.borderColor='var(--border)';this.style.boxShadow='none';">
@@ -65,8 +69,8 @@ const makePhaseTable = (phaseName: string, days: any[]) => {
             </a>
           </div>
         </td>
-        <!-- Column 4: YouTube Explanation Link (Striver & Apna College Videos Only) -->
-        <td style="border: 1px solid var(--border); padding: 12px; text-align: center; vertical-align: middle; width: 25%;">
+        <!-- Column 5: YouTube Explanation Link (Striver & Apna College Videos Only) -->
+        <td style="border: 1px solid var(--border); padding: 12px; text-align: center; vertical-align: middle; width: 22%;">
           <a href="${day.ytLink}" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 8px 14px; background: rgba(239, 68, 68, 0.1); border: 1.5px solid #ef4444; color: #ef4444; border-radius: 30px; text-decoration: none; font-weight: 700; transition: all 0.2s; font-size: 13px;" onmouseover="this.style.background='#ef4444';this.style.color='#fff';this.style.transform='scale(1.05)';" onmouseout="this.style.background='rgba(239, 68, 68, 0.1)';this.style.color='#ef4444';this.style.transform='scale(1)';">
             <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="display: block;">
               <path d="M8 5v14l11-7z"/>
@@ -83,10 +87,11 @@ const makePhaseTable = (phaseName: string, days: any[]) => {
       <table style="width: 100%; border-collapse: collapse; font-family: inherit; font-size: 14px; text-align: left; background-color: var(--surface);">
         <thead>
           <tr style="background-color: var(--surface2); border-bottom: 2px solid var(--border);">
+            <th style="border: 1px solid var(--border); padding: 12px; font-weight: 800; color: var(--text); width: 8%; text-align: center;">Status</th>
             <th style="border: 1px solid var(--border); padding: 12px; font-weight: 800; color: var(--text); width: 10%; text-align: center;">Day</th>
-            <th style="border: 1px solid var(--border); padding: 12px; font-weight: 800; color: var(--text); width: 45%;">Problem Description</th>
-            <th style="border: 1px solid var(--border); padding: 12px; font-weight: 800; color: var(--text); width: 20%; text-align: center;">Practice Links</th>
-            <th style="border: 1px solid var(--border); padding: 12px; font-weight: 800; color: var(--text); width: 25%; text-align: center;">YouTube Explanation</th>
+            <th style="border: 1px solid var(--border); padding: 12px; font-weight: 800; color: var(--text); width: 42%;">Problem Description</th>
+            <th style="border: 1px solid var(--border); padding: 12px; font-weight: 800; color: var(--text); width: 18%; text-align: center;">Practice Links</th>
+            <th style="border: 1px solid var(--border); padding: 12px; font-weight: 800; color: var(--text); width: 22%; text-align: center;">YouTube Explanation</th>
           </tr>
         </thead>
         <tbody>
@@ -99,167 +104,250 @@ const makePhaseTable = (phaseName: string, days: any[]) => {
 
 // High-quality YouTube video IDs mapped to days (TakeUForward / Striver & Apna College only)
 const ytVideoIds = {
-  // Phase 1: Programming Fundamentals (Apna College / Striver)
-  1: 'z9bZufPHFLU', // Hello World - Apna College
-  2: '0k5a5TzL4bE', // Print even numbers - Apna College
-  3: 'LAc1o8VRUXU', // Switch cases - Apna College
-  4: 'J32O1N1624s', // Array operations - Apna College
-  5: 'fM7btulL4RI', // Linear search - Apna College
-  6: 'OX7W913H2jM', // Binary search - Striver
-  7: 'yVdKa8dnkiI', // Fibonacci - Striver
-  8: 'yVdKa8dnkiI', // Palindrome - Striver
-  9: 'HGK_ypPVSRE', // Bubble sort - Striver
-  10: 'LAc1o8VRUXU', // Calculator - Apna College
-
-  // Phase 2: Array Fundamentals (Striver & Apna College)
-  11: 'n0aLxsjn-LE', // Array sum - Striver
-  12: 'n0aLxsjn-LE', // Largest / Smallest - Striver
-  13: 'n0aLxsjn-LE', // Reverse array - Striver
-  14: 'n0aLxsjn-LE', // Move zeroes - Striver
-  15: 'n0aLxsjn-LE', // Duplicates - Striver
-  16: 'n0aLxsjn-LE', // Missing number - Striver
-  17: 'n0aLxsjn-LE', // Rotate array - Striver
-  18: 'AHZpyENHAe4', // Kadane's - Striver
-  19: 'n0aLxsjn-LE', // Merge sorted - Striver
-  20: 'n0aLxsjn-LE', // Product except self - Striver
-
-  // Phase 3: String Fundamentals
-  21: 'Wp22_f3qZ_E', // Vowels - Apna College
-  22: 'Wp22_f3qZ_E', // Reverse string - Striver
-  23: 'Wp22_f3qZ_E', // Palindrome string - Striver
-  24: 'Wp22_f3qZ_E', // Longest word - Apna College
-  25: 'Wp22_f3qZ_E', // Anagrams - Striver
-  26: 'Wp22_f3qZ_E', // First non-repeating - Striver
-  27: 'Wp22_f3qZ_E', // Remove duplicates - Striver
-  28: 'Wp22_f3qZ_E', // String compression - Striver
-  29: 'Wp22_f3qZ_E', // Longest substring - Striver
-  30: 'Wp22_f3qZ_E', // Group anagrams - Striver
-
-  // Phase 4: Hashing Fundamentals
-  31: 'pcItrqJup1o', // Frequency - Striver
-  32: 'pcItrqJup1o', // Duplicates HashSet - Striver
-  33: 'UXm6Q2b812s', // Two Sum - Striver
-  34: 'pcItrqJup1o', // Intersection arrays - Striver
-  35: 'pcItrqJup1o', // Majority element - Striver
-  36: 'pcItrqJup1o', // Isomorphic strings - Striver
-  37: 'pcItrqJup1o', // Window distinct - Striver
-  38: 'pcItrqJup1o', // Pairs sum - Striver
-  39: 'pcItrqJup1o', // Longest consecutive - Striver
-  40: 'pcItrqJup1o', // Subarray sum equals K - Striver
-
-  // Phase 5: Searching Fundamentals
-  41: 'OX7W913H2jM', // Linear Search - Apna College
-  42: 'OX7W913H2jM', // Binary Search - Striver
-  43: 'OX7W913H2jM', // Search insert position - Striver
-  44: 'OX7W913H2jM', // Square root - Striver
-  45: 'OX7W913H2jM', // First/last occurrence - Striver
-  46: 'OX7W913H2jM', // Rotated array search - Striver
-  47: 'OX7W913H2jM', // Min in rotated - Striver
-  48: 'OX7W913H2jM', // Peak element - Striver
-  49: 'OX7W913H2jM', // Aggressive Cows - Striver
-  50: 'OX7W913H2jM', // Book allocation - Striver
-
-  // Phase 6: Sorting Fundamentals
-  51: 'HGK_ypPVSRE', // Bubble Sort - Striver
-  52: 'HGK_ypPVSRE', // Selection Sort - Striver
-  53: 'HGK_ypPVSRE', // Insertion Sort - Striver
-  54: 'HGK_ypPVSRE', // Sort 0s 1s 2s - Striver
-  55: 'ogogbh_Y6-E', // Merge Sort - Striver
-  56: 'WIrA4YexLRQ', // Quick Sort - Striver
-  57: 'HGK_ypPVSRE', // Merge intervals - Striver
-  58: 'HGK_ypPVSRE', // DNF Sort - Striver
-  59: 'HGK_ypPVSRE', // Min swaps - Striver
-  60: 'HGK_ypPVSRE', // Relative sort - Striver
-
-  // Phase 7: Maths and Bit Manipulation
-  61: '888c3N3gS3o', // Check prime - Striver
-  62: '888c3N3gS3o', // GCD - Striver
-  63: '888c3N3gS3o', // LCM - Striver
-  64: '888c3N3gS3o', // Sieve - Striver
-  65: 'vdV4J0pU1mU', // Fast exponentiation - Striver
-  66: 'vdV4J0pU1mU', // Power of 2 - Striver
-  67: 'vdV4J0pU1mU', // Count set bits - Striver
-  68: 'vdV4J0pU1mU', // Odd/Even - Striver
-  69: 'vdV4J0pU1mU', // Swap XOR - Striver
-  70: 'vdV4J0pU1mU', // Unique element - Striver
-  71: 'vdV4J0pU1mU', // Missing number XOR - Striver
-  72: 'vdV4J0pU1mU', // Check bit - Striver
-  73: 'vdV4J0pU1mU', // Bit ops - Striver
-  74: 'vdV4J0pU1mU', // Divide bitwise - Striver
-  75: 'vdV4J0pU1mU', // Subsets - Striver
-
-  // Phase 8: Tree, BST & Heap
-  76: 'pGymzuGAkJ8', // Inorder - Striver
-  77: 'pGymzuGAkJ8', // Preorder - Striver
-  78: 'pGymzuGAkJ8', // Postorder - Striver
-  79: 'pGymzuGAkJ8', // Level order - Striver
-  80: 'pGymzuGAkJ8', // Height - Striver
-  81: 'pGymzuGAkJ8', // Size - Striver
-  82: 'pGymzuGAkJ8', // Diameter - Striver
-  83: 'pGymzuGAkJ8', // Identical - Striver
-  84: 'pGymzuGAkJ8', // Balanced - Striver
-  85: 'pGymzuGAkJ8', // LCA - Striver
-  86: 'pGymzuGAkJ8', // Insert BST - Striver
-  87: 'pGymzuGAkJ8', // Search BST - Striver
-  88: 'pGymzuGAkJ8', // Delete BST - Striver
-  89: 'pGymzuGAkJ8', // Min Max BST - Striver
-  90: 'pGymzuGAkJ8', // Validate BST - Striver
-  91: 'pGymzuGAkJ8', // Kth smallest - Striver
-  92: 'ERCMXcBxTmc', // Min Heap - Striver
-  93: 'ERCMXcBxTmc', // Max Heap - Striver
-  94: 'ERCMXcBxTmc', // Heap Sort - Striver
-  95: 'ERCMXcBxTmc', // K largest - Striver
-
-  // Phase 9: Graph
-  96: 'uWMDca1-09w', // BFS - Striver
-  97: 'QzfS0gvgg5Q', // DFS - Striver
-  98: 'EapTyqj5_9E', // Dijkstra - Striver
-  99: 'M3_pLsDdeuU', // Cycle detect - Striver
-  100: 'M3_pLsDdeuU', // Topological - Striver
-
-  // Phase 10: Linked List, Stack and Queue
-  101: 'k7ttTvBdGe4', // Insertion LL - Striver
-  102: 'k7ttTvBdGe4', // Deletion LL - Striver
-  103: 'k7ttTvBdGe4', // Reverse LL - Striver
-  104: 'k7ttTvBdGe4', // Cycle LL - Striver
-  105: 'k7ttTvBdGe4', // Middle LL - Striver
-  106: 'k7ttTvBdGe4', // Merge LL - Striver
-  107: 'k7ttTvBdGe4', // Intersection LL - Striver
-  108: 'k7ttTvBdGe4', // Stack array - Striver
-  109: 'k7ttTvBdGe4', // Stack LL - Striver
-  110: 'dk82-GgZ_kE', // Valid Parentheses - Striver
-  111: 'dk82-GgZ_kE', // Queue array - Striver
-  112: 'dk82-GgZ_kE', // Circular queue - Striver
-  113: 'dk82-GgZ_kE', // Queue LL - Striver
-  114: 'dk82-GgZ_kE', // Queue using stack - Striver
-  115: 'dk82-GgZ_kE', // Stack using queue - Striver
-  116: 'k7ttTvBdGe4', // Remove Nth from end - Striver
-  117: 'k7ttTvBdGe4', // Palindrome LL - Striver
-  118: 'dk82-GgZ_kE', // Next Greater - Striver
-  119: 'dk82-GgZ_kE', // Min Stack - Striver
-  120: 'dk82-GgZ_kE'  // Generate binary - Striver
+  1: 't6zLJOCVqD0',
+  2: '2xdzSOn7PgY',
+  3: 'G80-j_xnE_8',
+  4: '8wmn7k1TTcI',
+  5: '13ocRMSJy5M',
+  6: 'TbbSJrY5GqQ',
+  7: '4iT-GhvSKzc',
+  8: 'dSRFgEs3a6A',
+  9: 'xcPFUCh0jT0',
+  10: 'G80-j_xnE_8',
+  11: '37E9ckMDdTk',
+  12: '37E9ckMDdTk',
+  13: 'twuC1F6gLI8',
+  14: 'wvcQg43_V8U',
+  15: '0LIctkgJ2hQ',
+  16: 'bYWLJb3vCWY',
+  17: 'wvcQg43_V8U',
+  18: 'AHZpyENo7k4',
+  19: 'n7uwj04E0I4',
+  20: 'TW2m8m_FNJE',
+  21: 'R5j8k9eYtcY',
+  22: 'twuC1F6gLI8',
+  23: 'rH-V02qaSJk',
+  24: 'AWnBa91lThI',
+  25: 'O-NosX-on5U',
+  26: '4teL2-VxLO0',
+  27: 'N5pRTLMz12s',
+  28: 'UOgKdjeniAE',
+  29: '-zSxTJkcdAo',
+  30: 'vzdNOK2oB2E',
+  31: 'KEs5UyBJ39g',
+  32: '32Ll35mhWg0',
+  33: 'UXDSeD9mN-k',
+  34: 'wvcQg43_V8U',
+  35: 'nP_ns3uSh80',
+  36: 'ogTMIFPjNkQ',
+  37: 'j48e8ac7r20',
+  38: 'UXDSeD9mN-k',
+  39: 'oO5uLE7EUlM',
+  40: 'xvNwoz-ufXA',
+  41: 'MHf6awe89xw',
+  42: 'MHf6awe89xw',
+  43: 'HGk_ypEuS24',
+  44: 'Bsv3FPUX_BA',
+  45: 'hjR1IYVx9lY',
+  46: '5qGrJbHhqFs',
+  47: 'nhEMDKMB44g',
+  48: 'B2VqNmLZXoc',
+  49: 'R_Mfw4ew-Vo',
+  50: 'Z0hwjftStI4',
+  51: 'HGk_ypEuS24',
+  52: 'HGk_ypEuS24',
+  53: 'HGk_ypEuS24',
+  54: 'tp8JIuCXBaU',
+  55: 'ogjf7ORKfd8',
+  56: 'WIrA4YexLRQ',
+  57: 'IexN60k62jo',
+  58: 'ZSz4xsf5S70',
+  59: 'vfsrJB_yfo0',
+  60: 'bNuMPAuQN4g',
+  61: 'MJcckSfoYdI',
+  62: 'LKXEGTnQT88',
+  63: '1xNbjMdbjug',
+  64: 'g5Fuxn_AvSk',
+  65: 'XV9-7oeb51I',
+  66: 'qQd-ViW7bfk',
+  67: 'LKXEGTnQT88',
+  68: 'bBTvLACZBvk',
+  69: 'K9VNSAx-Yqs',
+  70: 'B3MfEX7gP2c',
+  71: 'HTO8tSdYasg',
+  72: 'nttpF8kwgd4',
+  73: 'qQd-ViW7bfk',
+  74: 'pBD4B1tzgVc',
+  75: 'LqKaUv1G3_I',
+  76: '_ANrF3FJm7I',
+  77: 'Bfqd8BsPVuw',
+  78: 'NzIGLLwZBS8',
+  79: 'EoAsWbO7sqg',
+  80: '_ANrF3FJm7I',
+  81: 'u-yWemKGWO0',
+  82: 'Rezetez59Nk',
+  83: 'BhuvF_-PWS0',
+  84: 'Yt50Jfbd8Po',
+  85: '_-QHfMDde90',
+  86: 'FiFiNvM29ps',
+  87: 'KcNt6v_56cc',
+  88: 'kouxiP_H5WE',
+  89: '9TJYWh0adfk',
+  90: 'f-sj7I5oXEI',
+  91: '9TJYWh0adfk',
+  92: 'b6Gq6V8Tvpg',
+  93: 'NKJnHewiGdc',
+  94: 'nJ6FdAIr_6g',
+  95: 'ipeCcTNxZ1A',
+  96: '-tgVpUgsQ5k',
+  97: 'Qzf1a--rhp8',
+  98: 'Gd92jSu_cZk',
+  99: 'BPlrALf1LDU',
+  100: 'ChxA6H2253I',
+  101: 'LyuuqCVkP5I',
+  102: 'R9PTBwOzceo',
+  103: 'cg6JGiXhQ9c',
+  104: 'wiOo4DC5GGA',
+  105: '7LjQ57RqgEc',
+  106: 'jXu-H7XuClE',
+  107: 'u4FWXfgS8jw',
+  108: 'GYptUgnIM_I',
+  109: 'tqQ5fTamIN4',
+  110: 'xwjS0iZhw4I',
+  111: 'M6GnoUDpqEE',
+  112: 'unqeUOAK4Os',
+  113: 'RN1wzY_tnYU',
+  114: 'tqQ5fTamIN4',
+  115: 'tqQ5fTamIN4',
+  116: '3kMKYQ2wNIU',
+  117: 'lRY_G-u_8jk',
+  118: 'e7XQLtOQM3I',
+  119: 'NdDIaH91P0g',
+  120: 'tlCEbnZsGXE',
 };
 
 // Custom slugs for Naukri Code360 (Coding Ninjas) direct links
 const cnSlugs: Record<number, string> = {
-  1: 'create-a-hello-world-function', 2: 'print-even-numbers', 3: 'switch-case-problems', 5: 'linear-search',
-  6: 'binary-search', 7: 'nth-fibonacci-number', 8: 'palindrome-string', 9: 'bubble-sort', 11: 'sum-of-array',
-  13: 'reverse-the-array', 14: 'move-zeroes', 15: 'contains-duplicate', 16: 'missing-number', 17: 'rotate-array',
-  18: 'kadanes-algorithm', 19: 'merge-two-sorted-arrays', 20: 'product-of-array-except-self', 22: 'reverse-string',
-  23: 'check-palindrome', 25: 'valid-anagram', 26: 'first-non-repeating-character', 29: 'longest-substring-without-repeating-characters',
-  30: 'group-anagrams', 33: 'two-sum', 34: 'intersection-of-two-arrays', 35: 'majority-element', 36: 'isomorphic-strings',
-  39: 'longest-consecutive-sequence', 40: 'subarray-sum-equals-k', 42: 'binary-search', 43: 'search-insert-position',
-  44: 'square-root', 45: 'first-and-last-occurrence', 46: 'search-in-rotated-sorted-array', 47: 'find-minimum-in-rotated-sorted-array',
-  48: 'find-peak-element', 49: 'aggressive-cows', 50: 'allocate-minimum-pages', 51: 'bubble-sort', 52: 'selection-sort',
-  53: 'insertion-sort', 54: 'sort-colors', 55: 'merge-sort', 56: 'quick-sort', 57: 'merge-overlapping-intervals',
-  58: 'dutch-national-flag', 61: 'check-prime', 64: 'sieve-of-eratosthenes', 70: 'unique-element', 71: 'missing-number-xor',
-  74: 'divide-two-numbers-bitwise', 75: 'subsets', 76: 'binary-tree-inorder-traversal', 77: 'binary-tree-preorder-traversal',
-  78: 'binary-tree-postorder-traversal', 79: 'binary-tree-level-order-traversal', 80: 'height-of-binary-tree',
-  82: 'diameter-of-binary-tree', 84: 'balanced-binary-tree', 85: 'lowest-common-ancestor', 86: 'insert-into-bst',
-  87: 'search-in-bst', 88: 'delete-from-bst', 90: 'validate-bst', 91: 'kth-smallest-element-in-bst', 96: 'bfs-in-graph',
-  97: 'dfs-traversal', 98: 'dijkstras-shortest-path', 99: 'cycle-detection-in-undirected-graph', 100: 'topological-sort',
-  103: 'reverse-linked-list', 104: 'cycle-detection-in-linked-list', 105: 'middle-of-linked-list', 106: 'merge-two-sorted-linked-lists',
-  110: 'valid-parentheses', 116: 'remove-nth-node', 117: 'palindrome-linked-list', 118: 'next-greater-element', 119: 'min-stack'
+  1: "function-to-print-hello-world_1164189",
+  2: "sum-of-even-numbers-till-n_893205",
+  3: "switch-case-statement_8357244",
+  4: "search-insert-and-delete-in-an-array_1214539",
+  5: "linear-search_6922070",
+  6: "binary-search_972",
+  7: "nth-fibonacci-number_1115780",
+  8: "check-palindrome_4219630",
+  9: "bubble-sort_980524",
+  10: "ninja-s-calculator_1172220",
+  11: "sum-of-array_1164287",
+  12: "largest-element-in-the-array-largest-element-in-the-array_5026279",
+  13: "reverse-the-array_1262298",
+  14: "interview-shuriken-41-move-zeroes-to-end_240143",
+  15: "contains-duplicate_6141355",
+  16: "missing-number_6680467",
+  17: "rotate-array_1230543",
+  18: "maximum-subarray-sum_630526",
+  19: "ninja-and-sorted-arrays_1214628",
+  20: "product-of-array-except-self_630271",
+  21: "count-vowels-consonants-and-spaces_5026361",
+  22: "reverse-string_4605861",
+  23: "check-palindrome_4219630",
+  24: "longest-word-made-from-other-words_1229401",
+  25: "anagram_40584",
+  26: "first-unique-character-in-a-string_983606",
+  27: "remove-duplicates-from-string_630470",
+  28: "compress-the-string_526",
+  29: "longest-substring-without-repeating-characters_758894",
+  30: "group-anagrams_800285",
+  31: "count-frequency-in-a-range_8365446",
+  32: "find-duplicate-in-array_8289592",
+  33: "two-sum_839653",
+  34: "array-intersection_625161",
+  35: "majority-element_842495",
+  36: "isomorphic-strings-_1117636",
+  37: "count-distinct-element-in-every-k-size-window_920336",
+  38: "number-of-pairs-with-given-sum_1171154",
+  39: "longest-consecutive-sequence_759408",
+  40: "subarrays-with-sum-%E2%80%98k'_6922076",
+  41: "linear-search_6922070",
+  42: "binary-search_972",
+  43: "algorithm-to-find-best-insert-position-in-sorted-array_839813",
+  44: "square-root-integral_893351",
+  45: "first-and-last-position-of-an-element-in-sorted-array_1082549",
+  46: "search-in-rotated-sorted-array_1082554",
+  47: "rotated-array_1093219",
+  48: "find-peak-element_1081482",
+  49: "aggressive-cows_1082559",
+  50: "allocate-books_1090540",
+  51: "bubble-sort_980524",
+  52: "selection-sort_981162",
+  53: "insertion-sort_3155179",
+  54: "sort-an-array-of-0s-1s-and-2s_6929674",
+  55: "merge-sort_920442",
+  56: "quick-sort_983625",
+  57: "merge-overlapping-intervals_1082151",
+  58: "quicksort-using-the-dutch-national-flag-algorithm_873862",
+  59: "minimum-number-of-swaps-required-to-sort-an-array_973251",
+  60: "relative-sorting_982932",
+  61: "check-prime_624934",
+  62: "gcd_975284",
+  63: "lcm_4604173",
+  64: "count-primes_1062621",
+  65: "modular-exponentiation_1082146",
+  66: "power-of-two_893061",
+  67: "count-set-bits_8162231",
+  68: "even-or-odd_7463066",
+  69: "swap-two-numbers_1112577",
+  70: "find-unique_625159",
+  71: "missing-number_6680467",
+  72: "check-whether-k-th-bit-is-set-or-not_5026446",
+  73: "bit-manipulation_8142533",
+  74: "divide-two-integers_1112617",
+  75: "subsets_1164447",
+  76: "tree-traversal_981269",
+  77: "tree-traversal_981269",
+  78: "tree-traversal_981269",
+  79: "level-order-traversal_796002",
+  80: "height-of-binary-tree_4609628",
+  81: "count-complete-binary-tree-nodes_1094892",
+  82: "diameter-of-the-binary-tree_920552",
+  83: "check-identical-trees_799364",
+  84: "is-height-balanced-binary-tree_975497",
+  85: "lca-of-binary-tree_920541",
+  86: "insert-into-a-binary-search-tree_1279913",
+  87: "search-in-bst_1402878",
+  88: "delete-node-in-bst_920381",
+  89: "minimum-element-in-bst_873130",
+  90: "validate-bst_981275",
+  91: "k-th-smallest-node-in-bst_920441",
+  92: "min-heap-implementation_5480527",
+  93: "convert-min-heap-to-max-heap_630293",
+  94: "heap-sort_1262153",
+  95: "k-largest-element_1062624",
+  96: "bfs-in-graph_973002",
+  97: "dfs-traversal_630462",
+  98: "dijkstra-s-shortest-path_920469",
+  99: "cycle-detection-in-undirected-graph_1062670",
+  100: "topological-sort_982938",
+  101: "insertion-in-a-singly-linked-list_4609646",
+  102: "delete-node-in-a-linked-list_1105578",
+  103: "reverse-linked-list_920513",
+  104: "detect-cycle-in-a-singly-linked-list_981265",
+  105: "middle-of-linked-list_973250",
+  106: "merge-two-sorted-linked-lists_800332",
+  107: "intersection-of-linked-list_630457",
+  108: "stack-implementation-using-array_2432940",
+  109: "implement-stack-with-linked-list_630475",
+  110: "valid-parentheses_795104",
+  111: "implement-queue-using-arrays_8390825",
+  112: "circular-queue_1170058",
+  113: "implement-queue-using-linked-list_8161235",
+  114: "queue-using-stack_799482",
+  115: "stack-using-queue_795152",
+  116: "delete-kth-node-from-end_799912",
+  117: "palindrome-linked-list_799352",
+  118: "next-greater-element_670",
+  119: "min-stack_3843990",
+  120: "generate-binary-numbers_981264"
 };
 
 const getCNLink = (day: any) => {
@@ -431,10 +519,13 @@ const allDays = rawDays.map((day: any) => {
   const query = `${channel} ${cleanTitle}`;
   const ytSearchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
 
+  const videoId = ytVideoIds[day.day as keyof typeof ytVideoIds];
+  const ytLink = videoId ? `https://www.youtube.com/watch?v=${videoId}` : ytSearchUrl;
+
   return {
     ...day,
     cn: getCNLink(day),
-    ytLink: ytSearchUrl
+    ytLink: ytLink
   };
 });
 
