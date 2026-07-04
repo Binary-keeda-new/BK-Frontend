@@ -19,6 +19,7 @@ import QuizForm from '../../quiz/components/QuizForm';
 import CodingProblemsPage from '@/features/admin/coding-problems/pages/codingProblemsPage';
 import CodingProblemEditorPage from '@/features/admin/coding-problems/pages/codingProblemEditorPage';
 import AdminEventsPage from '@/features/admin/Events/components/AdminEventsPage';
+import AdminNotificationsPage from '@/features/admin/notifications/pages/AdminNotificationsPage';
 
 interface AppShellProps {
   initialSection?: AdminSection;
@@ -259,6 +260,9 @@ const [selectedQuestionBankId, setSelectedQuestionBankId] = useState<string | nu
 
       case 'sessions':
         return <AdminSessionsPage />;
+
+      case 'notifications':
+        return <AdminNotificationsPage />;  
 
       case 'practice':
         return (
