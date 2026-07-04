@@ -1,7 +1,11 @@
 'use client'
 
+import { useState } from 'react'
 import { Trophy, Sparkles, Rocket } from 'lucide-react'
 import EventListPage from './EventListPage'
+import AdminEventPreviewContent from './AdminEventPreviewContent'
+import AdminEventFormPage from './AdminEventFormPage'
+import { Event } from '../types'
 
 type EventSubPage = 'hackathon' | 'techfest' | 'our-hackathon'
 
@@ -47,7 +51,29 @@ const CARDS = [
 ]
 
 export default function AdminEventsPage({ subPage, onSelectSubPage }: Props) {
+  const [previewEventId, setPreviewEventId] = useState<string | null>(null)
+  const [formMode, setFormMode] = useState<'create' | Event | null>(null)
+  const [listRefreshKey, setListRefreshKey] = useState(0)
+
   if (subPage) {
+    if (previewEventId) {
+      return <AdminEventPreviewContent eventId={previewEventId} onBack={() => setPreviewEventId(null)} />
+    }
+
+    if (formMode) {
+      return (
+        <AdminEventFormPage
+          editTarget={formMode === 'create' ? null : formMode}
+          defaultType={subPage}
+          onCancel={() => setFormMode(null)}
+          onSuccess={() => {
+            setFormMode(null)
+            setListRefreshKey((k) => k + 1)
+          }}
+        />
+      )
+    }
+
     return (
       <div>
         <div className="px-7 pt-6">
@@ -55,20 +81,19 @@ export default function AdminEventsPage({ subPage, onSelectSubPage }: Props) {
             onClick={() => onSelectSubPage(null)}
             className="flex items-center gap-2 text-sm text-white/50 hover:text-white transition mb-2"
           >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <polyline points="15 18 9 12 15 6" />
             </svg>
             Back to Events
           </button>
         </div>
-        <EventListPage type={subPage} />
+        <EventListPage
+          key={listRefreshKey}
+          type={subPage}
+          onPreview={setPreviewEventId}
+          onEdit={(event) => setFormMode(event)}
+          onAddNew={() => setFormMode('create')}
+        />
       </div>
     )
   }
@@ -92,24 +117,17 @@ export default function AdminEventsPage({ subPage, onSelectSubPage }: Props) {
             onClick={() => onSelectSubPage(card.id)}
           >
             <div className={`absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r ${card.topBar}`} />
-
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <div
-                  className={`w-8 h-8 rounded-xl ${card.iconBg} flex items-center justify-center`}
-                  style={{ color: card.accentColor }}
-                >
+                <div className={`w-8 h-8 rounded-xl ${card.iconBg} flex items-center justify-center`} style={{ color: card.accentColor }}>
                   {card.icon}
                 </div>
                 <h3 className="text-white text-sm font-semibold">{card.title}</h3>
               </div>
               <p className="text-white/40 text-xs leading-relaxed">{card.description}</p>
             </div>
-
             <div className="flex items-center justify-between">
-              <span className={`text-[11px] px-2 py-1 rounded-full ${card.badgeClass}`}>
-                {card.badge}
-              </span>
+              <span className={`text-[11px] px-2 py-1 rounded-full ${card.badgeClass}`}>{card.badge}</span>
               <button
                 onClick={(e) => { e.stopPropagation(); onSelectSubPage(card.id) }}
                 className="w-7 h-7 rounded-full bg-[rgb(241,90,34)] hover:bg-[rgb(241,90,34)]/85 flex items-center justify-center transition-colors"

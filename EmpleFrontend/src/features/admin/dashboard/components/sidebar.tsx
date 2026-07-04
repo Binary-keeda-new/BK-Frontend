@@ -16,11 +16,14 @@ export type AdminSection =
   | 'jobs'
   | 'blogs'
   | 'sessions'
+  | 'notifications'
   | 'events'
   | 'quiz-preview'
   | 'quiz-edit'
   | 'quiz-create'
-  | 'test-edit';
+  | 'test-edit'
+  | 'quiz-report'
+  |'quiz-attempt-review';
 
 const NAV_ITEMS: {
   label: string;
@@ -101,6 +104,60 @@ const NAV_ITEMS: {
       </svg>
     ),
   },
+ {
+  label: 'Events',
+  key: 'events',
+  icon: (
+    <svg
+      width="17"
+      height="17"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      {/* Calendar */}
+      <rect
+        x="3"
+        y="5"
+        width="18"
+        height="16"
+        rx="2"
+        stroke="currentColor"
+        strokeWidth="2"
+      />
+
+      {/* Top divider */}
+      <path
+        d="M3 9H21"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+
+      {/* Binding rings */}
+      <path
+        d="M8 3V7"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <path
+        d="M16 3V7"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+
+      {/* Event dot */}
+      <circle
+        cx="12"
+        cy="14"
+        r="1.4"
+        fill="currentColor"
+      />
+    </svg>
+  ),
+},
   {
     label: 'Sessions',
     key: 'sessions',
@@ -112,6 +169,16 @@ const NAV_ITEMS: {
       </svg>
     ),
   },
+  {
+  label: 'Notifications',
+  key: 'notifications',
+  icon: (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+      <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+    </svg>
+  ),
+},
 ];
 
 type SidebarProps = {
