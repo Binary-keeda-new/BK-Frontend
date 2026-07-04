@@ -1,10 +1,5 @@
 export type EventType = 'hackathon' | 'techfest' | 'our-hackathon'
 
-export interface EventLink {
-  label: string
-  url: string
-}
-
 export interface Event {
   _id: string
   title: string
@@ -20,10 +15,14 @@ export interface Event {
   isActive: boolean
   createdAt: string
   updatedAt: string
-  // our-hackathon only
-  solutionLink: string
-  links: EventLink[]
+  eligibility: string
+  rulesAndGuidelines: string
+  teamSizeMin: number
+  teamSizeMax: number
+  problemStatement: string
   rewards: string
+  solutionReveal: string
+  solutionRevealLink: string
 }
 
 export interface EventFormData {
@@ -37,8 +36,33 @@ export interface EventFormData {
   registrationOpen: boolean
   organiser: string
   banner: string
-  // our-hackathon only
-  solutionLink: string
-  links: EventLink[]
+  eligibility: string
+  rulesAndGuidelines: string
+  teamSizeMin: number
+  teamSizeMax: number
+  problemStatement: string
   rewards: string
+  solutionReveal: string
+  solutionRevealLink: string
+}
+
+export interface Registration {
+  _id: string
+  event: string
+  user: string
+  name: string
+  email: string
+  phone: string
+  createdAt: string
+}
+
+export interface Submission {
+  _id: string
+  event: string
+  user: string
+  name: string
+  email: string
+  githubLink: string
+  videoLink: string
+  createdAt: string
 }

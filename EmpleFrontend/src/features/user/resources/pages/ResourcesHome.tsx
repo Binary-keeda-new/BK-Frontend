@@ -42,22 +42,30 @@ const RESOURCES_CARDS = [
     topics: ["AWS", "Cyber Security", "Cisco", "Google Cloud", "TensorFlow", "Red Hat", "CUDA"],
     color: "#fbbf24",
   },
-  {
-    title: "Career Paths",
-    href: "/user/resources/career-paths",
-    description: "Explore career paths with roadmaps, salaries and quizzes.",
-    icon: Target,
-    topics: ["Business Analyst", "Data Analyst", "BD", "Testing"],
-    color: "#f97316",
-  },
-  {
-    title: "GATE Notes",
-    href: "/user/resources/gate-notes",
-    description: "Access GATE preparation notes and study material.",
-    icon: BookOpen,
-    topics: ["CD", "CN", "COA", "DS", "DAA", "OS", "TOC", "DBMS"],
-    color: "#0ea5e9",
-  }
+{
+  title: "GATE Notes",
+  href: "/user/resources/gate-notes",
+  description: "Access GATE preparation notes and study material.",
+  icon: "📚",
+  topics: ["OS", "DBMS", "CN", "COA"],
+  color: "#123456",
+},
+{
+  title: "Career Paths",
+  href: "/user/resources/career-paths",
+  description: "Explore career paths with roadmaps, salaries and quizzes.",
+  icon: "🎯",
+  topics: ["Business Analyst", "Data Analyst", "BD", "Testing"],
+  color: "#f97316",
+},
+{
+  title: "BK SDE Sheet",
+  href: "/user/resources/bk-sde-sheet",
+  description: "Your SDE prep hub — coding sheet, core CS subjects and aptitude all in one place",
+  icon: "📋",
+  topics: ["Coding", "OS", "DBMS", "CN", "Aptitude"],
+  color: "#f97316",
+},
 ];
 export default function ResourcesHome({ basePath = "/user/resources" }: { basePath?: string }) {
   return (

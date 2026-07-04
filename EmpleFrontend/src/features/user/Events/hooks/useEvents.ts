@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Event, EventType } from '../types'
-import { fetchUpcomingEvents, fetchEventsByCategory } from '../api'
+import { fetchUpcomingEvents, fetchEventsByCategory } from '../api/events.api'
 
 export const useUpcomingEvents = () => {
   const [events, setEvents] = useState<Event[]>([])
