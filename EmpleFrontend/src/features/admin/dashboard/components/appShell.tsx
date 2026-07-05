@@ -15,17 +15,11 @@ import AdminSessionsPage from '@/features/admin/sessions/pages/AdminSessionsPage
 import QuizPreviewContent from '@/features/admin/quiz/pages/quizPreviewContent';
 import QuizzesContent from '../../quiz/pages/quizList';
 import QuizEdit from '../../quiz/components/QuizEdit';
-<<<<<<< HEAD
-import QuizForm from '../../quiz/components/QuizForm';
+import QuizForm from '../../quiz/pages/QuizForm';
 import TestsContent from '../../test/pages/TestList';
 import TestEdit from '../../test/pages/TestEdit';
 import CreateTest from '../../test/components/CreateTest';
-import CodingProblemsPage from '@/features/admin/coding-problems/pages/codingProblemsPage';
-import CodingProblemEditorPage from '@/features/admin/coding-problems/pages/codingProblemEditorPage';
-import AdminEventsPage from '@/features/admin/Events/components/AdminEventsPage';
 import CodingProblemPreviewPage from '@/features/admin/coding-problems/pages/codingProblemPreviewPage';
-=======
-import QuizForm from '../../quiz/pages/QuizForm';
 import CodingProblemsPage from '@/features/admin/coding-problems/pages/codingProblemsPage';
 import CodingProblemEditorPage from '@/features/admin/coding-problems/pages/codingProblemEditorPage';
 import AdminEventsPage from '@/features/admin/Events/components/AdminEventsPage';
@@ -33,7 +27,6 @@ import AdminNotificationsPage from '@/features/admin/notifications/pages/AdminNo
 import QuizReportPage from '@/features/admin/quiz/pages/QuizReportPage';
 import AdminQuizReview from '../../quiz/pages/adminQuizReview';
 
->>>>>>> origin/develop
 
 interface AppShellProps {
   initialSection?: AdminSection;
@@ -74,14 +67,10 @@ const [selectedReviewAttemptId, setSelectedReviewAttemptId] = useState<string | 
   const [selectedProblemId, setSelectedProblemId] = useState<string | null>(null);
   const [eventsSubPage, setEventsSubPage] = useState<'hackathon' | 'techfest' | 'our-hackathon' | null>(null);
 
-<<<<<<< HEAD
 const [previewProblemId, setPreviewProblemId] =
   useState<string | null>(
     codingProblemIdFromUrl
   );
-=======
-
->>>>>>> origin/develop
   useEffect(() => {
     if (loading) return;
     if (!user) {
@@ -217,7 +206,6 @@ const [previewProblemId, setPreviewProblemId] =
     });
   };
 
-<<<<<<< HEAD
   
   const openCodingProblemEdit = (id: string) => {
   setSelectedProblemId(id);
@@ -257,7 +245,6 @@ const [previewProblemId, setPreviewProblemId] =
 };
 
 
-=======
   const openQuizReport = (id: string) => {
   setSelectedReportQuizId(id);
   setActiveSection('quiz-report' as AdminSection);
@@ -268,7 +255,6 @@ const openAttemptReview = (attemptId: string) => {
   setActiveSection('quiz-attempt-review' as AdminSection);
 };
 
->>>>>>> origin/develop
   const openQuestionBankDetail = (id: string) => {
     setSelectedQuestionBankId(id);
     setActiveSection('question-bank-detail');
@@ -357,7 +343,6 @@ const openAttemptReview = (attemptId: string) => {
           />
         );
 
-<<<<<<< HEAD
         case 'test-create':
   return (
     <CreateTest
@@ -369,7 +354,6 @@ const openAttemptReview = (attemptId: string) => {
       }}
     />
   );
-=======
         case 'quiz-attempt-review':
   return selectedReviewAttemptId ? (
     <AdminQuizReview
@@ -378,7 +362,6 @@ const openAttemptReview = (attemptId: string) => {
     />
   ) : null;
 
->>>>>>> origin/develop
       case 'dashboard':
         return (
           <DashboardContent

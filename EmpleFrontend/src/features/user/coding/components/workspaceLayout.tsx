@@ -8,9 +8,17 @@ import ConsolePanel from './consolePanel';
 
 type Props = {
   problemId: string;
+  mode?: 'practice' | 'test';
+  onBack?: () => void;
+  onComplete?: () => void;
 };
 
-export default function WorkspaceLayout({ problemId }: Props) {
+export default function WorkspaceLayout({
+  problemId,
+  mode = 'practice',
+  onBack,
+  onComplete,
+}: Props) {
   const {
     problem,
     loading,
@@ -19,6 +27,12 @@ export default function WorkspaceLayout({ problemId }: Props) {
     changeLanguage,
     code,
     setCode,
+    running,
+    submitting,
+    executionResult,
+    executionError,
+    handleRunCode,
+    handleSubmitCode,
   } = useCodingWorkspace(problemId);
 
   if (loading) {
@@ -54,11 +68,20 @@ export default function WorkspaceLayout({ problemId }: Props) {
               setCode={setCode}
               language={selectedLanguage}
               changeLanguage={changeLanguage}
+              running={running}
+              submitting={submitting}
+              onRunCode={handleRunCode}
+              onSubmitCode={handleSubmitCode}
             />
           </div>
 
           <div className="h-72 border-t border-[var(--clr-border)]">
-            <ConsolePanel />
+            <ConsolePanel
+              running={running}
+              submitting={submitting}
+              result={executionResult}
+              error={executionError}
+            />
           </div>
         </div>
       </div>

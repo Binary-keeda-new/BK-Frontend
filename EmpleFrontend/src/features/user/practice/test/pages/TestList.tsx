@@ -151,9 +151,25 @@ const handleAttempt = async (test: UserTest) => {
 
       return;
     } catch (error) {
-      console.error(error);
-    }
+  const message =
+    error instanceof Error ? error.message : 'Unable to resume test';
+
+  if (message.toLowerCase().includes('expired')) {
+    alert('This test attempt has expired.');
+    return;
   }
+
+  if (
+    message.toLowerCase().includes('ip') ||
+    message.toLowerCase().includes('network')
+  ) {
+    alert("Can't connect to network.");
+    return;
+  }
+
+  alert(message);
+} }
+
 
   if (test.settings?.passwordProtected) {
     setPendingTest(test);

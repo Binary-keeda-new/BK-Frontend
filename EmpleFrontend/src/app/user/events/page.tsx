@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { EventsPage } from "@/features/user/events"
-=======
-import EventsPage from '@/features/user/Events/components/EventsPage';
->>>>>>> origin/develop
+import { EventsPage } from "@/features/user/events";
 
 export default function Page() {
   return <EventsPage />;

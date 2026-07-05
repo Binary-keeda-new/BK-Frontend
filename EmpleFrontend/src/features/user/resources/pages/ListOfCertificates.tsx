@@ -1,10 +1,6 @@
 "use client";
-<<<<<<< HEAD
-import React from 'react';
-=======
 
 import { ReactNode } from "react";
->>>>>>> origin/develop
 
 type Level = "Beginner" | "Intermediate" | "Advanced";
 

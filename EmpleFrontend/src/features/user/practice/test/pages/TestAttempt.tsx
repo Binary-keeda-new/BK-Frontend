@@ -7,7 +7,6 @@ import {
   submitTestSectionAttempt,
   type TestSectionAttemptData,
 } from '../services/testAttempt.service';
-import CodingSectionPlaceholder from '../components/test-attempt/CodingSectionPlaceholder';
 import QuestionCard from '../components/test-attempt/QuestionCard';
 import QuestionPanel from '../components/test-attempt/QuestionPanel';
 import SubmitConfirmModal from '../components/test-attempt/SubmitConfirmModal';
@@ -15,6 +14,7 @@ import TestAttemptHeader from '../components/test-attempt/TestAttemptHeader';
 import type { Status } from '../components/test-attempt/testAttempt.types'
 import { formatTimeLeft, getQuestionMode } from '../components/test-attempt/testAttempt.utils';
 import TestCalculator from '../components/test-attempt/TestCalculator';
+import CodingWorkspace from '@/features/user/coding/components/codingWorkspace';
 
 type Props = {
   attemptId: string;
@@ -250,16 +250,16 @@ export default function TestAttempt({
     }).length;
   }, [answers, questions]);
 
-  if (section.type === 'coding') {
-    return (
-      <CodingSectionPlaceholder
-        section={section}
-        sectionIndex={sectionIndex}
-        onBackToSections={onBackToSections}
-        onSectionCompleted={onSectionCompleted}
-      />
-    );
-  }
+if (section.type === 'coding') {
+  return (
+    <CodingWorkspace
+      problems={section.codingProblemIds || []}
+      mode="test"
+      onBack={onBackToSections}
+      onComplete={() => onSectionCompleted(section._id)}
+    />
+  );
+}
 
   if (loading) {
     return <div className="p-8 text-[var(--text,#f0f0f4)]">Loading section...</div>;

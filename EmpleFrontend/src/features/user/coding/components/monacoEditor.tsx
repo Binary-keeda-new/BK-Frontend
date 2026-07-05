@@ -14,6 +14,10 @@ interface Props {
   >;
 
   language: string;
+  running: boolean;
+submitting: boolean;
+onRunCode: () => void;
+onSubmitCode: () => void;
 
   changeLanguage: (
     language: string
@@ -26,6 +30,10 @@ export default function MonacoEditor({
   setCode,
   language,
   changeLanguage,
+  running,
+  submitting,
+  onRunCode,
+  onSubmitCode,
 }: Props) {
   return (
     <div className="flex h-full flex-col">
@@ -52,6 +60,26 @@ export default function MonacoEditor({
             )
           )}
         </select>
+
+        <div className="flex items-center gap-2">
+  <button
+    type="button"
+    onClick={onRunCode}
+    disabled={running || submitting}
+    className="rounded-lg border border-[var(--clr-border)] px-4 py-2 text-sm font-semibold text-[var(--clr-text)] disabled:opacity-50"
+  >
+    {running ? 'Running...' : 'Run'}
+  </button>
+
+  <button
+    type="button"
+    onClick={onSubmitCode}
+    disabled={running || submitting}
+    className="rounded-lg bg-[var(--clr-accent)] px-4 py-2 text-sm font-semibold text-white disabled:opacity-50"
+  >
+    {submitting ? 'Submitting...' : 'Submit'}
+  </button>
+</div>
 
       </div>
 

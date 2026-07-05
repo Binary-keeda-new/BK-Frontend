@@ -1,11 +1,13 @@
 export type TestSectionType = 'mcq' | 'coding';
 
+
 export type UserTestSection = {
   _id: string;
   title: string;
   type: TestSectionType;
   duration: number;
   numberOfQuestions: number;
+  codingProblemIds?: UserCodingProblem[];
 };
 
 export type UserTest = {
@@ -37,4 +39,13 @@ export type UserTestSettings = {
   deadline?: string;
   duration?: number;
   passwordProtected?: boolean;
+};
+
+export type UserCodingProblem = {
+  _id: string;
+  title: string;
+  difficulty: 'Easy' | 'Medium' | 'Hard';
+  topics: string[];
+  recommendedTime: number;
+  status?: 'draft' | 'published';
 };
