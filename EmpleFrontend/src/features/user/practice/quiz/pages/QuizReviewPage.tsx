@@ -7,6 +7,7 @@ import type {
   QuizAttemptResultAnswer,
   QuizAttemptResultData,
 } from "../types/quizAttempt.types";
+import { getAdminQuizAttemptReview } from '@/features/admin/quiz/components/report/adminQuizAttemptReview.service';
 
 type ReviewFilter = "all" | "correct" | "incorrect";
 
@@ -45,12 +46,20 @@ function getTopicPath(
 
   return "/user/practice/quiz";
 }
+type QuizReviewPageProps = {
+  adminAttemptId?: string;
+  adminOnBack?: () => void;
+};
 
-export default function QuizReviewPage() {
+export default function QuizReviewPage({
+  adminAttemptId,
+  adminOnBack,
+}: QuizReviewPageProps) {
+
   const router = useRouter();
   const params = useParams();
   const searchParams = useSearchParams();
-  const attemptId = searchParams.get("attemptId");
+  const attemptId = adminAttemptId || searchParams.get("attemptId");
 
   const [result, setResult] = useState<QuizAttemptResultData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -71,8 +80,11 @@ export default function QuizReviewPage() {
         setLoading(true);
         setError(null);
 
-        const res = await getQuizAttemptResult(attemptId);
-        setResult(res.data);
+        const res = adminAttemptId
+  ? await getAdminQuizAttemptReview(attemptId)
+  : await getQuizAttemptResult(attemptId);
+
+setResult(res.data);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to load review");
       } finally {
@@ -150,7 +162,14 @@ export default function QuizReviewPage() {
 
           <button
             type="button"
-            onClick={() => router.push(topicPath)}
+            onClick={() => {
+  if (adminOnBack) {
+    adminOnBack();
+    return;
+  }
+
+  router.push(topicPath);
+}}
             className="mt-4 rounded-xl bg-[var(--orange,#f15a22)] px-4 py-2.5 text-sm font-semibold text-white"
           >
             Back to Quiz List
@@ -181,7 +200,14 @@ export default function QuizReviewPage() {
 
           <button
             type="button"
-            onClick={() => router.push(topicPath)}
+           onClick={() => {
+  if (adminOnBack) {
+    adminOnBack();
+    return;
+  }
+
+  router.push(topicPath);
+}}
             className="rounded-xl bg-[var(--orange,#f15a22)] px-4 py-2.5 text-sm font-semibold text-white"
           >
             Back to Quiz List

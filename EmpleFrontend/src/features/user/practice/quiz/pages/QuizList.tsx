@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { QUIZ_CATEGORIES } from "@/shared/constants/quizCategories";
 import { getSessionToken } from "@descope/nextjs-sdk/client";
+import { Share2 } from "lucide-react";
 
 type QuizItem = {
   _id: string;
@@ -432,6 +433,7 @@ export default function QuizList() {
               >
                 Start Quiz
               </button>
+
             </div>
           </div>
         </div>

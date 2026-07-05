@@ -4,8 +4,30 @@ import mlRoadmap from './MLRoadmap';
 import llmRoadmap from './LLMRoadmap';
 import fullStackRoadmap from './FullStackRoadmap';
 import daysOfCodeRoadmap from './120DaysOfCodeRoadmap';
+import placementRoadmap from './PlacementRoadmap';
 
 export const roadmapsListingData = [
+  {
+    id: 'placement-roadmap',
+    slug: 'placement-roadmap',
+    name: 'Placement Roadmap',
+    description: 'Comprehensive 293-day structured guide covering Aptitude, Core Subjects, Tools, Coding, and DSA.',
+    domain: 'Placement Preparation',
+    category: 'Career',
+    difficulty: 'Intermediate',
+    estimatedDuration: '293 Days',
+    sections: 293,
+    targetUsers: ['Global BK', 'Campus'],
+    color: 'purple',
+    points: 0,
+    enrolled: 4892,
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+    )
+  },
   {
     id: 'full-stack',
     slug: 'full-stack',
@@ -17,15 +39,14 @@ export const roadmapsListingData = [
     estimatedDuration: '3-6 months',
     sections: 12,
     targetUsers: ['Global BK', 'Campus'],
-    color: 'orange',
+    color: 'teal',
     points: 800,
     enrolled: 2876,
     icon: (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="2" y="3" width="20" height="14" rx="2"/>
-        <line x1="8" y1="21" x2="16" y2="21"/>
-        <line x1="12" y1="17" x2="12" y2="21"/>
-        <path d="M10 8l-2 2 2 2M14 8l2 2-2 2"/>
+        <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+        <polyline points="2 12 12 17 22 12"/>
+        <polyline points="2 17 12 22 22 17"/>
       </svg>
     )
   },
@@ -58,41 +79,12 @@ export const roadmapsListingData = [
     domain: 'Artificial Intelligence',
     category: 'Technical',
     difficulty: 'Intermediate',
-    estimatedDuration: '3 months',
+    estimatedDuration: '3-6 months',
     sections: 15,
     targetUsers: ['Global BK', 'Campus'],
     color: 'blue',
     points: 750,
     enrolled: 1240,
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="4" y="4" width="16" height="16" rx="2"/>
-        <rect x="9" y="9" width="6" height="6"/>
-        <line x1="9" y1="1" x2="9" y2="4"/>
-        <line x1="15" y1="1" x2="15" y2="4"/>
-        <line x1="9" y1="20" x2="9" y2="23"/>
-        <line x1="15" y1="20" x2="15" y2="23"/>
-        <line x1="20" y1="9" x2="23" y2="9"/>
-        <line x1="20" y1="15" x2="23" y2="15"/>
-        <line x1="1" y1="9" x2="4" y2="9"/>
-        <line x1="1" y1="15" x2="4" y2="15"/>
-      </svg>
-    )
-  },
-  {
-    id: 'llm',
-    slug: 'llm',
-    name: 'LLM Roadmap',
-    description: 'Deep dive into Large Language Models, transformers, and modern NLP techniques',
-    domain: 'Natural Language Processing',
-    category: 'Technical',
-    difficulty: 'Advanced',
-    estimatedDuration: '2 months',
-    sections: 12,
-    targetUsers: ['Global BK'],
-    color: 'purple',
-    points: 600,
-    enrolled: 856,
     icon: (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/>
@@ -104,6 +96,38 @@ export const roadmapsListingData = [
     )
   },
   {
+    id: 'llm',
+    slug: 'llm',
+    name: 'LLM Roadmap',
+    description: 'Deep dive into Large Language Models, transformers, and modern NLP techniques',
+    domain: 'Natural Language Processing',
+    category: 'Technical',
+    difficulty: 'Advanced',
+    estimatedDuration: '3 months',
+    sections: 12,
+    targetUsers: ['Global BK'],
+    color: 'pink',
+    points: 600,
+    enrolled: 856,
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="4"/>
+        <path d="M12 8v-2"/>
+        <path d="M12 18v2"/>
+        <path d="M8.5 10l-1.5-1"/>
+        <path d="M15.5 14l1.5 1"/>
+        <path d="M15.5 10l1.5-1"/>
+        <path d="M8.5 14l-1.5 1"/>
+        <circle cx="12" cy="4" r="2"/>
+        <circle cx="12" cy="20" r="2"/>
+        <circle cx="5" cy="8" r="2"/>
+        <circle cx="19" cy="16" r="2"/>
+        <circle cx="19" cy="8" r="2"/>
+        <circle cx="5" cy="16" r="2"/>
+      </svg>
+    )
+  },
+  {
     id: 'grc',
     slug: 'grc',
     name: 'GRC Roadmap',
@@ -111,10 +135,10 @@ export const roadmapsListingData = [
     domain: 'Cybersecurity Governance',
     category: 'Technical',
     difficulty: 'Beginner',
-    estimatedDuration: '3 months',
+    estimatedDuration: '4 months',
     sections: 8,
     targetUsers: ['Global BK'],
-    color: 'blue',
+    color: 'green',
     points: 800,
     enrolled: 1240,
     icon: (
@@ -156,6 +180,7 @@ export const getRoadmapById = (roadmapId: string, duration: string = '6 months')
     'llm': llmRoadmap,
     'full-stack': fullStackRoadmap,
     '120-days-of-code': daysOfCodeRoadmap,
+    'placement-roadmap': placementRoadmap,
   };
   
   const baseRoadmap = roadmapMap[roadmapId];
@@ -179,6 +204,7 @@ export const getRoadmapById = (roadmapId: string, duration: string = '6 months')
       return {
         ...resolvedBase,
         ...durData,
+        estimatedDuration: roadmapsListingData.find(r => r.id === roadmapId)?.estimatedDuration || durData.estimatedDuration || resolvedBase.estimatedDuration,
         activeDuration: resolvedDuration,
         totalSections: durData.sections?.length || 0
       };
@@ -188,6 +214,7 @@ export const getRoadmapById = (roadmapId: string, duration: string = '6 months')
   // Handle single duration roadmaps
   return {
     ...resolvedBase,
+    estimatedDuration: roadmapsListingData.find(r => r.id === roadmapId)?.estimatedDuration || resolvedBase.estimatedDuration,
     totalSections: resolvedBase.sections?.length || 0
   };
 };

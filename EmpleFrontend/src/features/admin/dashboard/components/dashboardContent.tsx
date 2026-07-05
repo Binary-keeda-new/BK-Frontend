@@ -3,7 +3,7 @@
 
 import { useState } from 'react';
 import ActionCard from './actionCard';
-import QuizForm from '../../quiz/components/QuizForm';
+import QuizForm from '../../quiz/pages/QuizForm';
 import { apiRequest } from '@/shared/utils/api';
 import CreateCodingProblemModal from '@/features/admin/coding-problems/components/createCodingProblemModal';
 

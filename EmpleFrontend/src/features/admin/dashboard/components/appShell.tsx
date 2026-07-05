@@ -12,9 +12,10 @@ import QuestionBankDetailPage from '@/features/admin/question-bank/pages/Questio
 import AdminJobsPage from '@/features/admin/jobs/pages/AdminJobsPage';
 import AdminBlogsPage from '@/features/admin/blogs/pages/AdminBlogsPage';
 import AdminSessionsPage from '@/features/admin/sessions/pages/AdminSessionsPage';
-import QuizPreviewContent from '@/features/admin/quiz/components/quizPreviewContent';
-import QuizzesContent from '../../quiz/components/quizList';
+import QuizPreviewContent from '@/features/admin/quiz/pages/quizPreviewContent';
+import QuizzesContent from '../../quiz/pages/quizList';
 import QuizEdit from '../../quiz/components/QuizEdit';
+<<<<<<< HEAD
 import QuizForm from '../../quiz/components/QuizForm';
 import TestsContent from '../../test/pages/TestList';
 import TestEdit from '../../test/pages/TestEdit';
@@ -23,6 +24,16 @@ import CodingProblemsPage from '@/features/admin/coding-problems/pages/codingPro
 import CodingProblemEditorPage from '@/features/admin/coding-problems/pages/codingProblemEditorPage';
 import AdminEventsPage from '@/features/admin/Events/components/AdminEventsPage';
 import CodingProblemPreviewPage from '@/features/admin/coding-problems/pages/codingProblemPreviewPage';
+=======
+import QuizForm from '../../quiz/pages/QuizForm';
+import CodingProblemsPage from '@/features/admin/coding-problems/pages/codingProblemsPage';
+import CodingProblemEditorPage from '@/features/admin/coding-problems/pages/codingProblemEditorPage';
+import AdminEventsPage from '@/features/admin/Events/components/AdminEventsPage';
+import AdminNotificationsPage from '@/features/admin/notifications/pages/AdminNotificationsPage';
+import QuizReportPage from '@/features/admin/quiz/pages/QuizReportPage';
+import AdminQuizReview from '../../quiz/pages/adminQuizReview';
+
+>>>>>>> origin/develop
 
 interface AppShellProps {
   initialSection?: AdminSection;
@@ -54,15 +65,23 @@ const [selectedQuestionBankId, setSelectedQuestionBankId] = useState<string | nu
     quizId?.toString() || quizIdFromUrl
   );
   const [quizListRefreshKey, setQuizListRefreshKey] = useState(0);
+  const [selectedReportQuizId, setSelectedReportQuizId] = useState<string | null>(
+  null
+);
+const [selectedReviewAttemptId, setSelectedReviewAttemptId] = useState<string | null>(null);
   const [testListRefreshKey, setTestListRefreshKey] = useState(0);
   const [selectedTestId, setSelectedTestId] = useState<string | null>(null);
   const [selectedProblemId, setSelectedProblemId] = useState<string | null>(null);
   const [eventsSubPage, setEventsSubPage] = useState<'hackathon' | 'techfest' | 'our-hackathon' | null>(null);
 
+<<<<<<< HEAD
 const [previewProblemId, setPreviewProblemId] =
   useState<string | null>(
     codingProblemIdFromUrl
   );
+=======
+
+>>>>>>> origin/develop
   useEffect(() => {
     if (loading) return;
     if (!user) {
@@ -176,10 +195,11 @@ const [previewProblemId, setPreviewProblemId] =
   };
 
   const goToQuizList = () => {
-    setActiveSection('quizzes');
-    setSelectedQuizId(null);
-    updateUrl({ section: 'quizzes', quizId: null });
-  };
+  setActiveSection('quizzes');
+  setSelectedQuizId(null);
+  setSelectedReportQuizId(null);
+  updateUrl({ section: 'quizzes', quizId: null });
+};
 
   const openQuizEdit = (id: string) => {
     setSelectedQuizId(id);
@@ -197,6 +217,7 @@ const [previewProblemId, setPreviewProblemId] =
     });
   };
 
+<<<<<<< HEAD
   
   const openCodingProblemEdit = (id: string) => {
   setSelectedProblemId(id);
@@ -236,6 +257,18 @@ const [previewProblemId, setPreviewProblemId] =
 };
 
 
+=======
+  const openQuizReport = (id: string) => {
+  setSelectedReportQuizId(id);
+  setActiveSection('quiz-report' as AdminSection);
+};
+
+const openAttemptReview = (attemptId: string) => {
+  setSelectedReviewAttemptId(attemptId);
+  setActiveSection('quiz-attempt-review' as AdminSection);
+};
+
+>>>>>>> origin/develop
   const openQuestionBankDetail = (id: string) => {
     setSelectedQuestionBankId(id);
     setActiveSection('question-bank-detail');
@@ -262,6 +295,7 @@ const [previewProblemId, setPreviewProblemId] =
             onCreateQuiz={() => handleSectionChange('quiz-create')}
             onEditQuiz={openQuizEdit}
             onPreviewQuiz={openQuizPreview}
+            onViewReport={openQuizReport}
           />
         );
 
@@ -272,8 +306,26 @@ const [previewProblemId, setPreviewProblemId] =
             onCreateQuiz={() => handleSectionChange('quiz-create')}
             onEditQuiz={openQuizEdit}
             onPreviewQuiz={openQuizPreview}
+            onViewReport={openQuizReport}
           />
         );
+
+        case 'quiz-report':
+  return selectedReportQuizId ? (
+    <QuizReportPage
+      quizId={selectedReportQuizId}
+      onBack={goToQuizList}
+      onReviewAttempt={openAttemptReview}
+    />
+  ) : (
+    <QuizzesContent
+      refreshKey={quizListRefreshKey}
+      onCreateQuiz={() => handleSectionChange('quiz-create')}
+      onEditQuiz={openQuizEdit}
+      onPreviewQuiz={openQuizPreview}
+      onViewReport={openQuizReport}
+    />
+  );
 
       case 'quiz-edit':
         return selectedQuizId ? (
@@ -290,6 +342,7 @@ const [previewProblemId, setPreviewProblemId] =
             onCreateQuiz={() => handleSectionChange('quiz-create')}
             onEditQuiz={openQuizEdit}
             onPreviewQuiz={openQuizPreview}
+            onViewReport={openQuizReport}
           />
         );
 
@@ -304,6 +357,7 @@ const [previewProblemId, setPreviewProblemId] =
           />
         );
 
+<<<<<<< HEAD
         case 'test-create':
   return (
     <CreateTest
@@ -315,6 +369,16 @@ const [previewProblemId, setPreviewProblemId] =
       }}
     />
   );
+=======
+        case 'quiz-attempt-review':
+  return selectedReviewAttemptId ? (
+    <AdminQuizReview
+      attemptId={selectedReviewAttemptId}
+      onBack={() => setActiveSection('quiz-report' as AdminSection)}
+    />
+  ) : null;
+
+>>>>>>> origin/develop
       case 'dashboard':
         return (
           <DashboardContent
@@ -344,6 +408,9 @@ const [previewProblemId, setPreviewProblemId] =
 
       case 'sessions':
         return <AdminSessionsPage />;
+
+      case 'notifications':
+        return <AdminNotificationsPage />;  
 
       case 'practice':
         return (

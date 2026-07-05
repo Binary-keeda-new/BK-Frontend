@@ -1,0 +1,139 @@
+export const sortHeapContent = [
+  {
+    title: "1. Introduction",
+    content: "Heap Sort is a comparison-based sorting algorithm that uses a binary heap data structure. It divides its input into a sorted and an unsorted region, and it iteratively shrinks the unsorted region by extracting the largest element from it and inserting it into the sorted region. It is an in-place algorithm but not a stable sort."
+  },
+  {
+    title: "2. Problem Statement",
+    content: "Given an unsorted array of `n` elements, sort the array in ascending order using the Heap Sort algorithm."
+  },
+  {
+    title: "3. Theory & Working",
+    content: "Heap Sort involves two main phases:\n1. **Build a Max Heap:** Rearrange the array elements so that they form a Max Heap (a complete binary tree where the parent node is always greater than or equal to its children). This takes $O(n)$ time.\n2. **Extract Elements:** Repeatedly swap the root of the Max Heap (the maximum element) with the last element of the heap, reduce the heap size by 1, and 'heapify' the root to maintain the Max Heap property. This places the largest elements at the end of the array one by one."
+  },
+  {
+    title: "4. Step-by-Step Dry Run",
+    content: `Array: \`[4, 10, 3, 5, 1]\`\n\n**Phase 1: Build Max Heap**\n- Array as tree: \`[4, 10, 3, 5, 1]\`\n- Heapify from last non-leaf node (index 1, value 10). Children are 5 and 1. Max is 10. No change.\n- Heapify root (index 0, value 4). Children are 10 and 3. Max is 10. Swap 4 and 10 -> \`[10, 4, 3, 5, 1]\`.\n- Heapify the affected subtree (index 1, value 4). Children are 5 and 1. Max is 5. Swap 4 and 5 -> \`[10, 5, 3, 4, 1]\`.\n- Max Heap built: \`[10, 5, 3, 4, 1]\`\n\n**Phase 2: Extract & Sort**\n- Swap root (10) with last (1) -> \`[1, 5, 3, 4, 10]\`. Heap size = 4.\n- Heapify root (1): Swap 1 and 5 -> \`[5, 1, 3, 4, 10]\`. Swap 1 and 4 -> \`[5, 4, 3, 1, 10]\`.\n- Swap root (5) with last (1) -> \`[1, 4, 3, 5, 10]\`. Heap size = 3.\n- Heapify root (1): Swap 1 and 4 -> \`[4, 1, 3, 5, 10]\`.\n- Swap root (4) with last (3) -> \`[3, 1, 4, 5, 10]\`. Heap size = 2.\n- Heapify root (3): No change.\n- Swap root (3) with last (1) -> \`[1, 3, 4, 5, 10]\`. Heap size = 1.\n- Sorted Array: \`[1, 3, 4, 5, 10]\``
+  },
+  {
+    title: "5. Pseudocode",
+    content: `\n\`\`\`text\nprocedure heapSort(A : list of sortable items)\n    n = length(A)\n    \n    // Build max heap\n    for i = n/2 - 1 down to 0 do\n        heapify(A, n, i)\n    end for\n    \n    // Extract elements from heap one by one\n    for i = n - 1 down to 1 do\n        swap(A[0], A[i])\n        heapify(A, i, 0)\n    end for\nend procedure\n\nprocedure heapify(A, n, i)\n    largest = i\n    left = 2 * i + 1\n    right = 2 * i + 2\n    \n    if left < n and A[left] > A[largest] then\n        largest = left\n    \n    if right < n and A[right] > A[largest] then\n        largest = right\n        \n    if largest != i then\n        swap(A[i], A[largest])\n        heapify(A, n, largest)\n    end if\nend procedure\n\`\`\`\n`
+  },
+  {
+    title: "6. C Implementation",
+    content: `\n\`\`\`c\n#include <stdio.h>\n\nvoid swap(int *a, int *b) {\n    int temp = *a;\n    *a = *b;\n    *b = temp;\n}\n\nvoid heapify(int arr[], int n, int i) {\n    int largest = i;\n    int left = 2 * i + 1;\n    int right = 2 * i + 2;\n\n    if (left < n && arr[left] > arr[largest])\n        largest = left;\n\n    if (right < n && arr[right] > arr[largest])\n        largest = right;\n\n    if (largest != i) {\n        swap(&arr[i], &arr[largest]);\n        heapify(arr, n, largest);\n    }\n}\n\nvoid heapSort(int arr[], int n) {\n    for (int i = n / 2 - 1; i >= 0; i--)\n        heapify(arr, n, i);\n\n    for (int i = n - 1; i > 0; i--) {\n        swap(&arr[0], &arr[i]);\n        heapify(arr, i, 0);\n    }\n}\n\nvoid printArray(int arr[], int n) {\n    for (int i = 0; i < n; ++i)\n        printf("%d ", arr[i]);\n    printf("\\n");\n}\n\nint main() {\n    int arr[] = {12, 11, 13, 5, 6, 7};\n    int n = sizeof(arr) / sizeof(arr[0]);\n    heapSort(arr, n);\n    printf("Sorted array is \\n");\n    printArray(arr, n);\n    return 0;\n}\n\`\`\`\n`
+  },
+  {
+    title: "7. Java Implementation",
+    content: `\n\`\`\`java\npublic class HeapSort {\n    public void sort(int arr[]) {\n        int n = arr.length;\n\n        for (int i = n / 2 - 1; i >= 0; i--)\n            heapify(arr, n, i);\n\n        for (int i = n - 1; i > 0; i--) {\n            int temp = arr[0];\n            arr[0] = arr[i];\n            arr[i] = temp;\n            heapify(arr, i, 0);\n        }\n    }\n\n    void heapify(int arr[], int n, int i) {\n        int largest = i;\n        int left = 2 * i + 1;\n        int right = 2 * i + 2;\n\n        if (left < n && arr[left] > arr[largest])\n            largest = left;\n\n        if (right < n && arr[right] > arr[largest])\n            largest = right;\n\n        if (largest != i) {\n            int swap = arr[i];\n            arr[i] = arr[largest];\n            arr[largest] = swap;\n            heapify(arr, n, largest);\n        }\n    }\n\n    static void printArray(int arr[]) {\n        for (int i = 0; i < arr.length; ++i)\n            System.out.print(arr[i] + " ");\n        System.out.println();\n    }\n\n    public static void main(String args[]) {\n        int arr[] = {12, 11, 13, 5, 6, 7};\n        HeapSort ob = new HeapSort();\n        ob.sort(arr);\n        System.out.println("Sorted array is");\n        printArray(arr);\n    }\n}\n\`\`\`\n`
+  },
+  {
+    title: "8. Time & Space Complexity",
+    content: `- **Time Complexity:**\n  - Worst Case: $O(n \\log n)$\n  - Average Case: $O(n \\log n)$\n  - Best Case: $O(n \\log n)$\n  Building the heap takes $O(n)$ time, and extracting the elements takes $O(n \\log n)$ time.\n- **Space Complexity:** $O(1)$ (In-place sorting algorithm, ignoring the small recursive call stack of $O(\\log n)$ for heapify).`
+  },
+  {
+    title: "9. Best, Worst & Average Case",
+    content: `- **Best Case:** Even if the array is already sorted, Heap Sort will first build a Max Heap ($O(n)$) and then repeatedly extract the maximum element, restoring the heap property each time. Thus, it always takes $O(n \\log n)$ time.\n- **Worst Case:** The worst case occurs when all elements are distinct and require maximum shifts during \`heapify\`. It is strictly bounded by $O(n \\log n)$.\n- **Average Case:** $O(n \\log n)$. Unlike Quick Sort, Heap Sort guarantees $O(n \\log n)$ performance regardless of the input distribution.`
+  },
+  {
+    title: "10. In-place & Stability",
+    content: `- **In-place:** Yes, Heap Sort requires only a constant $O(1)$ amount of additional memory for swapping variables.\n- **Stable:** No. Heap Sort is not a stable sort because operations on the heap can change the relative order of equal elements (e.g., when swapping the root with the last element of the heap).`
+  },
+  {
+    title: "11. Edge Cases & Constraints",
+    content: `- **Empty Array or Single Element:** The loops \`n/2 - 1\` and \`n-1\` will not execute, safely handling empty or size-1 arrays in $O(1)$ time.\n- **All Identical Elements:** Building the heap takes $O(n)$, and \`heapify\` will immediately terminate without swaps during extraction. Total time is roughly $O(n)$ in this specific edge case.`
+  },
+  {
+    title: "12. Applications",
+    content: `Heap Sort is widely used when a guaranteed worst-case performance of $O(n \\log n)$ is required with minimal memory overhead:\n- **Operating Systems:** Used in systems like Linux for internal sorting where memory allocation is heavily constrained.\n- **Embedded Systems:** Highly preferred in memory-limited environments (e.g., microcontrollers) since it requires $O(1)$ auxiliary space.\n- **Introsort:** C++ \`std::sort\` uses Introsort, which starts as Quick Sort but switches to Heap Sort if the recursion depth becomes too large, ensuring $O(n \\log n)$ worst-case time.`
+  },
+  {
+    title: "13. Common Mistakes",
+    content: `- **Incorrect child calculation:** Remember that in a 0-indexed array, the left child is \`2*i + 1\` and the right child is \`2*i + 2\`.\n- **Sorting order:** Using a Max Heap sorts the array in ascending order, while a Min Heap sorts it in descending order. A common mistake is using a Min Heap and expecting ascending order.\n- **Heap size:** Forgetting to decrement the heap size (\`n\`) during the extraction phase, leading to sorting the already sorted elements at the end of the array.`
+  },
+  {
+    title: "14. Related Algorithms",
+    content: `- **Quick Sort & Merge Sort:** Often compared with Heap Sort. Quick Sort is faster on average but has a worse worst-case ($O(n^2)$) and requires $O(\\log n)$ space. Merge Sort is stable and guarantees $O(n \\log n)$ but requires $O(n)$ space.\n- **Priority Queues:** Heaps are primarily used to implement priority queues, where extracting the min/max element in $O(\\log n)$ is crucial.\n- **Selection Sort:** Heap Sort can be viewed as an optimized Selection Sort, where finding the maximum element takes $O(\\log n)$ instead of $O(n)$ due to the heap structure.`
+  },
+  {
+    title: "15. Interview Questions",
+    content: `1. Why is Heap Sort not stable?\n2. What is the time complexity of building a heap from an array of $n$ elements, and why is it $O(n)$ instead of $O(n \\log n)$?\n3. When would you choose Heap Sort over Quick Sort or Merge Sort?\n4. Explain how you would sort an array in descending order using Heap Sort.`
+  }
+];
+
+export const sortHeapMcqs = [
+  {
+    q: "What is the worst-case time complexity of Heap Sort?",
+    options: ["O(n)", "O(n log n)", "O(n^2)", "O(log n)"],
+    ans: 1,
+    explanation: "Heap Sort guarantees O(n log n) time complexity in all cases (best, worst, average) because heapify takes O(log n) time and is called n times."
+  },
+  {
+    q: "Which data structure is fundamentally used in Heap Sort?",
+    options: ["Queue", "Stack", "Binary Search Tree", "Complete Binary Tree"],
+    ans: 3,
+    explanation: "Heap Sort uses a Heap data structure, which is a specialized Complete Binary Tree."
+  },
+  {
+    q: "In a 0-indexed array representing a heap, what is the index of the right child of a node at index i?",
+    options: ["2 * i", "2 * i + 1", "2 * i + 2", "i / 2"],
+    ans: 2,
+    explanation: "For a 0-indexed array, the left child is at 2*i + 1 and the right child is at 2*i + 2."
+  },
+  {
+    q: "Is Heap Sort an in-place and stable sorting algorithm?",
+    options: ["In-place and Stable", "In-place but Not Stable", "Not In-place but Stable", "Neither"],
+    ans: 1,
+    explanation: "Heap Sort is an in-place algorithm (requires O(1) extra space) but is not stable because the relative order of identical elements is not preserved during swaps."
+  },
+  {
+    q: "To sort an array in ascending order using Heap Sort, which type of heap is built first?",
+    options: ["Min Heap", "Max Heap", "Fibonacci Heap", "Binomial Heap"],
+    ans: 1,
+    explanation: "To sort in ascending order, a Max Heap is built so that the largest element (the root) can be repeatedly extracted and placed at the end of the array."
+  }
+];
+
+export const sortHeapDebug = {
+  instructions: "Fix the syntax error so the code compiles correctly.",
+  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
+  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
+  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
+  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
+  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
+  expectedOutput: "Hello World"
+};
+
+export const sortHeapDrag = {
+  instructions: "Drag and drop the steps in the correct order to describe the Heap Sort algorithm for an ascending sort.",
+  lines: [
+    { id: "1", text: "Treat the array as a complete binary tree." },
+    { id: "2", text: "Build a Max Heap from the bottom-up (starting from the last non-leaf node)." },
+    { id: "3", text: "Swap the root (maximum element) with the last element of the heap." },
+    { id: "4", text: "Reduce the considered heap size by 1." },
+    { id: "5", text: "Call heapify on the new root to restore the Max Heap property." },
+    { id: "6", text: "Repeat the extraction and heapify process until the heap size is 1." }
+  ],
+  order: ["1", "2", "3", "4", "5", "6"]
+};
+
+export const sortHeapComplete = {
+  instruction: "Fill in the blanks to correctly extract elements from the max heap to sort the array.",
+  template: `void heapSort(int arr[], int n) {
+    for (int i = n / 2 - 1; i >= 0; i--)
+        heapify(arr, n, i);
+    for (int i = n - 1; ___1___; i--) {
+        swap(&arr[0], &arr[___2___]);
+        ___3___(arr, i, 0);
+    }
+}`,
+  answer: `void heapSort(int arr[], int n) {
+    for (int i = n / 2 - 1; i >= 0; i--)
+        heapify(arr, n, i);
+    for (int i = n - 1; i > 0; i--) {
+        swap(&arr[0], &arr[i]);
+        heapify(arr, i, 0);
+    }
+}`,
+  blanks: ["i > 0", "i", "heapify"]
+};

@@ -10,8 +10,13 @@
   },
   "dependencies": {
     "@descope/nextjs-sdk": "^0.15.16",
+<<<<<<< HEAD
     "@monaco-editor/react": "^4.7.0",
     "framer-motion": "^12.42.0",
+=======
+    "acorn": "^8.17.0",
+    "framer-motion": "^12.42.2",
+>>>>>>> origin/develop
     "lucide-react": "^0.575.0",
     "monaco-editor": "^0.55.1",
     "next": "^16.2.2",
@@ -19,6 +24,7 @@
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-markdown": "^10.1.0",
+    "recharts": "^3.9.1",
     "tailwindcss": "^3.4.19",
     "tailwindcss-animate": "^1.0.7",
     "xlsx": "^0.18.5"
