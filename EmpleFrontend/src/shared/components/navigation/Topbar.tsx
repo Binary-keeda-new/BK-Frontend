@@ -353,15 +353,17 @@ export default function Topbar() {
                 <ListTodo size={22} />
               </button>
 
-              <div
-                className={`fixed right-4 top-20 w-[300px] z-50
-                transition-all duration-500 ease-[linear(cubic-bezier(0.22,1,0.36,1))]
-                ${
-                  todoOpen
-                    ? "opacity-100 translate-x-0"
-                    : "opacity-0 translate-x-12 pointer-events-none"
-                }`}
-              >
+              {/* using a explicit class in this div to remove the warning that is coming from the terminal */}
+              <div 
+  className={`fixed right-4 top-20 w-[300px] z-50
+    transition-all duration-500
+    [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] 
+    ${
+      todoOpen
+        ? "opacity-100 translate-x-0"
+        : "opacity-0 translate-x-12 pointer-events-none"
+    }`}
+>
                 <div className="animated-border">
                   <div
                     className="animated-border-inner w-[300px] h-[500px] p-5 overflow-y-auto rounded-xl"
