@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 import "./landing/landing.css";
 import { ThemeProvider } from "../providers/ThemeContext";
 import { AuthProvider } from "@descope/nextjs-sdk";
 import { AppAuthProvider } from "@/providers/AppAuthProvider";
+import { WalletProvider } from "@/providers/WalletProvider";
 
 export const dynamic = "force-dynamic";
 
@@ -20,6 +22,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       data-theme="dark"
       data-scroll-behavior="smooth"
     >
+      <head>
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9381184853784761"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
+      </head>
       <body>
         <AuthProvider
           projectId={process.env.NEXT_PUBLIC_DESCOPE_PROJECT_ID || ""}
@@ -29,7 +39,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         >
           <AppAuthProvider>
-            <ThemeProvider>{children}</ThemeProvider>
+            <WalletProvider>
+              <ThemeProvider>{children}</ThemeProvider>
+            </WalletProvider>
           </AppAuthProvider>
         </AuthProvider>
       </body>
