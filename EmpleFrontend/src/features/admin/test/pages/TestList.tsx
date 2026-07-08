@@ -5,6 +5,8 @@ import ToastContainer from '@/features/admin/question-bank/components/ToastConta
 import { EyeIcon, EditIcon, TrashIcon } from '../../dashboard/components/icons';
 import { apiRequest } from '@/shared/utils/api';
 import CreateTest from '../components/CreateTest';
+import { BarChart3 } from 'lucide-react';
+import { FileBarChart2, Share2 } from "lucide-react";
 
 interface Test {
   _id: string;
@@ -21,6 +23,7 @@ type TestsContentProps = {
   onEditTest?: (testId: string) => void;
   onPreviewTest?: (testId: string) => void;
   onCreateTest?: () => void;
+  onReportTest?: (testId: string) => void;
 };
 
 interface TestListResponse {
@@ -42,6 +45,7 @@ export default function TestsContent({
   onEditTest,
   onPreviewTest,
   onCreateTest,
+  onReportTest,
 }: TestsContentProps) {
   const [page, setPage] = useState(1);
   const [tests, setTests] = useState<Test[]>([]);
@@ -294,6 +298,20 @@ export default function TestsContent({
                           >
                             <EditIcon className="h-4 w-4" />
                           </button>
+
+                          <button
+                          onClick={() => onReportTest?.(test._id)}
+                          title="View Report"
+                          className="flex h-8 w-8 items-center justify-center rounded-md border border-[var(--clr-border2)] text-emerald-500 transition hover:bg-purple-100"
+                        >
+                          <FileBarChart2 className="h-4 w-4" />
+                        </button>
+                        <button
+                        title="Copy Share Link"
+                              className="flex h-8 w-8 items-center justify-center rounded-md border border-[var(--clr-border2)] text-purple-500 transition hover:bg-purple-100"
+                            >
+                              <Share2 className="h-4 w-4" />
+                            </button>
 
                           <button
                             onClick={() => setTestToDelete(test)}

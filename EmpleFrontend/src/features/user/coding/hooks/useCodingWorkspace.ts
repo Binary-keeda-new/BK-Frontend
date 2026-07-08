@@ -22,6 +22,7 @@ export default function useCodingWorkspace(problemId: string) {
   const [executionResult, setExecutionResult] =
     useState<ExecutionResponseData | null>(null);
   const [executionError, setExecutionError] = useState('');
+  const [submitCompleted, setSubmitCompleted] = useState(false);
 
   useEffect(() => {
     const loadProblem = async () => {
@@ -66,6 +67,7 @@ export default function useCodingWorkspace(problemId: string) {
 
     setExecutionResult(null);
     setExecutionError('');
+    setSubmitCompleted(false);
   };
 
   const handleRunCode = async () => {
@@ -75,6 +77,7 @@ export default function useCodingWorkspace(problemId: string) {
       setRunning(true);
       setExecutionError('');
       setExecutionResult(null);
+            setSubmitCompleted(false);
 
       const result = await runCode({
         problemId: problem._id,
@@ -83,6 +86,7 @@ export default function useCodingWorkspace(problemId: string) {
       });
 
       setExecutionResult(result);
+
     } catch (err) {
       setExecutionError(err instanceof Error ? err.message : 'Failed to run code');
     } finally {
@@ -105,6 +109,7 @@ export default function useCodingWorkspace(problemId: string) {
       });
 
       setExecutionResult(result);
+      setSubmitCompleted(true);
     } catch (err) {
       setExecutionError(
         err instanceof Error ? err.message : 'Failed to submit code'
@@ -131,5 +136,6 @@ export default function useCodingWorkspace(problemId: string) {
     executionError,
     handleRunCode,
     handleSubmitCode,
+    submitCompleted,
   };
 }

@@ -17,9 +17,11 @@ import {
 import TestFullscreenGate from '../components/TestFullscreenGate';
 import TestViolationModal from '../components/TestViolationModal';
 import TestMCQReview from './TestMCQReview';
+import TestCodingReview from './TestCodingReview';
 
 type Props = {
   onFullscreenModeChange?: (value: boolean) => void;
+  
 };
 
 
@@ -251,17 +253,16 @@ if (view === 'review-mcq' && activeAttemptId && reviewSection) {
 />
   );
 }
-// this will be added when coding is added:
-
-// if (view === 'preview-coding' && reviewSection) {
-//   return (
-//     <TestCodingPreview
-//       section={reviewSection}
-//       sectionIndex={reviewSectionIndex}
-//       onBack={() => setView('preview-sections')}
-//     />
-//   );
-// }
+if (view === 'review-coding' && activeAttemptId && reviewSection) {
+  return (
+    <TestCodingReview
+      attemptId={activeAttemptId}
+      section={reviewSection}
+      sectionIndex={reviewSectionIndex}
+      onBack={() => setView('review-sections')}
+    />
+  );
+}
 
   if (view === 'fullscreen' && selectedTest) {
   return (
@@ -368,6 +369,9 @@ if (view === 'resume-fullscreen' && selectedTest) {
           section={activeSection}
           sectionIndex={activeSectionIndex}
           allowCalculator={selectedTest.settings?.allowCalculator || false}
+          allowVirtualKeyboard={
+  selectedTest.settings?.allowVirtualKeyboard || false
+}
           minTimeBeforeSubmit={
   selectedTest.settings?.minTimeBeforeSubmit || 0
 }

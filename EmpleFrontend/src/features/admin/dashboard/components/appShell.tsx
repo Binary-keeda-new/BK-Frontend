@@ -26,6 +26,7 @@ import AdminEventsPage from '@/features/admin/Events/components/AdminEventsPage'
 import AdminNotificationsPage from '@/features/admin/notifications/pages/AdminNotificationsPage';
 import QuizReportPage from '@/features/admin/quiz/pages/QuizReportPage';
 import AdminQuizReview from '../../quiz/pages/adminQuizReview';
+import TestReportPage from '@/features/admin/test/pages/TestReportPage';
 
 
 interface AppShellProps {
@@ -65,7 +66,9 @@ const [selectedReviewAttemptId, setSelectedReviewAttemptId] = useState<string | 
   const [testListRefreshKey, setTestListRefreshKey] = useState(0);
   const [selectedTestId, setSelectedTestId] = useState<string | null>(null);
   const [selectedProblemId, setSelectedProblemId] = useState<string | null>(null);
+  const [selectedReportTestId, setSelectedReportTestId] = useState<string | null>(null);
   const [eventsSubPage, setEventsSubPage] = useState<'hackathon' | 'techfest' | 'our-hackathon' | null>(null);
+
 
 const [previewProblemId, setPreviewProblemId] =
   useState<string | null>(
@@ -244,6 +247,11 @@ const [previewProblemId, setPreviewProblemId] =
   });
 };
 
+const openTestReport = (id: string) => {
+  setSelectedReportTestId(id);
+  setActiveSection('test-report' as AdminSection);
+};
+
 
   const openQuizReport = (id: string) => {
   setSelectedReportQuizId(id);
@@ -409,7 +417,24 @@ const openAttemptReview = (attemptId: string) => {
   onCreateTest={() => handleSectionChange('test-create')}
   onEditTest={openTestEdit}
   onPreviewTest={(id) => console.log('Preview test:', id)}
+   onReportTest={openTestReport}
 />
+  );
+
+  case 'test-report':
+  return selectedReportTestId ? (
+    <TestReportPage
+      testId={selectedReportTestId}
+      onBack={() => handleSectionChange('tests')}
+    />
+  ) : (
+    <TestsContent
+      refreshKey={testListRefreshKey}
+      onCreateTest={() => handleSectionChange('test-create')}
+      onEditTest={openTestEdit}
+      onPreviewTest={(id) => console.log('Preview test:', id)}
+      onReportTest={openTestReport}
+    />
   );
   case 'test-edit':
   return selectedTestId ? (

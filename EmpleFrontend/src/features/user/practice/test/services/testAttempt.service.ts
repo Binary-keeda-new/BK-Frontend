@@ -35,6 +35,16 @@ export type TestSectionAnswerPayload = {
   selectedOptions: string[];
 };
 
+export type CodingSubmissionPayload = {
+  problemId: string;
+  language: string;
+  sourceCode: string;
+  accepted?: boolean;
+  passedCount?: number;
+  totalCount?: number;
+  results?: unknown[];
+};
+
 export const getTestSectionAttempt = async (
   attemptId: string,
   sectionId: string
@@ -52,7 +62,8 @@ export const getTestSectionAttempt = async (
 export const submitTestSectionAttempt = async (
   attemptId: string,
   sectionId: string,
-  answers: TestSectionAnswerPayload[]
+  answers: TestSectionAnswerPayload[] = [],
+  codingSubmissions: CodingSubmissionPayload[] = []
 ) => {
   const result = await apiRequest<ApiResponse<unknown>>(
     `/api/v1/test-attempts/${attemptId}/sections/${sectionId}/submit`,
@@ -60,6 +71,7 @@ export const submitTestSectionAttempt = async (
       method: 'POST',
       body: JSON.stringify({
         answers,
+        codingSubmissions,
       }),
     }
   );

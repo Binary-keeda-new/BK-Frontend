@@ -13,6 +13,25 @@ export type TestAttemptStatusItem = {
   attemptId: string;
 };
 
+export type TestCodingReviewSubmission = {
+  problemId: string;
+  language: string;
+  sourceCode: string;
+  accepted?: boolean;
+  passedCount?: number;
+  totalCount?: number;
+  results?: any[];
+  submittedAt?: string;
+};
+
+export type TestSectionReviewResponse = {
+  attemptId: string;
+  sectionId: string;
+  type?: 'mcq' | 'coding';
+  answers?: any[];
+  codingSubmissions?: TestCodingReviewSubmission[];
+};
+
 export type TestAttemptStatusMap = Record<string, TestAttemptStatusItem>;
 
 export const getTests = async () => {
@@ -115,13 +134,7 @@ export const getTestSectionReview = async (
   attemptId: string,
   sectionId: string
 ) => {
-  const result = await apiRequest<
-    ApiResponse<{
-      attemptId: string;
-      sectionId: string;
-      answers: any[];
-    }>
-  >(
+  const result = await apiRequest<ApiResponse<TestSectionReviewResponse>>(
     `/api/v1/test-attempts/${attemptId}/sections/${sectionId}/review`,
     {
       method: 'GET',

@@ -77,6 +77,15 @@ export default function ConsolePanel({
                   {item.actualOutput || '-'}
                 </p>
 
+                {item.status?.description && (
+                <p>
+                  <span className="font-semibold text-[var(--clr-text)]">
+                    Status:
+                  </span>{' '}
+                  {item.status.description}
+                </p>
+              )}
+
                 {item.stderr && (
                   <p className="text-red-300">
                     <span className="font-semibold">Error:</span> {item.stderr}

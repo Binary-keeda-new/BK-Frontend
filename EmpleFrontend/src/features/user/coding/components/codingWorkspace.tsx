@@ -3,11 +3,21 @@
 import type { UserCodingProblem } from '../../practice/test/types/test.types';
 import WorkspaceLayout from './workspaceLayout';
 
+type CodingSubmission = {
+  problemId: string;
+  language: string;
+  sourceCode: string;
+  accepted?: boolean;
+  passedCount?: number;
+  totalCount?: number;
+  results?: unknown[];
+};
+
 type Props = {
   problems: UserCodingProblem[];
   mode?: 'practice' | 'test';
   onBack?: () => void;
-  onComplete?: () => void;
+  onComplete?: (submission: CodingSubmission) => void | Promise<void>;
 };
 
 export default function CodingWorkspace({

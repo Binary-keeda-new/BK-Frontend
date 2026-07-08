@@ -6,11 +6,21 @@ import ProblemSidebar from './problemSidebar';
 import MonacoEditor from './monacoEditor';
 import ConsolePanel from './consolePanel';
 
+type CodingSubmission = {
+  problemId: string;
+  language: string;
+  sourceCode: string;
+  accepted?: boolean;
+  passedCount?: number;
+  totalCount?: number;
+  results?: unknown[];
+};
+
 type Props = {
   problemId: string;
   mode?: 'practice' | 'test';
   onBack?: () => void;
-  onComplete?: () => void;
+  onComplete?: (submission: CodingSubmission) => void | Promise<void>;
 };
 
 export default function WorkspaceLayout({
@@ -33,6 +43,7 @@ export default function WorkspaceLayout({
     executionError,
     handleRunCode,
     handleSubmitCode,
+    submitCompleted,
   } = useCodingWorkspace(problemId);
 
   if (loading) {
@@ -83,6 +94,27 @@ export default function WorkspaceLayout({
               error={executionError}
             />
           </div>
+          {mode === 'test' && submitCompleted && (
+  <div className="border-t border-[var(--clr-border)] bg-[var(--clr-surface)] p-4 text-right">
+    <button
+      type="button"
+      onClick={() =>
+  onComplete?.({
+    problemId,
+    language: selectedLanguage,
+    sourceCode: code,
+    accepted: executionResult?.accepted,
+    passedCount: executionResult?.passedCount,
+    totalCount: executionResult?.totalCount,
+    results: executionResult?.results || [],
+  })
+}
+      className="rounded-xl bg-[var(--clr-accent)] px-5 py-3 text-sm font-bold text-white"
+    >
+      Complete Coding Section
+    </button>
+  </div>
+)}
         </div>
       </div>
     </div>
