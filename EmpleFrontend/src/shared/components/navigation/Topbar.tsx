@@ -16,6 +16,7 @@ import SlideDrawer from "@/shared/components/ui/SlideDrawer";
 import MediaFeedWidget from "@/features/user/dashboard/components/MediaFeedWidget";
 import AIAssistantWidget from "@/features/ai-assistant/components/AIAssistantWidget";
 import EmptyState from "@/shared/components/ui/EmptyState";
+// import WalletBadge from "@/features/wallet/components/WalletBadge";
 
 type Task = {
   text: string;
@@ -166,7 +167,14 @@ export default function Topbar() {
   const [notifOpen, setNotifOpen] = useState(false);
   const [tasks, setTasks] = useState<Task[]>([{ text: "", done: false }]);
   const [allNotifications, setAllNotifications] = useState<any[]>([]);
-  const [readIds, setReadIds] = useState<Set<string>>(new Set());
+  const [readIds, setReadIds] = useState<Set<string>>(() => {
+  try {
+    const stored = localStorage.getItem('readNotificationIds')
+    return stored ? new Set(JSON.parse(stored)) : new Set()
+  } catch {
+    return new Set()
+  }
+});
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const todoRef = useRef<HTMLDivElement>(null);
@@ -213,20 +221,23 @@ export default function Topbar() {
   };
 
   const handleToggleRead = (id: string) => {
-    setReadIds(prev => {
-      const next = new Set(prev)
-      if (next.has(id)) {
-        next.delete(id)
-      } else {
-        next.add(id)
-      }
-      return next
-    })
-  }
+  setReadIds(prev => {
+    const next = new Set(prev)
+    if (next.has(id)) {
+      next.delete(id)
+    } else {
+      next.add(id)
+    }
+    localStorage.setItem('readNotificationIds', JSON.stringify([...next]))
+    return next
+  })
+}
 
   const handleMarkAllRead = () => {
-    setReadIds(new Set(allNotifications.map(n => n._id)))
-  }
+  const allIds = new Set(allNotifications.map(n => n._id))
+  setReadIds(allIds)
+  localStorage.setItem('readNotificationIds', JSON.stringify([...allIds]))
+}
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -265,21 +276,7 @@ export default function Topbar() {
         <div className="flex items-center gap-1 sm:gap-3">
 
           {/* Coin Badge */}
-          {isAuthenticated && (
-            <div
-              className="flex items-center gap-2 px-3 py-1.5 rounded-full cursor-pointer
-              bg-yellow-400/10 border border-yellow-400/30 text-yellow-400
-              hover:bg-yellow-400/20 transition hover:-translate-y-[1px]"
-            >
-              <span
-                className="w-[22px] h-[22px] flex items-center justify-center rounded-full text-[9px] font-extrabold
-                bg-yellow-400 text-yellow-900"
-              >
-                E
-              </span>
-              <span className="text-xs font-semibold hidden sm:inline">100</span>
-            </div>
-          )}
+          {/* isAuthenticated && <WalletBadge /> */}
 
           {/* Media button */}
           {isAuthenticated && (
