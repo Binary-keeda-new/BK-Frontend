@@ -226,6 +226,75 @@ if (!report) {
         </table>
       </div>
     </Card>
+
+    <Card>
+  <h2 className="text-lg font-bold text-[var(--clr-text)]">
+    Problem-wise Coding Analytics
+  </h2>
+
+  <div className="mt-4 overflow-x-auto">
+    <table className="w-full text-sm">
+      <thead>
+        <tr className="border-b border-[var(--clr-border)]">
+          {[
+            'Problem',
+            'Total Submissions',
+            'Accepted',
+            'Acceptance Rate',
+          ].map((h) => (
+            <th
+              key={h}
+              className="px-3 py-3 text-left text-xs font-bold uppercase tracking-wider text-[var(--clr-text3)]"
+            >
+              {h}
+            </th>
+          ))}
+        </tr>
+      </thead>
+
+      <tbody>
+        {report.coding.problemWiseAnalytics.length === 0 ? (
+          <tr>
+            <td
+              colSpan={4}
+              className="px-3 py-6 text-center text-[var(--clr-text2)]"
+            >
+              No coding submissions yet.
+            </td>
+          </tr>
+        ) : (
+          report.coding.problemWiseAnalytics.map((problem) => (
+            <tr
+              key={problem.problemId}
+              className="border-b border-[var(--clr-border)]"
+            >
+              <td className="px-3 py-3">
+  <p className="font-semibold text-[var(--clr-text)]">
+    {problem.problemTitle}
+  </p>
+  <p className="text-xs text-[var(--clr-text3)]">
+    {problem.difficulty || problem.problemId}
+  </p>
+</td>
+
+              <td className="px-3 py-3 text-[var(--clr-text2)]">
+                {problem.total}
+              </td>
+
+              <td className="px-3 py-3 text-emerald-500 font-bold">
+                {problem.accepted}
+              </td>
+
+              <td className="px-3 py-3 font-bold text-[var(--clr-accent)]">
+                {problem.acceptanceRate}%
+              </td>
+            </tr>
+          ))
+        )}
+      </tbody>
+    </table>
+  </div>
+</Card>
   </div>
 )}
 

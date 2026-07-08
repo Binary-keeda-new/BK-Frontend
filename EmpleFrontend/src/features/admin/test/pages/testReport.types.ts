@@ -53,7 +53,17 @@ export type TestReport = {
     acceptanceRate: number;
     languageDistribution: LanguageDistributionItem[];
     submissions: CodingSubmissionAnalytics[];
+    problemWiseAnalytics: ProblemWiseCodingAnalytics[];
   };
 
   leaderboard: LeaderboardItem[];
+};
+
+export type ProblemWiseCodingAnalytics = {
+  problemId: string;
+  problemTitle: string;
+  difficulty: string;
+  total: number;
+  accepted: number;
+  acceptanceRate: number;
 };
