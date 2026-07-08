@@ -49,6 +49,10 @@ const NAV_ITEMS = [
     label: "Sessions", tip: "Sessions", href: "/user/sessions",
     icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>,
   },
+  {
+    label: "Transactions", tip: "Transactions", href: "/user/wallet/transactions",
+    icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>,
+  },
 ];
 
 const iconClass = "w-7 h-7 flex items-center justify-center flex-shrink-0";
@@ -124,6 +128,28 @@ export default function Sidebar() {
         </span>
       </div>
 
+      {/* Collapse toggle (moved to top) */}
+      <div className="flex-shrink-0 px-[10px] pb-1">
+        <button
+          onClick={() => setCollapsed(!collapsed)}
+          className={`${itemBase} w-full`}
+          style={{ background: "transparent", color: "var(--muted2)", border: "none" }}
+          onMouseEnter={e => onHover(e, false, true)}
+          onMouseLeave={e => onHover(e, false, false)}
+          title="Toggle Sidebar"
+        >
+          <div className={iconClass}>
+            <svg
+              width="13" height="13" viewBox="0 0 12 12" fill="none"
+              stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"
+              style={{ transform: collapsed ? "scaleX(-1)" : "scaleX(1)", transition: "transform 380ms cubic-bezier(0.4,0,0.2,1)" }}
+            >
+              <polyline points="8,2 4,6 8,10"/>
+            </svg>
+          </div>
+        </button>
+      </div>
+
       {/* Nav items */}
       <nav className="flex-1 px-[10px] py-1 overflow-y-auto overflow-x-hidden">
         {NAV_ITEMS.map((item) => {
@@ -131,7 +157,8 @@ export default function Sidebar() {
           if (item.label === "Resources" && pathname.startsWith("/resources")) isActive = true;
           if (item.label === "Jobs" && pathname.startsWith("/jobs")) isActive = true;
           if (item.label === "Tutorials" && pathname.startsWith("/user/tutorials")) isActive = true;
-          const isPremium = !["Resources", "Jobs", "Tech Shop", "Events", "Counselling", "Tutorials"].includes(item.label);
+          if (item.label === "Transactions" && pathname.startsWith("/user/wallet/transactions")) isActive = true;
+          const isPremium = !["Resources", "Jobs", "Tech Shop", "Events", "Counselling", "Tutorials", "Transactions"].includes(item.label);
           return (
             <Link href={item.href} key={item.label} style={{ textDecoration: "none" }} onClick={(e) => handleItemClick(e, isPremium)}>
               <div
@@ -151,28 +178,7 @@ export default function Sidebar() {
         })}
       </nav>
 
-      {/* Bottom section */}
-      <div className="flex-shrink-0 px-[10px] py-2" style={{ borderTop: "1px solid var(--border)" }}>
-        {/* Collapse toggle */}
-        <button
-          onClick={() => setCollapsed(!collapsed)}
-          className={`${itemBase} w-full mt-[2px]`}
-          style={{ background: "transparent", color: "var(--muted2)", border: "none" }}
-          onMouseEnter={e => onHover(e, false, true)}
-          onMouseLeave={e => onHover(e, false, false)}
-        >
-          <div className={iconClass}>
-            <svg
-              width="13" height="13" viewBox="0 0 12 12" fill="none"
-              stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"
-              style={{ transform: collapsed ? "scaleX(-1)" : "scaleX(1)", transition: "transform 380ms cubic-bezier(0.4,0,0.2,1)" }}
-            >
-              <polyline points="8,2 4,6 8,10"/>
-            </svg>
-          </div>
-          <span className={`flex-1 ${collapsed ? "hidden" : "block"} text-left`}>Collapse</span>
-        </button>
-      </div>
+      {/* The bottom section with Collapse is removed as requested */}
 
       {showLoginModal && (
         <div style={{
