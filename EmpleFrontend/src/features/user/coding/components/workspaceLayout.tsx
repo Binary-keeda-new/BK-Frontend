@@ -64,15 +64,19 @@ export default function WorkspaceLayout({
 
   return (
     <div className="flex h-screen flex-col bg-[var(--clr-background)]">
-      <WorkspaceHeader problem={problem} />
+      <WorkspaceHeader
+  problem={problem}
+  mode={mode}
+  onBack={onBack}
+/>
 
-      <div className="flex flex-1 overflow-hidden">
-        <div className="w-[40%] overflow-y-auto border-r border-[var(--clr-border)]">
+      <div className="flex flex-1 gap-4 overflow-hidden p-4">
+        <div className="w-[42%] overflow-hidden rounded-2xl border border-[var(--clr-border)] bg-[var(--clr-surface)]">
           <ProblemSidebar problem={problem} />
         </div>
 
-        <div className="flex flex-1 flex-col">
-          <div className="flex-1 overflow-hidden">
+        <div className="flex flex-1 flex-col gap-4">
+          <div className="flex-1 overflow-hidden rounded-2xl">
             <MonacoEditor
               problem={problem}
               code={code}
@@ -86,7 +90,7 @@ export default function WorkspaceLayout({
             />
           </div>
 
-          <div className="h-72 border-t border-[var(--clr-border)]">
+          <div className="h-72 overflow-hidden rounded-2xl border border-[var(--clr-border)] bg-[var(--clr-surface)]">
             <ConsolePanel
               running={running}
               submitting={submitting}
@@ -95,7 +99,9 @@ export default function WorkspaceLayout({
             />
           </div>
           {mode === 'test' && submitCompleted && (
-  <div className="border-t border-[var(--clr-border)] bg-[var(--clr-surface)] p-4 text-right">
+
+  <div className="rounded-2xl border border-[var(--clr-border)] bg-[var(--clr-surface)] p-4">
+    <div className="flex justify-end">
     <button
       type="button"
       onClick={() =>
@@ -113,6 +119,7 @@ export default function WorkspaceLayout({
     >
       Complete Coding Section
     </button>
+    </div>
   </div>
 )}
         </div>

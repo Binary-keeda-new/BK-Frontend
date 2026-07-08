@@ -41,47 +41,44 @@ export default function MonacoEditor({
       {/* Toolbar */}
 
       <div className="flex h-14 items-center justify-between border-b border-[var(--clr-border)] bg-[var(--clr-surface)] px-5">
+  <div className="flex items-center gap-3">
+    <span className="text-xs font-bold uppercase tracking-[0.16em] text-[var(--clr-text3)]">
+      Language
+    </span>
 
-        <select
-          value={language}
-          onChange={(e) =>
-            changeLanguage(e.target.value)
-          }
-          className="rounded-lg border border-[var(--clr-border)] bg-transparent px-4 py-2 outline-none"
-        >
-          {problem.languages.map(
-            (lang) => (
-              <option
-                key={lang}
-                value={lang}
-              >
-                {lang}
-              </option>
-            )
-          )}
-        </select>
+    <select
+      value={language}
+      onChange={(e) => changeLanguage(e.target.value)}
+      className="rounded-xl border border-[var(--clr-border)] bg-[var(--clr-surface2)] px-3 py-2 text-sm text-[var(--clr-text)] outline-none"
+    >
+      {problem.languages.map((lang) => (
+        <option key={lang} value={lang}>
+          {lang}
+        </option>
+      ))}
+    </select>
+  </div>
 
-        <div className="flex items-center gap-2">
-  <button
-    type="button"
-    onClick={onRunCode}
-    disabled={running || submitting}
-    className="rounded-lg border border-[var(--clr-border)] px-4 py-2 text-sm font-semibold text-[var(--clr-text)] disabled:opacity-50"
-  >
-    {running ? 'Running...' : 'Run'}
-  </button>
+  <div className="flex items-center gap-2">
+    <button
+      type="button"
+      onClick={onRunCode}
+      disabled={running || submitting}
+      className="rounded-xl border border-[var(--clr-border)] bg-[var(--clr-surface2)] px-5 py-2 text-sm font-semibold text-[var(--clr-text)] transition hover:border-[var(--clr-accent)] disabled:opacity-50"
+    >
+      ▶ Run
+    </button>
 
-  <button
-    type="button"
-    onClick={onSubmitCode}
-    disabled={running || submitting}
-    className="rounded-lg bg-[var(--clr-accent)] px-4 py-2 text-sm font-semibold text-white disabled:opacity-50"
-  >
-    {submitting ? 'Submitting...' : 'Submit'}
-  </button>
+    <button
+      type="button"
+      onClick={onSubmitCode}
+      disabled={running || submitting}
+      className="rounded-xl bg-[var(--clr-accent)] px-5 py-2 text-sm font-bold text-white transition hover:opacity-90 disabled:opacity-50"
+    >
+      ⬆ Submit
+    </button>
+  </div>
 </div>
-
-      </div>
 
       {/* Monaco Editor */}
 
@@ -117,6 +114,16 @@ export default function MonacoEditor({
             padding: {
               top: 20,
             },
+
+            smoothScrolling: true,
+cursorSmoothCaretAnimation: 'on',
+renderLineHighlight: 'all',
+bracketPairColorization: {
+  enabled: true,
+},
+guides: {
+  bracketPairs: true,
+},
           }}
         />
 
