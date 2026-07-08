@@ -49,10 +49,6 @@ const NAV_ITEMS = [
     label: "Sessions", tip: "Sessions", href: "/user/sessions",
     icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>,
   },
-  {
-    label: "Transactions", tip: "Transactions", href: "/user/wallet/transactions",
-    icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>,
-  },
 ];
 
 const iconClass = "w-7 h-7 flex items-center justify-center flex-shrink-0";
@@ -106,48 +102,42 @@ export default function Sidebar() {
   return (
     <aside
       className={`
-        relative z-20 flex flex-col flex-shrink-0 overflow-hidden
+        relative z-20 flex flex-col flex-shrink-0
         transition-all duration-300 ease-in-out
         ${collapsed ? "w-[66px]" : "w-[215px]"}
       `}
       style={{ background: "var(--surface)", borderRight: "1px solid var(--border)" }}
     >
+      {/* Floating Collapse Toggle */}
+      <button
+        onClick={() => setCollapsed(!collapsed)}
+        className="absolute -right-3.5 top-[82px] w-7 h-7 flex items-center justify-center bg-[var(--surface)] border border-[var(--border)] rounded-full text-[var(--muted2)] hover:text-[var(--orange)] shadow-md z-50 cursor-pointer transition-colors"
+        title="Toggle Sidebar"
+      >
+        <svg
+          width="14" height="14" viewBox="0 0 12 12" fill="none"
+          stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"
+          style={{ transform: collapsed ? "scaleX(-1)" : "scaleX(1)", transition: "transform 380ms ease" }}
+        >
+          <polyline points="8,2 4,6 8,10"/>
+        </svg>
+      </button>
       {/* Logo */}
-      <div className="flex items-center gap-2 px-[18px] py-5 min-h-[64px] flex-shrink-0">
-        <div
-          className="w-9 h-9 rounded-[10px] flex items-center justify-center flex-shrink-0 font-extrabold text-base text-white italic font-syne transition-all duration-200 hover:scale-[1.07] hover:-rotate-3"
-          style={{ background: "var(--orange)", boxShadow: "0 4px 14px rgba(241,90,34,0.35)" }}
-        >
-          e
-        </div>
-        <span
-          className={`font-syne text-xl font-extrabold tracking-tight whitespace-nowrap ${collapsed ? "hidden" : "block"}`}
-          style={{ color: "var(--text)" }}
-        >
-          <em className="not-italic" style={{ color: "var(--orange)" }}>e</em>mple
-        </span>
-      </div>
-
-      {/* Collapse toggle (moved to top) */}
-      <div className="flex-shrink-0 px-[10px] pb-1">
-        <button
-          onClick={() => setCollapsed(!collapsed)}
-          className={`${itemBase} w-full`}
-          style={{ background: "transparent", color: "var(--muted2)", border: "none" }}
-          onMouseEnter={e => onHover(e, false, true)}
-          onMouseLeave={e => onHover(e, false, false)}
-          title="Toggle Sidebar"
-        >
-          <div className={iconClass}>
-            <svg
-              width="13" height="13" viewBox="0 0 12 12" fill="none"
-              stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"
-              style={{ transform: collapsed ? "scaleX(-1)" : "scaleX(1)", transition: "transform 380ms cubic-bezier(0.4,0,0.2,1)" }}
-            >
-              <polyline points="8,2 4,6 8,10"/>
-            </svg>
+      <div className={`flex items-center ${collapsed ? "justify-center" : "justify-start"} px-[16px] py-5 min-h-[64px] flex-shrink-0`}>
+        <div className={`flex items-center gap-2 ${collapsed ? "hidden" : "flex"}`}>
+          <div
+            className="w-9 h-9 rounded-[10px] flex items-center justify-center flex-shrink-0 font-extrabold text-base text-white italic font-syne transition-all duration-200 hover:scale-[1.07] hover:-rotate-3"
+            style={{ background: "var(--orange)", boxShadow: "0 4px 14px rgba(241,90,34,0.35)" }}
+          >
+            e
           </div>
-        </button>
+          <span
+            className="font-syne text-xl font-extrabold tracking-tight whitespace-nowrap"
+            style={{ color: "var(--text)" }}
+          >
+            <em className="not-italic" style={{ color: "var(--orange)" }}>e</em>mple
+          </span>
+        </div>
       </div>
 
       {/* Nav items */}
@@ -157,8 +147,8 @@ export default function Sidebar() {
           if (item.label === "Resources" && pathname.startsWith("/resources")) isActive = true;
           if (item.label === "Jobs" && pathname.startsWith("/jobs")) isActive = true;
           if (item.label === "Tutorials" && pathname.startsWith("/user/tutorials")) isActive = true;
-          if (item.label === "Transactions" && pathname.startsWith("/user/wallet/transactions")) isActive = true;
-          const isPremium = !["Resources", "Jobs", "Tech Shop", "Events", "Counselling", "Tutorials", "Transactions"].includes(item.label);
+          if (item.label === "Sessions" && pathname.startsWith("/user/sessions")) isActive = true;
+          const isPremium = !["Resources", "Jobs", "Tech Shop", "Events", "Counselling", "Tutorials"].includes(item.label);
           return (
             <Link href={item.href} key={item.label} style={{ textDecoration: "none" }} onClick={(e) => handleItemClick(e, isPremium)}>
               <div
