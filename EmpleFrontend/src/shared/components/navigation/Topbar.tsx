@@ -16,7 +16,7 @@ import SlideDrawer from "@/shared/components/ui/SlideDrawer";
 import MediaFeedWidget from "@/features/user/dashboard/components/MediaFeedWidget";
 import AIAssistantWidget from "@/features/ai-assistant/components/AIAssistantWidget";
 import EmptyState from "@/shared/components/ui/EmptyState";
-import WalletBadge from "@/features/wallet/components/WalletBadge";
+// import WalletBadge from "@/features/wallet/components/WalletBadge";
 
 type Task = {
   text: string;
@@ -276,7 +276,7 @@ export default function Topbar() {
         <div className="flex items-center gap-1 sm:gap-3">
 
           {/* Coin Badge */}
-          {isAuthenticated && <WalletBadge />}
+          {/* isAuthenticated && <WalletBadge /> */}
 
           {/* Media button */}
           {isAuthenticated && (
