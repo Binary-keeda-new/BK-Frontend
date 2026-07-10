@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Clapperboard, Sparkles, Bell, User, LogOut } from "lucide-react";
+import { Clapperboard, Sparkles, Bell, User, LogOut , ListTodo } from "lucide-react";
 import { useDescope, useSession, useUser } from "@descope/nextjs-sdk/client";
 import { useRouter } from "next/navigation";
 
@@ -107,6 +107,25 @@ export default function Topbar() {
               {icon}
             </button>
           ))}
+
+          {/* Productivity Button */}
+          <button
+          onClick={() => router.push("/user/productivity")}
+          className="
+          w-10 h-10
+          rounded-full
+          flex items-center justify-center
+          cursor-pointer
+          text-gray-400
+          transition-all duration-300 ease-out
+          hover:bg-[rgba(249,115,22,0.12)]
+          hover:text-[#f97316]
+          hover:-translate-y-1
+          "
+          title="Productivity Hub"
+          >
+          <ListTodo size={22} />
+          </button> 
 
           {/* Avatar */}
           <div className="relative" ref={dropdownRef}>

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const NAV_ITEMS = [
   {
@@ -99,6 +100,36 @@ export default function Sidebar() {
           <em className="not-italic" style={{ color: "var(--orange)" }}>e</em>mple
         </span>
       </div>
+
+
+      {/* Collapsed */}
+     <button
+  onClick={() => setCollapsed(!collapsed)}
+  className="
+    absolute
+    top-[63px]
+    -right-4
+    w-7
+    h-7
+    z-[9999]
+    rounded-full
+    bg-[#F15A22]
+    text-white
+    flex
+    items-center
+    justify-center
+    shadow-lg
+    hover:scale-105
+    transition-all
+  "
+>
+    {collapsed ? (
+     <ChevronRight size={18} strokeWidth={2.8} />
+     ) : (
+     <ChevronLeft size={18} strokeWidth={2.8} />
+    )}
+    </button>
+
 
       {/* Nav items */}
       <nav className="flex-1 px-[10px] py-1 overflow-y-auto overflow-x-hidden">
