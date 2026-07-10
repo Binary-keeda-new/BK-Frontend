@@ -22,6 +22,7 @@ onSubmitCode: () => void;
   changeLanguage: (
     language: string
   ) => void;
+  
 }
 
 export default function MonacoEditor({
@@ -61,22 +62,22 @@ export default function MonacoEditor({
 
   <div className="flex items-center gap-2">
     <button
-      type="button"
-      onClick={onRunCode}
-      disabled={running || submitting}
-      className="rounded-xl border border-[var(--clr-border)] bg-[var(--clr-surface2)] px-5 py-2 text-sm font-semibold text-[var(--clr-text)] transition hover:border-[var(--clr-accent)] disabled:opacity-50"
-    >
-      ▶ Run
-    </button>
+  type="button"
+  onClick={onRunCode}
+  disabled={running || submitting}
+  className="rounded-xl bg-emerald-700 px-5 py-2 text-sm font-bold text-white transition hover:bg-emerald-600 disabled:opacity-50"
+>
+  {running ? 'Running...' : 'Run'}
+</button>
 
-    <button
-      type="button"
-      onClick={onSubmitCode}
-      disabled={running || submitting}
-      className="rounded-xl bg-[var(--clr-accent)] px-5 py-2 text-sm font-bold text-white transition hover:opacity-90 disabled:opacity-50"
-    >
-      ⬆ Submit
-    </button>
+   <button
+  type="button"
+  onClick={onSubmitCode}
+  disabled={running || submitting}
+  className="rounded-xl bg-[var(--clr-accent)] px-5 py-2 text-sm font-bold text-white transition hover:opacity-90 disabled:opacity-50"
+>
+  {submitting ? 'Submitting...' : 'Submit'}
+</button>
   </div>
 </div>
 

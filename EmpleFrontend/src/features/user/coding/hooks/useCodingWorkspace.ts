@@ -23,6 +23,7 @@ export default function useCodingWorkspace(problemId: string) {
     useState<ExecutionResponseData | null>(null);
   const [executionError, setExecutionError] = useState('');
   const [submitCompleted, setSubmitCompleted] = useState(false);
+  const [customInput, setCustomInput] = useState('');
 
   useEffect(() => {
     const loadProblem = async () => {
@@ -102,11 +103,12 @@ export default function useCodingWorkspace(problemId: string) {
       setExecutionError('');
       setExecutionResult(null);
 
-      const result = await submitCode({
-        problemId: problem._id,
-        language: selectedLanguage,
-        sourceCode: code,
-      });
+      const result = await runCode({
+  problemId: problem._id,
+  language: selectedLanguage,
+  sourceCode: code,
+  customInput,
+});
 
       setExecutionResult(result);
       setSubmitCompleted(true);
@@ -123,6 +125,8 @@ export default function useCodingWorkspace(problemId: string) {
     problem,
     loading,
     error,
+    customInput,
+setCustomInput,
 
     selectedLanguage,
     changeLanguage,

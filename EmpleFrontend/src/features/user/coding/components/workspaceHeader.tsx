@@ -37,24 +37,13 @@ export default function WorkspaceHeader({
         </div>
 
         <div className="hidden flex-wrap items-center justify-end gap-2 md:flex">
-          <span className="rounded-full border border-[var(--clr-border)] bg-[var(--clr-surface2)] px-3 py-1 text-xs font-semibold text-[var(--clr-text2)]">
-            {mode === 'test' ? 'Test Mode' : 'Practice Mode'}
-          </span>
 
+          
           {problem.recommendedTime ? (
-            <span className="rounded-full border border-[var(--clr-border)] bg-[var(--clr-surface2)] px-3 py-1 text-xs font-semibold text-[var(--clr-text2)]">
-              {problem.recommendedTime} min
-            </span>
-          ) : null}
-
-          {problem.topics?.slice(0, 3).map((topic: string) => (
-            <span
-              key={topic}
-              className="rounded-full bg-[var(--clr-accent3)] px-3 py-1 text-xs font-semibold text-[var(--clr-accent)]"
-            >
-              {topic}
-            </span>
-          ))}
+  <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-400">
+    ⏱ {problem.recommendedTime} min
+  </span>
+) : null}
         </div>
       </div>
     </header>

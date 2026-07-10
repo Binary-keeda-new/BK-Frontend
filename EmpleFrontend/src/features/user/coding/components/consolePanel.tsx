@@ -7,6 +7,9 @@ type Props = {
   submitting: boolean;
   result: ExecutionResponseData | null;
   error: string;
+  customInput: string;
+setCustomInput: React.Dispatch<React.SetStateAction<string>>;
+onRunCode: () => void;
 };
 
 export default function ConsolePanel({
@@ -14,6 +17,9 @@ export default function ConsolePanel({
   submitting,
   result,
   error,
+  customInput,
+  setCustomInput,
+  onRunCode,
 }: Props) {
   const isBusy = running || submitting;
 
@@ -21,12 +27,10 @@ export default function ConsolePanel({
     <div className="h-full overflow-y-auto bg-[var(--clr-background)] p-4">
       <div className="mb-3 flex items-center justify-between">
         <div>
-          <h2 className="text-sm font-bold text-[var(--clr-text)]">
+          <h2 className="text-lg font-bold text-[var(--clr-text)]">
             Execution Console
           </h2>
-          <p className="text-xs text-[var(--clr-text3)]">
-            Run visible cases or submit against all cases.
-          </p>
+          
         </div>
 
         {isBusy && (
@@ -123,7 +127,34 @@ export default function ConsolePanel({
                 </div>
               </div>
             ))}
+
+            
           </div>
+
+          <div className="mb-4 rounded-2xl border border-[var(--clr-border)] bg-[var(--clr-surface)] p-4">
+  <p className="mb-2 text-xs font-bold uppercase tracking-[0.16em] text-[var(--clr-text3)]">
+    Custom Test Case
+  </p>
+
+  <textarea
+    value={customInput}
+    onChange={(e) => setCustomInput(e.target.value)}
+    placeholder="Enter custom input here..."
+    className="h-24 w-full resize-none rounded-xl border border-[var(--clr-border)] bg-[var(--clr-surface2)] p-3 font-mono text-sm text-[var(--clr-text)] outline-none"
+  />
+
+  <div className="mt-3 flex justify-end">
+    <button
+      type="button"
+      onClick={onRunCode}
+      disabled={running || submitting}
+      className="rounded-xl bg-emerald-600 px-4 py-2 text-sm font-bold text-white transition hover:bg-emerald-700 disabled:opacity-50"
+    >
+      Run Custom Test
+    </button>
+  </div>
+</div>
+
         </div>
       )}
     </div>

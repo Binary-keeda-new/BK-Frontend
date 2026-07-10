@@ -3,10 +3,10 @@
 import DifficultyBadge from './difficultyBadge';
 import TopicBadge from './topicBadge';
 import { Clock3 } from 'lucide-react';
-import { PreviewProblem } from '../types/previewProblem';
+import { PreviewCodingProblem } from '../types/previewProblem';
 
 interface Props {
-  problem: PreviewProblem;
+  problem: PreviewCodingProblem;
 }
 
 export default function ProblemHeader({

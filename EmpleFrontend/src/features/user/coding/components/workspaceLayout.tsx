@@ -5,6 +5,11 @@ import WorkspaceHeader from './workspaceHeader';
 import ProblemSidebar from './problemSidebar';
 import MonacoEditor from './monacoEditor';
 import ConsolePanel from './consolePanel';
+import {
+  Panel,
+  PanelGroup,
+  PanelResizeHandle,
+} from 'react-resizable-panels';
 
 type CodingSubmission = {
   problemId: string;
@@ -44,6 +49,8 @@ export default function WorkspaceLayout({
     handleRunCode,
     handleSubmitCode,
     submitCompleted,
+    customInput,
+    setCustomInput,
   } = useCodingWorkspace(problemId);
 
   if (loading) {
@@ -70,13 +77,20 @@ export default function WorkspaceLayout({
   onBack={onBack}
 />
 
-      <div className="flex flex-1 gap-4 overflow-hidden p-4">
-        <div className="w-[42%] overflow-hidden rounded-2xl border border-[var(--clr-border)] bg-[var(--clr-surface)]">
-          <ProblemSidebar problem={problem} />
-        </div>
+      <div className="flex flex-1 overflow-hidden p-4">
+  <PanelGroup direction="horizontal" className="h-full w-full gap-3">
+    <Panel defaultSize={42} minSize={25}>
+      <div className="h-full overflow-hidden rounded-2xl border border-[var(--clr-border)] bg-[var(--clr-surface)]">
+        <ProblemSidebar problem={problem} />
+      </div>
+    </Panel>
 
-        <div className="flex flex-1 flex-col gap-4">
-          <div className="flex-1 overflow-hidden rounded-2xl">
+    <PanelResizeHandle className="w-1 rounded-full bg-[var(--clr-border)] transition hover:bg-[var(--clr-accent)]" />
+
+    <Panel minSize={35}>
+      <PanelGroup direction="vertical" className="h-full gap-3">
+        <Panel defaultSize={68} minSize={35}>
+          <div className="h-full overflow-hidden rounded-2xl border border-[var(--clr-border)] bg-[var(--clr-surface)]">
             <MonacoEditor
               problem={problem}
               code={code}
@@ -89,41 +103,51 @@ export default function WorkspaceLayout({
               onSubmitCode={handleSubmitCode}
             />
           </div>
+        </Panel>
 
-          <div className="h-72 overflow-hidden rounded-2xl border border-[var(--clr-border)] bg-[var(--clr-surface)]">
+        <PanelResizeHandle className="h-1 rounded-full bg-[var(--clr-border)] transition hover:bg-[var(--clr-accent)]" />
+
+        <Panel defaultSize={32} minSize={18}>
+          <div className="h-full overflow-hidden rounded-2xl border border-[var(--clr-border)] bg-[var(--clr-surface)]">
             <ConsolePanel
-              running={running}
-              submitting={submitting}
-              result={executionResult}
-              error={executionError}
-            />
+  running={running}
+  submitting={submitting}
+  result={executionResult}
+  error={executionError}
+  customInput={customInput}
+  setCustomInput={setCustomInput}
+  onRunCode={handleRunCode}
+/>
           </div>
-          {mode === 'test' && submitCompleted && (
+        </Panel>
 
-  <div className="rounded-2xl border border-[var(--clr-border)] bg-[var(--clr-surface)] p-4">
-    <div className="flex justify-end">
-    <button
-      type="button"
-      onClick={() =>
-  onComplete?.({
-    problemId,
-    language: selectedLanguage,
-    sourceCode: code,
-    accepted: executionResult?.accepted,
-    passedCount: executionResult?.passedCount,
-    totalCount: executionResult?.totalCount,
-    results: executionResult?.results || [],
-  })
-}
-      className="rounded-xl bg-[var(--clr-accent)] px-5 py-3 text-sm font-bold text-white"
-    >
-      Complete Coding Section
-    </button>
-    </div>
-  </div>
-)}
-        </div>
-      </div>
+        {mode === 'test' && submitCompleted && (
+          <div className="rounded-2xl border border-[var(--clr-border)] bg-[var(--clr-surface)] p-4">
+            <div className="flex justify-end">
+              <button
+                type="button"
+                onClick={() =>
+                  onComplete?.({
+                    problemId,
+                    language: selectedLanguage,
+                    sourceCode: code,
+                    accepted: executionResult?.accepted,
+                    passedCount: executionResult?.passedCount,
+                    totalCount: executionResult?.totalCount,
+                    results: executionResult?.results || [],
+                  })
+                }
+                className="rounded-xl bg-[var(--clr-accent)] px-5 py-3 text-sm font-bold text-white"
+              >
+                Complete Coding Section
+              </button>
+            </div>
+          </div>
+        )}
+      </PanelGroup>
+    </Panel>
+  </PanelGroup>
+</div>
     </div>
   );
 }

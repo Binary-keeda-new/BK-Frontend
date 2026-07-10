@@ -7,10 +7,10 @@ import ProblemConstraints from './problemConstraints';
 import ProblemHints from './problemHints';
 
 import { Eye } from 'lucide-react';
-import { PreviewProblem } from '../types/previewProblem';
+import { PreviewCodingProblem } from '../types/previewProblem';
 
 interface Props {
-  problem: PreviewProblem;
+  problem: PreviewCodingProblem;
 }
 
 export default function ProblemPanel({

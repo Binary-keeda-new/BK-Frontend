@@ -32,6 +32,7 @@ type ExecutePayload = {
   problemId: string;
   language: string;
   sourceCode: string;
+  customInput?: string;
 };
 
 export async function runCode(payload: ExecutePayload) {

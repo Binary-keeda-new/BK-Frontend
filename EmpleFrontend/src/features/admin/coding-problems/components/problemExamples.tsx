@@ -1,12 +1,7 @@
 'use client';
 
 import ExampleCard from './exampleCard';
-
-interface Example {
-  input: string;
-  output: string;
-  explanation: string;
-}
+import type { Example } from '../types/previewProblem';
 
 interface Props {
   examples: Example[];
