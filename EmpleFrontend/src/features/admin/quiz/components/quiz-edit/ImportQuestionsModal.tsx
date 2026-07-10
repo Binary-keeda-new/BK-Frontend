@@ -94,14 +94,30 @@ export default function ImportQuestionsModal({
 
       if (!correctOptions.length) continue;
 
+      const positiveLine = lines.find((line) =>
+  /^POSITIVE\s*:/i.test(line)
+);
+
+const negativeLine = lines.find((line) =>
+  /^NEGATIVE\s*:/i.test(line)
+);
+
+const positiveMarks = positiveLine
+  ? Number(positiveLine.replace(/^POSITIVE\s*:/i, "").trim())
+  : 4;
+
+const negativeMarks = negativeLine
+  ? Number(negativeLine.replace(/^NEGATIVE\s*:/i, "").trim())
+  : 1;
+
       questions.push({
-        question,
-        options,
-        correctOptions,
-        questionType: correctOptions.length > 1 ? "MSQ" : "MCQ",
-        positiveMarks: 4,
-        negativeMarks: 1,
-      });
+  question,
+  options,
+  correctOptions,
+  questionType: correctOptions.length > 1 ? "MSQ" : "MCQ",
+  positiveMarks: Number.isFinite(positiveMarks) ? positiveMarks : 4,
+  negativeMarks: Number.isFinite(negativeMarks) ? negativeMarks : 1,
+});
     }
 
     return questions;
@@ -456,10 +472,19 @@ export default function ImportQuestionsModal({
           {importTab === "aiken" && (
             <div>
               <p className="mb-3 text-xs leading-[1.7]" style={{ color: t.subText }}>
+<<<<<<< HEAD
                 Format: question text {" "}
                 <code className="text-[var(--clr-accent)]">A. option</code> lines →{" "}
                 <code className="text-[var(--clr-accent)]">ANSWER: B</code>
               </p>
+=======
+  Format: question text →{" "}
+  <code className="text-[var(--clr-accent)]">A. option</code> lines →{" "}
+  <code className="text-[var(--clr-accent)]">ANSWER: B</code> (optional{" "}
+  <code className="text-[var(--clr-accent)]">POSITIVE: 4</code>,{" "}
+  <code className="text-[var(--clr-accent)]">NEGATIVE: 1</code>)
+</p>
+>>>>>>> origin/develop
 
               <textarea
                 rows={6}
