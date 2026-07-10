@@ -1,23 +1,192 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Clapperboard, Sparkles, Bell, User, LogOut , ListTodo } from "lucide-react";
+import {
+  Clapperboard,
+  Sparkles,
+  Bell,
+  User,
+  LogOut,
+  ListTodo,
+  RotateCcw,
+} from "lucide-react";
 import { useDescope, useSession, useUser } from "@descope/nextjs-sdk/client";
 import { useRouter } from "next/navigation";
+import SlideDrawer from "@/shared/components/ui/SlideDrawer";
+import MediaFeedWidget from "@/features/user/dashboard/components/MediaFeedWidget";
+import AIAssistantWidget from "@/features/ai-assistant/components/AIAssistantWidget";
+import EmptyState from "@/shared/components/ui/EmptyState";
+// import WalletBadge from "@/features/wallet/components/WalletBadge";
+
+type Task = {
+  text: string;
+  done: boolean;
+};
+
+function NotificationsPanel({
+  notifications,
+  readIds,
+  onToggleRead,
+  onMarkAllRead,
+}: {
+  notifications: any[]
+  readIds: Set<string>
+  onToggleRead: (id: string) => void
+  onMarkAllRead: () => void
+}) {
+  const typeColors: Record<string, string> = {
+    info: '#3b82f6',
+    warning: '#f59e0b',
+    success: '#22c55e',
+    alert: '#ef4444',
+  }
+
+  const unreadCount = notifications.filter(n => !readIds.has(n._id)).length
+
+  if (notifications.length === 0) {
+    return (
+      <div className="h-full p-4">
+        <EmptyState
+          title="No Notifications Yet"
+          description="You're all caught up. New updates, announcements, and activity alerts will appear here."
+          icon={<Bell size={28} />}
+        />
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex flex-col h-full">
+
+      {/* Panel header */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '12px 16px',
+        borderBottom: '1px solid var(--border)',
+      }}>
+        <span style={{ fontSize: 13, color: 'var(--muted2)', fontWeight: 500 }}>
+          {unreadCount} unread
+        </span>
+        {unreadCount > 0 && (
+          <button
+            onClick={onMarkAllRead}
+            style={{
+              fontSize: 12,
+              fontWeight: 600,
+              color: 'rgb(241,90,34)',
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              padding: 0,
+            }}
+          >
+            Mark all as read
+          </button>
+        )}
+      </div>
+
+      {/* Notifications list */}
+      <div className="flex flex-col gap-3 p-4 overflow-y-auto flex-1">
+        {notifications.map((n: any) => {
+          const isRead = readIds.has(n._id)
+          return (
+            <div
+              key={n._id}
+              style={{
+                borderRadius: 12,
+                padding: '12px 14px',
+                background: isRead ? 'var(--surface2)' : `${typeColors[n.type]}10`,
+                borderLeft: `3px solid ${isRead ? 'var(--border)' : typeColors[n.type]}`,
+                border: `1px solid ${isRead ? 'var(--border)' : `${typeColors[n.type]}25`}`,
+                width: '100%',
+                opacity: isRead ? 0.5 : 1,
+                transition: 'all 0.2s ease',
+              }}
+            >
+              <div style={{
+                display: 'flex',
+                alignItems: 'flex-start',
+                justifyContent: 'space-between',
+                gap: 8,
+              }}>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <p style={{
+                    margin: '0 0 4px 0',
+                    fontSize: 14,
+                    fontWeight: 700,
+                    color: 'var(--text)',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}>
+                    {n.title}
+                  </p>
+                  <p style={{
+                    margin: 0,
+                    fontSize: 12,
+                    color: 'var(--muted2)',
+                    lineHeight: 1.5,
+                  }}>
+                    {n.message}
+                  </p>
+                </div>
+
+                {/* Toggle read dot */}
+                <button
+                  onClick={() => onToggleRead(n._id)}
+                  title={isRead ? 'Mark as unread' : 'Mark as read'}
+                  style={{
+                    width: 10,
+                    height: 10,
+                    borderRadius: '50%',
+                    background: isRead ? 'var(--border)' : typeColors[n.type],
+                    border: 'none',
+                    cursor: 'pointer',
+                    flexShrink: 0,
+                    marginTop: 4,
+                    transition: 'all 0.2s ease',
+                  }}
+                />
+              </div>
+            </div>
+          )
+        })}
+      </div>
+
+    </div>
+  )
+}
 
 export default function Topbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [todoOpen, setTodoOpen] = useState(false);
+  const [mediaOpen, setMediaOpen] = useState(false);
+  const [aiOpen, setAiOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [tasks, setTasks] = useState<Task[]>([{ text: "", done: false }]);
+  const [allNotifications, setAllNotifications] = useState<any[]>([]);
+  const [readIds, setReadIds] = useState<Set<string>>(() => {
+  try {
+    const stored = localStorage.getItem('readNotificationIds')
+    return stored ? new Set(JSON.parse(stored)) : new Set()
+  } catch {
+    return new Set()
+  }
+});
+
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const todoRef = useRef<HTMLDivElement>(null);
+
   const sdk = useDescope();
   const router = useRouter();
 
-  const { session } = useSession() as any;
+  const { session, isAuthenticated } = useSession() as any;
   const { user, isUserLoading } = useUser();
 
-  const userEmail =
-    user?.email || session?.user?.email || session?.token?.email;
-  const fullName =
-    user?.name || session?.user?.name || session?.token?.name;
+  const userEmail = user?.email || session?.user?.email || session?.token?.email;
+  const fullName = user?.name || session?.user?.name || session?.token?.name;
   const displayName = fullName || userEmail || "User";
 
   const initials = fullName
@@ -31,6 +200,16 @@ export default function Topbar() {
     ? userEmail.slice(0, 2).toUpperCase()
     : "U";
 
+  const unreadCount = allNotifications.length - readIds.size;
+
+  useEffect(() => {
+    const BASE = process.env.NEXT_PUBLIC_API_URL ?? ''
+    fetch(`${BASE}/api/v1/notifications`)
+      .then(r => r.json())
+      .then(json => setAllNotifications(json.data ?? []))
+      .catch(() => setAllNotifications([]))
+  }, [])
+
   const handleLogout = async () => {
     await sdk.logout();
     router.push("/landing");
@@ -41,34 +220,51 @@ export default function Topbar() {
     setDropdownOpen(false);
   };
 
+  const handleToggleRead = (id: string) => {
+  setReadIds(prev => {
+    const next = new Set(prev)
+    if (next.has(id)) {
+      next.delete(id)
+    } else {
+      next.add(id)
+    }
+    localStorage.setItem('readNotificationIds', JSON.stringify([...next]))
+    return next
+  })
+}
+
+  const handleMarkAllRead = () => {
+  const allIds = new Set(allNotifications.map(n => n._id))
+  setReadIds(allIds)
+  localStorage.setItem('readNotificationIds', JSON.stringify([...allIds]))
+}
+
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(e.target as Node)
-      ) {
+      const target = e.target as Node;
+      if (dropdownRef.current && !dropdownRef.current.contains(target)) {
         setDropdownOpen(false);
+      }
+      if (todoRef.current && !todoRef.current.contains(target)) {
+        setTodoOpen(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
-    return () =>
-      document.removeEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
-  const iconBtns = [
-    { title: "Media - Coming Soon", icon: <Clapperboard size={22} /> },
-    { title: "Emple AI", icon: <Sparkles size={22} /> },
-    { title: "Notifications", icon: <Bell size={20} /> },
-  ];
 
   return (
     <header className="relative h-[62px]">
-      <nav className="fixed top-0 left-0 z-40 w-full h-[62px] flex items-center justify-between px-3 sm:px-6 pr-4 sm:pr-8
+      <nav
+        className="fixed top-0 left-0 z-40 w-full h-[62px] flex items-center justify-between px-3 sm:px-6 pr-4 sm:pr-8
         backdrop-blur-md bg-[var(--surface)] border-b border-[var(--border)]
-        shadow-[0_2px_12px_rgba(0,0,0,0.3)]">
-
+        shadow-[0_2px_12px_rgba(0,0,0,0.3)]"
+      >
         {/* Logo */}
-        <div className="flex items-center">
+        <div
+          className="flex items-center cursor-pointer transition-transform hover:scale-105"
+          onClick={() => router.push(isAuthenticated ? "/user/dashboard" : "/landing")}
+        >
           <img
             src="/logo-final.png"
             alt="emple"
@@ -80,105 +276,187 @@ export default function Topbar() {
         <div className="flex items-center gap-1 sm:gap-3">
 
           {/* Coin Badge */}
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full cursor-pointer
-            bg-yellow-400/10 border border-yellow-400/30 text-yellow-400
-            hover:bg-yellow-400/20 transition hover:-translate-y-[1px]">
-            
-            <span className="w-[22px] h-[22px] flex items-center justify-center rounded-full text-[9px] font-extrabold
-              bg-yellow-400 text-yellow-900">
-              E
-            </span>
+          {/* isAuthenticated && <WalletBadge /> */}
 
-            <span className="text-xs font-semibold hidden sm:inline">
-              100
-            </span>
-          </div>
-
-          {/* Icons */}
-          {iconBtns.map(({ title, icon }) => (
+          {/* Media button */}
+          {isAuthenticated && (
             <button
-              key={title}
-              title={title}
-              className={`w-11 h-11 flex items-center justify-center rounded-full text-[var(--muted2)]
-                transition-all duration-300
-                hover:-translate-y-[2px] hover:bg-orange-500/10 hover:text-orange-500
-                ${title === "Media - Coming Soon" ? "hidden sm:flex" : ""}`}
+              title="Media - Coming Soon"
+              onClick={() => setMediaOpen(true)}
+              className="w-11 h-11 hidden sm:flex items-center justify-center rounded-full text-[var(--muted2)]
+                transition-all duration-300 hover:-translate-y-[2px] hover:bg-orange-500/10 hover:text-orange-500"
             >
-              {icon}
+              <Clapperboard size={22} />
             </button>
-          ))}
+          )}
+
+          {/* AI button */}
+          {isAuthenticated && (
+            <button
+              title="Emple AI"
+              onClick={() => setAiOpen(true)}
+              className="w-11 h-11 flex items-center justify-center rounded-full text-[var(--muted2)]
+                transition-all duration-300 hover:-translate-y-[2px] hover:bg-orange-500/10 hover:text-orange-500"
+            >
+              <Sparkles size={22} />
+            </button>
+          )}
+
+          {/* Bell button with unread badge */}
+          {isAuthenticated && (
+            <button
+              title="Notifications"
+              onClick={() => setNotifOpen(true)}
+              className="relative w-11 h-11 flex items-center justify-center rounded-full text-[var(--muted2)]
+                transition-all duration-300 hover:-translate-y-[2px] hover:bg-orange-500/10 hover:text-orange-500"
+            >
+              <Bell size={20} />
+              {unreadCount > 0 && (
+                <span style={{
+                  position: 'absolute',
+                  top: 6,
+                  right: 6,
+                  width: 16,
+                  height: 16,
+                  borderRadius: '50%',
+                  background: 'rgb(241,90,34)',
+                  color: '#fff',
+                  fontSize: 9,
+                  fontWeight: 800,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                  {unreadCount > 9 ? '9+' : unreadCount}
+                </span>
+              )}
+            </button>
+          )}
 
           {/* Productivity Button */}
-          <button
-          onClick={() => router.push("/user/productivity")}
-          className="
-          w-10 h-10
-          rounded-full
-          flex items-center justify-center
-          cursor-pointer
-          text-gray-400
-          transition-all duration-300 ease-out
-          hover:bg-[rgba(249,115,22,0.12)]
-          hover:text-[#f97316]
-          hover:-translate-y-1
-          "
-          title="Productivity Hub"
-          >
-          <ListTodo size={22} />
-          </button> 
+<button
+  onClick={() => router.push("/user/productivity")}
+  className="
+    w-10 h-10
+    rounded-full
+    flex items-center justify-center
+    cursor-pointer
+    text-gray-400
+    transition-all duration-300 ease-out
+    hover:bg-[rgba(249,115,22,0.12)]
+    hover:text-[#f97316]
+    hover:-translate-y-1
+  "
+  title="Productivity Hub"
+>
+  <ListTodo size={22} />
+</button>
 
-          {/* Avatar */}
-          <div className="relative" ref={dropdownRef}>
-            <div
-              onClick={() => setDropdownOpen(!dropdownOpen)}
-              className="w-10 h-10 flex items-center justify-center rounded-full font-bold text-sm text-white cursor-pointer
+          {/* Avatar Dropdown */}
+          {isAuthenticated ? (
+            <div className="relative" ref={dropdownRef}>
+              <div
+                onClick={() => setDropdownOpen((prev) => !prev)}
+                className="w-10 h-10 flex items-center justify-center rounded-full font-bold text-sm text-white cursor-pointer
                 border border-[var(--border)]
                 shadow-[0_2px_8px_rgba(241,90,34,0.3)]
                 hover:scale-110 hover:shadow-[0_4px_14px_rgba(241,90,34,0.45)]
                 transition"
-              style={{
-                background:
-                  "linear-gradient(135deg, #f15a22, #6c63ff)",
-              }}
-            >
-              {!isUserLoading && initials}
-            </div>
-
-            {dropdownOpen && (
-              <div className="absolute right-0 top-[54px] w-40 rounded-xl overflow-hidden z-50
-                bg-[var(--surface)] border border-[var(--border)]
-                shadow-[0_8px_24px_rgba(0,0,0,0.4)]
-                animate-[fadeIn_0.15s_ease]">
-
-                <div className="px-4 py-2 text-[11px] opacity-70">
-                  {displayName}
-                </div>
-
-                <div className="h-px bg-[var(--border)]" />
-
-                <div
-                  onClick={handleProfile}
-                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium cursor-pointer
-                    hover:bg-orange-500/10 hover:text-orange-500 transition">
-                  <User size={16} />
-                  Profile
-                </div>
-
-                <div className="h-px bg-[var(--border)]" />
-
-                <div
-                  onClick={handleLogout}
-                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium cursor-pointer text-red-500
-                    hover:bg-red-500/10 transition">
-                  <LogOut size={16} />
-                  Logout
-                </div>
+                style={{
+                  background: "linear-gradient(135deg, #f15a22, #6c63ff)",
+                }}
+              >
+                {!isUserLoading && initials}
               </div>
-            )}
-          </div>
+
+              {dropdownOpen && (
+                <div
+                  className="absolute right-0 top-[54px] w-44 rounded-xl overflow-hidden z-50
+                  bg-[var(--surface)] border border-[var(--border)]
+                  shadow-[0_8px_24px_rgba(0,0,0,0.4)]
+                  animate-[fadeIn_0.15s_ease]"
+                >
+                  <div className="px-4 py-2 text-xs opacity-70 cursor-default truncate">
+                    {displayName}
+                  </div>
+
+                  <div className="h-px bg-[var(--border)]" />
+
+                  <div
+                    onClick={handleProfile}
+                    className="flex items-center gap-2 px-4 py-2 text-sm font-medium cursor-pointer
+                    hover:bg-orange-500/10 hover:text-orange-500 transition"
+                  >
+                    <User size={16} />
+                    Profile
+                  </div>
+
+                  <div className="h-px bg-[var(--border)]" />
+
+                  <div
+                    onClick={handleLogout}
+                    className="flex items-center gap-2 px-4 py-2 text-sm font-medium cursor-pointer text-red-500
+                    hover:bg-red-500/10 transition"
+                  >
+                    <LogOut size={16} />
+                    Logout
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : (
+            <button
+              onClick={() => router.push("/auth/signup")}
+              className="px-4 py-2 text-sm font-bold text-white rounded-lg transition-transform hover:scale-105 ml-2"
+              style={{ background: "linear-gradient(135deg, #f15a22, #6c63ff)" }}
+            >
+              Sign Up Free
+            </button>
+          )}
 
         </div>
       </nav>
+
+      {/* Media Drawer */}
+      <SlideDrawer
+        isOpen={mediaOpen}
+        onClose={() => setMediaOpen(false)}
+        title="Media"
+        icon={<img src="/logo-isolated.png" alt="Emple" className="h-6 w-auto object-contain scale-110" />}
+        width="md"
+      >
+        <div className="h-full">
+          <MediaFeedWidget />
+        </div>
+      </SlideDrawer>
+
+      {/* AI Assistant Drawer */}
+      <SlideDrawer
+        isOpen={aiOpen}
+        onClose={() => setAiOpen(false)}
+        width="md"
+        hideHeader={true}
+      >
+        <div className="h-full">
+          <AIAssistantWidget onClose={() => setAiOpen(false)} />
+        </div>
+      </SlideDrawer>
+
+      {/* Notifications Drawer */}
+      <SlideDrawer
+        isOpen={notifOpen}
+        onClose={() => setNotifOpen(false)}
+        title="Notifications"
+        width="md"
+      >
+        <NotificationsPanel
+          notifications={allNotifications}
+          readIds={readIds}
+          onToggleRead={handleToggleRead}
+          onMarkAllRead={handleMarkAllRead}
+        />
+      </SlideDrawer>
+
     </header>
   );
 }

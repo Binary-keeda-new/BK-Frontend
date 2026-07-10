@@ -1,0 +1,108 @@
+// Chapter 17
+
+export const chapter17_CONTENT = {
+    title: "OBJECT WRAPPERS",
+    description: "Learn about object wrappers",
+    sections: [
+        { title: "Introduction", content: "Content coming soon..." }
+    ]
+};
+
+export const chapter17_DEBUG = undefined;
+
+export const chapter17_DRAG_DROP = undefined;
+
+export const chapter17_MCQ = [
+    {
+        q: "What will be the output of the following Java snippet? \n```java\nInteger i1 = 127;\nInteger i2 = 127;\nInteger i3 = 128;\nInteger i4 = 128;\nSystem.out.println((i1 == i2) + \", \" + (i3 == i4));\n``` (GATE IT 2012)",
+        options: ["true, true", "true, false", "false, true", "false, false"],
+        ans: 1,
+        explanation: "Java caches Integer objects in the range -128 to 127. Therefore, i1 and i2 refer to the same cached object (true). However, 128 is outside this range, so i3 and i4 refer to different objects (false)."
+    },
+    {
+        q: "Which of the following is true regarding Java wrapper classes? (GATE CS 2016)",
+        options: ["They are mutable objects.", "They allow primitives to be used in generic collections.", "They cannot be used with the 'new' keyword.", "They do not participate in polymorphism."],
+        ans: 1,
+        explanation: "Wrapper classes are immutable. They are primarily used so that primitive types can be treated as objects, allowing them to be used in generic collections like ArrayList<Integer>."
+    },
+    {
+        q: "What is the result of the following code? \n```java\nBoolean b1 = new Boolean(\"true\");\nBoolean b2 = new Boolean(\"True\");\nBoolean b3 = new Boolean(\"tRuE\");\nSystem.out.println(b1 == b2);\nSystem.out.println(b1.equals(b3));\n``` (GATE CS 2007)",
+        options: ["true\ntrue", "false\ntrue", "true\nfalse", "false\nfalse"],
+        ans: 1,
+        explanation: "The '==' operator checks for reference equality, so b1 == b2 is false. The equals() method checks the boolean value, and the Boolean constructor is case-insensitive, so b1.equals(b3) is true."
+    },
+    {
+        q: "What happens when a primitive value is assigned to a wrapper class reference? (GATE IT 2014)",
+        options: ["A compilation error occurs", "A runtime exception is thrown", "The JVM performs autoboxing", "The JVM performs unboxing"],
+        ans: 2,
+        explanation: "Assigning a primitive value to a wrapper class reference triggers autoboxing, where the compiler automatically converts the primitive type into its corresponding wrapper object."
+    },
+    {
+        q: "Which of the following methods is used to parse a String into a primitive int? (GATE CS 2015)",
+        options: ["Integer.valueOf()", "Integer.parseInt()", "Integer.getInt()", "Integer.toUnsignedInt()"],
+        ans: 1,
+        explanation: "Integer.parseInt() returns a primitive int, whereas Integer.valueOf() returns an Integer object."
+    },
+    {
+        q: "What is the process of converting a wrapper class object back to its corresponding primitive type called? (GATE CS 2009)",
+        options: ["Autoboxing", "Casting", "Unboxing", "Parsing"],
+        ans: 2,
+        explanation: "Unboxing is the automatic conversion by the Java compiler of a wrapper class object into its corresponding primitive type."
+    },
+    {
+        q: "Are Java wrapper classes mutable or immutable? (GATE IT 2011)",
+        options: ["Mutable", "Immutable", "Depends on the JVM", "Only Integer and Double are immutable"],
+        ans: 1,
+        explanation: "All standard wrapper classes in Java (Integer, Double, Boolean, etc.) are immutable. Once created, their internal primitive value cannot be changed."
+    },
+    {
+        q: "What will be the output of the following code? \n```java\nDouble d1 = 10.0;\nDouble d2 = 10.0;\nSystem.out.print(d1 == d2);\n``` (GATE CS 2013)",
+        options: ["true", "false", "Compilation error", "Runtime Exception"],
+        ans: 1,
+        explanation: "Unlike Integer and Long, the Double and Float classes do not cache instances. Every autoboxing of a floating-point literal creates a new object."
+    },
+    {
+        q: "Which of the following wrapper classes does NOT cache instances within a specific range? (GATE CS 2008)",
+        options: ["Integer", "Long", "Short", "Float"],
+        ans: 3,
+        explanation: "Float and Double do not cache values. Integer, Short, Byte, Long (within -128 to 127) and Character (0 to 127) cache objects."
+    },
+    {
+        q: "Can a wrapper class reference be assigned a null value? (GATE IT 2015)",
+        options: ["No, it will cause a compilation error", "Yes, but it causes a compilation error when unboxed", "Yes, but it will throw a NullPointerException if unboxed", "No, wrapper classes default to 0"],
+        ans: 2,
+        explanation: "Wrapper classes are objects and can be null. However, if Java attempts to unbox a null wrapper object, it throws a NullPointerException."
+    },
+    {
+        q: "Which package contains all the Java wrapper classes? (GATE CS 2010)",
+        options: ["java.util", "java.lang", "java.math", "java.io"],
+        ans: 1,
+        explanation: "All standard wrapper classes (Integer, Double, Boolean, etc.) are defined in the java.lang package, which is imported by default."
+    },
+    {
+        q: "What is the output of the following code? \n```java\nInteger a = new Integer(10);\nint b = 10;\nSystem.out.print(a == b);\n``` (GATE CS 2018)",
+        options: ["true", "false", "Compilation error", "Runtime Exception"],
+        ans: 0,
+        explanation: "When comparing a wrapper object to a primitive using '==', the wrapper object is unboxed into a primitive. Thus, the comparison is 10 == 10, which is true."
+    },
+    {
+        q: "Which class is the superclass of numerical wrapper classes like Integer, Double, and Float? (GATE IT 2005)",
+        options: ["Object", "Number", "Math", "Numeric"],
+        ans: 1,
+        explanation: "The java.lang.Number class is the abstract superclass for all numerical wrapper classes (Byte, Short, Integer, Long, Float, Double)."
+    },
+    {
+        q: "What does the expression `Integer.valueOf(10) == Integer.valueOf(10)` evaluate to? (GATE CS 2017)",
+        options: ["true", "false", "Compilation error", "NullPointerException"],
+        ans: 0,
+        explanation: "The valueOf() method returns cached objects for values between -128 and 127. Since both calls request 10, they return the same reference."
+    },
+    {
+        q: "What will happen when the following code is executed? \n```java\nInteger x = null;\nint y = x;\n``` (GATE CS 2019)",
+        options: ["y is assigned 0", "y is assigned null", "NullPointerException is thrown at runtime", "Compilation error"],
+        ans: 2,
+        explanation: "Assigning an Integer object to an int primitive causes the compiler to insert unboxing code (x.intValue()). Since x is null, this throws a NullPointerException."
+    }
+];
+
+export const chapter17_COMPLETE_EXERCISES = [];

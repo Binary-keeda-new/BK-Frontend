@@ -5,10 +5,11 @@ import { Job } from '../types/jobs.types';
 
 interface JobDetailsProps {
   job: Job;
+  onApply: (link: string) => void;
   onBack: () => void;
 }
 
-export default function JobDetails({ job, onBack }: JobDetailsProps) {
+export default function JobDetails({ job, onApply, onBack }: JobDetailsProps) {
   const isGov = job.type === 'government';
   const releasedCount = job.stages?.filter(s => s.status === 'released').length ?? 0;
   const totalCount = job.stages?.length ?? 0;
@@ -323,6 +324,68 @@ export default function JobDetails({ job, onBack }: JobDetailsProps) {
             </div>
           )}
 
+          {/* ── Gov: Important Links ── */}
+          {isGov && job.links && job.links.length > 0 && (
+            <div
+              style={{
+                background: 'rgba(255,255,255,0.04)',
+                border: '1px solid rgba(255,255,255,0.07)',
+                borderRadius: 12,
+                padding: '16px',
+              }}
+            >
+              <p
+                style={{
+                  margin: '0 0 12px',
+                  fontSize: 11,
+                  fontWeight: 700,
+                  color: '#555',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.07em',
+                }}
+              >
+                Important Links
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                {job.links.map((link, i) => (
+                  <a
+                    key={i}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      padding: '10px 14px',
+                      borderRadius: 10,
+                      background: 'rgba(241,90,34,0.06)',
+                      border: '1px solid rgba(241,90,34,0.18)',
+                      color: '#f0f0f4',
+                      textDecoration: 'none',
+                      fontSize: 13,
+                      fontWeight: 600,
+                      transition: 'background 0.15s, border-color 0.15s',
+                    }}
+                    onMouseEnter={e => {
+                      (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(241,90,34,0.14)';
+                      (e.currentTarget as HTMLAnchorElement).style.borderColor = 'rgba(241,90,34,0.4)';
+                    }}
+                    onMouseLeave={e => {
+                      (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(241,90,34,0.06)';
+                      (e.currentTarget as HTMLAnchorElement).style.borderColor = 'rgba(241,90,34,0.18)';
+                    }}
+                  >
+                    <span>{link.label}</span>
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0 }}>
+                      <path d="M3 11L11 3M11 3H6M11 3V8" stroke="var(--orange)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* ── Skills ── */}
           {job.tags && job.tags.length > 0 && (
             <div>
@@ -355,16 +418,50 @@ export default function JobDetails({ job, onBack }: JobDetailsProps) {
             <p style={{ margin: '0 0 10px', fontSize: 11, fontWeight: 700, color: '#555', textTransform: 'uppercase', letterSpacing: '0.07em' }}>
               Description
             </p>
-            <p
-              style={{
-                margin: 0,
-                fontSize: 13,
-                lineHeight: 1.75,
-                color: '#8a8a9a',
-              }}
-            >
-              {job.description}
-            </p>
+            <div style={{ color: '#8a8a9a', fontSize: 13, lineHeight: 1.75 }}>
+              {(() => {
+                if (!job.description) return null;
+                const lines = job.description.split('\n');
+                const elements: React.ReactNode[] = [];
+                let listType: 'ul' | 'ol' | null = null;
+                let items: string[] = [];
+                
+                const pushList = () => {
+                  if (items.length > 0) {
+                    if (listType === 'ul') {
+                      elements.push(<ul key={`ul-${elements.length}`} style={{ listStyleType: 'disc', paddingLeft: '20px', margin: '8px 0', color: '#8a8a9a' }}>{items.map((item, i) => <li key={i}>{item}</li>)}</ul>);
+                    } else {
+                      elements.push(<ol key={`ol-${elements.length}`} style={{ listStyleType: 'decimal', paddingLeft: '20px', margin: '8px 0', color: '#8a8a9a' }}>{items.map((item, i) => <li key={i}>{item}</li>)}</ol>);
+                    }
+                    items = [];
+                    listType = null;
+                  }
+                };
+
+                lines.forEach((line, index) => {
+                  const trimmed = line.trim();
+                  if (trimmed.startsWith('- ') || trimmed.startsWith('• ') || trimmed.startsWith('* ')) {
+                    if (listType !== 'ul') pushList();
+                    listType = 'ul';
+                    items.push(trimmed.substring(2));
+                  } else if (/^\d+\.\s/.test(trimmed)) {
+                    if (listType !== 'ol') pushList();
+                    listType = 'ol';
+                    items.push(trimmed.replace(/^\d+\.\s/, ''));
+                  } else {
+                    pushList();
+                    if (trimmed === '') {
+                      elements.push(<div key={`br-${index}`} style={{ height: '8px' }} />);
+                    } else {
+                      elements.push(<p key={`p-${index}`} style={{ margin: '0 0 8px', color: '#8a8a9a', whiteSpace: 'pre-wrap' }}>{line}</p>);
+                    }
+                  }
+                });
+                pushList();
+                
+                return elements;
+              })()}
+            </div>
           </div>
 
           {/* Posted at */}
@@ -408,10 +505,8 @@ export default function JobDetails({ job, onBack }: JobDetailsProps) {
           >
             Back
           </button>
-          <a
-            href={job.applyLink}
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            onClick={() => onApply(job.applyLink)}
             style={{
               flex: 1,
               padding: '13px 0',
@@ -420,17 +515,18 @@ export default function JobDetails({ job, onBack }: JobDetailsProps) {
               color: '#fff',
               fontSize: 14,
               fontWeight: 700,
-              textDecoration: 'none',
+              border: 'none',
+              cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               transition: 'opacity 0.15s',
             }}
-            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.opacity = '0.88'; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.opacity = '1'; }}
+            onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.opacity = '0.88'; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.opacity = '1'; }}
           >
             Apply Now
-          </a>
+          </button>
         </div>
       </div>
     </>

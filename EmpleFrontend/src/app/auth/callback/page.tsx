@@ -12,6 +12,13 @@ export default function CallbackPage() {
         const params = new URLSearchParams(window.location.search)
         const code = params.get('code')
 
+        // If came from signup page, redirect to login
+        const fromSignup = params.get('from') === 'signup'
+        if (fromSignup) {
+          window.location.replace('/auth/login')
+          return
+        }
+
         if (!code) {
           window.location.replace('/auth/login?error=missing_code')
           return
@@ -48,8 +55,32 @@ export default function CallbackPage() {
           return
         }
 
-        window.location.replace('/user/dashboard')
-      } catch {
+        const meRes = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/me`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            credentials: 'include',
+          }
+        )
+
+        if (!meRes.ok) {
+          window.location.replace('/auth/login?error=me_failed')
+          return
+        }
+
+        const meData = await meRes.json()
+        const role = meData?.user?.role
+
+        if (role === 'admin') {
+          window.location.replace('/dashboard')
+        } else {
+          window.location.replace('/user/dashboard')
+        }
+      } catch (err) {
+        console.error('Callback error:', err)
         window.location.replace('/auth/login?error=failed')
       }
     }
@@ -61,34 +92,12 @@ export default function CallbackPage() {
     <div
       style={{
         display: 'flex',
-        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
         height: '100vh',
-        background: '#0f0f0f',
-        gap: '16px',
       }}
     >
-      <div
-        style={{
-          width: '40px',
-          height: '40px',
-          border: '3px solid #2a2a2a',
-          borderTop: '3px solid #6366f1',
-          borderRadius: '50%',
-          animation: 'spin 0.8s linear infinite',
-        }}
-      />
-      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
-      <p
-        style={{
-          color: '#6b7280',
-          fontSize: '14px',
-          fontFamily: 'sans-serif',
-        }}
-      >
-        Signing you in...
-      </p>
+      Signing you in...
     </div>
   )
 }

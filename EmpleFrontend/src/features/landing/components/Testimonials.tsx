@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react'
 
 const testimonials = [
   {
-    quote: "The ATS scanner literally saved my application. Zero callbacks before — after fixing my resume using Emple's suggestions, I had 4 interviews in the first week.",
+    quote: "The ATS scanner literally saved my application. Zero callbacks before - after fixing my resume using Emple's suggestions, I had 4 interviews in  the 1st week.",
     initials: 'PR',
     name: 'Priya Ramesh',
     role: 'SDE @ Zomato',
@@ -44,7 +44,7 @@ export default function Testimonials() {
 
   return (
     <section className="section testi-section" id="testimonials" ref={sectionRef}>
-      <div className="container">
+      <div className="content-container">
         <div className="testi-head reveal">
           <div className="section-tag">Reviews</div>
           <h2 className="section-h2">Loved by <em>job seekers</em> everywhere</h2>

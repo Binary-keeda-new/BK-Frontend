@@ -5,7 +5,7 @@ import { Blog } from '../types/blogs.types';
 import { fetchBlogs } from '../services/blogs.service';
 import BlogCard from '../components/BlogCard';
 
-export default function UserBlogsPage() {
+export default function UserBlogsPage({ basePath = "/user/resources/blogs" }: { basePath?: string }) {
   const [blogs, setBlogs]     = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError]     = useState('');
@@ -67,12 +67,13 @@ export default function UserBlogsPage() {
         ) : (
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-            gap: 20,
+            gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+            gap: 24,
             alignItems: 'stretch',
+            maxWidth: '100%',
           }}>
             {blogs.map((blog, i) => (
-              <BlogCard key={blog._id ?? `blog-${i}`} blog={blog} />
+              <BlogCard key={blog._id ?? `blog-${i}`} blog={blog} basePath={basePath} />
             ))}
           </div>
         )

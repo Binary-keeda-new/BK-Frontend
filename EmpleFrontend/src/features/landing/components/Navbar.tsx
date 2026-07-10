@@ -4,6 +4,14 @@ import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 
 export default function Navbar() {
+  const navItems = [
+  { id: 'about', label: 'About' },
+  { id: 'features', label: 'Features' },
+  { id: 'how', label: 'How It Works' },
+  { id: 'pricing', label: 'Pricing' },
+  /*{ id: 'testimonials', label: 'Testimonials' },*/
+  { id: 'faq', label: 'FAQ' },
+]
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
@@ -47,7 +55,7 @@ export default function Navbar() {
           transition: 'background-color 0.3s ease, box-shadow 0.3s ease'
          }}
       >
-        <div className="nav-inner container">
+        <div className="nav-inner nav-container">
 
           {/* Logo */}
           <div className="flex items-center">
@@ -64,13 +72,26 @@ export default function Navbar() {
 
             {/* NAV LINKS */}
             <div className="nav-links">
-              {['about', 'features', 'how', 'pricing', 'testimonials', 'faq'].map((id) => (
+              {/*{['about', 'features', 'how', 'pricing', 'testimonials', 'faq'].map((id) => (
                 <button key={id} className="nav-link" onClick={() => scrollTo(id)}>
                   {id === 'how'
                     ? 'How It Works'
                     : id.charAt(0).toUpperCase() + id.slice(1)}
                 </button>
+              ))}*/}
+              {navItems.map((item) => (
+                <button
+                  key={item.id}
+                  className="nav-link"
+                  onClick={() => scrollTo(item.id)}
+                >
+                  {item.label}
+                </button>
               ))}
+
+              <Link href="/team" className="nav-link">
+                Team
+              </Link>
             </div>
 
             {/* ACTIONS */}
@@ -98,13 +119,33 @@ export default function Navbar() {
 
       {/* MOBILE DRAWER */}
       <div ref={drawerRef} className={`nav-drawer${drawerOpen ? ' open' : ''}`}>
-        {['about', 'features', 'how', 'pricing', 'testimonials', 'faq'].map((id) => (
+        {/*{['about', 'features', 'how', 'pricing', 'testimonials', 'faq'].map((id) => (
           <button key={id} className="nav-link" onClick={() => scrollTo(id)}>
             {id === 'how'
               ? 'How It Works'
               : id.charAt(0).toUpperCase() + id.slice(1)}
           </button>
+        ))}*/}
+        {navItems.map((item) => (
+          <button
+            key={item.id}
+            className="nav-link"
+            onClick={() => scrollTo(item.id)}
+          >
+            {item.label}
+            
+          </button>
+          
         ))}
+
+        <Link
+          href="/team"
+          className="nav-link flex justify-center items-center"
+          onClick={closeDrawer}
+        >
+          Team
+        </Link>
+        
 
         <div className="drawer-actions">
           <Link className="btn-outline" href="/auth/login" onClick={closeDrawer}>

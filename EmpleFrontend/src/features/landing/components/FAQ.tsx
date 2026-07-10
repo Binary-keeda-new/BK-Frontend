@@ -6,32 +6,37 @@ interface FAQItem { q: string; a: string; }
 const faqs: FAQItem[] = [
   {
     q: "What is Emple?",
-    a: "Emple is an ed-tech platform designed to empower students and aspiring professionals through project-based learning, mentorship, and real-world tech exposure.",
-  },
-  {
-    q: "Why should I join Emple?",
-    a: "At Emple, you'll work on practical coding challenges, build full-stack projects, participate in hackathons, and get guidance from industry mentors to prepare for SDE roles and beyond.",
-  },
-  {
-    q: "What Resources does Emple offer?",
-    a: "Emple provides coding interfaces, curated problem sets, mock interviews, resume reviews, and structured learning paths for technologies like MERN, DevOps, and Data Science.",
+    a: "Emple is an AI-powered career development platform designed to help students, graduates, and professionals prepare for internships, placements, and job opportunities. The platform combines interview preparation, ATS resume analysis, career roadmaps, tutorials, placement resources, and skill-building tools in one place. Whether you're preparing for your first internship or your next career move, Emple helps you build the skills, confidence, and resources needed to succeed.",
   },
   {
     q: "Who can join Emple?",
-    a: "Emple is open to all learners — from BCA, B.Tech, MCA students to self-taught coders — anyone passionate about tech, development, and building impactful projects.",
+    a: "Emple is built for learners and professionals at every stage of their career journey, including college students, fresh graduates, job seekers and software developers looking to upskill. Anyone interested in improving their technical skills, interview performance, resume quality, or career readiness can benefit from the platform.",
+  },
+  {
+  q: "What Resources does Emple offer?",
+  a: "Emple provides interview preparation resources, structured career roadmaps, technical tutorials, ATS resume guidance, certification resources, placement preparation materials, industry-focused blogs, and community learning opportunities. These resources are designed to help learners develop in-demand skills and prepare confidently for internships, placements, and job opportunities."
+},
+  {
+    q: "Are the career roadmaps suitable for beginners?",
+    a: "Yes. The career roadmaps are designed for learners at different skill levels. Whether you are starting with programming fundamentals or preparing for advanced software engineering roles, Emple provides structured learning paths that help users understand what to learn and in what order.",
   },
   {
     q: "Is Emple free?",
-    a: "Yes, the core resources and community participation are completely free. We believe in democratizing education. Advanced mentorship or certification programs may be optional and paid.",
-  },
-  {
-    q: "What makes Emple different?",
-    a: "Unlike tutorial-based platforms, Emple focuses on real projects, peer collaboration, and tech-driven problem-solving — helping you build your portfolio and confidence.",
+    a: "Yes. Emple offers a free plan that provides access to a variety of learning resources, career guides, and preparation materials. Additional premium features may be available for users who want advanced tools, personalized guidance, or enhanced career support.",
   },
   {
     q: "How do I get started",
-    a: "Just sign up, explore the learning tracks, pick your interest (MERN, DevOps, ML, etc.), and start building! Our mentors and community are always ready to guide you.",
+    a: "Getting started is simple. Create a free account, complete your profile, and explore the available resources. You can begin with career roadmaps, tutorials, interview preparation content, and other learning materials. As you progress, you can use additional tools and features to further support your career goals.",
   },
+  {
+    q: "What makes Emple different?",
+    a: "Unlike traditional learning platforms that focus only on courses, Emple combines learning, career preparation, interview readiness, structured roadmaps, community engagement, and practical resources within a single ecosystem. The platform is designed to help users move beyond learning and take meaningful steps toward internships, placements, and career growth.",
+  },
+  {
+    q: "Can Emple guarantee a job or placement?",
+    a: "No. Emple provides educational resources, preparation tools, and career guidance, but job offers and placements depend on individual skills, effort, experience, and hiring decisions made by employers. The platform is designed to improve preparedness and career readiness.",
+  },
+  
 ];
 
 export default function FAQ() {
@@ -53,7 +58,7 @@ export default function FAQ() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
         .faq-root {
-          font-family: 'Plus Jakarta Sans', sans-serif;
+          font-family: 'Nunito', sans-serif;
           background: #0a0b0f;
           color: #eeeef4;
           -webkit-font-smoothing: antialiased;
@@ -66,7 +71,7 @@ export default function FAQ() {
           width: 100%; display: flex; align-items: center; justify-content: space-between;
           gap: 16px; background: none; border: none; cursor: pointer;
           padding: 22px 0; text-align: left;
-          font-family: 'Plus Jakarta Sans', sans-serif;
+          font-family: 'Nunito', sans-serif;
         }
         .faq-btn:hover .faq-q { color: #eeeef4; }
         .faq-q {
@@ -117,11 +122,16 @@ export default function FAQ() {
       >
         <div className="faq-glow" />
 
-        <div style={{ maxWidth: 860, marginInline: "auto", position: "relative" }}>
+        <div
+          className="content-container"
+          style={{
+            position: "relative"
+          }}
+        >
 
           {/* Label row */}
           <div className={`faq-fade${visible ? " faq-in" : ""}`} style={{ transitionDelay: "0.05s", display: "flex", alignItems: "center",   justifyContent: "center", gap: 10, marginBottom: 20 }}>
-            <span style={{ display: "inline-block", width: 28, height: 2.5, background: "#f15a22", borderRadius: 4, flexShrink: 0 }} />
+            
             <span style={{ fontWeight: 700, fontSize: "0.72rem", letterSpacing: "0.18em", textTransform: "uppercase", color: "#f15a22" }}>
               FAQ
             </span>
@@ -134,6 +144,7 @@ export default function FAQ() {
               transitionDelay: "0.15s",
               fontWeight: 900,
               fontSize: "clamp(2.2rem, 5.5vw, 3.75rem)",
+              textAlign: "center",
               lineHeight: 1.08,
               letterSpacing: "-0.03em",
               color: "#eeeef4",

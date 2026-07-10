@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { QUIZ_CATEGORIES } from "@/shared/constants/quizCategories";
+import { apiRequest } from "@/shared/utils/api";
 
 type QuizItem = {
   _id: string;
@@ -16,8 +17,6 @@ type QuizListResponse = {
   message: string;
   data: QuizItem[];
 };
-
-const API_BASE = "http://localhost:5000/api/v1/admin";
 
 const CATEGORY_META: Record<
   keyof typeof QUIZ_CATEGORIES,
@@ -61,25 +60,16 @@ export default function QuizHome() {
         setLoading(true);
         setError("");
 
-        const res = await fetch(`${API_BASE}/quizzes?page=1&limit=200`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          cache: "no-store",
-        });
-
-        const result: QuizListResponse = await res.json();
-
-        if (!res.ok) {
-          throw new Error(result.message || "Failed to fetch quizzes");
-        }
+        const result = await apiRequest<QuizListResponse>(
+          "/api/v1/quizzes?page=1&limit=200",
+          {
+            method: "GET",
+          }
+        );
 
         setQuizzes(result.data || []);
       } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "Failed to load quizzes"
-        );
+        setError(err instanceof Error ? err.message : "Failed to load quizzes");
         setQuizzes([]);
       } finally {
         setLoading(false);
@@ -100,15 +90,15 @@ export default function QuizHome() {
   }, [quizzes]);
 
   const quizCards = useMemo(() => {
-    return (Object.keys(QUIZ_CATEGORIES) as Array<keyof typeof QUIZ_CATEGORIES>).map(
-      (category) => ({
-        title: category,
-        desc: CATEGORY_META[category].desc,
-        icon: CATEGORY_META[category].icon,
-        href: CATEGORY_META[category].href,
-        count: quizCountByCategory[category] || 0,
-      })
-    );
+    return (
+      Object.keys(QUIZ_CATEGORIES) as Array<keyof typeof QUIZ_CATEGORIES>
+    ).map((category) => ({
+      title: category,
+      desc: CATEGORY_META[category].desc,
+      icon: CATEGORY_META[category].icon,
+      href: CATEGORY_META[category].href,
+      count: quizCountByCategory[category] || 0,
+    }));
   }, [quizCountByCategory]);
 
   return (
@@ -159,11 +149,7 @@ export default function QuizHome() {
         }}
       >
         {quizCards.map((card) => (
-          <Link
-            href={card.href}
-            key={card.title}
-            style={{ textDecoration: "none" }}
-          >
+          <Link href={card.href} key={card.title} style={{ textDecoration: "none" }}>
             <div
               style={{
                 background: "var(--surface)",
@@ -176,19 +162,15 @@ export default function QuizHome() {
                 position: "relative",
               }}
               onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.border =
-                  "1px solid var(--orange)";
-                (e.currentTarget as HTMLElement).style.transform =
-                  "translateY(-4px)";
-                (e.currentTarget as HTMLElement).style.boxShadow =
+                e.currentTarget.style.border = "1px solid var(--orange)";
+                e.currentTarget.style.transform = "translateY(-4px)";
+                e.currentTarget.style.boxShadow =
                   "0 8px 24px rgba(241,90,34,0.2)";
               }}
               onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.border =
-                  "1px solid var(--border)";
-                (e.currentTarget as HTMLElement).style.transform =
-                  "translateY(0)";
-                (e.currentTarget as HTMLElement).style.boxShadow = "none";
+                e.currentTarget.style.border = "1px solid var(--border)";
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "none";
               }}
             >
               <div style={{ fontSize: "32px", marginBottom: "12px" }}>
@@ -231,7 +213,9 @@ export default function QuizHome() {
                   border: "1px solid var(--border)",
                 }}
               >
-                {loading ? "Loading..." : `${card.count} quiz${card.count === 1 ? "" : "zes"}`}
+                {loading
+                  ? "Loading..."
+                  : `${card.count} quiz${card.count === 1 ? "" : "zes"}`}
               </div>
             </div>
           </Link>

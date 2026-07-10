@@ -1,178 +1,278 @@
 "use client";
+//activity
+import { useEffect, useMemo, useState } from "react";
 
 const DAYS = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 
+type Activity = {
+  visitedDates: string[];
+  currentStreak: number;
+  highestStreak: number;
+  lastVisitedDate: string | null;
+};
+
 interface CalDay {
   day: number;
+  date: string;
   otherMonth?: boolean;
   isToday?: boolean;
-  hasDot?: boolean;
 }
 
-const WEEKS: CalDay[][] = [
-  [
-    { day: 26, otherMonth: true }, { day: 27, otherMonth: true }, { day: 28, otherMonth: true },
-    { day: 29, otherMonth: true }, { day: 30, otherMonth: true }, { day: 31, otherMonth: true },
-    { day: 1 },
-  ],
-  [{ day: 2 }, { day: 3 }, { day: 4 }, { day: 5, hasDot: true }, { day: 6 }, { day: 7 }, { day: 8, hasDot: true }],
-  [{ day: 9, hasDot: true }, { day: 10 }, { day: 11 }, { day: 12 }, { day: 13 }, { day: 14 }, { day: 15 }],
-  [{ day: 16 }, { day: 17 }, { day: 18 }, { day: 19 }, { day: 20, isToday: true }, { day: 21 }, { day: 22 }],
-  [{ day: 23 }, { day: 24 }, { day: 25 }, { day: 26 }, { day: 27 }, { day: 28 }, { day: 1, otherMonth: true }],
-];
+type ActivityCalendarProps = {
+  activity: Activity;
+  token?: string;
+  baseurl: string;
+  onActivityUpdate: (activity: Activity) => void;
+};
 
-const NavBtn = ({ children }: { children: string }) => (
+const toDateKey = (date: Date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+};
+
+const getMonthDateKey = (date: Date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+
+  return `${year}-${month}-01`;
+};
+
+const generateCalendarWeeks = (monthDate: Date): CalDay[][] => {
+  const year = monthDate.getFullYear();
+  const month = monthDate.getMonth();
+
+  const firstDay = new Date(year, month, 1);
+  const startOffset = (firstDay.getDay() + 6) % 7;
+  const calendarStart = new Date(year, month, 1 - startOffset);
+
+  const weeks: CalDay[][] = [];
+
+  for (let week = 0; week < 6; week++) {
+    const days: CalDay[] = [];
+
+    for (let day = 0; day < 7; day++) {
+      const current = new Date(calendarStart);
+      current.setDate(calendarStart.getDate() + week * 7 + day);
+
+      days.push({
+        day: current.getDate(),
+        date: toDateKey(current),
+        otherMonth: current.getMonth() !== month,
+        isToday: toDateKey(current) === toDateKey(new Date()),
+      });
+    }
+
+    weeks.push(days);
+  }
+
+  return weeks;
+};
+
+const NavBtn = ({
+  children,
+  onClick,
+}: {
+  children: string;
+  onClick?: () => void;
+}) => (
   <button
-    className="px-[clamp(6px,2vw,8px)] py-[clamp(2px,0.8vw,3px)] rounded-[7px] text-[clamp(11px,3vw,13px)] cursor-pointer transition-all duration-150"
-    style={{ background: "var(--surface2)", border: "1px solid var(--border)", color: "var(--muted2)" }}
-    onMouseEnter={e => {
-      const el = e.currentTarget as HTMLButtonElement;
-      el.style.borderColor = "var(--orange)";
-      el.style.color = "var(--orange)";
-      el.style.background = "var(--orange-dim)";
-    }}
-    onMouseLeave={e => {
-      const el = e.currentTarget as HTMLButtonElement;
-      el.style.borderColor = "var(--border)";
-      el.style.color = "var(--muted2)";
-      el.style.background = "var(--surface2)";
-    }}
+    onClick={onClick}
+    className="cursor-pointer rounded-md border border-[var(--border)] bg-[var(--surface2)] px-2 py-1 text-xs text-[var(--muted2)] transition-all duration-150 hover:bg-white/5"
   >
     {children}
   </button>
 );
 
-export default function ActivityCalendar() {
+export default function ActivityCalendar({
+  activity,
+  token,
+  baseurl,
+  onActivityUpdate,
+}: ActivityCalendarProps) {
+  const [currentMonth, setCurrentMonth] = useState(new Date());
+
+  useEffect(() => {
+    const fetchMonthActivity = async () => {
+      if (!token) return;
+
+      const dateKey = getMonthDateKey(currentMonth);
+
+      const res = await fetch(`${baseurl}/api/v1/activity?date=${dateKey}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!res.ok) return;
+
+      const data = await res.json();
+      onActivityUpdate(data.data);
+    };
+
+    fetchMonthActivity();
+  }, [currentMonth, token, baseurl, onActivityUpdate]);
+
+  const visitedDates = activity.visitedDates || [];
+  const highestStreak = activity.highestStreak || 0;
+
+  const weeks = useMemo(
+    () => generateCalendarWeeks(currentMonth),
+    [currentMonth]
+  );
+
+  const monthLabel = currentMonth.toLocaleDateString("en-US", {
+    month: "long",
+    year: "numeric",
+  });
+
   return (
     <div className="animated-border h-full">
-      <div className="animated-border-inner overflow-hidden h-full flex flex-col"
-        style={{ padding: "clamp(14px, 4vw, 22px)" }}
-      >
-
-        {/* Header */}
-        <div className="flex justify-between items-start" style={{ marginBottom: "clamp(10px, 3vw, 14px)" }}>
-          <div
-            className="font-syne font-bold"
-            style={{ fontSize: "clamp(13px, 3.5vw, 15px)", color: "var(--text)" }}
-          >
-            Activity Calendar
-          </div>
-          <div className="text-right">
-            <div
-              className="font-semibold flex items-center gap-1 justify-end"
-              style={{ fontSize: "clamp(9px, 2.5vw, 11px)", color: "var(--muted2)" }}
-            >
-              🔥 Streak
+      <div className="animated-border-inner flex h-full flex-col overflow-hidden p-4 sm:p-5">
+        <div className="mb-[clamp(10px,3vw,14px)] flex items-start justify-between">
+          <div>
+            <div className="font-syne text-[clamp(13px,3.5vw,15px)] font-bold text-[var(--text)]">
+              Activity Calendar
             </div>
-            <div
-              className="font-syne font-extrabold"
-              style={{ fontSize: "clamp(17px, 4.5vw, 20px)", color: "var(--orange)", lineHeight: 1.1 }}
+
+            <div className="font-syne mt-0.5 bg-gradient-to-br from-[#FFB366] to-[#F15A22] bg-clip-text text-[clamp(17px,4.5vw,20px)] font-extrabold leading-[1.2] text-transparent drop-shadow-[0_0_12px_rgba(241,90,34,0.35)] transition-all duration-200">
+              {highestStreak} {highestStreak === 1 ? "day" : "days"}
+            </div>
+          </div>
+
+          <div className="group relative">
+            <button
+              type="button"
+              className="inline-flex h-[18px] w-[18px] cursor-help items-center justify-center rounded-full border border-[var(--border)] bg-[var(--surface2)] text-[11px] text-[var(--muted2)]"
             >
-              5 days
+              i
+            </button>
+
+            <div className="absolute right-0 top-[26px] z-50 hidden w-[220px] rounded-[10px] border border-[var(--border)] bg-[rgba(20,20,20,0.96)] px-3 py-2.5 text-[11px] leading-[1.4] text-[var(--text)] shadow-[0_12px_30px_rgba(0,0,0,0.35)] group-hover:block">
+              Your streak is based on consecutive daily dashboard visits. If
+              you miss a day, your current streak resets, but your highest
+              streak remains saved.
             </div>
           </div>
         </div>
 
-        {/* Month nav */}
-        <div className="relative flex items-center" style={{ gap: "clamp(4px, 1.5vw, 6px)", marginBottom: "clamp(10px, 3vw, 14px)" }}>
-          <NavBtn>«</NavBtn>
-          <NavBtn>‹</NavBtn>
-          <div
-            className="absolute left-1/2 -translate-x-1/2 font-semibold whitespace-nowrap"
-            style={{ fontSize: "clamp(12px, 3vw, 13px)", color: "var(--text)" }}
+        <div className="relative mb-[clamp(10px,3vw,14px)] flex items-center gap-[clamp(4px,1.5vw,6px)]">
+          <NavBtn
+            onClick={() =>
+              setCurrentMonth(
+                new Date(
+                  currentMonth.getFullYear() - 1,
+                  currentMonth.getMonth(),
+                  1
+                )
+              )
+            }
           >
-            February 2026
+            «
+          </NavBtn>
+
+          <NavBtn
+            onClick={() =>
+              setCurrentMonth(
+                new Date(
+                  currentMonth.getFullYear(),
+                  currentMonth.getMonth() - 1,
+                  1
+                )
+              )
+            }
+          >
+            ‹
+          </NavBtn>
+
+          <div className="absolute left-1/2 -translate-x-1/2 whitespace-nowrap text-[clamp(12px,3vw,13px)] font-semibold text-[var(--text)]">
+            {monthLabel}
           </div>
-          <div className="flex ml-auto" style={{ gap: "clamp(4px, 1.5vw, 6px)" }}>
-            <NavBtn>›</NavBtn>
-            <NavBtn>»</NavBtn>
+
+          <div className="ml-auto flex gap-[clamp(4px,1.5vw,6px)]">
+            <NavBtn
+              onClick={() =>
+                setCurrentMonth(
+                  new Date(
+                    currentMonth.getFullYear(),
+                    currentMonth.getMonth() + 1,
+                    1
+                  )
+                )
+              }
+            >
+              ›
+            </NavBtn>
+
+            <NavBtn
+              onClick={() =>
+                setCurrentMonth(
+                  new Date(
+                    currentMonth.getFullYear() + 1,
+                    currentMonth.getMonth(),
+                    1
+                  )
+                )
+              }
+            >
+              »
+            </NavBtn>
           </div>
         </div>
 
-        {/* Grid */}
-        <div className="flex-1 flex items-center justify-center">
-          <div
-            className="grid grid-cols-7 text-center w-full"
-            style={{ gap: "clamp(2px, 0.8vw, 3px)" }}
-          >
-
-            {/* Day names */}
+        <div className="flex flex-1 items-center justify-center">
+          <div className="grid w-full grid-cols-7 gap-[clamp(2px,0.8vw,3px)] text-center">
             {DAYS.map((d, i) => (
               <div
                 key={d}
-                className="font-bold uppercase tracking-[0.05em]"
-                style={{
-                  fontSize: "clamp(7px, 2vw, 9.5px)",
-                  padding: "clamp(3px, 1vw, 4px) 0",
-                  color: i >= 5 ? "rgba(241,90,34,0.7)" : "var(--muted)",
-                }}
+                className={`py-[clamp(3px,1vw,4px)] text-[clamp(7px,2vw,9.5px)] font-bold uppercase tracking-[0.05em] ${
+                  i >= 5 ? "text-[rgba(241,90,34,0.7)]" : "text-[var(--muted)]"
+                }`}
               >
                 {d}
               </div>
             ))}
 
-            {/* Days */}
-            {WEEKS.map((week, wi) =>
+            {weeks.map((week, wi) =>
               week.map((cell, ci) => {
                 const isWeekend = ci >= 5;
-                const baseColor = cell.isToday
-                  ? "#fff"
-                  : cell.otherMonth
-                  ? "var(--muted)"
-                  : isWeekend
-                  ? "rgba(241,90,34,0.85)"
-                  : "var(--text)";
+                const isVisited = visitedDates.includes(cell.date);
+
+                const dayClass = [
+                  "relative mx-auto flex cursor-pointer items-center justify-center rounded-full",
+                  "h-[clamp(28px,6vw,36px)] w-[clamp(28px,6vw,36px)]",
+                  "text-[clamp(10px,2.8vw,12px)] transition-all duration-150",
+
+                  cell.isToday || isVisited ? "font-bold" : "font-normal",
+
+                  cell.isToday || isVisited
+                    ? "text-white backdrop-blur-[10px]"
+                    : cell.otherMonth
+                    ? "text-[var(--muted)]"
+                    : isWeekend
+                    ? "text-[rgba(241,90,34,0.85)]"
+                    : "text-[var(--text)]",
+
+                  cell.otherMonth && !isVisited ? "opacity-40" : "opacity-100",
+
+                  cell.isToday
+                    ? "border-2 border-[#22c55e] bg-[rgba(34,197,94,0.18)] shadow-[0_0_12px_rgba(34,197,94,0.25)]"
+                    : isVisited
+                    ? "border-2 border-[#f15a22] bg-transparent shadow-[0_0_10px_rgba(241,90,34,0.18)]"
+                    : "border border-transparent bg-transparent shadow-none",
+                ].join(" ");
 
                 return (
-                  <div
-                    key={`${wi}-${ci}`}
-                    className="relative rounded-[8px] cursor-pointer transition-all duration-150"
-                    style={{
-                      fontSize: "clamp(10px, 2.8vw, 12px)",
-                      padding: "clamp(4px, 1.5vw, 6px) 0",
-                      color: baseColor,
-                      opacity: cell.otherMonth ? 0.4 : 1,
-                      background: cell.isToday ? "var(--orange)" : "transparent",
-                      fontWeight: cell.isToday ? 700 : 400,
-                      boxShadow: cell.isToday ? "0 3px 10px rgba(241,90,34,0.4)" : "none",
-                    }}
-                    onMouseEnter={e => {
-                      if (!cell.isToday) {
-                        const el = e.currentTarget as HTMLElement;
-                        el.style.background = "var(--orange-dim)";
-                        el.style.color = "var(--orange)";
-                        el.style.transform = "scale(1.08)";
-                      }
-                    }}
-                    onMouseLeave={e => {
-                      if (!cell.isToday) {
-                        const el = e.currentTarget as HTMLElement;
-                        el.style.background = "transparent";
-                        el.style.color = baseColor;
-                        el.style.transform = "";
-                      }
-                    }}
-                  >
+                  <div key={`${wi}-${ci}-${cell.date}`} className={dayClass}>
                     {cell.day}
-                    {cell.hasDot && (
-                      <span
-                        className="absolute left-1/2 -translate-x-1/2 rounded-full block"
-                        style={{
-                          bottom: "2px",
-                          width: "clamp(3px, 0.9vw, 4px)",
-                          height: "clamp(3px, 0.9vw, 4px)",
-                          background: cell.isToday ? "rgba(255,255,255,0.8)" : "var(--orange)",
-                        }}
-                      />
-                    )}
                   </div>
                 );
               })
             )}
-
           </div>
         </div>
-
       </div>
     </div>
   );

@@ -40,31 +40,28 @@ export default function Hero() {
         <div className="hero-left">
           <div className="hero-eyebrow">
             <span className="eyebrow-dot" />
-            AI-Powered Mock Interviews — Now Live
+            AI Agents - Now Live
           </div>
 
           <h1 className="hero-h1">
-            Don&apos;t Hustle<br />
-            and Get <span className="highlight">Placed</span><br />
+            Get <span className="highlight">Placed</span><br />
             with <span className="accent">Emple</span>
           </h1>
 
           <p className="hero-desc">
-            Your AI-powered Placement Preparation Ecosystem- practice coding interviews,
+            Your AI-powered Career Development Platform, practice coding interviews,
             score your resume against ATS, track applications, and follow expert career
-            roadmaps, all in one platform built for ambitious job seekers.
+            roadmaps, all in one platform built for ambitious students and professionals.
           </p>
 
           <div className="hero-btns">
-            <Link className="hero-btn-primary" href="/auth/signup">
+            <Link className="hero-btn-primary" href="/resources">
               Start for Free
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
-              </svg>
+              
             </Link>
           </div>
 
-          <div className="hero-stats">
+          {/*<div className="hero-stats">
             {[
               { num: '50', suffix: 'K+', label: 'Active Users' },
               { num: '98', suffix: '%', label: 'Satisfaction' },
@@ -78,7 +75,7 @@ export default function Hero() {
                 </div>
               </Fragment>
             ))}
-          </div>
+          </div>*/}
         </div>
 
         {/* RIGHT — AI Character */}
@@ -93,20 +90,22 @@ export default function Hero() {
 
             <div className="ai-chip ai-chip-1">
               <span className="chip-live-dot" />
-              <span className="chip-icon">🤖</span>
+              
               AI Interview Live
             </div>
             <div className="ai-chip ai-chip-2">
-              <span className="chip-icon">📊</span>
+              <span className="chip-live-dot" />
+              
               98% ATS Score
             </div>
             <div className="ai-chip ai-chip-3">
-              <span className="chip-icon">🔥</span>
+              <span className="chip-live-dot" />
+              
               5-day Streak!
             </div>
             <div className="ai-chip ai-chip-4">
               <span className="chip-live-dot" />
-              <span className="chip-icon">✅</span>
+              
               Offer Received
             </div>
 

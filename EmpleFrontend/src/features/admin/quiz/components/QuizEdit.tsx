@@ -16,9 +16,7 @@ import QuizPublishBar from "./quiz-edit/QuizPublishBar";
 import ImportQuestionBank from "./quiz-edit/ImportQuestionBank";
 import ImportQuestionsModal from "./quiz-edit/ImportQuestionsModal";
 import ToastContainer from "../../question-bank/components/ToastContainer";
-import { parseJsonResponse } from "@/shared/utils/api";
-
-const API_BASE = "http://localhost:5000/api/v1/admin";
+import { apiRequest } from "@/shared/utils/api";
 
 export default function QuizEdit({ quizId, onClose }: QuizEditProps) {
   const [quizForm, setQuizForm] = useState({
@@ -130,30 +128,20 @@ const handleSaveQuizDetails = async () => {
   setSavingQuizDetails(true);
 
   try {
-    const res = await fetch(`${API_BASE}/quizzes/${quizId}`, {
+    await apiRequest(`/api/v1/admin/quizzes/${quizId}`, {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-     body: JSON.stringify({
-  title: quizForm.title,
-  description: quizForm.description,
-  category: quizForm.category,
-  subcategory: quizForm.subcategory,
-  marks: Number(quizForm.marks),
-  numberOfQuestions: Number(quizForm.numberOfQuestions),
-
-  duration: Math.ceil(
-  (Number(minutes || 0) * 60 + Number(seconds || 0)) / 60
-),
-}),
+      body: JSON.stringify({
+        title: quizForm.title,
+        description: quizForm.description,
+        category: quizForm.category,
+        subcategory: quizForm.subcategory,
+        marks: Number(quizForm.marks),
+        numberOfQuestions: Number(quizForm.numberOfQuestions),
+        duration: Math.ceil(
+          (Number(minutes || 0) * 60 + Number(seconds || 0)) / 60
+        ),
+      }),
     });
-
-    const data = await parseJsonResponse<any>(res);
-
-    if (!res.ok) {
-      throw new Error(data.message || "Failed to update quiz");
-    }
 
     await loadQuiz();
     addToast("Quiz details saved successfully!", "success");

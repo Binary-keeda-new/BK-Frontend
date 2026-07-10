@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Blog, BlogPayload } from '../types/blogs.types';
+import { Blog, BlogPayload, ContentBlock } from '../types/blogs.types';
 
 interface Props {
   blog?: Blog | null;
@@ -35,6 +35,7 @@ export default function BlogFormModal({ blog, onSave, onClose }: Props) {
   const isEdit = !!blog;
   const [title, setTitle]           = useState(blog?.title ?? '');
   const [content, setContent]       = useState(blog?.content ?? '');
+  const [blocks, setBlocks]         = useState<ContentBlock[]>(blog?.blocks ?? []);
   const [author, setAuthor]         = useState(blog?.author ?? '');
   const [tags, setTags]             = useState((blog?.tags ?? []).join(', '));
   const [coverImage, setCoverImage] = useState(blog?.coverImage ?? '');
@@ -45,7 +46,7 @@ export default function BlogFormModal({ blog, onSave, onClose }: Props) {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError('');
-    if (!title.trim() || !content.trim()) {
+    if (!title.trim() || (!content.trim() && blocks.length === 0)) {
       setError('Title and content are required.');
       return;
     }
@@ -54,6 +55,7 @@ export default function BlogFormModal({ blog, onSave, onClose }: Props) {
       await onSave({
         title: title.trim(),
         content: content.trim(),
+        blocks,
         author: author.trim() || 'Admin',
         tags: tags.split(',').map(t => t.trim()).filter(Boolean),
         coverImage: coverImage.trim() || null,
@@ -67,6 +69,33 @@ export default function BlogFormModal({ blog, onSave, onClose }: Props) {
     }
   }
 
+  const moveBlock = (index: number, dir: -1 | 1) => {
+    if (index + dir < 0 || index + dir >= blocks.length) return;
+    const newBlocks = [...blocks];
+    const temp = newBlocks[index];
+    newBlocks[index] = newBlocks[index + dir];
+    newBlocks[index + dir] = temp;
+    setBlocks(newBlocks);
+  };
+
+  const removeBlock = (index: number) => {
+    setBlocks(blocks.filter((_, i) => i !== index));
+  };
+
+  const updateBlock = (index: number, field: string, value: string) => {
+    const newBlocks = [...blocks];
+    if (field === 'content') {
+      newBlocks[index].content = value;
+    } else {
+      newBlocks[index].metadata = { ...newBlocks[index].metadata, [field]: value };
+    }
+    setBlocks(newBlocks);
+  };
+
+  const addBlock = (type: ContentBlock['type']) => {
+    setBlocks([...blocks, { type, content: '' }]);
+  };
+
   return (
     <>
       <style>{`
@@ -77,15 +106,20 @@ export default function BlogFormModal({ blog, onSave, onClose }: Props) {
         .bf-input:focus { border-color: var(--orange) !important; }
         .bf-scroll::-webkit-scrollbar { width: 4px; }
         .bf-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+        .block-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+        .btn-action { background: none; border: 1px solid var(--border); border-radius: 6px; padding: 4px 8px; color: var(--muted); cursor: pointer; font-size: 11px; font-weight: 600; text-transform: uppercase; }
+        .btn-action:hover { background: var(--border); color: var(--text); }
+        .btn-add { flex: 1; padding: 8px 0; border: 1px dashed var(--border); border-radius: 8px; background: transparent; color: var(--muted); cursor: pointer; font-size: 12px; font-weight: 600; transition: all 0.15s; }
+        .btn-add:hover { border-color: var(--orange); color: var(--orange); background: var(--orange-dim); }
       `}</style>
 
-      <div onClick={onClose} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(2px)', zIndex: 40 }} />
+      <div onClick={onClose} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(2px)', zIndex: 9998 }} />
 
       <div style={{
         position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%,-50%)',
-        width: 'min(600px, calc(100vw - 32px))', maxHeight: 'calc(100vh - 48px)',
+        width: 'min(700px, calc(100vw - 32px))', maxHeight: 'calc(100vh - 48px)',
         background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 18,
-        zIndex: 50, display: 'flex', flexDirection: 'column',
+        zIndex: 9999, display: 'flex', flexDirection: 'column',
         animation: 'modalIn 0.22s ease', boxShadow: '0 24px 64px rgba(0,0,0,0.45)',
       }}>
         {/* Header */}
@@ -104,9 +138,60 @@ export default function BlogFormModal({ blog, onSave, onClose }: Props) {
             <input className="bf-input" style={inputStyle} value={title} onChange={e => setTitle(e.target.value)} placeholder="Blog title" />
           </Field>
 
-          <Field label="Content">
-            <textarea className="bf-input" style={{ ...inputStyle, minHeight: 140, resize: 'vertical' }} value={content} onChange={e => setContent(e.target.value)} placeholder="Write your blog content…" />
-          </Field>
+          {/* Render legacy content field only if it has content and there are no blocks yet, OR if it's explicitly edited */}
+          {(content || blocks.length === 0) && (
+            <Field label="Legacy Content (Optional if using blocks)">
+              <textarea className="bf-input" style={{ ...inputStyle, minHeight: 100, resize: 'vertical' }} value={content} onChange={e => setContent(e.target.value)} placeholder="Write plain text content..." />
+            </Field>
+          )}
+
+          <div style={{ marginBottom: '24px' }}>
+            <label style={labelStyle}>Content Blocks</label>
+            
+            {blocks.map((block, i) => (
+              <div key={i} className="block-card">
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text)', textTransform: 'uppercase' }}>{block.type} BLOCK</span>
+                  <div style={{ display: 'flex', gap: 6 }}>
+                    <button type="button" className="btn-action" onClick={() => moveBlock(i, -1)} disabled={i === 0}>↑ Up</button>
+                    <button type="button" className="btn-action" onClick={() => moveBlock(i, 1)} disabled={i === blocks.length - 1}>↓ Down</button>
+                    <button type="button" className="btn-action" onClick={() => removeBlock(i)} style={{ color: '#ef4444', borderColor: 'rgba(239,68,68,0.3)' }}>Delete</button>
+                  </div>
+                </div>
+
+                {block.type === 'text' && (
+                  <textarea className="bf-input" style={{ ...inputStyle, minHeight: 80, resize: 'vertical' }} value={block.content} onChange={e => updateBlock(i, 'content', e.target.value)} placeholder="Write text content..." />
+                )}
+                
+                {block.type === 'heading' && (
+                  <input className="bf-input" style={inputStyle} value={block.content} onChange={e => updateBlock(i, 'content', e.target.value)} placeholder="Heading text..." />
+                )}
+
+                {block.type === 'quote' && (
+                  <textarea className="bf-input" style={{ ...inputStyle, minHeight: 60, resize: 'vertical' }} value={block.content} onChange={e => updateBlock(i, 'content', e.target.value)} placeholder="Quote text..." />
+                )}
+
+                {block.type === 'image' && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                    <input className="bf-input" style={inputStyle} value={block.content} onChange={e => updateBlock(i, 'content', e.target.value)} placeholder="Image URL (https://...)" />
+                    <input className="bf-input" style={inputStyle} value={block.metadata?.caption || ''} onChange={e => updateBlock(i, 'caption', e.target.value)} placeholder="Optional caption..." />
+                  </div>
+                )}
+
+                {block.type === 'divider' && (
+                  <div style={{ height: 2, background: 'var(--border)', borderRadius: 2, margin: '8px 0' }} />
+                )}
+              </div>
+            ))}
+
+            <div style={{ display: 'flex', gap: 8, marginTop: 16 }}>
+              <button type="button" className="btn-add" onClick={() => addBlock('text')}>+ Text</button>
+              <button type="button" className="btn-add" onClick={() => addBlock('heading')}>+ Heading</button>
+              <button type="button" className="btn-add" onClick={() => addBlock('image')}>+ Image</button>
+              <button type="button" className="btn-add" onClick={() => addBlock('quote')}>+ Quote</button>
+              <button type="button" className="btn-add" onClick={() => addBlock('divider')}>+ Divider</button>
+            </div>
+          </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 16px' }}>
             <Field label="Author">

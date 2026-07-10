@@ -20,7 +20,7 @@ const PRACTICE_CARDS = [
   {
     title: "Test",
     href: "/user/practice/test",
-    description: "Role-based tests to prepare for your dream job",
+    description: "tests to prepare for your dream job",
     icon: (
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
@@ -30,7 +30,7 @@ const PRACTICE_CARDS = [
         <polyline points="10 9 9 9 8 9"/>
       </svg>
     ),
-    topics: ["Full Stack", "Data Analyst", "DevOps", "Cyber Security", "Product Manager"],
+    topics: ["Core CS", "Aptitude", "IT Concepts", "UPSC Mapping", "Constitution"],
     color: "#6c63ff",
   },
 ];
@@ -113,17 +113,6 @@ export default function PracticeHome() {
                     {topic}
                   </span>
                 ))}
-              </div>
-
-              {/* Arrow */}
-              <div style={{
-                position: "absolute", top: "24px", right: "24px",
-                color: "var(--muted2)",
-              }}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                  <line x1="5" y1="12" x2="19" y2="12"/>
-                  <polyline points="12 5 19 12 12 19"/>
-                </svg>
               </div>
             </div>
           </Link>

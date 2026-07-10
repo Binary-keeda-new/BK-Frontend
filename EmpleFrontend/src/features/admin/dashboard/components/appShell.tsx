@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useAppAuth } from '@/providers/AppAuthProvider';
+
 import Sidebar, { type AdminSection } from './sidebar';
 import Topbar from './topbar';
 import DashboardContent from './dashboardContent';
@@ -9,10 +11,18 @@ import QuestionBankPage from '@/features/admin/question-bank/pages/QuestionBankP
 import QuestionBankDetailPage from '@/features/admin/question-bank/pages/QuestionBankDetail';
 import AdminJobsPage from '@/features/admin/jobs/pages/AdminJobsPage';
 import AdminBlogsPage from '@/features/admin/blogs/pages/AdminBlogsPage';
-import QuizPreviewContent from '@/features/admin/quiz/components/quizPreviewContent';
-import QuizzesContent from '../../quiz/components/quizList';
+import AdminSessionsPage from '@/features/admin/sessions/pages/AdminSessionsPage';
+import QuizPreviewContent from '@/features/admin/quiz/pages/quizPreviewContent';
+import QuizzesContent from '../../quiz/pages/quizList';
 import QuizEdit from '../../quiz/components/QuizEdit';
-import QuizForm from '../../quiz/components/QuizForm';
+import QuizForm from '../../quiz/pages/QuizForm';
+import CodingProblemsPage from '@/features/admin/coding-problems/pages/codingProblemsPage';
+import CodingProblemEditorPage from '@/features/admin/coding-problems/pages/codingProblemEditorPage';
+import AdminEventsPage from '@/features/admin/Events/components/AdminEventsPage';
+import AdminNotificationsPage from '@/features/admin/notifications/pages/AdminNotificationsPage';
+import QuizReportPage from '@/features/admin/quiz/pages/QuizReportPage';
+import AdminQuizReview from '../../quiz/pages/adminQuizReview';
+
 
 interface AppShellProps {
   initialSection?: AdminSection;
@@ -21,9 +31,12 @@ interface AppShellProps {
 
 export default function AppShell({
   initialSection = 'dashboard',
+  quizId,
 }: AppShellProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  const { user, loading, isAdmin } = useAppAuth();
 
   const sectionFromUrl =
     (searchParams.get('section') as AdminSection) || initialSection;
@@ -33,19 +46,37 @@ export default function AppShell({
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] =
     useState<AdminSection>(sectionFromUrl);
-  const [selectedQuestionBankId, setSelectedQuestionBankId] = useState<
-    string | null
-  >(questionBankIdFromUrl);
+const [selectedQuestionBankId, setSelectedQuestionBankId] = useState<string | null>(questionBankIdFromUrl);
   const [selectedQuizId, setSelectedQuizId] = useState<string | null>(
-    quizIdFromUrl
+    quizId?.toString() || quizIdFromUrl
   );
   const [quizListRefreshKey, setQuizListRefreshKey] = useState(0);
+  const [selectedReportQuizId, setSelectedReportQuizId] = useState<string | null>(
+  null
+);
+const [selectedReviewAttemptId, setSelectedReviewAttemptId] = useState<string | null>(null);
+  const [testListRefreshKey, setTestListRefreshKey] = useState(0);
+  const [selectedTestId, setSelectedTestId] = useState<string | null>(null);
+  const [selectedProblemId, setSelectedProblemId] = useState<string | null>(null);
+  const [eventsSubPage, setEventsSubPage] = useState<'hackathon' | 'techfest' | 'our-hackathon' | null>(null);
+
+
+  useEffect(() => {
+    if (loading) return;
+    if (!user) {
+      router.replace('/auth/login');
+      return;
+    }
+    if (!isAdmin) {
+      router.replace('/user/dashboard');
+    }
+  }, [loading, user, isAdmin, router]);
 
   useEffect(() => {
     setActiveSection(sectionFromUrl);
-    setSelectedQuizId(quizIdFromUrl);
+    setSelectedQuizId(quizId?.toString() || quizIdFromUrl);
     setSelectedQuestionBankId(questionBankIdFromUrl);
-  }, [sectionFromUrl, quizIdFromUrl, questionBankIdFromUrl]);
+  }, [sectionFromUrl, quizIdFromUrl, questionBankIdFromUrl, quizId]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -53,7 +84,6 @@ export default function AppShell({
         setMobileOpen(false);
       }
     };
-
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -75,23 +105,17 @@ export default function AppShell({
     questionBankId?: string | null;
   }) => {
     const params = new URLSearchParams();
-
     params.set('section', section);
-
-    if (quizId) {
-      params.set('quizId', quizId);
-    }
-
-    if (questionBankId) {
-      params.set('questionBankId', questionBankId);
-    }
-
+    if (quizId) params.set('quizId', quizId);
+    if (questionBankId) params.set('questionBankId', questionBankId);
     router.push(`/dashboard?${params.toString()}`);
   };
 
   const handleSectionChange = (section: AdminSection) => {
     setActiveSection(section);
     setMobileOpen(false);
+
+    if (section !== 'events') setEventsSubPage(null);
 
     const nextQuizId =
       section === 'quiz-edit' || section === 'quiz-preview'
@@ -119,51 +143,53 @@ export default function AppShell({
   const goToQuestionBankList = () => {
     setActiveSection('question-bank');
     setSelectedQuestionBankId(null);
-
-    updateUrl({
-      section: 'question-bank',
-      questionBankId: null,
-    });
+    updateUrl({ section: 'question-bank', questionBankId: null });
   };
 
   const goToQuizList = () => {
-    setActiveSection('quizzes');
-    setSelectedQuizId(null);
-
-    updateUrl({
-      section: 'quizzes',
-      quizId: null,
-    });
-  };
+  setActiveSection('quizzes');
+  setSelectedQuizId(null);
+  setSelectedReportQuizId(null);
+  updateUrl({ section: 'quizzes', quizId: null });
+};
 
   const openQuizEdit = (id: string) => {
     setSelectedQuizId(id);
     setActiveSection('quiz-edit');
-
-    updateUrl({
-      section: 'quiz-edit',
-      quizId: id,
-    });
+    updateUrl({ section: 'quiz-edit', quizId: id });
   };
 
   const openQuizPreview = (id: string) => {
     setSelectedQuizId(id);
     setActiveSection('quiz-preview');
-
-    updateUrl({
-      section: 'quiz-preview',
-      quizId: id,
-    });
+    updateUrl({ section: 'quiz-preview', quizId: id });
   };
+
+  const openQuizReport = (id: string) => {
+  setSelectedReportQuizId(id);
+  setActiveSection('quiz-report' as AdminSection);
+};
+
+const openAttemptReview = (attemptId: string) => {
+  setSelectedReviewAttemptId(attemptId);
+  setActiveSection('quiz-attempt-review' as AdminSection);
+};
 
   const openQuestionBankDetail = (id: string) => {
     setSelectedQuestionBankId(id);
     setActiveSection('question-bank-detail');
+    updateUrl({ section: 'question-bank-detail', questionBankId: id });
+  };
 
-    updateUrl({
-      section: 'question-bank-detail',
-      questionBankId: id,
-    });
+  const openCodingProblemEdit = (id: string) => {
+    setSelectedProblemId(id);
+    setActiveSection('coding-problem-edit');
+  };
+
+  const openTestEdit = (id: string) => {
+    setSelectedTestId(id);
+    setActiveSection('test-edit');
+    updateUrl({ section: 'test-edit' });
   };
 
   const renderContent = () => {
@@ -183,6 +209,7 @@ export default function AppShell({
             onCreateQuiz={() => handleSectionChange('quiz-create')}
             onEditQuiz={openQuizEdit}
             onPreviewQuiz={openQuizPreview}
+            onViewReport={openQuizReport}
           />
         );
 
@@ -193,8 +220,26 @@ export default function AppShell({
             onCreateQuiz={() => handleSectionChange('quiz-create')}
             onEditQuiz={openQuizEdit}
             onPreviewQuiz={openQuizPreview}
+            onViewReport={openQuizReport}
           />
         );
+
+        case 'quiz-report':
+  return selectedReportQuizId ? (
+    <QuizReportPage
+      quizId={selectedReportQuizId}
+      onBack={goToQuizList}
+      onReviewAttempt={openAttemptReview}
+    />
+  ) : (
+    <QuizzesContent
+      refreshKey={quizListRefreshKey}
+      onCreateQuiz={() => handleSectionChange('quiz-create')}
+      onEditQuiz={openQuizEdit}
+      onPreviewQuiz={openQuizPreview}
+      onViewReport={openQuizReport}
+    />
+  );
 
       case 'quiz-edit':
         return selectedQuizId ? (
@@ -211,6 +256,7 @@ export default function AppShell({
             onCreateQuiz={() => handleSectionChange('quiz-create')}
             onEditQuiz={openQuizEdit}
             onPreviewQuiz={openQuizPreview}
+            onViewReport={openQuizReport}
           />
         );
 
@@ -224,6 +270,14 @@ export default function AppShell({
             }}
           />
         );
+
+        case 'quiz-attempt-review':
+  return selectedReviewAttemptId ? (
+    <AdminQuizReview
+      attemptId={selectedReviewAttemptId}
+      onBack={() => setActiveSection('quiz-report' as AdminSection)}
+    />
+  ) : null;
 
       case 'dashboard':
         return (
@@ -251,6 +305,12 @@ export default function AppShell({
       case 'blogs':
         return <AdminBlogsPage />;
 
+      case 'sessions':
+        return <AdminSessionsPage />;
+
+      case 'notifications':
+        return <AdminNotificationsPage />;  
+
       case 'practice':
         return (
           <div className="p-6 text-[var(--clr-text)] md:p-10">
@@ -261,15 +321,34 @@ export default function AppShell({
       case 'tests':
         return (
           <div className="p-6 text-[var(--clr-text)] md:p-10">
-            Tests content goes here.
+            test content goes here.
           </div>
         );
 
       case 'coding-problems':
         return (
-          <div className="p-6 text-[var(--clr-text)] md:p-10">
-            Coding problems content goes here.
-          </div>
+          <CodingProblemsPage
+            onEditProblem={openCodingProblemEdit}
+          />
+        );
+
+      case 'coding-problem-edit':
+        return selectedProblemId ? (
+          <CodingProblemEditorPage
+            problemId={selectedProblemId}
+          />
+        ) : (
+          <CodingProblemsPage
+            onEditProblem={openCodingProblemEdit}
+          />
+        );
+
+      case 'events':
+        return (
+          <AdminEventsPage
+            subPage={eventsSubPage}
+            onSelectSubPage={setEventsSubPage}
+          />
         );
 
       default:
@@ -280,6 +359,18 @@ export default function AppShell({
         );
     }
   };
+
+  if (loading) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-[var(--clr-bg)] text-[var(--clr-text)]">
+        Loading...
+      </div>
+    );
+  }
+
+  if (!user || !isAdmin) {
+    return null;
+  }
 
   return (
     <div className="flex h-screen overflow-hidden bg-[var(--clr-bg)]">

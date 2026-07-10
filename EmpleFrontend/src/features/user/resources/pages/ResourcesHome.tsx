@@ -1,51 +1,73 @@
 "use client";
-
 import Link from "next/link";
-
+import { Map, Newspaper, HelpCircle, Award, BookOpen, Lightbulb, Target } from "lucide-react";
 const RESOURCES_CARDS = [
   {
     title: "Roadmaps",
     href: "/user/resources/roadmaps",
     description: "Structured learning paths with quizzes and progress mapping",
-    icon: "🗺️",
-    topics: ["Frontend", "Backend", "DevOps", "Data Science"],
+    icon: Map,
+    topics: ["Full Stack", "AI/ML", "LLM", "DSA", "App Security", "GRC"],
     color: "#ff6b35",
-  },
-  {
-    title: "Sheets",
-    href: "/user/resources/sheets",
-    description: "Curated cheat sheets for placement preparation",
-    icon: "📄",
-    topics: ["DSA Sheet", "Placement Sheet", "AI Tools Sheet"],
-    color: "#22c55e",
   },
   {
     title: "Blogs",
     href: "/user/resources/blogs",
     description: "Articles, tips and industry insights",
-    icon: "✍️",
+    icon: Newspaper,
     topics: ["Career", "Tech", "Interview Tips"],
     color: "#6c63ff",
-  },
-  {
-    title: "Tutorials",
-    href: "/user/resources/tutorials",
-    description: "Step by step tutorials to learn new skills",
-    icon: "🎓",
-    topics: ["DSA", "System Design", "Web Dev"],
-    color: "#f59e0b",
   },
   {
     title: "Interview Questions",
     href: "/user/resources/interview-questions",
     description: "Top interview questions and detailed solutions across subjects",
-    icon: "📚",
-    topics: ["OOP", "DBMS", "CN", "OS", "ML", "Cyber", "DevOps", "System Design"],
+    icon: HelpCircle,
+    topics: ["OOP", "DBMS", "CN", "OS", "ML", "Cyber Security", "DevOps", "System Design"],
     color: "#ff3b30",
   },
+  {
+    title: "Project Ideas",
+    href: "/user/resources/project-ideas",
+    description: "Curated project ideas for Fullstack, AI/ML, and Cybersecurity to build your portfolio",
+    icon: Lightbulb,
+    topics: ["Fullstack", "AI/ML", "Cybersecurity"],
+    color: "#a855f7",
+  },
+  {
+    title: "Certificates",
+    href: "/user/resources/certificates",
+    description: "Explore certifications in AWS, Cisco, Red Hat, CUDA, TensorFlow, Google, and Cyber Security",
+    icon: Award,
+    topics: ["AWS", "Cyber Security", "Cisco", "Google Cloud", "TensorFlow", "Red Hat", "CUDA"],
+    color: "#fbbf24",
+  },
+{
+  title: "GATE Notes",
+  href: "/user/resources/gate-notes",
+  description: "Access GATE preparation notes and study material.",
+  icon: "📚",
+  topics: ["OS", "DBMS", "CN", "COA"],
+  color: "#123456",
+},
+{
+  title: "Career Paths",
+  href: "/user/resources/career-paths",
+  description: "Explore career paths with roadmaps, salaries and quizzes.",
+  icon: "🎯",
+  topics: ["Business Analyst", "Data Analyst", "BD", "Testing"],
+  color: "#f97316",
+},
+{
+  title: "BK SDE Sheet",
+  href: "/user/resources/bk-sde-sheet",
+  description: "Your SDE prep hub — coding sheet, core CS subjects and aptitude all in one place",
+  icon: "📋",
+  topics: ["Coding", "OS", "DBMS", "CN", "Aptitude"],
+  color: "#f97316",
+},
 ];
-
-export default function ResourcesHome() {
+export default function ResourcesHome({ basePath = "/user/resources" }: { basePath?: string }) {
   return (
     <div className="p-6">
       <div className="mb-8">
@@ -56,55 +78,67 @@ export default function ResourcesHome() {
           Everything you need to ace your placement
         </p>
       </div>
-
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "20px" }}>
-        {RESOURCES_CARDS.map((card) => (
-          <Link href={card.href} key={card.title} style={{ textDecoration: "none" }}>
-            <div
-              style={{
-                background: "var(--surface)", border: "1px solid var(--border)",
-                borderRadius: "16px", padding: "24px", cursor: "pointer",
-                transition: "all 0.2s ease", position: "relative",
-              }}
-              onMouseEnter={e => {
-                (e.currentTarget as HTMLElement).style.border = `1px solid ${card.color}`;
-                (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)";
-                (e.currentTarget as HTMLElement).style.boxShadow = `0 8px 24px ${card.color}30`;
-              }}
-              onMouseLeave={e => {
-                (e.currentTarget as HTMLElement).style.border = "1px solid var(--border)";
-                (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
-                (e.currentTarget as HTMLElement).style.boxShadow = "none";
-              }}
-            >
-              <div style={{ fontSize: "32px", marginBottom: "12px" }}>{card.icon}</div>
-              <h2 style={{ fontSize: "20px", fontWeight: 700, color: "var(--text)", marginBottom: "8px" }}>
-                {card.title}
-              </h2>
-              <p style={{ fontSize: "13px", color: "var(--muted2)", marginBottom: "16px", lineHeight: 1.5 }}>
-                {card.description}
-              </p>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
-                {card.topics.map((topic) => (
-                  <span key={topic} style={{
-                    fontSize: "11px", fontWeight: 600,
-                    padding: "4px 10px", borderRadius: "999px",
-                    background: `${card.color}15`, color: card.color,
-                    border: `1px solid ${card.color}30`,
-                  }}>
-                    {topic}
-                  </span>
-                ))}
+        {RESOURCES_CARDS.map((card) => {
+          const finalHref = card.href.replace("/user/resources", basePath);
+          return (
+            <Link href={finalHref} key={card.title} style={{ textDecoration: "none", display: "flex", flexDirection: "column", height: "100%" }}>
+              <div
+                style={{
+                  background: "var(--surface)", border: "1px solid var(--border)",
+                  borderRadius: "16px", padding: "24px", cursor: "pointer",
+                  transition: "all 0.2s ease", position: "relative",
+                  display: "flex", flexDirection: "column", height: "100%", flexGrow: 1,
+                }}
+                onMouseEnter={e => {
+                  (e.currentTarget as HTMLElement).style.border = `1px solid ${card.color}`;
+                  (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)";
+                  (e.currentTarget as HTMLElement).style.boxShadow = `0 8px 24px ${card.color}30`;
+                }}
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLElement).style.border = "1px solid var(--border)";
+                  (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+                  (e.currentTarget as HTMLElement).style.boxShadow = "none";
+                }}
+              >
+                <div style={{
+                  width: "48px",
+                  height: "48px",
+                  borderRadius: "12px",
+                  background: `${card.color}15`,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginBottom: "16px"
+                }}>
+                  {typeof card.icon === 'string' ? (
+                    <span style={{ fontSize: "24px" }}>{card.icon}</span>
+                  ) : (
+                    <card.icon size={24} strokeWidth={2} style={{ color: card.color }} />
+                  )}
+                </div>
+                <h2 style={{ fontSize: "20px", fontWeight: 700, color: "var(--text)", marginBottom: "8px" }}>
+                  {card.title}
+                </h2>
+                <p style={{ fontSize: "13px", color: "var(--muted2)", marginBottom: "16px", lineHeight: 1.5, flexGrow: 1 }}>
+                  {card.description}
+                </p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+                  {card.topics.map((topic) => (
+                    <span key={topic} style={{
+                      fontSize: "11px", fontWeight: 600,
+                      padding: "4px 10px", borderRadius: "999px",
+                      background: `${card.color}15`, color: card.color,
+                      border: `1px solid ${card.color}30`,
+                    }}>
+                      {topic}
+                    </span>
+                  ))}
+                </div>
               </div>
-              <div style={{ position: "absolute", top: "24px", right: "24px", color: "var(--muted2)" }}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                  <line x1="5" y1="12" x2="19" y2="12"/>
-                  <polyline points="12 5 19 12 12 19"/>
-                </svg>
-              </div>
-            </div>
-          </Link>
-        ))}
+            </Link>
+          );
+        })}
       </div>
     </div>
   );
