@@ -94,14 +94,30 @@ export default function ImportQuestionsModal({
 
       if (!correctOptions.length) continue;
 
+      const positiveLine = lines.find((line) =>
+  /^POSITIVE\s*:/i.test(line)
+);
+
+const negativeLine = lines.find((line) =>
+  /^NEGATIVE\s*:/i.test(line)
+);
+
+const positiveMarks = positiveLine
+  ? Number(positiveLine.replace(/^POSITIVE\s*:/i, "").trim())
+  : 4;
+
+const negativeMarks = negativeLine
+  ? Number(negativeLine.replace(/^NEGATIVE\s*:/i, "").trim())
+  : 1;
+
       questions.push({
-        question,
-        options,
-        correctOptions,
-        questionType: correctOptions.length > 1 ? "MSQ" : "MCQ",
-        positiveMarks: 4,
-        negativeMarks: 1,
-      });
+  question,
+  options,
+  correctOptions,
+  questionType: correctOptions.length > 1 ? "MSQ" : "MCQ",
+  positiveMarks: Number.isFinite(positiveMarks) ? positiveMarks : 4,
+  negativeMarks: Number.isFinite(negativeMarks) ? negativeMarks : 1,
+});
     }
 
     return questions;
