@@ -35,6 +35,20 @@ export interface CodingProblem {
     'C++': string;
   };
 
+  lockedPrefixTemplates: {
+  Java: string;
+  Python: string;
+  C: string;
+  'C++': string;
+};
+
+lockedSuffixTemplates: {
+  Java: string;
+  Python: string;
+  C: string;
+  'C++': string;
+};
+
   visibleTestCases: TestCase[];
 
   hiddenTestCases: TestCase[];

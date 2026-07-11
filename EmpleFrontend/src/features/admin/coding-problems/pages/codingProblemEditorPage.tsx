@@ -52,6 +52,20 @@ const [codeTemplates, setCodeTemplates] =
     C: '',
   });
 
+  const [lockedPrefixTemplates, setLockedPrefixTemplates] = useState({
+  Java: '',
+  Python: '',
+  'C++': '',
+  C: '',
+});
+
+const [lockedSuffixTemplates, setLockedSuffixTemplates] = useState({
+  Java: '',
+  Python: '',
+  'C++': '',
+  C: '',
+});
+
 const [executionConfig, setExecutionConfig] =
   useState({
     functionName: '',
@@ -439,11 +453,12 @@ if (!updated[key]) {
               'application/json',
           },
           body: JSON.stringify({
-            templateType,
-            codeTemplates,
-            lastEditedSection:
-              'tests',
-          }),
+  templateType,
+  codeTemplates,
+  lockedPrefixTemplates,
+  lockedSuffixTemplates,
+  lastEditedSection: 'tests',
+}),
         }
       );
 
@@ -804,6 +819,24 @@ const handleSaveExecution = async () => {
           }
         );
 
+       setLockedPrefixTemplates(
+          data.data.lockedPrefixTemplates || {
+            Java: '',
+            Python: '',
+            'C++': '',
+            C: '',
+          }
+        );
+
+        setLockedSuffixTemplates(
+          data.data.lockedSuffixTemplates || {
+            Java: '',
+            Python: '',
+            'C++': '',
+            C: '',
+          }
+        );
+
         setVisibleTestCases(
           data.data.visibleTestCases || []
         );
@@ -930,20 +963,18 @@ const handleSaveExecution = async () => {
   )}
 
   {activeTab === 'templates' && (
-  <CodeTemplatesSection
-    languages={languages}
-    templateType={templateType}
-    setTemplateType={
-      setTemplateType
-    }
-    codeTemplates={codeTemplates}
-    setCodeTemplates={
-      setCodeTemplates
-    }
-    handleSaveTemplates={
-      handleSaveTemplates
-    }
-  />
+ <CodeTemplatesSection
+  languages={languages}
+  templateType={templateType}
+  setTemplateType={setTemplateType}
+  codeTemplates={codeTemplates}
+  setCodeTemplates={setCodeTemplates}
+  lockedPrefixTemplates={lockedPrefixTemplates}
+  setLockedPrefixTemplates={setLockedPrefixTemplates}
+  lockedSuffixTemplates={lockedSuffixTemplates}
+  setLockedSuffixTemplates={setLockedSuffixTemplates}
+  handleSaveTemplates={handleSaveTemplates}
+/>
 )}
 
   {activeTab === 'tests' && (

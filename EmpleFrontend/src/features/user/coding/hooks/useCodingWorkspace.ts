@@ -38,11 +38,19 @@ export default function useCodingWorkspace(problemId: string) {
         const defaultLanguage = data.languages?.[0] || 'Java';
 
         setSelectedLanguage(defaultLanguage);
-        setCode(
-          data.codeTemplates[
-            defaultLanguage as keyof typeof data.codeTemplates
-          ] || ''
-        );
+        const lang =
+  defaultLanguage as keyof typeof data.codeTemplates;
+
+const prefix =
+  data.lockedPrefixTemplates?.[lang] || '';
+
+const editable =
+  data.codeTemplates?.[lang] || '';
+
+const suffix =
+  data.lockedSuffixTemplates?.[lang] || '';
+
+setCode(`${prefix}${editable}${suffix}`);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to load problem');
       } finally {
@@ -60,11 +68,19 @@ export default function useCodingWorkspace(problemId: string) {
 
     setSelectedLanguage(language);
 
-    setCode(
-      problem.codeTemplates[
-        language as keyof typeof problem.codeTemplates
-      ] || ''
-    );
+    const lang =
+  language as keyof typeof problem.codeTemplates;
+
+const prefix =
+  problem.lockedPrefixTemplates?.[lang] || '';
+
+const editable =
+  problem.codeTemplates?.[lang] || '';
+
+const suffix =
+  problem.lockedSuffixTemplates?.[lang] || '';
+
+setCode(`${prefix}${editable}${suffix}`);
 
     setExecutionResult(null);
     setExecutionError('');
