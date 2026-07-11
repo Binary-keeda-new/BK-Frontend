@@ -14,29 +14,29 @@ export function PersonalInfoForm({ data, onChange, username, onUsernameChange }:
       <h2 className="text-2xl font-bold pb-4 border-b" style={{ color: 'var(--text)', borderColor: 'var(--border)' }}>Personal Information</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-2">
-          <label className="text-sm font-semibold" style={{ color: 'var(--muted)' }}>Full Name</label>
+          <label className="text-sm font-semibold" style={{ color: 'var(--muted)' }}>Full Name <span style={{ color: 'var(--orange)' }}>*</span></label>
           <input type="text" name="fullName" value={data.fullName || ''} onChange={handleChange} className={inputClass} style={inputStyle} placeholder="John Doe" />
         </div>
         <div className="space-y-2">
-          <label className="text-sm font-semibold" style={{ color: 'var(--muted)' }}>Username (Unique URL)</label>
+          <label className="text-sm font-semibold" style={{ color: 'var(--muted)' }}>Username (Unique URL) <span style={{ color: 'var(--orange)' }}>*</span></label>
           <input type="text" value={username} onChange={(e) => onUsernameChange(e.target.value)} className={inputClass} style={inputStyle} placeholder="johndoe" />
         </div>
         <div className="space-y-2">
-          <label className="text-sm font-semibold" style={{ color: 'var(--muted)' }}>Headline</label>
+          <label className="text-sm font-semibold" style={{ color: 'var(--muted)' }}>Headline <span style={{ color: 'var(--orange)' }}>*</span></label>
           <input type="text" name="headline" value={data.headline || ''} onChange={handleChange} className={inputClass} style={inputStyle} placeholder="Full Stack Developer" />
         </div>
         <div className="space-y-2">
-          <label className="text-sm font-semibold" style={{ color: 'var(--muted)' }}>Email</label>
+          <label className="text-sm font-semibold" style={{ color: 'var(--muted)' }}>Email <span style={{ color: 'var(--orange)' }}>*</span></label>
           <input type="email" name="email" value={data.email || ''} onChange={handleChange} className={inputClass} style={inputStyle} placeholder="john@example.com" />
         </div>
         <div className="space-y-2">
-          <label className="text-sm font-semibold" style={{ color: 'var(--muted)' }}>Phone</label>
-          <input type="text" name="phone" value={data.phone || ''} onChange={handleChange} className={inputClass} style={inputStyle} placeholder="+1 234 567 890" />
-        </div>
-        <div className="space-y-2">
-          <label className="text-sm font-semibold" style={{ color: 'var(--muted)' }}>Location</label>
-          <input type="text" name="location" value={data.location || ''} onChange={handleChange} className={inputClass} style={inputStyle} placeholder="San Francisco, CA" />
-        </div>
+  <label className="text-sm font-semibold" style={{ color: 'var(--muted)' }}>Phone <span style={{ color: 'var(--orange)' }}>*</span></label>
+  <input type="text" name="phone" value={data.phone || ''} onChange={handleChange} className={inputClass} style={inputStyle} placeholder="+1 234 567 890" />
+</div>
+<div className="space-y-2">
+  <label className="text-sm font-semibold" style={{ color: 'var(--muted)' }}>Location <span style={{ color: 'var(--orange)' }}>*</span></label>
+  <input type="text" name="location" value={data.location || ''} onChange={handleChange} className={inputClass} style={inputStyle} placeholder="San Francisco, CA" />
+</div>
       </div>
     </div>
   );
@@ -53,7 +53,7 @@ export function AboutForm({ data, onChange }: { data: About, onChange: (d: About
       <h2 className="text-2xl font-bold pb-4 border-b" style={{ color: 'var(--text)', borderColor: 'var(--border)' }}>About You</h2>
       <div className="space-y-4">
         <div className="space-y-2">
-          <label className="text-sm font-semibold" style={{ color: 'var(--muted)' }}>Bio</label>
+          <label className="text-sm font-semibold" style={{ color: 'var(--muted)' }}>Bio <span style={{ color: 'var(--orange)' }}>*</span> <span style={{ color: 'var(--muted2)', fontWeight: 400 }}>(min 50 characters)</span></label>
           <textarea name="bio" value={data.bio || ''} onChange={handleChange} rows={3} className={inputClass} style={inputStyle} placeholder="Short introduction..." />
         </div>
         <div className="space-y-2">
@@ -78,8 +78,8 @@ export function SkillsForm({ data, onChange }: { data: Skills, onChange: (d: Ski
 
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
-      <h2 className="text-2xl font-bold pb-4 border-b" style={{ color: 'var(--text)', borderColor: 'var(--border)' }}>Skills</h2>
-      <p className="text-sm" style={{ color: 'var(--muted2)' }}>Enter skills separated by commas (e.g., React, Next.js, Tailwind)</p>
+      <h2 className="text-2xl font-bold pb-4 border-b" style={{ color: 'var(--text)', borderColor: 'var(--border)' }}>Skills <span style={{ color: 'var(--orange)' }}>*</span></h2>
+      <p className="text-sm" style={{ color: 'var(--muted2)' }}>Enter skills separated by commas (e.g., React, Next.js, Tailwind). At least one category is required.</p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {categories.map((cat) => (
           <div key={cat} className="space-y-2">
@@ -95,17 +95,22 @@ export function SkillsForm({ data, onChange }: { data: Skills, onChange: (d: Ski
 export function SocialLinksForm({ data, onChange }: { data: SocialLinks, onChange: (d: SocialLinks) => void }) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => onChange({ ...data, [e.target.name]: e.target.value });
   const platforms = ['github', 'linkedin', 'twitter', 'youtube', 'leetcode', 'hackerrank', 'codeforces', 'kaggle'];
+  const mandatoryPlatforms = ['github', 'linkedin'];
   
   const inputClass = "w-full p-3 border rounded-xl focus:ring-1 focus:ring-[var(--orange)] focus:border-[var(--orange)] outline-none transition-all placeholder:text-gray-500";
   const inputStyle = { background: 'var(--surface2)', borderColor: 'var(--border)', color: 'var(--text)' };
 
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
-      <h2 className="text-2xl font-bold pb-4 border-b" style={{ color: 'var(--text)', borderColor: 'var(--border)' }}>Social Links</h2>
+      <h2 className="text-2xl font-bold pb-4 border-b" style={{ color: 'var(--text)', borderColor: 'var(--border)' }}>Social Links <span style={{ color: 'var(--orange)' }}>*</span></h2>
+      <p className="text-sm" style={{ color: 'var(--muted2)' }}>GitHub or LinkedIn is required.</p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {platforms.map(platform => (
           <div key={platform} className="space-y-2">
-            <label className="text-sm font-semibold capitalize" style={{ color: 'var(--muted)' }}>{platform}</label>
+            <label className="text-sm font-semibold capitalize" style={{ color: 'var(--muted)' }}>
+              {platform}
+              {mandatoryPlatforms.includes(platform) && <span style={{ color: 'var(--orange)' }}> *</span>}
+            </label>
             <input type="url" name={platform} value={(data as any)[platform] || ''} onChange={handleChange} className={inputClass} style={inputStyle} placeholder={`https://${platform}.com/...`} />
           </div>
         ))}

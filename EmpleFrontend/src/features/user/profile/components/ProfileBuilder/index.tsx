@@ -39,6 +39,7 @@ export default function ProfileBuilder() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState({ text: '', type: '' });
+  const [missingFields, setMissingFields] = useState<string[]>([]);
 
   useEffect(() => {
     fetchProfile();
@@ -63,22 +64,30 @@ export default function ProfileBuilder() {
   };
 
   const handleSave = async (publish = false) => {
-    setSaving(true);
-    setMessage({ text: '', type: '' });
-    try {
-      const dataToSave = { ...profile, isPublished: publish || profile.isPublished };
-      const res = await upsertProfile(dataToSave);
-      if (res.success) {
-        setProfile(res.data);
-        setMessage({ text: publish ? 'Profile published successfully!' : 'Profile saved successfully!', type: 'success' });
-      }
-    } catch (error: any) {
-      setMessage({ text: error.message || 'Failed to save profile', type: 'error' });
-    } finally {
-      setSaving(false);
-      setTimeout(() => setMessage({ text: '', type: '' }), 3000);
+  if (publish) {
+    const missing = validateProfile(profile);
+    if (missing.length > 0) {
+      setMissingFields(missing);
+      return;
     }
-  };
+  }
+
+  setSaving(true);
+  setMessage({ text: '', type: '' });
+  try {
+    const dataToSave = { ...profile, isPublished: publish || profile.isPublished };
+    const res = await upsertProfile(dataToSave);
+    if (res.success) {
+      setProfile(res.data);
+      setMessage({ text: publish ? 'Profile published successfully!' : 'Profile saved successfully!', type: 'success' });
+    }
+  } catch (error: any) {
+    setMessage({ text: error.message || 'Failed to save profile', type: 'error' });
+  } finally {
+    setSaving(false);
+    setTimeout(() => setMessage({ text: '', type: '' }), 3000);
+  }
+};
 
   const handleChange = (section: keyof UserProfile, value: any) => {
     setProfile((prev) => ({ ...prev, [section]: value }));
@@ -101,6 +110,42 @@ export default function ProfileBuilder() {
       default: return null;
     }
   };
+
+  function validateProfile(profile: Partial<UserProfile>): string[] {
+  const missing: string[] = [];
+
+  // Personal Info
+  if (!profile.personalInfo?.fullName?.trim()) missing.push('Full Name');
+  if (!profile.username?.trim()) missing.push('Username');
+  if (!profile.personalInfo?.headline?.trim()) missing.push('Headline');
+  if (!profile.personalInfo?.email?.trim()) missing.push('Email');
+  if (!profile.personalInfo?.phone?.trim()) missing.push('Phone');
+  if (!profile.personalInfo?.location?.trim()) missing.push('Location');
+
+  // About
+  if (!profile.about?.bio || profile.about.bio.trim().length < 50) {
+    missing.push('Bio (minimum 50 characters)');
+  }
+
+  // Education — at least 1 complete entry
+  const hasValidEducation = profile.education?.some(
+    (e) => e.institution?.trim() && e.degree?.trim() && e.branch?.trim() && e.startYear?.trim() && e.endYear?.trim()
+  );
+  if (!hasValidEducation) missing.push('Education (at least 1 complete entry)');
+
+  // Skills — at least one category filled
+  const hasSkills = profile.skills && Object.values(profile.skills).some((arr: any) => arr?.length > 0);
+  if (!hasSkills) missing.push('Skills (at least one category)');
+
+  // Social Links — GitHub OR LinkedIn
+  const hasSocial = profile.socialLinks?.github?.trim() || profile.socialLinks?.linkedin?.trim();
+  if (!hasSocial) missing.push('Social Links (GitHub or LinkedIn)');
+
+  // Resume
+  if (!profile.resumeUrl) missing.push('Resume Upload');
+
+  return missing;
+}
 
   const calculateCompletion = () => {
     let score = 0;
@@ -190,6 +235,23 @@ export default function ProfileBuilder() {
           {renderActiveTab()}
         </main>
       </div>
+      {missingFields.length > 0 && (
+  <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+    <div className="w-full max-w-sm rounded-2xl p-6 text-center" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
+      <h3 className="text-lg font-bold mb-2" style={{ color: 'var(--text)' }}>Please fill mandatory fields first</h3>
+      <p className="text-sm mb-6" style={{ color: 'var(--muted)' }}>
+        Fields marked with <span style={{ color: 'var(--orange)' }}>*</span> are required to publish your portfolio.
+      </p>
+      <button
+        onClick={() => setMissingFields([])}
+        className="w-full py-2.5 rounded-xl font-semibold"
+        style={{ background: 'var(--orange)', color: '#fff' }}
+      >
+        Got it
+      </button>
     </div>
+  </div>
+)}
+  </div>
   );
 }
