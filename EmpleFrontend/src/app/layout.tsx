@@ -36,7 +36,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         >
           <AppAuthProvider>
-            <ThemeProvider>{children}</ThemeProvider>
+            <ThemeProvider>
+              {children}
+            </ThemeProvider>
           </AppAuthProvider>
         </AuthProvider>
       </body>
