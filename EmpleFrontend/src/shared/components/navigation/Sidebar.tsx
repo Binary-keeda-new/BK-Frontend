@@ -109,20 +109,6 @@ export default function Sidebar() {
       `}
       style={{ background: "var(--surface)", borderRight: "1px solid var(--border)" }}
     >
-      {/* Floating Collapse Toggle */}
-      <button
-        onClick={() => setCollapsed(!collapsed)}
-        className="absolute -right-3.5 top-[82px] w-7 h-7 flex items-center justify-center bg-[var(--surface)] border border-[var(--border)] rounded-full text-[var(--muted2)] hover:text-[var(--orange)] shadow-md z-50 cursor-pointer transition-colors"
-        title="Toggle Sidebar"
-      >
-        <svg
-          width="14" height="14" viewBox="0 0 12 12" fill="none"
-          stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"
-          style={{ transform: collapsed ? "scaleX(-1)" : "scaleX(1)", transition: "transform 380ms ease" }}
-        >
-          <polyline points="8,2 4,6 8,10"/>
-        </svg>
-      </button>
       {/* Logo */}
       <div className={`flex items-center ${collapsed ? "justify-center" : "justify-start"} px-[16px] py-5 min-h-[64px] flex-shrink-0`}>
         <div className={`flex items-center gap-2 ${collapsed ? "hidden" : "flex"}`}>
