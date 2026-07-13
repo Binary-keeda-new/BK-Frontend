@@ -1,6 +1,7 @@
 'use client'
 
 import OptionRow from './OptionRow'
+import { QUIZ_CATEGORIES } from '@/shared/constants/quizCategories'
 
 export type NewQuestion = {
   question: string
@@ -237,33 +238,53 @@ export default function QuestionForm({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <div>
             <label className="mb-1 block text-xs text-white/50">Category *</label>
-            <input
-              type="text"
+            <select
               value={draft.category}
-              onChange={(e) => setDraft((prev) => ({ ...prev, category: e.target.value }))}
-              placeholder="E.g., Engineering"
+              onChange={(e) => setDraft((prev) => ({ ...prev, category: e.target.value, subcategory: '', topic: '' }))}
               className="w-full rounded-xl bg-[rgb(10,11,14)] px-3 py-2 text-sm text-white ring-1 ring-white/10 focus:outline-none focus:ring-[rgb(241,90,34)]"
-            />
+            >
+              <option value="">Select Category</option>
+              {Object.keys(QUIZ_CATEGORIES).map(cat => (
+                <option key={cat} value={cat}>{cat}</option>
+              ))}
+            </select>
           </div>
           <div>
             <label className="mb-1 block text-xs text-white/50">Subcategory *</label>
-            <input
-              type="text"
+            <select
               value={draft.subcategory}
-              onChange={(e) => setDraft((prev) => ({ ...prev, subcategory: e.target.value }))}
-              placeholder="E.g., Computer Science"
-              className="w-full rounded-xl bg-[rgb(10,11,14)] px-3 py-2 text-sm text-white ring-1 ring-white/10 focus:outline-none focus:ring-[rgb(241,90,34)]"
-            />
+              onChange={(e) => setDraft((prev) => ({ ...prev, subcategory: e.target.value, topic: '' }))}
+              disabled={!draft.category}
+              className="w-full rounded-xl bg-[rgb(10,11,14)] px-3 py-2 text-sm text-white ring-1 ring-white/10 focus:outline-none focus:ring-[rgb(241,90,34)] disabled:opacity-50"
+            >
+              <option value="">Select Subcategory</option>
+              {draft.category && QUIZ_CATEGORIES[draft.category as keyof typeof QUIZ_CATEGORIES] && Object.keys(QUIZ_CATEGORIES[draft.category as keyof typeof QUIZ_CATEGORIES]).map(sub => (
+                <option key={sub} value={sub}>{sub}</option>
+              ))}
+            </select>
           </div>
           <div>
             <label className="mb-1 block text-xs text-white/50">Topic *</label>
-            <input
-              type="text"
-              value={draft.topic}
-              onChange={(e) => setDraft((prev) => ({ ...prev, topic: e.target.value }))}
-              placeholder="E.g., Data Structures"
-              className="w-full rounded-xl bg-[rgb(10,11,14)] px-3 py-2 text-sm text-white ring-1 ring-white/10 focus:outline-none focus:ring-[rgb(241,90,34)]"
-            />
+            {draft.category && draft.subcategory && (QUIZ_CATEGORIES[draft.category as keyof typeof QUIZ_CATEGORIES] as any)?.[draft.subcategory]?.length > 0 ? (
+              <select
+                value={draft.topic}
+                onChange={(e) => setDraft((prev) => ({ ...prev, topic: e.target.value }))}
+                className="w-full rounded-xl bg-[rgb(10,11,14)] px-3 py-2 text-sm text-white ring-1 ring-white/10 focus:outline-none focus:ring-[rgb(241,90,34)]"
+              >
+                <option value="">Select Topic</option>
+                {(QUIZ_CATEGORIES[draft.category as keyof typeof QUIZ_CATEGORIES] as any)[draft.subcategory].map((top: string) => (
+                  <option key={top} value={top}>{top}</option>
+                ))}
+              </select>
+            ) : (
+              <input
+                type="text"
+                value={draft.topic}
+                onChange={(e) => setDraft((prev) => ({ ...prev, topic: e.target.value }))}
+                placeholder="E.g., Algorithms"
+                className="w-full rounded-xl bg-[rgb(10,11,14)] px-3 py-2 text-sm text-white ring-1 ring-white/10 focus:outline-none focus:ring-[rgb(241,90,34)]"
+              />
+            )}
           </div>
           <div>
             <label className="mb-1 block text-xs text-white/50">SubTopic</label>

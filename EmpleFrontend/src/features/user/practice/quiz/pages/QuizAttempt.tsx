@@ -389,7 +389,7 @@ export default function QuizAttemptPage() {
   const mode = q ? getQuestionMode(q.questionType) : "mcq";
 
   const Panel = () => (
-    <aside className="flex h-full flex-col gap-4 rounded-2xl border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface,#161820)] p-5">
+    <aside className="flex flex-1 w-full flex-col gap-4 rounded-2xl border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface,#161820)] p-5">
       <div>
         <p className="m-0 text-[11px] font-semibold tracking-[0.08em] text-[var(--muted,#666)]">
           QUESTIONS
@@ -451,16 +451,6 @@ export default function QuizAttemptPage() {
         })}
       </div>
 
-      <div className="mt-auto">
-        <button
-          type="button"
-          onClick={openSubmitConfirm}
-          disabled={submitting || loading}
-          className="w-full rounded-[10px] bg-[var(--orange,#f15a22)] px-4 py-3 text-sm font-bold text-white transition disabled:cursor-not-allowed disabled:opacity-70"
-        >
-          {submitting ? "Submitting..." : "Submit Quiz"}
-        </button>
-      </div>
     </aside>
   );
 
@@ -545,7 +535,7 @@ export default function QuizAttemptPage() {
           )}
         </div>
 
-        <div className="grid min-h-[calc(100vh-2rem)] grid-cols-1 gap-5 md:grid-cols-[minmax(0,1fr)_16rem]">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-[minmax(0,1fr)_16rem]">
           <section className="min-w-0">
             <div className="flex min-w-0 flex-col">
               <div className="rounded-2xl border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface,#161820)] p-[clamp(16px,4vw,28px)]">
@@ -712,32 +702,20 @@ export default function QuizAttemptPage() {
                   Previous
                 </button>
 
-                {current === totalQuestions - 1 ? (
                 <button
                   type="button"
-                  onClick={openSubmitConfirm}
-                  disabled={submitting || loading}
-                  className="rounded-[10px] bg-[var(--orange,#f15a22)] px-6 py-2.5 text-sm font-semibold text-white transition disabled:cursor-not-allowed disabled:opacity-40"
+                  onClick={() => goTo(current + 1)}
+                  disabled={current === totalQuestions - 1}
+                  className="rounded-[10px] border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface,#161820)] px-6 py-2.5 text-sm font-semibold text-[var(--text,#f0f0f4)] transition disabled:cursor-not-allowed disabled:opacity-40"
                 >
-                  {submitting ? "Submitting..." : "Submit"}
+                  Next
                 </button>
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={() => goTo(current + 1)}
-                      className="rounded-[10px] border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface,#161820)] px-6 py-2.5 text-sm font-semibold text-[var(--text,#f0f0f4)] transition"
-                    >
-                      Next
-                    </button>
-                  )}
               </div>
             </div>
           </section>
 
-          <div className="hidden md:block">
-            <div className="sticky top-4 h-[calc(100vh-2rem)]">
-              <Panel />
-            </div>
+          <div className="hidden md:flex flex-col h-full">
+            <Panel />
           </div>
         </div>
       </main>

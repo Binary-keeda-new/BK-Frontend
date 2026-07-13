@@ -149,12 +149,13 @@ export default function QuizEditHeader({
               }}
             >
               <option value="">Select subcategory</option>
-              {category &&
-                QUIZ_CATEGORIES[category].map((sub) => (
+              {category && (
+                Object.keys(QUIZ_CATEGORIES[category]).map((sub) => (
                   <option key={sub} value={sub}>
                     {sub}
                   </option>
-                ))}
+                ))
+              )}
             </select>
           </div>
         </div>
