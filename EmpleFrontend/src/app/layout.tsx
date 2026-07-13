@@ -8,8 +8,8 @@ import { AppAuthProvider } from "@/providers/AppAuthProvider";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Emple – Dashboard",
-  description: "Emple learning dashboard",
+ title: "Emple — Career & Learning Platform",
+description: "Your all-in-one platform for SDE prep, career paths, job listings and learning resources.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
