@@ -2,12 +2,16 @@ interface Props {
   problem: any;
   mode?: 'practice' | 'test';
   onBack?: () => void;
+  formattedTimeLeft?: string | null;
+timeLeftMs?: number | null;
 }
 
 export default function WorkspaceHeader({
   problem,
   mode = 'practice',
   onBack,
+  formattedTimeLeft,
+  timeLeftMs,
 }: Props) {
   return (
     <header className="border-b border-[var(--clr-border)] bg-[var(--clr-surface)] px-5 py-3">
@@ -36,15 +40,19 @@ export default function WorkspaceHeader({
           </div>
         </div>
 
-        <div className="hidden flex-wrap items-center justify-end gap-2 md:flex">
-
-          
-          {problem.recommendedTime ? (
-  <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-400">
-    ⏱ {problem.recommendedTime} min
+       {formattedTimeLeft && (
+  <span
+    className="rounded-full border border-emerald-400/30 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-400"
+    style={{
+      color:
+        timeLeftMs !== null && timeLeftMs !== undefined && timeLeftMs < 60_000
+          ? '#f87171'
+          : undefined,
+    }}
+  >
+    ⏱ {formattedTimeLeft}
   </span>
-) : null}
-        </div>
+)}
       </div>
     </header>
   );

@@ -26,6 +26,8 @@ type Props = {
   mode?: 'practice' | 'test';
   onBack?: () => void;
   onComplete?: (submission: CodingSubmission) => void | Promise<void>;
+  formattedTimeLeft?: string | null;
+  timeLeftMs?: number | null;
 };
 
 export default function WorkspaceLayout({
@@ -33,6 +35,8 @@ export default function WorkspaceLayout({
   mode = 'practice',
   onBack,
   onComplete,
+  formattedTimeLeft,
+  timeLeftMs,
 }: Props) {
   const {
     problem,
@@ -75,6 +79,8 @@ export default function WorkspaceLayout({
   problem={problem}
   mode={mode}
   onBack={onBack}
+  formattedTimeLeft={formattedTimeLeft}
+  timeLeftMs={timeLeftMs}
 />
 
       <div className="flex flex-1 overflow-hidden p-4">

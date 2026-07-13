@@ -258,20 +258,22 @@ export default function TestAttempt({
 if (section.type === 'coding') {
   return (
     <CodingWorkspace
-      problems={section.codingProblemIds || []}
-      mode="test"
-      onBack={onBackToSections}
-      onComplete={async (submission) => {
-  await submitTestSectionAttempt(
-    attemptId,
-    section._id,
-    [],
-    [submission]
-  );
+  problems={section.codingProblemIds || []}
+  mode="test"
+  onBack={onBackToSections}
+  formattedTimeLeft={formattedTimeLeft}
+  timeLeftMs={timeLeftMs}
+  onComplete={async (submission) => {
+    await submitTestSectionAttempt(
+      attemptId,
+      section._id,
+      [],
+      [submission]
+    );
 
-  onSectionCompleted(section._id);
-}}
-    />
+    onSectionCompleted(section._id);
+  }}
+/>
   );
 }
 

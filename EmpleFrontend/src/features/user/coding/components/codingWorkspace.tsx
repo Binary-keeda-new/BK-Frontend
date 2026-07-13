@@ -18,6 +18,8 @@ type Props = {
   mode?: 'practice' | 'test';
   onBack?: () => void;
   onComplete?: (submission: CodingSubmission) => void | Promise<void>;
+  formattedTimeLeft?: string | null;
+timeLeftMs?: number | null;
 };
 
 export default function CodingWorkspace({
@@ -25,6 +27,8 @@ export default function CodingWorkspace({
   mode = 'practice',
   onBack,
   onComplete,
+  formattedTimeLeft,
+  timeLeftMs,
 }: Props) {
   const firstProblem = problems[0];
 
@@ -42,6 +46,8 @@ export default function CodingWorkspace({
       mode={mode}
       onBack={onBack}
       onComplete={onComplete}
+      formattedTimeLeft={formattedTimeLeft}
+  timeLeftMs={timeLeftMs}
     />
   );
 }
