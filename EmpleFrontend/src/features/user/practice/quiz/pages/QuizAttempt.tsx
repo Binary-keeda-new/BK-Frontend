@@ -7,9 +7,15 @@ import {
   startQuizAttempt,
   submitQuizAttempt,
 } from "../services/quizAttempt.service";
-import type { QuizAttemptData } from "../types/quizAttempt.types";
+import type { QuizAttemptData, AttemptAnswer } from "../types/quizAttempt.types";
 
 type Status = "not-visited" | "not-attempted" | "answered" | "flagged";
+
+type QuestionTiming = {
+  startedAt?: string;
+  answeredAt?: string;
+  timeTakenSeconds: number;
+};
 
 const SC: Record<Status, { bg: string; color: string; border: string }> = {
   "not-visited": {
@@ -76,6 +82,9 @@ export default function QuizAttemptPage() {
   const [attempt, setAttempt] = useState<QuizAttemptData | null>(null);
   const [current, setCurrent] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string[]>>({});
+  const [timings, setTimings] = useState<Record<string, QuestionTiming>>({});
+  const lastEntryTime = useRef<number>(Date.now());
+  const prevQuestionId = useRef<string | null>(null);
   const [visited, setVisited] = useState<Record<number, boolean>>({ 0: true });
   const [flagged, setFlagged] = useState<Record<number, boolean>>({});
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -103,10 +112,19 @@ export default function QuizAttemptPage() {
     setAttempt(attemptData);
 
     const answerMap: Record<string, string[]> = {};
+    const timingMap: Record<string, QuestionTiming> = {};
+    
     for (const answer of attemptData.answers || []) {
-      answerMap[answer.questionId] = answer.selectedOptions ?? [];
+      const ans = answer as unknown as AttemptAnswer;
+      answerMap[ans.questionId] = ans.selectedOptions ?? [];
+      timingMap[ans.questionId] = {
+        startedAt: ans.startedAt,
+        answeredAt: ans.answeredAt,
+        timeTakenSeconds: ans.timeTakenSeconds || 0,
+      };
     }
     setAnswers(answerMap);
+    setTimings(timingMap);
   }, []);
 
   const initAttempt = useCallback(async () => {
@@ -156,6 +174,43 @@ export default function QuizAttemptPage() {
     return () => clearInterval(interval);
   }, [attempt?.expiresAt]);
 
+  useEffect(() => {
+    const now = Date.now();
+    const prevQ = prevQuestionId.current;
+    
+    if (prevQ) {
+      const timeSpent = (now - lastEntryTime.current) / 1000;
+      setTimings(prev => {
+        const currentTimings = prev[prevQ] || { timeTakenSeconds: 0 };
+        return {
+          ...prev,
+          [prevQ]: {
+            ...currentTimings,
+            timeTakenSeconds: currentTimings.timeTakenSeconds + timeSpent
+          }
+        };
+      });
+    }
+
+    if (q) {
+      prevQuestionId.current = q.questionId;
+      lastEntryTime.current = now;
+      
+      setTimings(prev => {
+        if (!prev[q.questionId]?.startedAt) {
+          return {
+            ...prev,
+            [q.questionId]: {
+              ...(prev[q.questionId] || { timeTakenSeconds: 0 }),
+              startedAt: new Date(now).toISOString()
+            }
+          };
+        }
+        return prev;
+      });
+    }
+  }, [current, q]);
+
   const handleSubmit = useCallback(async () => {
     if (!attemptId || submitting) return;
 
@@ -163,12 +218,27 @@ export default function QuizAttemptPage() {
       setSubmitting(true);
       setError(null);
 
+      const now = Date.now();
+      const prevQ = prevQuestionId.current;
+      let finalTimings = { ...timings };
+      if (prevQ) {
+        const timeSpent = (now - lastEntryTime.current) / 1000;
+        const currentTimings = finalTimings[prevQ] || { timeTakenSeconds: 0 };
+        finalTimings[prevQ] = {
+          ...currentTimings,
+          timeTakenSeconds: currentTimings.timeTakenSeconds + timeSpent
+        };
+      }
+
       await submitQuizAttempt(attemptId, {
-  answers: Object.entries(answers).map(([questionId, selectedOptions]) => ({
-    questionId,
-    selectedOptions,
-  })),
-});
+        answers: Object.entries(answers).map(([questionId, selectedOptions]) => ({
+          questionId,
+          selectedOptions,
+          startedAt: finalTimings[questionId]?.startedAt,
+          answeredAt: finalTimings[questionId]?.answeredAt,
+          timeTakenSeconds: Math.round(finalTimings[questionId]?.timeTakenSeconds || 0),
+        })),
+      });
       router.push(getAttemptResultPath(params, attemptId));
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to submit quiz");
@@ -217,6 +287,14 @@ export default function QuizAttemptPage() {
           [q.questionId]: nextSelected,
         };
       });
+
+      setTimings(prev => ({
+        ...prev,
+        [q.questionId]: {
+          ...(prev[q.questionId] || { timeTakenSeconds: 0 }),
+          answeredAt: new Date().toISOString()
+        }
+      }));
     },
     [ q]
   );
@@ -228,6 +306,14 @@ export default function QuizAttemptPage() {
       setAnswers((prev) => ({
         ...prev,
         [q.questionId]: value ? [value] : [],
+      }));
+
+      setTimings(prev => ({
+        ...prev,
+        [q.questionId]: {
+          ...(prev[q.questionId] || { timeTakenSeconds: 0 }),
+          answeredAt: new Date().toISOString()
+        }
       }));
     },
     [q]

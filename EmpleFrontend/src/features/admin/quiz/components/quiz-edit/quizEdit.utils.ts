@@ -21,5 +21,11 @@ export const blankQuestion = (): Question => ({
   imageUrl: "",
   solution: "",
   solutionMedia: "",
+  category: "",
+  subcategory: "",
+  topic: "",
+  subTopic: "",
+  exam: "",
+  year: null,
   isPersisted: false,
 });

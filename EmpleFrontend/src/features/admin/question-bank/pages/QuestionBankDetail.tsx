@@ -29,6 +29,14 @@ type Question = {
   negativeMarks: number
   questionType?: 'MCQ' | 'MSQ' | 'NAT'
   imageUrl?: string | null
+  solution?: string
+  solutionMedia?: string | null
+  category?: string
+  subcategory?: string
+  topic?: string
+  subTopic?: string
+  exam?: string
+  year?: number | null
 }
 
 type SingleQuestionBankResponse = {
@@ -54,6 +62,14 @@ const EMPTY_QUESTION: NewQuestion = {
   negativeMarks: 1,
   questionType: 'MCQ',
   imageUrl: null,
+  solution: '',
+  solutionMedia: '',
+  category: '',
+  subcategory: '',
+  topic: '',
+  subTopic: '',
+  exam: '',
+  year: null,
 }
 
 function parseAiken(text: string): NewQuestion[] {
@@ -106,6 +122,12 @@ function parseAiken(text: string): NewQuestion[] {
       positiveMarks: 4,
       negativeMarks: 1,
       questionType: correctOptions.length > 1 ? 'MSQ' : 'MCQ',
+      category: '',
+      subcategory: '',
+      topic: '',
+      subTopic: '',
+      exam: '',
+      year: null,
     })
   }
 
@@ -126,6 +148,14 @@ function parseJSON(text: string): NewQuestion[] {
       questionType:
         q.questionType ??
         ((q.correctOptions?.length ?? 0) > 1 ? 'MSQ' : 'MCQ'),
+      solution: q.solution ?? '',
+      solutionMedia: q.solutionMedia ?? '',
+      category: q.category ?? '',
+      subcategory: q.subcategory ?? '',
+      topic: q.topic ?? '',
+      subTopic: q.subTopic ?? '',
+      exam: q.exam ?? '',
+      year: q.year ?? null,
     }))
   } catch {
     return []
@@ -152,6 +182,14 @@ function parseExcel(rows: Record<string, any>[]): NewQuestion[] {
         negativeMarks: Number(row.negative_marks ?? row.negativeMarks ?? 1),
         questionType: 'NAT',
         imageUrl: row.imageUrl ? String(row.imageUrl).trim() : null,
+        solution: row.solution ? String(row.solution).trim() : '',
+        solutionMedia: row.solutionMedia ? String(row.solutionMedia).trim() : '',
+        category: row.category ? String(row.category).trim() : '',
+        subcategory: row.subcategory ? String(row.subcategory).trim() : '',
+        topic: row.topic ? String(row.topic).trim() : '',
+        subTopic: row.subTopic ? String(row.subTopic).trim() : '',
+        exam: row.exam ? String(row.exam).trim() : '',
+        year: row.year ? Number(row.year) : null,
       })
 
       continue
@@ -198,6 +236,14 @@ function parseExcel(rows: Record<string, any>[]): NewQuestion[] {
       negativeMarks: Number(row.negative_marks ?? row.negativeMarks ?? 1),
       questionType: correctOptions.length > 1 ? 'MSQ' : 'MCQ',
       imageUrl: row.imageUrl ? String(row.imageUrl).trim() : null,
+      solution: row.solution ? String(row.solution).trim() : '',
+      solutionMedia: row.solutionMedia ? String(row.solutionMedia).trim() : '',
+      category: row.category ? String(row.category).trim() : '',
+      subcategory: row.subcategory ? String(row.subcategory).trim() : '',
+      topic: row.topic ? String(row.topic).trim() : '',
+      subTopic: row.subTopic ? String(row.subTopic).trim() : '',
+      exam: row.exam ? String(row.exam).trim() : '',
+      year: row.year ? Number(row.year) : null,
     })
   }
 
@@ -360,6 +406,10 @@ export default function QuestionBankDetailPage({
 
   if (q.positiveMarks < 0) return 'Positive marks must be ≥ 0'
 
+  if (!q.category.trim()) return 'Category is required'
+  if (!q.subcategory.trim()) return 'Subcategory is required'
+  if (!q.topic.trim()) return 'Topic is required'
+
   return null
 }
 
@@ -516,6 +566,14 @@ export default function QuestionBankDetailPage({
     q.questionType ??
     (q.correctOptions.length > 1 ? 'MSQ' : 'MCQ'),
   imageUrl: q.imageUrl ?? null,
+  solution: q.solution ?? '',
+  solutionMedia: q.solutionMedia ?? '',
+  category: q.category ?? '',
+  subcategory: q.subcategory ?? '',
+  topic: q.topic ?? '',
+  subTopic: q.subTopic ?? '',
+  exam: q.exam ?? '',
+  year: q.year ?? null,
 })
     setIsEditOpen(true)
   }
