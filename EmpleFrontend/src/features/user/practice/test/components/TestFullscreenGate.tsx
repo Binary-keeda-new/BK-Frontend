@@ -38,7 +38,7 @@ export default function TestFullscreenGate({
 
         <p className="mx-auto mt-4 max-w-md text-sm leading-6 text-[var(--muted2)]">
           This test must be attempted in fullscreen mode. Exiting fullscreen
-          during the test may count as a warning.
+          during the test will count as a warning.
         </p>
 
         <div className="mt-8 flex justify-center gap-3">
