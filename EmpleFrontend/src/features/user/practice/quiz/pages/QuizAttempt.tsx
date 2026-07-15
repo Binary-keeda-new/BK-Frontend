@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import {
-  getQuizAttempt,
   startQuizAttempt,
   submitQuizAttempt,
 } from "../services/quizAttempt.service";
@@ -95,6 +94,7 @@ export default function QuizAttemptPage() {
   const [timeLeftMs, setTimeLeftMs] = useState<number | null>(null);
 
   const autoSubmitTriggeredRef = useRef(false);
+  const initStartedRef = useRef(false);
 
   const questions = attempt?.questions ?? [];
   const totalQuestions = questions.length;
@@ -105,34 +105,15 @@ export default function QuizAttemptPage() {
     return answers[q.questionId] ?? [];
   }, [answers, q]);
 
-  const loadAttempt = useCallback(async (incomingAttemptId: string) => {
-    const attemptRes = await getQuizAttempt(incomingAttemptId);
-    const attemptData = attemptRes.data;
-
-    setAttempt(attemptData);
-
-    const answerMap: Record<string, string[]> = {};
-    const timingMap: Record<string, QuestionTiming> = {};
-    
-    for (const answer of attemptData.answers || []) {
-      const ans = answer as unknown as AttemptAnswer;
-      answerMap[ans.questionId] = ans.selectedOptions ?? [];
-      timingMap[ans.questionId] = {
-        startedAt: ans.startedAt,
-        answeredAt: ans.answeredAt,
-        timeTakenSeconds: ans.timeTakenSeconds || 0,
-      };
-    }
-    setAnswers(answerMap);
-    setTimings(timingMap);
-  }, []);
-
   const initAttempt = useCallback(async () => {
     if (!quizId) {
       setError("Quiz ID is missing");
       setLoading(false);
       return;
     }
+
+    if (initStartedRef.current) return;
+    initStartedRef.current = true;
 
     try {
       setLoading(true);
@@ -141,16 +122,72 @@ export default function QuizAttemptPage() {
       const startRes = await startQuizAttempt(quizId);
       const startedAttempt = startRes.data;
 
+      if (startedAttempt.isAlreadySubmitted && startedAttempt.result) {
+        sessionStorage.setItem(
+          `quizResult_${startedAttempt._id}`,
+          JSON.stringify(startedAttempt.result)
+        );
+        router.push(getAttemptResultPath(params, startedAttempt._id));
+        return;
+      }
+
       setAttemptId(startedAttempt._id);
-      await loadAttempt(startedAttempt._id);
+      setAttempt(startedAttempt);
+
+      const LS_KEY = `quiz_attempt_${quizId}_${startedAttempt._id}`;
+      const savedData = localStorage.getItem(LS_KEY);
+
+      let answerMap: Record<string, string[]> = {};
+      let timingMap: Record<string, QuestionTiming> = {};
+      let savedCurrent = 0;
+
+      if (savedData) {
+        try {
+          const parsed = JSON.parse(savedData);
+          answerMap = parsed.answers || {};
+          timingMap = parsed.timings || {};
+          savedCurrent = parsed.current || 0;
+        } catch (e) {
+          console.error("Failed to parse local storage data", e);
+        }
+      } else {
+        for (const answer of startedAttempt.answers || []) {
+          const ans = answer as unknown as AttemptAnswer;
+          answerMap[ans.questionId] = ans.selectedOptions ?? [];
+          timingMap[ans.questionId] = {
+            startedAt: ans.startedAt,
+            answeredAt: ans.answeredAt,
+            timeTakenSeconds: ans.timeTakenSeconds || 0,
+          };
+        }
+      }
+
+      setAnswers(answerMap);
+      setTimings(timingMap);
+      setCurrent(Math.min(savedCurrent, Math.max(0, (startedAttempt.questions?.length || 1) - 1)));
     } catch (err) {
+      initStartedRef.current = false;
       setError(
         err instanceof Error ? err.message : "Failed to load quiz attempt"
       );
     } finally {
       setLoading(false);
     }
-  }, [loadAttempt, quizId]);
+  }, [quizId, router, params]);
+
+  // Sync to local storage whenever critical state changes
+  useEffect(() => {
+    if (!attemptId || !quizId) return;
+    const LS_KEY = `quiz_attempt_${quizId}_${attemptId}`;
+    localStorage.setItem(
+      LS_KEY,
+      JSON.stringify({
+        answers,
+        timings,
+        current,
+      })
+    );
+  }, [answers, timings, current, attemptId, quizId]);
 
   useEffect(() => {
     void initAttempt();
@@ -230,7 +267,7 @@ export default function QuizAttemptPage() {
         };
       }
 
-      await submitQuizAttempt(attemptId, {
+      const res = await submitQuizAttempt(attemptId, {
         answers: Object.entries(answers).map(([questionId, selectedOptions]) => ({
           questionId,
           selectedOptions,
@@ -239,14 +276,21 @@ export default function QuizAttemptPage() {
           timeTakenSeconds: Math.round(finalTimings[questionId]?.timeTakenSeconds || 0),
         })),
       });
+
+      const LS_KEY = `quiz_attempt_${quizId}_${attemptId}`;
+      localStorage.removeItem(LS_KEY);
+
+      if (res.data) {
+        sessionStorage.setItem(`quizResult_${attemptId}`, JSON.stringify(res.data));
+      }
+
       router.push(getAttemptResultPath(params, attemptId));
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to submit quiz");
-    } finally {
+      setError(err instanceof Error ? err.message : "Failed to submit quiz. Please try again.");
       setSubmitting(false);
       setShowSubmitConfirm(false);
     }
-  }, [answers, attemptId, params, router, submitting]);
+  }, [answers, attemptId, quizId, params, router, submitting, timings]);
 
   const openSubmitConfirm = useCallback(() => {
     if (submitting || loading) return;

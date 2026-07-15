@@ -66,7 +66,7 @@ export default function ImportQuestionsModal({
 
       const question = lines[0];
 
-      const optionLines = lines.filter((line) => /^[A-Z]\.\s+/.test(line));
+      const optionLines = lines.filter((line) => /^[A-Z][\.\)]\s+/.test(line));
       const answerLine = lines.find((line) =>
         /^ANSWER\s*:/i.test(line)
       );
@@ -74,7 +74,7 @@ export default function ImportQuestionsModal({
       if (!question || !optionLines.length || !answerLine) continue;
 
       const options = optionLines.map((line) =>
-        line.replace(/^[A-Z]\.\s+/, "").trim()
+        line.replace(/^[A-Z][\.\)]\s+/, "").trim()
       );
 
       const correctKeys = answerLine
@@ -86,9 +86,9 @@ export default function ImportQuestionsModal({
       const correctOptions = correctKeys
         .map((key) => {
           const match = optionLines.find((line) =>
-            line.toUpperCase().startsWith(`${key}.`)
+            line.toUpperCase().startsWith(`${key}.`) || line.toUpperCase().startsWith(`${key})`)
           );
-          return match?.replace(/^[A-Z]\.\s+/, "").trim();
+          return match?.replace(/^[A-Z][\.\)]\s+/, "").trim();
         })
         .filter((value): value is string => Boolean(value));
 

@@ -30,7 +30,7 @@ type QuestionBankPageProps = {
 }
 
 type Toast = {
-  id: number
+  id: string
   message: string
   type: 'success' | 'error'
 }
@@ -45,15 +45,15 @@ export default function QuestionBankPage({
   const [deleteLoading, setDeleteLoading] = useState(false)
   const [toasts, setToasts] = useState<Toast[]>([])
 
-  const addToast = (message: string, type: 'success' | 'error') => {
-    const id = Date.now()
+ const addToast = (message: string, type: 'success' | 'error') => {
+  const id = crypto.randomUUID()
 
-    setToasts((prev) => [...prev, { id, message, type }])
+  setToasts((prev) => [...prev, { id, message, type }])
 
-    setTimeout(() => {
-      setToasts((prev) => prev.filter((t) => t.id !== id))
-    }, 2500)
-  }
+  setTimeout(() => {
+    setToasts((prev) => prev.filter((t) => t.id !== id))
+  }, 2500)
+}
 
   const fetchQuestionBanks = async () => {
     try {

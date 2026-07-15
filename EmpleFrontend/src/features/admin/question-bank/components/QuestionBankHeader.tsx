@@ -12,25 +12,26 @@ export default function QuestionBankHeader({
   onBack,
 }: Props) {
   return (
-    <div className="mb-8 flex items-start justify-between">
+    <div className="mb-8 flex items-center justify-between">
       <div>
         <button
           onClick={onBack}
-          className="mb-3 text-sm text-white/40 transition hover:text-white/70"
+          className="mb-3 rounded-xl border border-white/10 bg-[rgb(19,20,27)] px-4 py-2 text-sm font-medium text-white transition hover:border-[rgb(241,90,34)] hover:text-[rgb(241,90,34)]"
         >
-          ← Back
+          Back
         </button>
-
-        <p className="mb-2 inline-block rounded-full bg-[rgb(19,20,27)] px-4 py-1 text-sm text-[rgb(241,90,34)]">
-          Question Bank Editor
-        </p>
 
         <h1 className="text-3xl font-bold">{title}</h1>
       </div>
 
-      <span className="text-sm text-white/30">
-        {questionCount} question{questionCount !== 1 ? 's' : ''}
-      </span>
+      <div className="rounded-xl border border-white/10 bg-[rgb(19,20,27)] px-5 py-3 text-right">
+        <p className="text-2xl font-bold text-[rgb(241,90,34)]">
+          {questionCount}
+        </p>
+        <p className="text-xs uppercase tracking-wide text-white/50">
+          {questionCount === 1 ? 'Question' : 'Questions'}
+        </p>
+      </div>
     </div>
   )
 }

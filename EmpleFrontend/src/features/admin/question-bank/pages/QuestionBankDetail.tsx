@@ -51,7 +51,12 @@ type QuestionsResponse = {
   data: Question[]
 }
 
-type Toast = { id: number; message: string; type: 'success' | 'error' }
+type Toast = {
+  id: string
+  message: string
+  type: 'success' | 'error'
+}
+
 
 
 const EMPTY_QUESTION: NewQuestion = {
@@ -86,7 +91,7 @@ function parseAiken(text: string): NewQuestion[] {
     if (lines.length < 3) continue
 
     const questionLine = lines[0]
-    const optionLines = lines.slice(1).filter((line) => /^[A-Z]\.\s/.test(line))
+    const optionLines = lines.slice(1).filter((line) => /^[A-Z][\.\)]\s/.test(line))
     const answerLine = lines.find((line) =>
       line.toUpperCase().startsWith('ANSWER:')
     )
@@ -100,15 +105,15 @@ function parseAiken(text: string): NewQuestion[] {
       .filter(Boolean)
 
     const options = optionLines.map((line) =>
-      line.replace(/^[A-Z]\.\s/, '').trim()
+      line.replace(/^[A-Z][\.\)]\s/, '').trim()
     )
 
     
     const correctOptions = answerKeys
       .map((key) =>
         optionLines
-          .find((line) => line.startsWith(`${key}.`))
-          ?.replace(/^[A-Z]\.\s/, '')
+          .find((line) => line.startsWith(`${key}.`) || line.startsWith(`${key})`))
+          ?.replace(/^[A-Z][\.\)]\s/, '')
           .trim()
       )
       .filter((value): value is string => Boolean(value))
@@ -285,7 +290,6 @@ export default function QuestionBankDetailPage({
   const [editLoading, setEditLoading] = useState(false)
 
   const [toasts, setToasts] = useState<Toast[]>([])
-  const toastId = useRef(0)
 
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -295,12 +299,14 @@ export default function QuestionBankDetailPage({
   const [deleteQuestionText, setDeleteQuestionText] = useState('')
 
   const addToast = (message: string, type: Toast['type'] = 'success') => {
-    const id = ++toastId.current
-    setToasts((prev) => [...prev, { id, message, type }])
-    setTimeout(() => {
-      setToasts((prev) => prev.filter((t) => t.id !== id))
-    }, 3500)
-  }
+  const id = crypto.randomUUID()
+
+  setToasts((prev) => [...prev, { id, message, type }])
+
+  setTimeout(() => {
+    setToasts((prev) => prev.filter((t) => t.id !== id))
+  }, 3500)
+}
 
   useEffect(() => {
     if (!id) return

@@ -32,6 +32,8 @@ export interface QuizAttemptData {
   expiresAt: string | null;
   answers: AttemptAnswer[];
   questions: AttemptQuestion[];
+  isAlreadySubmitted?: boolean;
+  result?: QuizAttemptResultData;
 }
 
 export interface QuizAttemptResponse {
