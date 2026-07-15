@@ -3,13 +3,18 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import {
-  getQuizAttempt,
   startQuizAttempt,
   submitQuizAttempt,
 } from "../services/quizAttempt.service";
-import type { QuizAttemptData } from "../types/quizAttempt.types";
+import type { QuizAttemptData, AttemptAnswer } from "../types/quizAttempt.types";
 
 type Status = "not-visited" | "not-attempted" | "answered" | "flagged";
+
+type QuestionTiming = {
+  startedAt?: string;
+  answeredAt?: string;
+  timeTakenSeconds: number;
+};
 
 const SC: Record<Status, { bg: string; color: string; border: string }> = {
   "not-visited": {
@@ -76,6 +81,9 @@ export default function QuizAttemptPage() {
   const [attempt, setAttempt] = useState<QuizAttemptData | null>(null);
   const [current, setCurrent] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string[]>>({});
+  const [timings, setTimings] = useState<Record<string, QuestionTiming>>({});
+  const lastEntryTime = useRef<number>(Date.now());
+  const prevQuestionId = useRef<string | null>(null);
   const [visited, setVisited] = useState<Record<number, boolean>>({ 0: true });
   const [flagged, setFlagged] = useState<Record<number, boolean>>({});
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -86,6 +94,7 @@ export default function QuizAttemptPage() {
   const [timeLeftMs, setTimeLeftMs] = useState<number | null>(null);
 
   const autoSubmitTriggeredRef = useRef(false);
+  const initStartedRef = useRef(false);
 
   const questions = attempt?.questions ?? [];
   const totalQuestions = questions.length;
@@ -96,25 +105,15 @@ export default function QuizAttemptPage() {
     return answers[q.questionId] ?? [];
   }, [answers, q]);
 
-  const loadAttempt = useCallback(async (incomingAttemptId: string) => {
-    const attemptRes = await getQuizAttempt(incomingAttemptId);
-    const attemptData = attemptRes.data;
-
-    setAttempt(attemptData);
-
-    const answerMap: Record<string, string[]> = {};
-    for (const answer of attemptData.answers || []) {
-      answerMap[answer.questionId] = answer.selectedOptions ?? [];
-    }
-    setAnswers(answerMap);
-  }, []);
-
   const initAttempt = useCallback(async () => {
     if (!quizId) {
       setError("Quiz ID is missing");
       setLoading(false);
       return;
     }
+
+    if (initStartedRef.current) return;
+    initStartedRef.current = true;
 
     try {
       setLoading(true);
@@ -123,16 +122,72 @@ export default function QuizAttemptPage() {
       const startRes = await startQuizAttempt(quizId);
       const startedAttempt = startRes.data;
 
+      if (startedAttempt.isAlreadySubmitted && startedAttempt.result) {
+        sessionStorage.setItem(
+          `quizResult_${startedAttempt._id}`,
+          JSON.stringify(startedAttempt.result)
+        );
+        router.push(getAttemptResultPath(params, startedAttempt._id));
+        return;
+      }
+
       setAttemptId(startedAttempt._id);
-      await loadAttempt(startedAttempt._id);
+      setAttempt(startedAttempt);
+
+      const LS_KEY = `quiz_attempt_${quizId}_${startedAttempt._id}`;
+      const savedData = localStorage.getItem(LS_KEY);
+
+      let answerMap: Record<string, string[]> = {};
+      let timingMap: Record<string, QuestionTiming> = {};
+      let savedCurrent = 0;
+
+      if (savedData) {
+        try {
+          const parsed = JSON.parse(savedData);
+          answerMap = parsed.answers || {};
+          timingMap = parsed.timings || {};
+          savedCurrent = parsed.current || 0;
+        } catch (e) {
+          console.error("Failed to parse local storage data", e);
+        }
+      } else {
+        for (const answer of startedAttempt.answers || []) {
+          const ans = answer as unknown as AttemptAnswer;
+          answerMap[ans.questionId] = ans.selectedOptions ?? [];
+          timingMap[ans.questionId] = {
+            startedAt: ans.startedAt,
+            answeredAt: ans.answeredAt,
+            timeTakenSeconds: ans.timeTakenSeconds || 0,
+          };
+        }
+      }
+
+      setAnswers(answerMap);
+      setTimings(timingMap);
+      setCurrent(Math.min(savedCurrent, Math.max(0, (startedAttempt.questions?.length || 1) - 1)));
     } catch (err) {
+      initStartedRef.current = false;
       setError(
         err instanceof Error ? err.message : "Failed to load quiz attempt"
       );
     } finally {
       setLoading(false);
     }
-  }, [loadAttempt, quizId]);
+  }, [quizId, router, params]);
+
+  // Sync to local storage whenever critical state changes
+  useEffect(() => {
+    if (!attemptId || !quizId) return;
+    const LS_KEY = `quiz_attempt_${quizId}_${attemptId}`;
+    localStorage.setItem(
+      LS_KEY,
+      JSON.stringify({
+        answers,
+        timings,
+        current,
+      })
+    );
+  }, [answers, timings, current, attemptId, quizId]);
 
   useEffect(() => {
     void initAttempt();
@@ -156,6 +211,43 @@ export default function QuizAttemptPage() {
     return () => clearInterval(interval);
   }, [attempt?.expiresAt]);
 
+  useEffect(() => {
+    const now = Date.now();
+    const prevQ = prevQuestionId.current;
+    
+    if (prevQ) {
+      const timeSpent = (now - lastEntryTime.current) / 1000;
+      setTimings(prev => {
+        const currentTimings = prev[prevQ] || { timeTakenSeconds: 0 };
+        return {
+          ...prev,
+          [prevQ]: {
+            ...currentTimings,
+            timeTakenSeconds: currentTimings.timeTakenSeconds + timeSpent
+          }
+        };
+      });
+    }
+
+    if (q) {
+      prevQuestionId.current = q.questionId;
+      lastEntryTime.current = now;
+      
+      setTimings(prev => {
+        if (!prev[q.questionId]?.startedAt) {
+          return {
+            ...prev,
+            [q.questionId]: {
+              ...(prev[q.questionId] || { timeTakenSeconds: 0 }),
+              startedAt: new Date(now).toISOString()
+            }
+          };
+        }
+        return prev;
+      });
+    }
+  }, [current, q]);
+
   const handleSubmit = useCallback(async () => {
     if (!attemptId || submitting) return;
 
@@ -163,20 +255,42 @@ export default function QuizAttemptPage() {
       setSubmitting(true);
       setError(null);
 
-      await submitQuizAttempt(attemptId, {
-  answers: Object.entries(answers).map(([questionId, selectedOptions]) => ({
-    questionId,
-    selectedOptions,
-  })),
-});
+      const now = Date.now();
+      const prevQ = prevQuestionId.current;
+      let finalTimings = { ...timings };
+      if (prevQ) {
+        const timeSpent = (now - lastEntryTime.current) / 1000;
+        const currentTimings = finalTimings[prevQ] || { timeTakenSeconds: 0 };
+        finalTimings[prevQ] = {
+          ...currentTimings,
+          timeTakenSeconds: currentTimings.timeTakenSeconds + timeSpent
+        };
+      }
+
+      const res = await submitQuizAttempt(attemptId, {
+        answers: Object.entries(answers).map(([questionId, selectedOptions]) => ({
+          questionId,
+          selectedOptions,
+          startedAt: finalTimings[questionId]?.startedAt,
+          answeredAt: finalTimings[questionId]?.answeredAt,
+          timeTakenSeconds: Math.round(finalTimings[questionId]?.timeTakenSeconds || 0),
+        })),
+      });
+
+      const LS_KEY = `quiz_attempt_${quizId}_${attemptId}`;
+      localStorage.removeItem(LS_KEY);
+
+      if (res.data) {
+        sessionStorage.setItem(`quizResult_${attemptId}`, JSON.stringify(res.data));
+      }
+
       router.push(getAttemptResultPath(params, attemptId));
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to submit quiz");
-    } finally {
+      setError(err instanceof Error ? err.message : "Failed to submit quiz. Please try again.");
       setSubmitting(false);
       setShowSubmitConfirm(false);
     }
-  }, [answers, attemptId, params, router, submitting]);
+  }, [answers, attemptId, quizId, params, router, submitting, timings]);
 
   const openSubmitConfirm = useCallback(() => {
     if (submitting || loading) return;
@@ -217,6 +331,14 @@ export default function QuizAttemptPage() {
           [q.questionId]: nextSelected,
         };
       });
+
+      setTimings(prev => ({
+        ...prev,
+        [q.questionId]: {
+          ...(prev[q.questionId] || { timeTakenSeconds: 0 }),
+          answeredAt: new Date().toISOString()
+        }
+      }));
     },
     [ q]
   );
@@ -228,6 +350,14 @@ export default function QuizAttemptPage() {
       setAnswers((prev) => ({
         ...prev,
         [q.questionId]: value ? [value] : [],
+      }));
+
+      setTimings(prev => ({
+        ...prev,
+        [q.questionId]: {
+          ...(prev[q.questionId] || { timeTakenSeconds: 0 }),
+          answeredAt: new Date().toISOString()
+        }
       }));
     },
     [q]
@@ -303,7 +433,7 @@ export default function QuizAttemptPage() {
   const mode = q ? getQuestionMode(q.questionType) : "mcq";
 
   const Panel = () => (
-    <aside className="flex h-full flex-col gap-4 rounded-2xl border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface,#161820)] p-5">
+    <aside className="flex flex-1 w-full flex-col gap-4 rounded-2xl border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface,#161820)] p-5">
       <div>
         <p className="m-0 text-[11px] font-semibold tracking-[0.08em] text-[var(--muted,#666)]">
           QUESTIONS
@@ -365,16 +495,6 @@ export default function QuizAttemptPage() {
         })}
       </div>
 
-      <div className="mt-auto">
-        <button
-          type="button"
-          onClick={openSubmitConfirm}
-          disabled={submitting || loading}
-          className="w-full rounded-[10px] bg-[var(--orange,#f15a22)] px-4 py-3 text-sm font-bold text-white transition disabled:cursor-not-allowed disabled:opacity-70"
-        >
-          {submitting ? "Submitting..." : "Submit Quiz"}
-        </button>
-      </div>
     </aside>
   );
 
@@ -459,7 +579,7 @@ export default function QuizAttemptPage() {
           )}
         </div>
 
-        <div className="grid min-h-[calc(100vh-2rem)] grid-cols-1 gap-5 md:grid-cols-[minmax(0,1fr)_16rem]">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-[minmax(0,1fr)_16rem]">
           <section className="min-w-0">
             <div className="flex min-w-0 flex-col">
               <div className="rounded-2xl border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface,#161820)] p-[clamp(16px,4vw,28px)]">
@@ -626,32 +746,20 @@ export default function QuizAttemptPage() {
                   Previous
                 </button>
 
-                {current === totalQuestions - 1 ? (
                 <button
                   type="button"
-                  onClick={openSubmitConfirm}
-                  disabled={submitting || loading}
-                  className="rounded-[10px] bg-[var(--orange,#f15a22)] px-6 py-2.5 text-sm font-semibold text-white transition disabled:cursor-not-allowed disabled:opacity-40"
+                  onClick={() => goTo(current + 1)}
+                  disabled={current === totalQuestions - 1}
+                  className="rounded-[10px] border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface,#161820)] px-6 py-2.5 text-sm font-semibold text-[var(--text,#f0f0f4)] transition disabled:cursor-not-allowed disabled:opacity-40"
                 >
-                  {submitting ? "Submitting..." : "Submit"}
+                  Next
                 </button>
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={() => goTo(current + 1)}
-                      className="rounded-[10px] border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface,#161820)] px-6 py-2.5 text-sm font-semibold text-[var(--text,#f0f0f4)] transition"
-                    >
-                      Next
-                    </button>
-                  )}
               </div>
             </div>
           </section>
 
-          <div className="hidden md:block">
-            <div className="sticky top-4 h-[calc(100vh-2rem)]">
-              <Panel />
-            </div>
+          <div className="hidden md:flex flex-col h-full">
+            <Panel />
           </div>
         </div>
       </main>

@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { QUIZ_CATEGORIES } from "@/shared/constants/quizCategories";
 import { apiRequest } from "@/shared/utils/api";
+import { Terminal, Brain, Cloud, Landmark } from "lucide-react";
 
 type QuizItem = {
   _id: string;
@@ -20,32 +21,27 @@ type QuizListResponse = {
 
 const CATEGORY_META: Record<
   keyof typeof QUIZ_CATEGORIES,
-  { icon: string; href: string; desc: string }
+  { icon: React.ReactNode; href: string; desc: string }
 > = {
   "Core CS": {
-    icon: "💻",
+    icon: <Terminal className="h-8 w-8 text-blue-500" />,
     href: "/user/practice/quiz/core-cs",
     desc: "Data Structures, Algorithms, OS, Networks",
   },
-  Aptitude: {
-    icon: "🧠",
+  "IT Skills": {
+    icon: <Cloud className="h-8 w-8 text-purple-500" />,
+    href: "/user/practice/quiz/it-skills",
+    desc: "AIML, Development, DevOps, Cybersecurity, SQL, MongoDB, Linux",
+  },
+  "Aptitude": {
+    icon: <Brain className="h-8 w-8 text-green-500" />,
     href: "/user/practice/quiz/aptitude",
-    desc: "Quantitative, Logical Reasoning, Verbal",
+    desc: "Quantitative, Logical Aptitude",
   },
-  "IT Concepts": {
-    icon: "☁️",
-    href: "/user/practice/quiz/it-concepts",
-    desc: "Cloud, DevOps, Databases, Security",
-  },
-  "UPSC Mapping": {
-    icon: "📚",
-    href: "/user/practice/quiz/upsc",
-    desc: "Technology mapped to UPSC syllabus",
-  },
-  Constitution: {
-    icon: "⚖️",
-    href: "/user/practice/quiz/constitution",
-    desc: "Indian Constitution and Polity",
+  "Govt Exams": {
+    icon: <Landmark className="h-8 w-8 text-rose-500" />,
+    href: "/user/practice/quiz/govt-exams",
+    desc: "UPSC CSE, UPPSC, BPSC",
   },
 };
 
@@ -149,7 +145,7 @@ export default function QuizHome() {
         }}
       >
         {quizCards.map((card) => (
-          <Link href={card.href} key={card.title} style={{ textDecoration: "none" }}>
+          <Link href={card.href} key={card.title} style={{ textDecoration: "none", display: "flex" }}>
             <div
               style={{
                 background: "var(--surface)",
@@ -160,6 +156,9 @@ export default function QuizHome() {
                 transition: "all 0.2s ease",
                 minHeight: "170px",
                 position: "relative",
+                display: "flex",
+                flexDirection: "column",
+                width: "100%",
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.border = "1px solid var(--orange)";
@@ -211,6 +210,8 @@ export default function QuizHome() {
                   background: "var(--surface2)",
                   color: "var(--text)",
                   border: "1px solid var(--border)",
+                  marginTop: "auto",
+                  alignSelf: "flex-start",
                 }}
               >
                 {loading

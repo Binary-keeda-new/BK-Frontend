@@ -1,26 +1,28 @@
 export const QUIZ_CATEGORIES = {
-  "Core CS": [
-    "Data Structures",
-    "Algorithms",
-    "OS",
-    "Networks",
-  ],
-  Aptitude: [
-    "Quantitative",
-    "Logical Reasoning",
-    "Verbal",
-  ],
-  "IT Concepts": [
-    "Cloud",
-    "DevOps",
-    "Databases",
-    "Security",
-  ],
-  "UPSC Mapping": [
-    "Technology mapped to UPSC syllabus",
-  ],
-  Constitution: [
-    "Indian Constitution",
-    "Polity",
-  ],
+  "Core CS": {
+    "DSA": [],
+    "OS": [],
+    "DBMS": [],
+    "CN": []
+  },
+  "IT Skills": {
+    "AIML": [],
+    "Development": [],
+    "DevOps": [],
+    "Cybersecurity": [],
+    "OOP": [],
+    "SQL": [],
+    "MongoDB": [],
+    "Linux": [],
+    "System Design": []
+  },
+  "Aptitude": {
+    "Quantitative": [],
+    "Logical Aptitude": []
+  },
+  "Govt Exams": {
+    "UPSC CSE": ["GS", "CSAT"],
+    "UPPSC": ["GS", "CSAT"],
+    "BPSC": ["GS", "CSAT"]
+  }
 } as const;

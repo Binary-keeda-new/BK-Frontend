@@ -44,9 +44,9 @@ export default function AddQuestionModal({
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4">
-      <div className="w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl bg-[rgb(19,20,27)] p-6 shadow-2xl">
-        <div className="mb-4 flex items-center justify-between">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 pt-16 sm:pt-20">
+      <div className="flex w-full max-w-2xl flex-col max-h-[85vh] rounded-3xl bg-[rgb(19,20,27)] shadow-2xl">
+        <div className="flex-none p-6 pb-4 border-b border-white/10 flex items-center justify-between">
           <h3 className="text-xl font-semibold">Add Question</h3>
           <button
             onClick={onClose}
@@ -55,6 +55,8 @@ export default function AddQuestionModal({
             ✕
           </button>
         </div>
+
+        <div className="flex-1 overflow-y-auto p-6">
 
         <div className="mb-5 grid grid-cols-4 gap-2">
           {(['manual', 'aiken', 'json', 'excel'] as const).map((mode) => (
@@ -177,23 +179,42 @@ export default function AddQuestionModal({
               </div>
             )}
 
-            {parsedQuestions.length > 0 && !fileError && (
-  <div className="border-t border-white/10 pt-4 flex justify-end">
-    <button
-      onClick={onImportParsedQuestions}
-      disabled={addLoading}
-      className="rounded-2xl bg-[rgb(241,90,34)] px-5 py-2 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-60"
-    >
-      {addLoading
-        ? 'Importing...'
-        : `Import ${parsedQuestions.length} Question${
-            parsedQuestions.length !== 1 ? 's' : ''
-          }`}
-    </button>
-  </div>
-)}
           </div>
         )}
+        </div>
+
+        <div className="flex-none p-6 pt-4 border-t border-white/10 flex justify-end gap-3">
+          <button
+            onClick={onClose}
+            className="px-5 py-2 text-sm font-medium text-white/70 hover:text-white hover:bg-white/10 rounded-xl transition"
+          >
+            Cancel
+          </button>
+          
+          {addMode === 'manual' ? (
+            <button
+              onClick={onAddQuestion}
+              disabled={addLoading}
+              className="rounded-xl bg-[rgb(241,90,34)] px-6 py-2 text-sm font-semibold transition disabled:opacity-50"
+            >
+              {addLoading ? 'Saving...' : 'Add Question'}
+            </button>
+          ) : (
+            parsedQuestions.length > 0 && !fileError && (
+              <button
+                onClick={onImportParsedQuestions}
+                disabled={addLoading}
+                className="rounded-xl bg-[rgb(241,90,34)] px-6 py-2 text-sm font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {addLoading
+                  ? 'Importing...'
+                  : `Import ${parsedQuestions.length} Question${
+                      parsedQuestions.length !== 1 ? 's' : ''
+                    }`}
+              </button>
+            )
+          )}
+        </div>
       </div>
     </div>
   )
