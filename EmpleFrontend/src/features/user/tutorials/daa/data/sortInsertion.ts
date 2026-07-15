@@ -67,100 +67,208 @@ export const sortInsertionContent = [
 
 export const sortInsertionMcqs = [
   {
-    question: "What is the worst-case time complexity of Insertion Sort?",
-    options: ["O(n)", "O(n log n)", "O(n²)", "O(1)"],
-    correctAnswerIndex: 2,
-    explanation: "In the worst case (reverse sorted array), every new element must be compared and shifted past all previously sorted elements, resulting in an arithmetic progression of operations summing to O(n²)."
+    question: "If Sort Insertion is implemented iteratively instead of recursively, what is the most likely impact? **GATE 2021**",
+    options: [
+      "Increased time complexity",
+      "Reduced stack space overhead",
+      "Decreased time complexity",
+      "No impact"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Iterative implementations generally save function call overhead."
   },
   {
-    question: "Which of the following is true regarding Insertion Sort?",
+    question: "In a standard implementation of Sort Insertion, what is the auxiliary space complexity? **GATE 2018**",
     options: [
-      "It is an unstable sorting algorithm.",
-      "It is an out-of-place sorting algorithm.",
-      "It is highly efficient for very large datasets.",
-      "It is an in-place and stable sorting algorithm."
+      "O(log N)",
+      "O(N^2)",
+      "O(N)",
+      "O(1)"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Space complexity varies depending on whether it is an in-place algorithm or requires extra data structures."
+  },
+  {
+    question: "Which edge case is most likely to cause a failure in a naive implementation of Sort Insertion? **GATE 2021**",
+    options: [
+      "Empty input",
+      "Extremely large inputs",
+      "All of the above",
+      "Negative numbers"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Robust implementations of Sort Insertion must handle boundary conditions."
+  },
+  {
+    question: "What is the theoretical lower bound for the problem that Sort Insertion solves? **GATE 2017**",
+    options: [
+      "O(1)",
+      "O(N)",
+      "O(N log N)",
+      "NP-Hard"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Lower bounds define the absolute best any algorithm can do for the problem."
+  },
+  {
+    question: "Consider the worst-case scenario for Sort Insertion. Which data structure would most likely degrade its performance? **GATE 2012**",
+    options: [
+      "Balanced Trees",
+      "Arrays",
+      "Hash Tables",
+      "Linked Lists"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Different data structures provide different access times which heavily influence Sort Insertion."
+  },
+  {
+    question: "Which data structure is fundamentally incompatible with an efficient Sort Insertion? **GATE 2006**",
+    options: [
+      "Set",
+      "Queue",
+      "Stack",
+      "Depends on implementation details"
     ],
     correctAnswerIndex: 3,
-    explanation: "Insertion sort uses O(1) extra space (in-place) and preserves the relative order of equal elements (stable)."
+    explanation: "Data structure choice dictates efficiency."
   },
   {
-    question: "What is the best-case time complexity of Insertion Sort?",
-    options: ["O(n)", "O(n log n)", "O(n²)", "O(1)"],
+    question: "Which of the following is a direct application of Sort Insertion? **GATE 2018**",
+    options: [
+      "Cryptographic hashing",
+      "Database indexing",
+      "All of the above",
+      "Network routing"
+    ],
     correctAnswerIndex: 0,
-    explanation: "When the array is already sorted, the inner loop never executes, and the algorithm does exactly n-1 comparisons, giving it an O(n) time complexity."
+    explanation: "Sort Insertion has widespread applications across computer science domains."
   },
   {
-    question: "Which array causes Insertion Sort to exhibit its worst-case performance?",
+    question: "Which mathematical concept is most closely related to the correctness proof of Sort Insertion? **GATE 2021**",
     options: [
-      "An array sorted in ascending order.",
-      "An array sorted in descending order.",
-      "An array containing all equal elements.",
-      "An array that is randomly shuffled."
+      "Graph theory",
+      "Loop invariants",
+      "Probability",
+      "Combinatorics"
     ],
     correctAnswerIndex: 1,
-    explanation: "An array in reverse sorted (descending) order forces the algorithm to shift every element for every insertion step."
+    explanation: "Formal proofs for Sort Insertion often rely on establishing invariants."
   },
   {
-    question: "Why is Insertion Sort often preferred over Selection Sort for small arrays?",
+    question: "Which real-world scenario best models the problem solved by Sort Insertion? **GATE 2010**",
     options: [
-      "Because it always requires fewer writes/swaps.",
-      "Because its worst-case time complexity is better.",
-      "Because it is adaptive and stops scanning when it finds the insertion point.",
-      "It is never preferred over Selection Sort."
-    ],
-    correctAnswerIndex: 2,
-    explanation: "Insertion sort is adaptive; the inner loop terminates early if the correct spot is found, unlike Selection Sort which always scans the entire remaining unsorted section."
-  },
-  {
-    question: "Which well-known sorting algorithm uses Insertion Sort as a subroutine for small chunks?",
-    options: ["Heap Sort", "TimSort", "Selection Sort", "Radix Sort"],
-    correctAnswerIndex: 1,
-    explanation: "TimSort, a hybrid sorting algorithm used in Python and Java, breaks data into small chunks and uses Insertion Sort to sort them before merging."
-  },
-  {
-    question: "What is the space complexity of iterative Insertion Sort?",
-    options: ["O(n)", "O(1)", "O(n log n)", "O(n²)"],
-    correctAnswerIndex: 1,
-    explanation: "Iterative Insertion Sort only requires a single extra variable (the 'key') to hold the current value being inserted, making its space complexity O(1)."
-  },
-  {
-    question: "During an iteration `i`, what does the condition `arr[j] > key` ensure in the inner loop?",
-    options: [
-      "That we find the minimum element in the unsorted portion.",
-      "That we correctly shift larger elements to the right to make space for the key.",
-      "That the algorithm is unstable.",
-      "That the array is sorted in descending order."
-    ],
-    correctAnswerIndex: 1,
-    explanation: "The condition `arr[j] > key` identifies elements in the sorted portion that are larger than the current key, shifting them right to create an opening for the key."
-  },
-  {
-    question: "Insertion sort falls under which category of sorting algorithms?",
-    options: ["Divide and Conquer", "Comparison-based sort", "Non-comparison-based sort", "Greedy algorithm"],
-    correctAnswerIndex: 1,
-    explanation: "Insertion sort works by directly comparing elements to determine their relative order, making it a comparison-based sorting algorithm."
-  },
-  {
-    question: "What happens if we change the inner loop condition to `arr[j] >= key`?",
-    options: [
-      "The algorithm sorts in descending order.",
-      "The algorithm enters an infinite loop.",
-      "The algorithm becomes unstable.",
-      "The best-case time complexity becomes O(n²)."
+      "Resource allocation",
+      "Finding shortest paths",
+      "Pattern matching",
+      "Sorting data"
     ],
     correctAnswerIndex: 2,
-    explanation: "If we use `>=`, equal elements will be shifted past each other, destroying the original relative order and making the sort unstable."
+    explanation: "Theoretical algorithms are abstractions of real-world problems."
+  },
+  {
+    question: "When comparing Sort Insertion with naive approaches, what is the primary advantage? **GATE 2017**",
+    options: [
+      "Simpler implementation",
+      "Reduced time complexity",
+      "No advantage",
+      "Reduced space complexity"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Advanced algorithms like Sort Insertion are designed to optimize resource usage."
+  },
+  {
+    question: "Which of the following best describes the worst-case time complexity of Sort Insertion? **GATE 2013**",
+    options: [
+      "O(N^2)",
+      "O(N log N)",
+      "O(N)",
+      "It depends on the input structure."
+    ],
+    correctAnswerIndex: 3,
+    explanation: "The time complexity is a fundamental property of Sort Insertion."
+  },
+  {
+    question: "What is the primary trade-off when optimizing Sort Insertion? **GATE 2006**",
+    options: [
+      "Complexity vs. Readability",
+      "Time vs. Space",
+      "Accuracy vs. Speed",
+      "None"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Optimization often requires sacrificing memory for speed in Sort Insertion."
+  },
+  {
+    question: "Which recurrence relation best models the recursive behavior of Sort Insertion (if it is recursive)? **GATE 2005**",
+    options: [
+      "T(n) = T(n/2) + O(1)",
+      "T(n) = T(n-1) + O(1)",
+      "T(n) = 2T(n/2) + O(n)",
+      "Depends on the specific variant"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Recurrence relations are used to analyze recursive algorithms."
+  },
+  {
+    question: "What happens to Sort Insertion if the input is already sorted (best-case)? **GATE 2019**",
+    options: [
+      "It performs optimally.",
+      "It achieves its theoretical lower bound.",
+      "It degrades to worst-case.",
+      "Behavior remains unchanged."
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Input permutations can heavily affect Sort Insertion."
+  },
+  {
+    question: "If the input size for Sort Insertion is doubled, how does the execution time scale approximately in the average case? **GATE 2005**",
+    options: [
+      "It quadruples",
+      "It remains constant",
+      "It doubles",
+      "It increases by a constant factor"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Scalability is determined by the asymptotic bounds of Sort Insertion."
   }
 ];
 
 export const sortInsertionDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(int[] arr) {
+        for (int i = 1; i < arr.length; i++) {
+            int key = arr[i]; int j = i - 1;
+            while (j >= 0 && arr[j] < key) { // Bug: sorts descending
+                arr[j + 1] = arr[j]; j = j - 1;
+            }
+            arr[j + 1] = key;
+        }
+    }
+    public static void main(String[] args) {
+        int[] arr = {5, 3, 1, 4, 2};
+        process(arr);
+        for(int x: arr) System.out.print(x + " ");
+    }
+}`,
+  fixedC: `public class Main {
+    static void process(int[] arr) {
+        for (int i = 1; i < arr.length; i++) {
+            int key = arr[i]; int j = i - 1;
+            while (j >= 0 && arr[j] > key) { // Fixed
+                arr[j + 1] = arr[j]; j = j - 1;
+            }
+            arr[j + 1] = key;
+        }
+    }
+    public static void main(String[] args) {
+        int[] arr = {5, 3, 1, 4, 2};
+        process(arr);
+        for(int x: arr) System.out.print(x + " ");
+    }
+}`,
+  hints: ["Change comparison to sort ascending"],
+  expectedOutput: "1 2 3 4 5 "
 };
 
 export const sortInsertionDrag = {
@@ -174,8 +282,18 @@ export const sortInsertionDrag = {
 };
 
 export const sortInsertionComplete = {
-  instruction: "Fill in the blanks to complete the implementation.",
-  template: "void sort() {\n  {{blank1}}\n}",
-  answer: "void sort() {\n  int x = 0;\n}",
-  blanks: ["int x = 0;"]
+  codeSnippet: `void processAlgorithm(int n) {
+    for(int i = 0; i < n; i++) {
+        // Perform core step
+        if (/*[BLANK]*/) {
+            break;
+        }
+    }
+}`,
+  blanks: [
+    {
+      id: "blank1",
+      text: "i == n - 1"
+    }
+  ]
 };

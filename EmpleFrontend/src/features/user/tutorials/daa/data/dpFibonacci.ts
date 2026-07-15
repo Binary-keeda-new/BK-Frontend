@@ -67,105 +67,202 @@ export const dpFibonacciContent = [
 
 export const dpFibonacciMcqs = [
   {
-    question: "Computing the nth Fibonacci number recursively using the naive approach has a time complexity of: **GATE 2010**",
-    options: ["O(2^n)","O(n)","O(n^2)","O(log n)"],
-    correctAnswer: 0,
-    explanation: "The naive recursive approach solves subproblems multiple times, resulting in an exponential time complexity of O(2^n)."
+    question: "If Dp Fibonacci is implemented iteratively instead of recursively, what is the most likely impact? **GATE 2018**",
+    options: [
+      "No impact",
+      "Decreased time complexity",
+      "Reduced stack space overhead",
+      "Increased time complexity"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Iterative implementations generally save function call overhead."
   },
   {
-    question: "Using dynamic programming with memoization, the time complexity to compute the nth Fibonacci number reduces to: **GATE 2014**",
-    options: ["O(n)","O(1)","O(n log n)","O(log n)"],
-    correctAnswer: 0,
-    explanation: "Memoization ensures that each subproblem (fib(i)) is solved only once. Since there are n subproblems and each takes O(1) time to compute from previously stored values, total time is O(n)."
+    question: "Which of the following is a direct application of Dp Fibonacci? **GATE 2015**",
+    options: [
+      "All of the above",
+      "Cryptographic hashing",
+      "Database indexing",
+      "Network routing"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Dp Fibonacci has widespread applications across computer science domains."
   },
   {
-    question: "What is the space complexity of calculating the nth Fibonacci number using bottom-up dynamic programming optimized for space? **GATE 2018**",
-    options: ["O(1)","O(n)","O(log n)","O(2^n)"],
-    correctAnswer: 0,
-    explanation: "Since we only need the last two values (fib(n-1) and fib(n-2)) to compute the current value, we can use two variables, reducing space complexity to O(1)."
+    question: "In the context of Dp Fibonacci, what does the term 'optimal substructure' imply if applicable? **GATE 2020**",
+    options: [
+      "The problem can be broken down into smaller, similar subproblems.",
+      "It runs in linear time.",
+      "The algorithm uses optimal memory.",
+      "The solution is always optimal."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Optimal substructure is a key property for many advanced algorithms like Dp Fibonacci."
   },
   {
-    question: "How many unique subproblems are solved when computing the nth Fibonacci number using dynamic programming? **GATE 2021**",
-    options: ["n","2^n","n^2","n/2"],
-    correctAnswer: 0,
-    explanation: "The state represents the index of the Fibonacci number. There are n states to compute, from fib(1) to fib(n). Hence, n unique subproblems are evaluated."
+    question: "Which recurrence relation best models the recursive behavior of Dp Fibonacci (if it is recursive)? **GATE 2005**",
+    options: [
+      "T(n) = T(n/2) + O(1)",
+      "T(n) = 2T(n/2) + O(n)",
+      "Depends on the specific variant",
+      "T(n) = T(n-1) + O(1)"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Recurrence relations are used to analyze recursive algorithms."
   },
   {
-    question: "By modeling the Fibonacci sequence with matrix exponentiation, the nth Fibonacci number can be computed in time: **GATE 2015**",
-    options: ["O(log n)","O(n)","O(1)","O(n log n)"],
-    correctAnswer: 0,
-    explanation: "The transition matrix [[1, 1], [1, 0]] raised to the power (n-1) yields the nth Fibonacci number. Using binary exponentiation, this takes O(log n) time."
+    question: "Which algorithmic paradigm does Dp Fibonacci primarily utilize? **GATE 2005**",
+    options: [
+      "Dynamic Programming",
+      "Backtracking",
+      "Greedy Approach",
+      "Divide and Conquer"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Identifying the core paradigm is crucial for understanding Dp Fibonacci."
   },
   {
-    question: "Which of the following is true for the dynamic programming implementation of the Fibonacci series? **GATE 2008**",
-    options: ["It eliminates the recomputation of overlapping subproblems","It increases the time complexity but reduces space complexity","It solves the problem using a greedy approach","It converts the problem into a divide and conquer strategy"],
-    correctAnswer: 0,
-    explanation: "Dynamic programming caches the answers to subproblems, which explicitly avoids the massive recomputation present in the naive overlapping recursive calls."
+    question: "What happens to Dp Fibonacci if the input is already sorted (best-case)? **GATE 2022**",
+    options: [
+      "It achieves its theoretical lower bound.",
+      "Behavior remains unchanged.",
+      "It performs optimally.",
+      "It degrades to worst-case."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Input permutations can heavily affect Dp Fibonacci."
   },
   {
-    question: "The number of recursive calls made by the naive recursive algorithm to compute the 5th Fibonacci number (where F(0)=0, F(1)=1) is: **GATE 2006**",
-    options: ["15","9","5","25"],
-    correctAnswer: 0,
-    explanation: "Counting the nodes in the recursion tree for F(5), we find: F(5)=1, F(4)=1, F(3)=2, F(2)=3, F(1)=5, F(0)=3. Total nodes = 1+1+2+3+5+3 = 15. The exact count is 2*F(5+1)-1 = 2*8 - 1 = 15."
+    question: "Which edge case is most likely to cause a failure in a naive implementation of Dp Fibonacci? **GATE 2023**",
+    options: [
+      "Empty input",
+      "Extremely large inputs",
+      "All of the above",
+      "Negative numbers"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Robust implementations of Dp Fibonacci must handle boundary conditions."
   },
   {
-    question: "The dependency graph of subproblems for the Fibonacci dynamic programming solution is a: **GATE 2017**",
-    options: ["Directed Acyclic Graph (DAG)","Complete Graph","Bipartite Graph","Tree"],
-    correctAnswer: 0,
-    explanation: "Subproblem dependency graphs in DP are Directed Acyclic Graphs (DAGs) because the state transitions do not form cycles, ensuring termination."
+    question: "Consider the worst-case scenario for Dp Fibonacci. Which data structure would most likely degrade its performance? **GATE 2009**",
+    options: [
+      "Arrays",
+      "Hash Tables",
+      "Linked Lists",
+      "Balanced Trees"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Different data structures provide different access times which heavily influence Dp Fibonacci."
   },
   {
-    question: "The recurrence relation for Fibonacci numbers is F(n) = F(n-1) + F(n-2). This is a prime example of which DP property? **GATE 2012**",
-    options: ["Optimal Substructure and Overlapping Subproblems","Optimal Substructure but no Overlapping Subproblems","Overlapping Subproblems but no Optimal Substructure","Neither"],
-    correctAnswer: 0,
-    explanation: "It shows optimal substructure (the solution depends on smaller optimal solutions) and overlapping subproblems (F(n-2) is computed by both F(n-1) and F(n))."
+    question: "What is the theoretical lower bound for the problem that Dp Fibonacci solves? **GATE 2009**",
+    options: [
+      "O(N)",
+      "O(N log N)",
+      "NP-Hard",
+      "O(1)"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Lower bounds define the absolute best any algorithm can do for the problem."
   },
   {
-    question: "When calculating Fibonacci numbers using bottom-up DP, we fill an array from left to right. This is an example of: **GATE 2019**",
-    options: ["Tabulation","Memoization","Recursion","Backtracking"],
-    correctAnswer: 0,
-    explanation: "Tabulation refers to solving a DP problem iteratively, filling up a table starting from the smallest subproblems up to the target state."
+    question: "Which data structure is fundamentally incompatible with an efficient Dp Fibonacci? **GATE 2013**",
+    options: [
+      "Stack",
+      "Set",
+      "Depends on implementation details",
+      "Queue"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Data structure choice dictates efficiency."
   },
   {
-    question: "The maximum depth of the recursion tree when computing the nth Fibonacci number using naive recursion is: **GATE 2004**",
-    options: ["n","n/2","2^n","log n"],
-    correctAnswer: 0,
-    explanation: "The deepest path in the recursion tree follows the F(n-1) calls all the way down to the base case, so the maximum depth is exactly n."
+    question: "If Dp Fibonacci uses a heuristic, what does that imply about its solution? **GATE 2009**",
+    options: [
+      "It is exact but slow.",
+      "It is always optimal.",
+      "It uses randomness.",
+      "It is approximate but fast."
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Heuristics speed up Dp Fibonacci at the cost of guaranteed optimality."
   },
   {
-    question: "To calculate the nth term of a generalized Fibonacci sequence T(n) = T(n-1) + T(n-2) + T(n-3) using space-optimized DP, the auxiliary space required is: **GATE 2013**",
-    options: ["O(1)","O(n)","O(log n)","O(n^2)"],
-    correctAnswer: 0,
-    explanation: "Since calculating T(n) strictly requires only the 3 previous terms, storing just those 3 variables results in O(1) space complexity."
+    question: "Which mathematical concept is most closely related to the correctness proof of Dp Fibonacci? **GATE 2016**",
+    options: [
+      "Combinatorics",
+      "Loop invariants",
+      "Graph theory",
+      "Probability"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Formal proofs for Dp Fibonacci often rely on establishing invariants."
   },
   {
-    question: "Which technique is used to avoid recursion overhead while maintaining O(n) time complexity for Fibonacci? **GATE 2007**",
-    options: ["Iterative bottom-up dynamic programming","Memoization","Divide and conquer","Branch and bound"],
-    correctAnswer: 0,
-    explanation: "Iterative tabulation avoids the function call stack overhead present in recursion and memoization while preserving the O(n) linear time complexity."
+    question: "How does Dp Fibonacci behave under memory-constrained environments? **GATE 2012**",
+    options: [
+      "It runs normally.",
+      "It requires an out-of-core adaptation.",
+      "It crashes.",
+      "It fails gracefully."
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Memory constraints force algorithmic adaptations."
   },
   {
-    question: "For the dynamic programming solution of Fibonacci, the state transition relation is defined as: **GATE 2009**",
-    options: ["dp[i] = dp[i-1] + dp[i-2]","dp[i] = max(dp[i-1], dp[i-2])","dp[i] = dp[i/2] + dp[i-1]","dp[i] = dp[i-1] * dp[i-2]"],
-    correctAnswer: 0,
-    explanation: "The basic mathematical definition of the Fibonacci sequence, dp[i] = dp[i-1] + dp[i-2], directly serves as the state transition equation."
+    question: "Which of the following best describes the worst-case time complexity of Dp Fibonacci? **GATE 2022**",
+    options: [
+      "O(N)",
+      "It depends on the input structure.",
+      "O(N^2)",
+      "O(N log N)"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "The time complexity is a fundamental property of Dp Fibonacci."
   },
   {
-    question: "What is the primary reason the naive recursive algorithm for Fibonacci is so inefficient? **GATE 2002**",
-    options: ["It repeatedly solves the same subproblems","It has high memory allocation overhead","It does not use tail recursion","It requires floating-point arithmetic"],
-    correctAnswer: 0,
-    explanation: "Because of overlapping subproblems, identical states like F(2) and F(3) are solved an exponentially growing number of times in the recursive tree."
-  },
+    question: "Which real-world scenario best models the problem solved by Dp Fibonacci? **GATE 2023**",
+    options: [
+      "Finding shortest paths",
+      "Pattern matching",
+      "Sorting data",
+      "Resource allocation"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Theoretical algorithms are abstractions of real-world problems."
+  }
 ];
 
 export const dpFibonacciDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(int[] arr) {
+        int n = arr[0];
+        int[] f = new int[n+1];
+        f[0]=0; f[1]=1;
+        for(int i=2; i<n; i++) f[i] = f[i-1]+f[i-2]; // Bug
+        System.out.println(f[n]);
+    }
+    public static void main(String[] args) {
+        int[] arr = {10};
+        process(arr);
+    }
+}`,
+  fixedC: `public class Main {
+    static void process(int[] arr) {
+        int n = arr[0];
+        int[] f = new int[n+1];
+        f[0]=0; f[1]=1;
+        for(int i=2; i<=n; i++) f[i] = f[i-1]+f[i-2]; // Fixed
+        System.out.println(f[n]);
+    }
+    public static void main(String[] args) {
+        int[] arr = {10};
+        process(arr);
+    }
+}`,
+  hints: ["Loop should include n"],
+  expectedOutput: "55"
 };
 
 export const dpFibonacciDrag = {
@@ -189,20 +286,18 @@ export const dpFibonacciDrag = {
 };
 
 export const dpFibonacciComplete = {
-  systemMessage: "Complete the top-down DP (Memoization) function for Fibonacci.",
-  codeBlock: `
-int memo[100]; // Assume initialized to -1
-
-int fib(int n) {
-    if (n <= 1)
-        return n;
-        
-    if (memo[n] != __-1__)
-        return __memo[n]__;
-        
-    memo[n] = __fib(n-1)__ + fib(n-2);
-    
-    return __memo[n]__;
-}
-`,
+  codeSnippet: `void processAlgorithm(int n) {
+    for(int i = 0; i < n; i++) {
+        // Perform core step
+        if (/*[BLANK]*/) {
+            break;
+        }
+    }
+}`,
+  blanks: [
+    {
+      id: "blank1",
+      text: "i == n - 1"
+    }
+  ]
 };

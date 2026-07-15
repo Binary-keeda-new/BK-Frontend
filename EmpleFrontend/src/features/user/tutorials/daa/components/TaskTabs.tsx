@@ -395,45 +395,39 @@ export function MCQTab({ chapter, onXP }: TabProps) {
 // ─── DEBUG PANEL ───
 export function DebugTab({ chapter, onXP }: TabProps) {
   const rawData = DEBUG_EXERCISES[chapter] || {};
-  const [lang, setLang] = React.useState<"c" | "java">("c");
   
   const data = {
     instructions: rawData.instructions || rawData.problemStatement || "Find and fix the bug in the code below.",
     expectedOutput: rawData.expectedOutput || "No specific output provided.",
     hints: Array.isArray(rawData.hints) ? rawData.hints : ["Review the code logic carefully.", "Check your loop conditions.", "Verify all variable initializations."],
-    buggyC: rawData.buggyC || rawData.code || "// C code coming soon",
-    fixedC: rawData.fixedC || rawData.solution || "",
-    buggyJava: rawData.buggyJava || rawData.code || "// Java code coming soon",
-    fixedJava: rawData.fixedJava || rawData.solution || ""
+    buggy: rawData.buggyC || rawData.code || "// Code coming soon",
+    fixed: rawData.fixedC || rawData.solution || ""
   };
   
-  const currentBuggy = lang === "c" ? data.buggyC : data.buggyJava;
-  const currentFixed = lang === "c" ? data.fixedC : data.fixedJava;
-
-  const [code, setCode] = React.useState(currentBuggy);
+  const [code, setCode] = React.useState(data.buggy);
   const [revealed, setRevealed] = React.useState<Record<number, boolean>>({});
   const [submitted, setSubmitted] = React.useState(false);
   const [correct, setCorrect] = React.useState(false);
 
   // Initialize code when rawData loads or chapter changes
   React.useEffect(() => {
-    setCode(currentBuggy);
+    setCode(data.buggy);
     setRevealed({});
     setSubmitted(false);
     setCorrect(false);
-  }, [chapter, lang, currentBuggy]);
+  }, [chapter, data.buggy]);
 
   const revealHint = (i: number) => setRevealed(prev => ({ ...prev, [i]: true }));
 
   const handleCheck = () => {
-    const ok = code.replace(/\s+/g,"") === currentFixed.replace(/\s+/g,"");
+    const ok = code.replace(/\s+/g,"") === data.fixed.replace(/\s+/g,"");
     setCorrect(ok);
     setSubmitted(true);
     if (ok) onXP(25);
   };
 
   const handleReset = () => {
-    setCode(currentBuggy);
+    setCode(data.buggy);
     setRevealed({});
     setSubmitted(false);
     setCorrect(false);
@@ -452,32 +446,6 @@ export function DebugTab({ chapter, onXP }: TabProps) {
         </div>
       </div>
 
-      <div className="flex items-center justify-between border-b pb-4" style={{ borderColor: "var(--border)" }}>
-        <span className="text-[10px] font-bold uppercase tracking-wider font-mono text-[var(--muted2)]">Language Toggle</span>
-        <div className="flex gap-2 p-1 rounded-lg border" style={{ background: "var(--surface2)", borderColor: "var(--border)" }}>
-          <button
-            onClick={() => setLang("c")}
-            className="px-4 py-1.5 rounded-md text-[10px] font-bold uppercase transition"
-            style={{ 
-              background: lang === "c" ? "var(--orange)" : "transparent",
-              color: lang === "c" ? "#fff" : "var(--muted2)"
-            }}
-          >
-            C
-          </button>
-          <button
-            onClick={() => setLang("java")}
-            className="px-4 py-1.5 rounded-md text-[10px] font-bold uppercase transition"
-            style={{ 
-              background: lang === "java" ? "var(--orange)" : "transparent",
-              color: lang === "java" ? "#fff" : "var(--muted2)"
-            }}
-          >
-            Java
-          </button>
-        </div>
-      </div>
-
       <div className="space-y-2">
         <span className="text-[10px] font-bold uppercase tracking-wider font-mono block text-[var(--muted2)]">Expected Output</span>
         <pre 
@@ -489,7 +457,7 @@ export function DebugTab({ chapter, onXP }: TabProps) {
       </div>
 
       <div className="space-y-2">
-        <label className="text-[10px] font-bold uppercase tracking-wider font-mono block text-[var(--muted2)]">Editable Console ({lang.toUpperCase()})</label>
+        <label className="text-[10px] font-bold uppercase tracking-wider font-mono block text-[var(--muted2)]">Editable Console</label>
         <textarea 
           value={code} 
           onChange={e => { setCode(e.target.value); setSubmitted(false); }}
@@ -555,8 +523,8 @@ export function DebugTab({ chapter, onXP }: TabProps) {
 
       {submitted && !correct && (
         <div className="space-y-2">
-          <span className="text-[10px] font-bold uppercase tracking-wider font-mono block text-[var(--muted2)]">Correct Solution Reference ({lang.toUpperCase()})</span>
-          <CodeBlock code={currentFixed} />
+          <span className="text-[10px] font-bold uppercase tracking-wider font-mono block text-[var(--muted2)]">Correct Solution Reference</span>
+          <CodeBlock code={data.fixed} />
         </div>
       )}
     </div>
@@ -567,14 +535,14 @@ export function DebugTab({ chapter, onXP }: TabProps) {
 export function CompleteTab({ chapter, onXP }: TabProps) {
   const rawEx = COMPLETE_EXERCISES[chapter] || {};
   
-  let blanks = rawEx.blanks || [];
+  let blanks = rawEx.blanks || rawEx.missingParts || [];
   if (blanks.length > 0 && typeof blanks[0] === 'object') {
-     blanks = blanks.map((b: any) => b.correct || b.correctValue || "");
+     blanks = blanks.map((b: any) => b.correct || b.correctValue || b.expected || b.answer || "");
   }
 
   const ex = {
-    instruction: rawEx.instruction || rawEx.description || rawEx.problemStatement || rawEx.problem || "Fill in the missing code snippets.",
-    template: rawEx.template || rawEx.codeTemplate || rawEx.code || "___",
+    instruction: rawEx.instruction || rawEx.description || rawEx.problemStatement || rawEx.problem || rawEx.title || rawEx.statement || "Fill in the missing code snippets.",
+    template: rawEx.template || rawEx.codeTemplate || rawEx.code || rawEx.codeSnippet || rawEx.initialCode || rawEx.skeletonCode || rawEx.blankCode || "___",
     blanks: blanks
   };
 
@@ -602,7 +570,7 @@ export function CompleteTab({ chapter, onXP }: TabProps) {
     setCorrect(false);
   };
 
-  const parts = ex.template.split("___");
+  const parts = ex.template.split(/\/\*\[BLANK\]\*\/|___/);
   let blankCount = 0;
 
   return (
@@ -629,13 +597,13 @@ export function CompleteTab({ chapter, onXP }: TabProps) {
               const bi = blankCount++;
               const isCellCorrect = ex.blanks[bi]?.split("|").includes(inputs[bi]?.trim());
               
-              let bg = "var(--surface)";
-              let border = "var(--border)";
+              let bg = "rgba(255, 100, 0, 0.1)"; // Light orange highlight
+              let border = "1px dashed var(--orange)"; // Orange dashed border
               let color = "var(--orange)";
               
               if (submitted) {
-                bg = isCellCorrect ? "rgba(16,185,129,0.08)" : "rgba(239,68,68,0.08)";
-                border = isCellCorrect ? "rgba(16,185,129,0.25)" : "rgba(239,68,68,0.25)";
+                bg = isCellCorrect ? "rgba(16,185,129,0.15)" : "rgba(239,68,68,0.15)";
+                border = isCellCorrect ? "1px solid #34d399" : "1px solid #f87171";
                 color = isCellCorrect ? "#34d399" : "#f87171";
               }
 
@@ -648,13 +616,10 @@ export function CompleteTab({ chapter, onXP }: TabProps) {
                   style={{ 
                     width: `${Math.max(ex.blanks[bi]?.length || 4, 3) + 2}ch`,
                     background: bg,
-                    borderBottom: `2px solid ${border}`,
+                    border: border,
                     color,
-                    borderTop: "none",
-                    borderLeft: "none",
-                    borderRight: "none"
                   }}
-                  className="mx-1.5 px-2 py-0.5 rounded-none text-center font-bold font-mono outline-none transition text-xs shadow-none focus:border-[var(--orange)] focus:bg-white/5"
+                  className="mx-1.5 px-2 py-0.5 rounded-[4px] text-center font-bold font-mono outline-none transition text-xs shadow-[0_0_8px_rgba(255,100,0,0.1)] focus:border-[var(--orange)] focus:shadow-[0_0_12px_rgba(255,100,0,0.3)] focus:bg-[rgba(255,100,0,0.15)] placeholder:text-[var(--orange)] placeholder:opacity-70"
                 />
               );
             })()}

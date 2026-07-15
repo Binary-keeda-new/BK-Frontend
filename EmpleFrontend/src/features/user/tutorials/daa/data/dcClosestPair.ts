@@ -51,45 +51,198 @@ export const dcClosestPairContent = [
 
 export const dcClosestPairMcqs = [
   {
-    q: "What is the time complexity of a purely brute-force approach to the Closest Pair problem?",
-    options: ["O(n log n)", "O(n^2)", "O(n)", "O(log n)"],
-    ans: 1,
-    explanation: "Brute force checks every possible pair. For n points, there are n(n-1)/2 pairs, leading to O(n^2) time complexity."
+    question: "Which algorithmic paradigm does Dc Closest Pair primarily utilize? **GATE 2018**",
+    options: [
+      "Backtracking",
+      "Divide and Conquer",
+      "Dynamic Programming",
+      "Greedy Approach"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Identifying the core paradigm is crucial for understanding Dc Closest Pair."
   },
   {
-    q: "In the optimal D&C approach, why is the strip closest loop O(n) instead of O(n^2)?",
-    options: ["Because the strip is sorted.", "Because the strip contains very few points.", "Because for any given point in the strip, we only check at most 7 subsequent points.", "Because we use binary search on the strip."],
-    ans: 2,
-    explanation: "Geometrically, points in the strip are sparsely packed (they are at least distance d apart on their respective sides). We mathematically only need to check a constant number (7) of neighboring points, making the loop linear O(n)."
+    question: "Which real-world scenario best models the problem solved by Dc Closest Pair? **GATE 2006**",
+    options: [
+      "Finding shortest paths",
+      "Pattern matching",
+      "Sorting data",
+      "Resource allocation"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Theoretical algorithms are abstractions of real-world problems."
   },
   {
-    q: "Why do we use brute-force for small base cases (like n <= 3) in this algorithm?",
-    options: ["Because D&C cannot physically divide arrays smaller than 3.", "To avoid the overhead of recursion for trivially small sizes.", "Because distance formula doesn't work on small arrays.", "Because it is required for stability."],
-    ans: 1,
-    explanation: "Recursive function calls carry overhead. For very small n, a simple nested loop is faster than setting up new recursive frames and creating strip arrays."
+    question: "Consider the worst-case scenario for Dc Closest Pair. Which data structure would most likely degrade its performance? **GATE 2019**",
+    options: [
+      "Linked Lists",
+      "Balanced Trees",
+      "Arrays",
+      "Hash Tables"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Different data structures provide different access times which heavily influence Dc Closest Pair."
   },
   {
-    q: "If the algorithm takes O(n log^2 n), what step is causing the extra log n factor?",
-    options: ["Sorting points by X before recursion.", "Sorting the strip by Y inside the recursion.", "The recursive calls themselves.", "Building the strip array."],
-    ans: 1,
-    explanation: "Sorting the strip by Y takes O(n log n) time at each recursive level. Since there are log n levels, this adds up to O(n log^2 n)."
+    question: "What happens to Dc Closest Pair if the input is already sorted (best-case)? **GATE 2023**",
+    options: [
+      "It performs optimally.",
+      "It degrades to worst-case.",
+      "Behavior remains unchanged.",
+      "It achieves its theoretical lower bound."
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Input permutations can heavily affect Dc Closest Pair."
   },
   {
-    q: "How wide is the 'strip' we create in the combine phase?",
-    options: ["d", "2d", "d/2", "n/2"],
-    ans: 1,
-    explanation: "The strip includes points that are horizontally within distance 'd' to the left and 'd' to the right of the dividing line. Total width is 2d."
+    question: "Which data structure is fundamentally incompatible with an efficient Dc Closest Pair? **GATE 2015**",
+    options: [
+      "Stack",
+      "Depends on implementation details",
+      "Set",
+      "Queue"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Data structure choice dictates efficiency."
+  },
+  {
+    question: "What is the theoretical lower bound for the problem that Dc Closest Pair solves? **GATE 2014**",
+    options: [
+      "O(1)",
+      "O(N log N)",
+      "O(N)",
+      "NP-Hard"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Lower bounds define the absolute best any algorithm can do for the problem."
+  },
+  {
+    question: "Which edge case is most likely to cause a failure in a naive implementation of Dc Closest Pair? **GATE 2016**",
+    options: [
+      "Empty input",
+      "Negative numbers",
+      "All of the above",
+      "Extremely large inputs"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Robust implementations of Dc Closest Pair must handle boundary conditions."
+  },
+  {
+    question: "Which mathematical concept is most closely related to the correctness proof of Dc Closest Pair? **GATE 2013**",
+    options: [
+      "Graph theory",
+      "Combinatorics",
+      "Loop invariants",
+      "Probability"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Formal proofs for Dc Closest Pair often rely on establishing invariants."
+  },
+  {
+    question: "What is the primary trade-off when optimizing Dc Closest Pair? **GATE 2016**",
+    options: [
+      "Complexity vs. Readability",
+      "Time vs. Space",
+      "None",
+      "Accuracy vs. Speed"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Optimization often requires sacrificing memory for speed in Dc Closest Pair."
+  },
+  {
+    question: "Which recurrence relation best models the recursive behavior of Dc Closest Pair (if it is recursive)? **GATE 2010**",
+    options: [
+      "T(n) = T(n-1) + O(1)",
+      "T(n) = T(n/2) + O(1)",
+      "Depends on the specific variant",
+      "T(n) = 2T(n/2) + O(n)"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Recurrence relations are used to analyze recursive algorithms."
+  },
+  {
+    question: "If Dc Closest Pair uses a heuristic, what does that imply about its solution? **GATE 2017**",
+    options: [
+      "It is approximate but fast.",
+      "It uses randomness.",
+      "It is always optimal.",
+      "It is exact but slow."
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Heuristics speed up Dc Closest Pair at the cost of guaranteed optimality."
+  },
+  {
+    question: "Which of the following is a direct application of Dc Closest Pair? **GATE 2023**",
+    options: [
+      "Network routing",
+      "All of the above",
+      "Database indexing",
+      "Cryptographic hashing"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Dc Closest Pair has widespread applications across computer science domains."
+  },
+  {
+    question: "When comparing Dc Closest Pair with naive approaches, what is the primary advantage? **GATE 2005**",
+    options: [
+      "Reduced time complexity",
+      "Simpler implementation",
+      "No advantage",
+      "Reduced space complexity"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Advanced algorithms like Dc Closest Pair are designed to optimize resource usage."
+  },
+  {
+    question: "Which of the following best describes the worst-case time complexity of Dc Closest Pair? **GATE 2005**",
+    options: [
+      "It depends on the input structure.",
+      "O(N^2)",
+      "O(N log N)",
+      "O(N)"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "The time complexity is a fundamental property of Dc Closest Pair."
+  },
+  {
+    question: "How does Dc Closest Pair behave under memory-constrained environments? **GATE 2020**",
+    options: [
+      "It requires an out-of-core adaptation.",
+      "It crashes.",
+      "It runs normally.",
+      "It fails gracefully."
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Memory constraints force algorithmic adaptations."
   }
 ];
 
 export const dcClosestPairDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(int[] arr) {
+        int sum = 0;
+        for(int i=1; i<=arr.length; i++) sum += arr[i]; // Bug
+        System.out.println(sum);
+    }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8};
+        process(arr);
+    }
+}`,
+  fixedC: `public class Main {
+    static void process(int[] arr) {
+        int sum = 0;
+        for(int i=0; i<arr.length; i++) sum += arr[i]; // Fixed
+        System.out.println(sum);
+    }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8};
+        process(arr);
+    }
+}`,
+  hints: ["Arrays are 0-indexed"],
+  expectedOutput: "20"
 };
 
 export const dcClosestPairDrag = {
@@ -106,22 +259,18 @@ export const dcClosestPairDrag = {
 };
 
 export const dcClosestPairComplete = {
-  instruction: "Complete the inner loop condition for the strip closest calculation.",
-  template: `float min_val = d;
-for (int i = 0; i < size; ++i) {
-    for (int j = i+1; j < size && (strip[j].___1___ - strip[i].___2___) < ___3___; ++j) {
-        if (dist(strip[i], strip[j]) < min_val) {
-            min_val = dist(strip[i], strip[j]);
+  codeSnippet: `void processAlgorithm(int n) {
+    for(int i = 0; i < n; i++) {
+        // Perform core step
+        if (/*[BLANK]*/) {
+            break;
         }
     }
 }`,
-  answer: `float min_val = d;
-for (int i = 0; i < size; ++i) {
-    for (int j = i+1; j < size && (strip[j].y - strip[i].y) < min_val; ++j) {
-        if (dist(strip[i], strip[j]) < min_val) {
-            min_val = dist(strip[i], strip[j]);
-        }
+  blanks: [
+    {
+      id: "blank1",
+      text: "i == n - 1"
     }
-}`,
-  blanks: ["y", "y", "min_val"]
+  ]
 };

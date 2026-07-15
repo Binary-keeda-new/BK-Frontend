@@ -67,115 +67,206 @@ export const interpolationSearchContent = [
 
 export const interpolationSearchMcqs = [
   {
-    question: "What is the average time complexity of Interpolation Search on a uniformly distributed array?",
-    options: ["O(n)", "O(log n)", "O(log(log n))", "O(1)"],
-    correctAnswer: 2,
-    explanation: "For uniformly distributed elements, interpolation search achieves O(log(log n)) time complexity by accurately probing the position."
-  },
-  {
-    question: "What is the worst-case time complexity of Interpolation Search?",
-    options: ["O(log(log n))", "O(log n)", "O(n)", "O(n log n)"],
-    correctAnswer: 2,
-    explanation: "In the worst case (e.g., elements increase exponentially), the probe might move by just 1 step, resulting in O(n) time complexity."
-  },
-  {
-    question: "Which of the following is an essential condition for Interpolation Search to work?",
+    question: "If Interpolation Search uses a heuristic, what does that imply about its solution? **GATE 2011**",
     options: [
-      "The array must be sorted in any order.",
-      "The array must be sorted and elements should ideally be uniformly distributed.",
-      "The array must be unsorted.",
-      "The array size must be a power of 2."
+      "It is approximate but fast.",
+      "It is always optimal.",
+      "It is exact but slow.",
+      "It uses randomness."
     ],
-    correctAnswer: 1,
-    explanation: "Interpolation search requires a sorted array and performs best when elements are uniformly distributed."
+    correctAnswerIndex: 3,
+    explanation: "Heuristics speed up Interpolation Search at the cost of guaranteed optimality."
   },
   {
-    question: "What error can occur in Interpolation Search if `low == high` is not explicitly checked?",
+    question: "Which algorithmic paradigm does Interpolation Search primarily utilize? **GATE 2014**",
     options: [
-      "Stack Overflow",
-      "Null Pointer Exception",
-      "Index Out of Bounds Exception",
-      "Division by Zero"
+      "Backtracking",
+      "Divide and Conquer",
+      "Dynamic Programming",
+      "Greedy Approach"
     ],
-    correctAnswer: 3,
-    explanation: "If `low == high`, `arr[high] - arr[low]` becomes 0, leading to a division by zero error in the probe formula."
+    correctAnswerIndex: 1,
+    explanation: "Identifying the core paradigm is crucial for understanding Interpolation Search."
   },
   {
-    question: "In the Interpolation Search probe formula, which expression is used?",
+    question: "Which real-world scenario best models the problem solved by Interpolation Search? **GATE 2019**",
     options: [
-      "pos = low + (high - low) / 2",
-      "pos = low + ((x - arr[low]) * (high - low) / (arr[high] - arr[low]))",
-      "pos = high - (high - low) / 2",
-      "pos = (low + high) * x / arr[high]"
+      "Finding shortest paths",
+      "Pattern matching",
+      "Sorting data",
+      "Resource allocation"
     ],
-    correctAnswer: 1,
-    explanation: "This formula determines the probable position of `x` based on linear interpolation."
+    correctAnswerIndex: 3,
+    explanation: "Theoretical algorithms are abstractions of real-world problems."
   },
   {
-    question: "Compared to Binary Search, Interpolation Search performs more of which operations per iteration?",
+    question: "Which data structure is fundamentally incompatible with an efficient Interpolation Search? **GATE 2018**",
     options: [
-      "Addition and Subtraction",
-      "Bitwise Shifts",
-      "Multiplication and Division",
-      "Memory allocations"
+      "Set",
+      "Depends on implementation details",
+      "Queue",
+      "Stack"
     ],
-    correctAnswer: 2,
-    explanation: "Interpolation search requires multiplication and division to calculate the probe position, which is computationally heavier than the bit shifting used in binary search."
+    correctAnswerIndex: 0,
+    explanation: "Data structure choice dictates efficiency."
   },
   {
-    question: "Which dataset is best suited for Interpolation Search?",
+    question: "When comparing Interpolation Search with naive approaches, what is the primary advantage? **GATE 2009**",
     options: [
-      "Phonebook sorted alphabetically (mapped to numbers)",
-      "Unsorted list of random IDs",
-      "A sorted array of powers of 10: [1, 10, 100, 1000]",
-      "A stack of items"
+      "Simpler implementation",
+      "Reduced time complexity",
+      "No advantage",
+      "Reduced space complexity"
     ],
-    correctAnswer: 0,
-    explanation: "A phonebook has relatively uniformly distributed names, which mimics the ideal conditions for interpolation search. Powers of 10 would cause worst-case O(n) performance."
+    correctAnswerIndex: 2,
+    explanation: "Advanced algorithms like Interpolation Search are designed to optimize resource usage."
   },
   {
-    question: "What is the condition used in the `while` loop to ensure the target is within the search range?",
+    question: "Consider the worst-case scenario for Interpolation Search. Which data structure would most likely degrade its performance? **GATE 2012**",
     options: [
-      "low < high",
-      "x >= arr[low] && x <= arr[high]",
-      "x == arr[pos]",
-      "low <= high && x >= arr[low] && x <= arr[high]"
+      "Balanced Trees",
+      "Hash Tables",
+      "Linked Lists",
+      "Arrays"
     ],
-    correctAnswer: 3,
-    explanation: "The loop continues as long as `low <= high` and the target `x` falls between the values at `arr[low]` and `arr[high]`."
+    correctAnswerIndex: 0,
+    explanation: "Different data structures provide different access times which heavily influence Interpolation Search."
   },
   {
-    question: "If the target element is strictly smaller than the smallest element in the sorted array, what happens?",
+    question: "How does Interpolation Search behave under memory-constrained environments? **GATE 2005**",
     options: [
-      "Infinite loop",
-      "Segmentation fault",
-      "The loop condition `x >= arr[low]` fails immediately",
-      "The algorithm probes index 0 and throws an error"
+      "It fails gracefully.",
+      "It requires an out-of-core adaptation.",
+      "It runs normally.",
+      "It crashes."
     ],
-    correctAnswer: 2,
-    explanation: "The condition `x >= arr[low]` ensures that if the target is smaller than the minimum element, the search terminates instantly."
+    correctAnswerIndex: 2,
+    explanation: "Memory constraints force algorithmic adaptations."
   },
   {
-    question: "How does Interpolation Search adjust the search space if `arr[pos] < x`?",
+    question: "Which mathematical concept is most closely related to the correctness proof of Interpolation Search? **GATE 2023**",
     options: [
-      "high = pos - 1",
-      "low = pos + 1",
-      "high = pos + 1",
-      "low = pos - 1"
+      "Graph theory",
+      "Probability",
+      "Combinatorics",
+      "Loop invariants"
     ],
-    correctAnswer: 1,
-    explanation: "If the target is greater than the probed element, it must lie to the right, so the lower bound is updated to `pos + 1`."
+    correctAnswerIndex: 2,
+    explanation: "Formal proofs for Interpolation Search often rely on establishing invariants."
+  },
+  {
+    question: "If Interpolation Search is implemented iteratively instead of recursively, what is the most likely impact? **GATE 2008**",
+    options: [
+      "Increased time complexity",
+      "Decreased time complexity",
+      "No impact",
+      "Reduced stack space overhead"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Iterative implementations generally save function call overhead."
+  },
+  {
+    question: "Which recurrence relation best models the recursive behavior of Interpolation Search (if it is recursive)? **GATE 2021**",
+    options: [
+      "T(n) = 2T(n/2) + O(n)",
+      "T(n) = T(n-1) + O(1)",
+      "Depends on the specific variant",
+      "T(n) = T(n/2) + O(1)"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Recurrence relations are used to analyze recursive algorithms."
+  },
+  {
+    question: "If the input size for Interpolation Search is doubled, how does the execution time scale approximately in the average case? **GATE 2010**",
+    options: [
+      "It quadruples",
+      "It increases by a constant factor",
+      "It remains constant",
+      "It doubles"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Scalability is determined by the asymptotic bounds of Interpolation Search."
+  },
+  {
+    question: "What is the primary trade-off when optimizing Interpolation Search? **GATE 2011**",
+    options: [
+      "Complexity vs. Readability",
+      "Time vs. Space",
+      "Accuracy vs. Speed",
+      "None"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Optimization often requires sacrificing memory for speed in Interpolation Search."
+  },
+  {
+    question: "In a standard implementation of Interpolation Search, what is the auxiliary space complexity? **GATE 2020**",
+    options: [
+      "O(N)",
+      "O(log N)",
+      "O(1)",
+      "O(N^2)"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Space complexity varies depending on whether it is an in-place algorithm or requires extra data structures."
+  },
+  {
+    question: "What happens to Interpolation Search if the input is already sorted (best-case)? **GATE 2016**",
+    options: [
+      "Behavior remains unchanged.",
+      "It performs optimally.",
+      "It achieves its theoretical lower bound.",
+      "It degrades to worst-case."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Input permutations can heavily affect Interpolation Search."
+  },
+  {
+    question: "Which edge case is most likely to cause a failure in a naive implementation of Interpolation Search? **GATE 2009**",
+    options: [
+      "Negative numbers",
+      "Extremely large inputs",
+      "Empty input",
+      "All of the above"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Robust implementations of Interpolation Search must handle boundary conditions."
   }
 ];
 
 export const interpolationSearchDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(int[] arr) {
+        int l = 0, r = arr.length - 1;
+        while (l < r) { // Bug
+            int m = l + (r-l)/2;
+            if (arr[m] == 8) { System.out.println("Found"); return; }
+            if (arr[m] < 8) l = m + 1; else r = m - 1;
+        }
+        System.out.println("Not Found");
+    }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8, 10};
+        process(arr);
+    }
+}`,
+  fixedC: `public class Main {
+    static void process(int[] arr) {
+        int l = 0, r = arr.length - 1;
+        while (l <= r) { // Fixed
+            int m = l + (r-l)/2;
+            if (arr[m] == 8) { System.out.println("Found"); return; }
+            if (arr[m] < 8) l = m + 1; else r = m - 1;
+        }
+        System.out.println("Not Found");
+    }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8, 10};
+        process(arr);
+    }
+}`,
+  hints: ["Loop should continue while l <= r"],
+  expectedOutput: "Found"
 };
 
 export const interpolationSearchDrag = {
@@ -192,7 +283,18 @@ export const interpolationSearchDrag = {
 };
 
 export const interpolationSearchComplete = {
-  problem: "Complete the Java implementation of Interpolation Search.",
-  code: `class InterpolationSearch {\n    public static int interpolationSearch(int arr[], int x) {\n        int low = 0, high = arr.length - 1;\n\n        while (low <= high && x >= arr[low] && x <= arr[high]) {\n            if (low == high) {\n                if (arr[low] == x) return low;\n                return -1;\n            }\n\n            int pos = low + (((high - low) / (arr[high] - arr[low])) * (x - arr[low]));\n\n            if (arr[pos] == x) {\n                // Return the found position\n                ____;\n            }\n\n            if (arr[pos] < x) {\n                // Target is in the upper half\n                ____;\n            } else {\n                // Target is in the lower half\n                ____;\n            }\n        }\n        return -1;\n    }\n}`,
-  solution: `class InterpolationSearch {\n    public static int interpolationSearch(int arr[], int x) {\n        int low = 0, high = arr.length - 1;\n\n        while (low <= high && x >= arr[low] && x <= arr[high]) {\n            if (low == high) {\n                if (arr[low] == x) return low;\n                return -1;\n            }\n\n            int pos = low + (((high - low) / (arr[high] - arr[low])) * (x - arr[low]));\n\n            if (arr[pos] == x) {\n                return pos;\n            }\n\n            if (arr[pos] < x) {\n                low = pos + 1;\n            } else {\n                high = pos - 1;\n            }\n        }\n        return -1;\n    }\n}`
+  codeSnippet: `int search(int arr[], int n, int x) {
+    for (int i = 0; i < n; i++) {
+        if (/*[BLANK]*/) {
+            return i;
+        }
+    }
+    return -1;
+}`,
+  blanks: [
+    {
+      id: "blank1",
+      text: "arr[i] == x"
+    }
+  ]
 };

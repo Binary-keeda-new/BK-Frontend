@@ -105,4 +105,16 @@ export const chapter19_MCQ = [
     }
 ];
 
-export const chapter19_COMPLETE_EXERCISES = [];
+export const chapter19_COMPLETE_EXERCISES = [
+  {
+    template: `import java.util.Comparator;
+class NameSorter implements ___<String> {
+    public int compare(String a, String b) {
+        return a.compareTo(b);
+    }
+}`,
+    blanks: [
+      "Comparator"
+    ]
+  }
+];

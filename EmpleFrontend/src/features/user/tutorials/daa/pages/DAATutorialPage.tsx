@@ -135,7 +135,7 @@ export default function DAATutorialPage({ onBack }: DAATutorialPageProps) {
               {/* Progress Bar & Text */}
               <div className="space-y-2 mt-1">
                 <div className="flex items-center justify-between text-xs font-semibold">
-                  <span style={{ color: "var(--muted2)" }}>Tasks Completed</span>
+                  <span style={{ color: "var(--muted2)" }}>Tasks Completed ({currentModuleChapters.length} Chapters)</span>
                   <span style={{ color: "var(--orange)" }}>
                     {currentModuleCompletedSteps} / {currentModuleTotalSteps}
                   </span>

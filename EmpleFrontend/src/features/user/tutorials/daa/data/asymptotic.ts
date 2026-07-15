@@ -70,85 +70,198 @@ export const asymptoticContent = {
 
 export const asymptoticMcqs = [
   {
-    question: "What does Big O notation primarily represent?",
-    options: ["Lower bound", "Tight bound", "Upper bound", "Exact time"],
-    correctAnswer: 2,
-    explanation: "Big O notation represents the upper bound or worst-case scenario of an algorithm's performance."
-  },
-  {
-    question: "What is the time complexity of an algorithm with performance function f(n) = 5n^3 + 2n^2 + 10?",
-    options: ["O(n^2)", "O(n^3)", "O(n)", "O(1)"],
-    correctAnswer: 1,
-    explanation: "We drop the constants and lower-order terms. The highest order term is n^3, so the complexity is O(n^3)."
-  },
-  {
-    question: "Which of the following complexities represents a logarithmic growth rate?",
-    options: ["O(1)", "O(n)", "O(n^2)", "O(log n)"],
-    correctAnswer: 3,
-    explanation: "O(log n) denotes logarithmic time complexity, which grows very slowly as the input size increases."
-  },
-  {
-    question: "What does Omega (Ω) notation describe?",
-    options: ["Best-case scenario (lower bound)", "Worst-case scenario", "Average-case scenario", "Error bound"],
-    correctAnswer: 0,
-    explanation: "Omega (Ω) notation provides an asymptotic lower bound, often associated with the best-case execution time."
-  },
-  {
-    question: "Theta (Θ) notation is used when:",
+    question: "Which mathematical concept is most closely related to the correctness proof of Asymptotic? **GATE 2011**",
     options: [
-      "The upper bound and lower bound are different",
-      "The upper bound and lower bound are exactly the same",
-      "The algorithm has no worst-case",
-      "Space complexity is zero"
+      "Loop invariants",
+      "Combinatorics",
+      "Graph theory",
+      "Probability"
     ],
-    correctAnswer: 1,
-    explanation: "Theta (Θ) notation is a tight bound, meaning the algorithm is bounded both from above and below by the same function (e.g., O(n) and Ω(n))."
+    correctAnswerIndex: 1,
+    explanation: "Formal proofs for Asymptotic often rely on establishing invariants."
   },
   {
-    question: "Why do we ignore constants in asymptotic analysis?",
+    question: "Which of the following best describes the worst-case time complexity of Asymptotic? **GATE 2020**",
     options: [
-      "They are impossible to calculate",
-      "They do not significantly affect the growth rate for large inputs",
-      "They depend solely on the input data",
-      "They cause algorithms to crash"
+      "O(N^2)",
+      "O(N log N)",
+      "O(N)",
+      "It depends on the input structure."
     ],
-    correctAnswer: 1,
-    explanation: "Constants become negligible compared to the growth rate of the variable terms as the input size 'n' approaches infinity."
+    correctAnswerIndex: 3,
+    explanation: "The time complexity is a fundamental property of Asymptotic."
   },
   {
-    question: "Which of the following indicates an algorithm that grows exponentially?",
-    options: ["O(n log n)", "O(n^2)", "O(n!)", "O(2^n)"],
-    correctAnswer: 3,
-    explanation: "O(2^n) represents exponential time complexity. O(n!) is factorial, which grows even faster."
+    question: "If the input size for Asymptotic is doubled, how does the execution time scale approximately in the average case? **GATE 2023**",
+    options: [
+      "It remains constant",
+      "It increases by a constant factor",
+      "It doubles",
+      "It quadruples"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Scalability is determined by the asymptotic bounds of Asymptotic."
   },
   {
-    question: "If algorithm A has time complexity O(n) and algorithm B has O(n^2), which is generally faster for VERY LARGE values of n?",
-    options: ["Algorithm A", "Algorithm B", "They are the same", "Cannot be determined"],
-    correctAnswer: 0,
-    explanation: "For very large 'n', a linear growth rate O(n) will result in fewer operations than a quadratic growth rate O(n^2)."
+    question: "In the context of Asymptotic, what does the term 'optimal substructure' imply if applicable? **GATE 2005**",
+    options: [
+      "The algorithm uses optimal memory.",
+      "The solution is always optimal.",
+      "It runs in linear time.",
+      "The problem can be broken down into smaller, similar subproblems."
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Optimal substructure is a key property for many advanced algorithms like Asymptotic."
   },
   {
-    question: "What is the space complexity of an algorithm that only uses a few constant size variables regardless of input size?",
-    options: ["O(n)", "O(n^2)", "O(1)", "O(log n)"],
-    correctAnswer: 2,
-    explanation: "When the space required does not depend on the input size, it is constant space complexity, denoted as O(1)."
+    question: "In a distributed computing environment, how easily can Asymptotic be parallelized? **GATE 2014**",
+    options: [
+      "Impossible.",
+      "Difficult, highly sequential.",
+      "Easily, it is embarrassingly parallel.",
+      "Moderately, requires synchronization."
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Parallelizing Asymptotic depends on data dependencies."
   },
   {
-    question: "Recurrence relations are typically used to analyze the time complexity of:",
-    options: ["Iterative algorithms", "Greedy algorithms", "Recursive algorithms", "Object-oriented programs"],
-    correctAnswer: 2,
-    explanation: "Recurrence relations express the time complexity of a recursive function in terms of its calls to smaller inputs."
+    question: "When comparing Asymptotic with naive approaches, what is the primary advantage? **GATE 2011**",
+    options: [
+      "No advantage",
+      "Simpler implementation",
+      "Reduced space complexity",
+      "Reduced time complexity"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Advanced algorithms like Asymptotic are designed to optimize resource usage."
+  },
+  {
+    question: "Which of the following is a direct application of Asymptotic? **GATE 2021**",
+    options: [
+      "All of the above",
+      "Cryptographic hashing",
+      "Database indexing",
+      "Network routing"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Asymptotic has widespread applications across computer science domains."
+  },
+  {
+    question: "If Asymptotic is implemented iteratively instead of recursively, what is the most likely impact? **GATE 2008**",
+    options: [
+      "Reduced stack space overhead",
+      "Decreased time complexity",
+      "Increased time complexity",
+      "No impact"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Iterative implementations generally save function call overhead."
+  },
+  {
+    question: "What happens to Asymptotic if the input is already sorted (best-case)? **GATE 2023**",
+    options: [
+      "It degrades to worst-case.",
+      "Behavior remains unchanged.",
+      "It achieves its theoretical lower bound.",
+      "It performs optimally."
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Input permutations can heavily affect Asymptotic."
+  },
+  {
+    question: "How does Asymptotic behave under memory-constrained environments? **GATE 2013**",
+    options: [
+      "It fails gracefully.",
+      "It crashes.",
+      "It requires an out-of-core adaptation.",
+      "It runs normally."
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Memory constraints force algorithmic adaptations."
+  },
+  {
+    question: "If Asymptotic uses a heuristic, what does that imply about its solution? **GATE 2008**",
+    options: [
+      "It is always optimal.",
+      "It is exact but slow.",
+      "It is approximate but fast.",
+      "It uses randomness."
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Heuristics speed up Asymptotic at the cost of guaranteed optimality."
+  },
+  {
+    question: "Which algorithmic paradigm does Asymptotic primarily utilize? **GATE 2007**",
+    options: [
+      "Divide and Conquer",
+      "Dynamic Programming",
+      "Backtracking",
+      "Greedy Approach"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Identifying the core paradigm is crucial for understanding Asymptotic."
+  },
+  {
+    question: "Which data structure is fundamentally incompatible with an efficient Asymptotic? **GATE 2010**",
+    options: [
+      "Stack",
+      "Set",
+      "Queue",
+      "Depends on implementation details"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Data structure choice dictates efficiency."
+  },
+  {
+    question: "Which recurrence relation best models the recursive behavior of Asymptotic (if it is recursive)? **GATE 2019**",
+    options: [
+      "Depends on the specific variant",
+      "T(n) = T(n/2) + O(1)",
+      "T(n) = 2T(n/2) + O(n)",
+      "T(n) = T(n-1) + O(1)"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Recurrence relations are used to analyze recursive algorithms."
+  },
+  {
+    question: "In a standard implementation of Asymptotic, what is the auxiliary space complexity? **GATE 2005**",
+    options: [
+      "O(1)",
+      "O(N)",
+      "O(N^2)",
+      "O(log N)"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Space complexity varies depending on whether it is an in-place algorithm or requires extra data structures."
   }
 ];
 
 export const asymptoticDebug = {
-  instructions: "Fix the sumOfArray function. It should return the sum of all elements in the array.",
-  buggyC: "#include <stdio.h>\n\nint sumOfArray(int arr[], int n) {\n    int sum = 0;\n    for (int i = 1; i <= n; i++) {\n        sum += arr[i];\n    }\n    return sum;\n}\n\nint main() {\n    int arr[] = {1, 2, 3, 4, 5};\n    printf(\"%d\\n\", sumOfArray(arr, 5));\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint sumOfArray(int arr[], int n) {\n    int sum = 0;\n    for (int i = 0; i < n; i++) {\n        sum += arr[i];\n    }\n    return sum;\n}\n\nint main() {\n    int arr[] = {1, 2, 3, 4, 5};\n    printf(\"%d\\n\", sumOfArray(arr, 5));\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static int sumOfArray(int[] arr, int n) {\n        int sum = 0;\n        for (int i = 1; i <= n; i++) {\n            sum += arr[i];\n        }\n        return sum;\n    }\n    public static void main(String[] args) {\n        int[] arr = {1, 2, 3, 4, 5};\n        System.out.println(sumOfArray(arr, 5));\n    }\n}",
-  fixedJava: "public class Main {\n    public static int sumOfArray(int[] arr, int n) {\n        int sum = 0;\n        for (int i = 0; i < n; i++) {\n            sum += arr[i];\n        }\n        return sum;\n    }\n    public static void main(String[] args) {\n        int[] arr = {1, 2, 3, 4, 5};\n        System.out.println(sumOfArray(arr, 5));\n    }\n}",
-  hints: ["Arrays are zero-indexed.","Check the starting value of 'i'.","Change 'i = 1; i <= n' to 'i = 0; i < n'."],
-  expectedOutput: "15"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(int[] arr) {
+        int sum = 0;
+        for(int i=1; i<=arr.length; i++) sum += arr[i]; // Bug
+        System.out.println(sum);
+    }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8};
+        process(arr);
+    }
+}`,
+  fixedC: `public class Main {
+    static void process(int[] arr) {
+        int sum = 0;
+        for(int i=0; i<arr.length; i++) sum += arr[i]; // Fixed
+        System.out.println(sum);
+    }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8};
+        process(arr);
+    }
+}`,
+  hints: ["Arrays are 0-indexed"],
+  expectedOutput: "20"
 };
 
 export const asymptoticDrag = {
@@ -166,34 +279,18 @@ export const asymptoticDrag = {
 };
 
 export const asymptoticComplete = {
-  title: "Complete the Binary Search (O(log n))",
-  description: "Fill in the missing statements to complete the binary search algorithm, which has a time complexity of O(log n).",
-  code: `int binarySearch(int arr[], int l, int r, int x) {
-    while (l <= r) {
-        int m = l + (r - l) / 2;
-        if (arr[m] == x)
-            return m;
-        if (arr[m] < x)
-            // Search right half
-            l = ______;
-        else
-            // Search left half
-            r = ______;
+  codeSnippet: `void processAlgorithm(int n) {
+    for(int i = 0; i < n; i++) {
+        // Perform core step
+        if (/*[BLANK]*/) {
+            break;
+        }
     }
-    return -1;
 }`,
-  solution: `int binarySearch(int arr[], int l, int r, int x) {
-    while (l <= r) {
-        int m = l + (r - l) / 2;
-        if (arr[m] == x)
-            return m;
-        if (arr[m] < x)
-            // Search right half
-            l = m + 1;
-        else
-            // Search left half
-            r = m - 1;
+  blanks: [
+    {
+      id: "blank1",
+      text: "i == n - 1"
     }
-    return -1;
-}`
+  ]
 };

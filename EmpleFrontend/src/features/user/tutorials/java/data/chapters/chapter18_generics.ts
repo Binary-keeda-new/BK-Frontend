@@ -105,4 +105,14 @@ export const chapter18_MCQ = [
     }
 ];
 
-export const chapter18_COMPLETE_EXERCISES = [];
+export const chapter18_COMPLETE_EXERCISES = [
+  {
+    template: `public class Box<___> {
+    private T item;
+    public void set(T item) { this.item = item; }
+}`,
+    blanks: [
+      "T"
+    ]
+  }
+];
