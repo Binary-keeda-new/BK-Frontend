@@ -43,12 +43,12 @@ export default function UserLayout({ children }: { children: React.ReactNode }) 
   const isQuiz = pathname.includes("/attempt");
 
   if (isQuiz) {
-  return (
-    <div style={{ background: "var(--bg)", color: "var(--text)", minHeight: "100vh" }}>
-      {children}
-    </div>
-  );
-}
+    return (
+      <div style={{ background: "var(--bg)", color: "var(--text)", minHeight: "100vh" }}>
+        {children}
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-screen overflow-hidden" style={{ background: "var(--bg)", color: "var(--text)" }}>

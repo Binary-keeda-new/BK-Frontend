@@ -19,6 +19,7 @@ import QuizForm from '../../quiz/pages/QuizForm';
 import CodingProblemsPage from '@/features/admin/coding-problems/pages/codingProblemsPage';
 import CodingProblemEditorPage from '@/features/admin/coding-problems/pages/codingProblemEditorPage';
 import AdminEventsPage from '@/features/admin/Events/components/AdminEventsPage';
+import AdminNotificationsPage from '@/features/admin/notifications/pages/AdminNotificationsPage';
 import QuizReportPage from '@/features/admin/quiz/pages/QuizReportPage';
 import AdminQuizReview from '../../quiz/pages/adminQuizReview';
 
@@ -306,6 +307,9 @@ const openAttemptReview = (attemptId: string) => {
 
       case 'sessions':
         return <AdminSessionsPage />;
+
+      case 'notifications':
+        return <AdminNotificationsPage />;  
 
       case 'practice':
         return (

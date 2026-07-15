@@ -6,6 +6,6 @@ export const metadata: Metadata = {
   description: "Complete SDE interview prep — coding practice, core CS subjects and aptitude.",
 };
 
-export default function Page() {
+export default function BkSdeSheetPage() {
   return <BkSdeSheetHome />;
 }

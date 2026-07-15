@@ -60,17 +60,25 @@ export default function SignupPage() {
       return
     }
 
-    // Debounce — wait 400ms after user stops typing
     if (debounceRef.current) clearTimeout(debounceRef.current)
 
     debounceRef.current = setTimeout(async () => {
       setFetchingUni(true)
       try {
-        const res = await fetch(
-          `http://universities.hipolabs.com/search?name=${encodeURIComponent(form.college)}&country=India`
-        )
+        let res
+        try {
+          // Try https first (for production)
+          res = await fetch(
+            `https://universities.hipolabs.com/search?name=${encodeURIComponent(form.college)}&country=India`
+          )
+        } catch {
+          // Fallback to http (for localhost)
+          res = await fetch(
+            `http://universities.hipolabs.com/search?name=${encodeURIComponent(form.college)}&country=India`
+          )
+        }
         const data = await res.json()
-        const names = data.map((u: any) => u.name).slice(0, 8) // max 8 results
+        const names = data.map((u: any) => u.name).slice(0, 8)
         setUniversities(names)
         setShowDropdown(names.length > 0)
       } catch {
@@ -272,7 +280,7 @@ export default function SignupPage() {
             {/* College with autocomplete */}
             <div className="auth-field" style={{ position: 'relative' }} ref={dropdownRef}>
               <label className="auth-label">College / University</label>
-              <div className="auth-input-wrap">
+              <div className="auth-input-wrap" style={{ position: 'relative' }}>
                 <input
                   className="auth-input"
                   type="text"

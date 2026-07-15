@@ -20,6 +20,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       data-theme="dark"
       data-scroll-behavior="smooth"
     >
+      <head>
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9381184853784761"
+          crossOrigin="anonymous"
+        ></script>
+      </head>
       <body>
         <AuthProvider
           projectId={process.env.NEXT_PUBLIC_DESCOPE_PROJECT_ID || ""}
@@ -29,7 +36,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         >
           <AppAuthProvider>
-            <ThemeProvider>{children}</ThemeProvider>
+            <ThemeProvider>
+              {children}
+            </ThemeProvider>
           </AppAuthProvider>
         </AuthProvider>
       </body>
