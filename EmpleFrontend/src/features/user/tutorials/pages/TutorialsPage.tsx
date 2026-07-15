@@ -40,7 +40,7 @@ const SUBJECTS = [
     color: "#ff6b35",
     difficulty: "Beginner",
     duration: "2-4 Weeks",
-    chapters: 13
+    chapters: 17
   },
   {
     id: "java",
