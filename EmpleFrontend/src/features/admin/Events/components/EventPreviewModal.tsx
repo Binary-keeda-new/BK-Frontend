@@ -119,26 +119,22 @@ export default function EventPreviewModal({ event, onClose }: Props) {
                   <span className="flex items-center gap-2"><Calendar size={13} /> End: {formatDate(event.endDate)}</span>
                 </div>
               </div>
+              {isEmple && event.solutionRevealLink && (
+  <div>
+    <h3 className="text-white/60 text-xs font-medium uppercase tracking-wider mb-2">
+      Solution Reveal Link
+    </h3>
 
-              {isEmple && event.links && event.links.length > 0 && (
-                <div>
-                  <h3 className="text-white/60 text-xs font-medium uppercase tracking-wider mb-2">Important Links</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {event.links.map((l, i) => (
-                      <a
-                        key={i}
-                        href={l.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 text-xs text-purple-400 border border-purple-500/20 bg-purple-500/10 px-3 py-1 rounded-full hover:border-purple-400 transition"
-                      >
-                        <Link size={10} /> {l.label}
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              )}
-
+    <a
+      href={event.solutionRevealLink}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex items-center gap-1.5 text-xs text-purple-400 hover:underline"
+    >
+      <ExternalLink size={12} /> {event.solutionRevealLink}
+    </a>
+  </div>
+)}
               {event.registrationLink && (
                 <div>
                   <h3 className="text-white/60 text-xs font-medium uppercase tracking-wider mb-2">Registration Link</h3>
@@ -181,16 +177,16 @@ export default function EventPreviewModal({ event, onClose }: Props) {
                       Add problem statement content to the event form to display it here.
                     </p>
                   </div>
-                  {event.solutionLink && (
+                  {event.solutionRevealLink && (
                     <div>
                       <h3 className="text-white/60 text-xs font-medium uppercase tracking-wider mb-2">Solution Submission Link</h3>
                       <a
-                        href={event.solutionLink}
+                        href={event.solutionRevealLink}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center gap-1.5 text-xs text-emerald-400 hover:underline"
                       >
-                        <ExternalLink size={12} /> {event.solutionLink}
+                        <ExternalLink size={12} /> {event.solutionRevealLink}
                       </a>
                     </div>
                   )}
