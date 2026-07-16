@@ -191,6 +191,11 @@ export default function SignupPage() {
       if (!syncRes.ok) {
         const syncText = await syncRes.text()
         console.error('Sync failed:', syncRes.status, syncText)
+      } else {
+        const syncData = await syncRes.json()
+        if (syncData.isNewUser) {
+          sessionStorage.setItem('show_signup_bonus', 'true')
+        }
       }
 
       // Step 3: Send verification email via Zoho

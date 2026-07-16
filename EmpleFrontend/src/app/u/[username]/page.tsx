@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { UserProfile } from '@/features/user/profile/types';
-import { ModernDeveloper, CreativeDesigner, AIResearch, StudentPortfolio } from '@/features/user/profile/components/PortfolioTemplates';
+import { EngineeringBlueprint, GamifiedArcade, EditorialMinimalist, RpgCharacterSheet } from '@/features/user/profile/components/PortfolioTemplates';
 
 async function fetchProfile(username: string): Promise<UserProfile | null> {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
@@ -42,21 +42,33 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
   };
 }
 
-export default async function PublicPortfolioPage({ params }: { params: Promise<{ username: string }> }) {
-  const resolvedParams = await params;
+export const dynamic = 'force-dynamic';
+
+export default async function PublicPortfolioPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ username: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const resolvedParams = await Promise.resolve(params);
+  const resolvedSearchParams = await Promise.resolve(searchParams);
   const profile = await fetchProfile(resolvedParams.username);
 
   if (!profile) {
     notFound();
   }
 
-  const Template = profile.template || 'modern-developer';
+  const previewParam = resolvedSearchParams?.preview;
+  const preview = Array.isArray(previewParam) ? previewParam[0] : previewParam;
+
+  const Template = (preview || profile.template || 'editorial-minimalist').toLowerCase().trim();
 
   switch (Template) {
-    case 'modern-developer': return <ModernDeveloper profile={profile} />;
-    case 'creative-designer': return <CreativeDesigner profile={profile} />;
-    case 'ai-research': return <AIResearch profile={profile} />;
-    case 'student': return <StudentPortfolio profile={profile} />;
-    default: return <ModernDeveloper profile={profile} />;
+    case 'engineering-blueprint': return <EngineeringBlueprint profile={profile} />;
+    case 'gamified-arcade': return <GamifiedArcade profile={profile} />;
+    case 'editorial-minimalist': return <EditorialMinimalist profile={profile} />;
+    case 'rpg-character-sheet': return <RpgCharacterSheet profile={profile} />;
+    default: return <EditorialMinimalist profile={profile} />;
   }
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useWallet } from "@/providers/WalletProvider";
 
 type Domain = "Analytics" | "Business" | "Testing" | "Finance";
 type Level = "Beginner" | "Intermediate" | "Advanced";
@@ -518,6 +519,9 @@ export default function CareerPathsHome() {
   const [quizAnswers, setQuizAnswers] = useState<Record<number, number>>({});
   const [quizSubmitted, setQuizSubmitted] = useState(false);
 
+  const { config } = useWallet();
+  const completionReward = config?.ROADMAP?.COMPLETION_REWARD || 20;
+
   const filtered = careers.filter((c) => {
     const matchesSearch =
       c.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -655,6 +659,16 @@ export default function CareerPathsHome() {
                     </div>
                     <div className="w-full h-1.5 bg-gray-800 rounded-full overflow-hidden">
                       <div className="h-full rounded-full bg-gradient-to-r from-orange-500 to-orange-400 transition-all duration-500" style={{ width: `${progressPct}%` }} />
+                    </div>
+                    {/* Reward Badge */}
+                    <div className="mt-2 flex justify-end">
+                      <div className={`inline-flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 rounded-full border ${progressPct === 100 ? 'bg-green-500/10 border-green-500/20 text-green-400' : 'bg-orange-500/10 border-orange-500/20 text-orange-400'}`}>
+                        {progressPct === 100 ? (
+                          <><span>✅</span> Reward Claimed</>
+                        ) : (
+                          <><span>🪙</span> Earn {completionReward} Coins on completion</>
+                        )}
+                      </div>
                     </div>
                   </div>
 

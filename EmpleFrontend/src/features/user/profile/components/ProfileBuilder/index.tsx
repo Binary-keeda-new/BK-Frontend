@@ -24,7 +24,7 @@ const TABS = [
 
 export default function ProfileBuilder() {
   const [profile, setProfile] = useState<Partial<UserProfile>>({
-    template: 'modern-developer',
+    template: 'editorial-minimalist',
     personalInfo: {},
     about: {},
     education: [],
@@ -106,7 +106,7 @@ export default function ProfileBuilder() {
       case 'certifications': return <CertificationsForm data={profile.certifications || []} onChange={(v) => handleChange('certifications', v)} />;
       case 'social': return <SocialLinksForm data={profile.socialLinks || {}} onChange={(v) => handleChange('socialLinks', v)} />;
       case 'resume': return <ResumeUploadForm profile={profile} onChange={(v) => setProfile(prev => ({ ...prev, ...v }))} />;
-      case 'template': return <TemplateSelector selected={profile.template || 'modern-developer'} onChange={(v) => handleChange('template', v)} username={profile.username} isPublished={profile.isPublished} />;
+      case 'template': return <TemplateSelector selected={profile.template || 'editorial-minimalist'} onChange={(v) => handleChange('template', v)} username={profile.username} isPublished={profile.isPublished} />;
       default: return null;
     }
   };
