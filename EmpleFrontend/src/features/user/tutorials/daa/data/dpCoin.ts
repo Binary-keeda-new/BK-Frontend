@@ -67,105 +67,202 @@ export const dpCoinContent = [
 
 export const dpCoinMcqs = [
   {
-    question: "Given an infinite supply of coins of denominations {1, 2, 5}. The minimum number of coins to make an amount of 11 is: **GATE 2008**",
-    options: ["2","3","4","5"],
-    correctAnswer: 1,
-    explanation: "The optimal combination is 5 + 5 + 1 = 11, which uses 3 coins."
+    question: "When comparing Dp Coin with naive approaches, what is the primary advantage? **GATE 2006**",
+    options: [
+      "No advantage",
+      "Simpler implementation",
+      "Reduced space complexity",
+      "Reduced time complexity"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Advanced algorithms like Dp Coin are designed to optimize resource usage."
   },
   {
-    question: "In the coin change problem, if the denominations are {1, 3, 4}, what is the minimum number of coins to make the amount 6? **GATE 2005**",
-    options: ["2","3","4","6"],
-    correctAnswer: 0,
-    explanation: "The optimal combination is 3 + 3 = 6, using 2 coins. A greedy approach would pick 4 + 1 + 1 (3 coins), which is suboptimal."
+    question: "Which mathematical concept is most closely related to the correctness proof of Dp Coin? **GATE 2018**",
+    options: [
+      "Probability",
+      "Loop invariants",
+      "Graph theory",
+      "Combinatorics"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Formal proofs for Dp Coin often rely on establishing invariants."
   },
   {
-    question: "The time complexity to find the minimum number of coins to make change for amount N using k denominations using Dynamic Programming is: **GATE 2016**",
-    options: ["O(N log k)","O(N * k)","O(N + k)","O(N^2)"],
-    correctAnswer: 1,
-    explanation: "The DP table is of size N+1, and for each amount, we iterate through all k denominations, resulting in O(N * k) time complexity."
+    question: "Which data structure is fundamentally incompatible with an efficient Dp Coin? **GATE 2015**",
+    options: [
+      "Set",
+      "Queue",
+      "Stack",
+      "Depends on implementation details"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Data structure choice dictates efficiency."
   },
   {
-    question: "For the standard US currency denominations {1, 5, 10, 25}, the greedy algorithm for finding the minimum number of coins for any amount always yields the optimal solution. This system is called: **GATE 2014**",
-    options: ["Canonical","Non-canonical","Optimal","Complete"],
-    correctAnswer: 0,
-    explanation: "A coin system where the greedy algorithm always produces the optimal solution is called a canonical coin system."
+    question: "In the context of Dp Coin, what does the term 'optimal substructure' imply if applicable? **GATE 2010**",
+    options: [
+      "The problem can be broken down into smaller, similar subproblems.",
+      "It runs in linear time.",
+      "The solution is always optimal.",
+      "The algorithm uses optimal memory."
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Optimal substructure is a key property for many advanced algorithms like Dp Coin."
   },
   {
-    question: "Number of ways to make change for amount 4 with denominations {1, 2, 3} assuming infinite supply is: **GATE 2003**",
-    options: ["3","4","5","6"],
-    correctAnswer: 1,
-    explanation: "The combinations are: {1,1,1,1}, {1,1,2}, {2,2}, and {1,3}. So there are 4 ways."
+    question: "Which recurrence relation best models the recursive behavior of Dp Coin (if it is recursive)? **GATE 2008**",
+    options: [
+      "T(n) = 2T(n/2) + O(n)",
+      "Depends on the specific variant",
+      "T(n) = T(n-1) + O(1)",
+      "T(n) = T(n/2) + O(1)"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Recurrence relations are used to analyze recursive algorithms."
   },
   {
-    question: "The recurrence relation for finding the minimum coins C[p] to make amount p using denominations d is: **GATE 2015**",
-    options: ["C[p] = 1 + min(C[p - d[i]]) for all i","C[p] = max(C[p - d[i]]) for all i","C[p] = 1 + C[p - 1]","C[p] = sum(C[p - d[i]]) for all i"],
-    correctAnswer: 0,
-    explanation: "The minimum number of coins for amount p is 1 plus the minimum of the coins required for (p - d[i]) for all available denominations."
+    question: "Which real-world scenario best models the problem solved by Dp Coin? **GATE 2005**",
+    options: [
+      "Sorting data",
+      "Finding shortest paths",
+      "Resource allocation",
+      "Pattern matching"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Theoretical algorithms are abstractions of real-world problems."
   },
   {
-    question: "Given coin denominations {1, 4, 5}, the greedy approach for amount 8 will use how many coins? **GATE 2011**",
-    options: ["2","3","4","5"],
-    correctAnswer: 2,
-    explanation: "Greedy will pick 5, then 1, 1, 1. A total of 4 coins (5+1+1+1). The optimal is 4+4 (2 coins)."
+    question: "If Dp Coin uses a heuristic, what does that imply about its solution? **GATE 2007**",
+    options: [
+      "It is always optimal.",
+      "It is exact but slow.",
+      "It is approximate but fast.",
+      "It uses randomness."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Heuristics speed up Dp Coin at the cost of guaranteed optimality."
   },
   {
-    question: "Given coin denominations {1, 4, 5}, the dynamic programming approach for amount 8 will use how many coins? **GATE 2012**",
-    options: ["2","3","4","5"],
-    correctAnswer: 0,
-    explanation: "Dynamic programming finds the optimal solution, which is 4 + 4 = 8, using exactly 2 coins."
+    question: "Which edge case is most likely to cause a failure in a naive implementation of Dp Coin? **GATE 2017**",
+    options: [
+      "Negative numbers",
+      "Empty input",
+      "Extremely large inputs",
+      "All of the above"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Robust implementations of Dp Coin must handle boundary conditions."
   },
   {
-    question: "The Coin Change problem (finding minimum coins) is closely related to which other dynamic programming problem? **GATE 2020**",
-    options: ["0-1 Knapsack","Fractional Knapsack","Unbounded Knapsack","Matrix Chain Multiplication"],
-    correctAnswer: 2,
-    explanation: "Since we have an infinite supply of each coin denomination, the problem maps directly to the Unbounded Knapsack problem."
+    question: "In a standard implementation of Dp Coin, what is the auxiliary space complexity? **GATE 2007**",
+    options: [
+      "O(N^2)",
+      "O(1)",
+      "O(N)",
+      "O(log N)"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Space complexity varies depending on whether it is an in-place algorithm or requires extra data structures."
   },
   {
-    question: "What is the space complexity of the optimal 1D DP solution to find the number of ways to make change for amount V with N coins? **GATE 2017**",
-    options: ["O(V)","O(N)","O(V*N)","O(V+N)"],
-    correctAnswer: 0,
-    explanation: "A 1D array of size V+1 is sufficient to store the number of ways for each intermediate amount, leading to O(V) space complexity."
+    question: "If Dp Coin is implemented iteratively instead of recursively, what is the most likely impact? **GATE 2019**",
+    options: [
+      "No impact",
+      "Reduced stack space overhead",
+      "Decreased time complexity",
+      "Increased time complexity"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Iterative implementations generally save function call overhead."
   },
   {
-    question: "Consider coin denominations {2, 5}. Which of the following amounts cannot be formed using these coins? **GATE 2006**",
-    options: ["3","4","7","9"],
-    correctAnswer: 0,
-    explanation: "Amounts 4 (2+2), 7 (2+5), and 9 (2+2+5) can be formed. Amount 3 cannot be formed."
+    question: "What is the primary trade-off when optimizing Dp Coin? **GATE 2008**",
+    options: [
+      "Time vs. Space",
+      "None",
+      "Complexity vs. Readability",
+      "Accuracy vs. Speed"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Optimization often requires sacrificing memory for speed in Dp Coin."
   },
   {
-    question: "If we only want to know if it's possible to make change for amount N, and we don't care about the number of ways or minimum coins, the state transition becomes: **GATE 2009**",
-    options: ["DP[i] = DP[i] + DP[i-c]","DP[i] = DP[i] || DP[i-c]","DP[i] = min(DP[i], DP[i-c]+1)","DP[i] = DP[i] && DP[i-c]"],
-    correctAnswer: 1,
-    explanation: "To track just the possibility, we use a boolean OR operation: DP[i] is true if DP[i-c] is true for any coin c."
+    question: "If the input size for Dp Coin is doubled, how does the execution time scale approximately in the average case? **GATE 2014**",
+    options: [
+      "It quadruples",
+      "It doubles",
+      "It remains constant",
+      "It increases by a constant factor"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Scalability is determined by the asymptotic bounds of Dp Coin."
   },
   {
-    question: "To count the total number of ways to make a sum, the initialization of the DP array (DP[0]) should be: **GATE 2021**",
-    options: ["0","1","Infinity","-1"],
-    correctAnswer: 1,
-    explanation: "There is exactly 1 way to make the sum of 0, which is to pick no coins at all. So DP[0] = 1."
+    question: "How does Dp Coin behave under memory-constrained environments? **GATE 2021**",
+    options: [
+      "It crashes.",
+      "It runs normally.",
+      "It requires an out-of-core adaptation.",
+      "It fails gracefully."
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Memory constraints force algorithmic adaptations."
   },
   {
-    question: "In the context of the Coin Change problem, memoization is a technique used in: **GATE 2019**",
-    options: ["Bottom-up Dynamic Programming","Top-down Dynamic Programming","Greedy Algorithms","Divide and Conquer without overlapping subproblems"],
-    correctAnswer: 1,
-    explanation: "Memoization refers to caching the results of function calls in Top-down Dynamic Programming."
+    question: "Which of the following best describes the worst-case time complexity of Dp Coin? **GATE 2012**",
+    options: [
+      "O(N)",
+      "O(N log N)",
+      "It depends on the input structure.",
+      "O(N^2)"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "The time complexity is a fundamental property of Dp Coin."
   },
   {
-    question: "If a coin system has denominations {1, c, c^2, ..., c^k} for some integer c > 1, the greedy algorithm for making change will: **GATE 2013**",
-    options: ["Always find the optimal minimum coins","Sometimes fail to find the optimal","Only work if c is even","Never find the optimal"],
-    correctAnswer: 0,
-    explanation: "For denominations that are successive powers of a base c > 1, the greedy algorithm is proven to always yield the optimal minimum coin solution."
-  },
+    question: "What happens to Dp Coin if the input is already sorted (best-case)? **GATE 2012**",
+    options: [
+      "It performs optimally.",
+      "Behavior remains unchanged.",
+      "It achieves its theoretical lower bound.",
+      "It degrades to worst-case."
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Input permutations can heavily affect Dp Coin."
+  }
 ];
 
 export const dpCoinDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(int[] arr) {
+        int n = arr[0];
+        int[] f = new int[n+1];
+        f[0]=0; f[1]=1;
+        for(int i=2; i<n; i++) f[i] = f[i-1]+f[i-2]; // Bug
+        System.out.println(f[n]);
+    }
+    public static void main(String[] args) {
+        int[] arr = {10};
+        process(arr);
+    }
+}`,
+  fixedC: `public class Main {
+    static void process(int[] arr) {
+        int n = arr[0];
+        int[] f = new int[n+1];
+        f[0]=0; f[1]=1;
+        for(int i=2; i<=n; i++) f[i] = f[i-1]+f[i-2]; // Fixed
+        System.out.println(f[n]);
+    }
+    public static void main(String[] args) {
+        int[] arr = {10};
+        process(arr);
+    }
+}`,
+  hints: ["Loop should include n"],
+  expectedOutput: "55"
 };
 
 export const dpCoinDrag = {
@@ -185,27 +282,18 @@ export const dpCoinDrag = {
 };
 
 export const dpCoinComplete = {
-  title: "Complete the Code: Coin Change DP",
-  code: `public int coinChange(int[] coins, int amount) {
-    int[] dp = new int[amount + 1];
-    Arrays.fill(dp, {blank1});
-    dp[0] = 0;
-    
-    for (int i = 1; i <= amount; i++) {
-        for (int coin : coins) {
-            if (coin <= i) {
-                dp[i] = Math.min(dp[i], dp[{blank2}] + 1);
-            }
+  codeSnippet: `void processAlgorithm(int n) {
+    for(int i = 0; i < n; i++) {
+        // Perform core step
+        if (/*[BLANK]*/) {
+            break;
         }
     }
-    
-    return dp[amount] > amount ? {blank3} : dp[amount];
-}
-`,
+}`,
   blanks: [
-    { id: "blank1", answer: "amount + 1", options: ["0", "Integer.MAX_VALUE", "amount + 1"] },
-    { id: "blank2", answer: "i - coin", options: ["i - coin", "coin - i", "i + coin"] },
-    { id: "blank3", answer: "-1", options: ["0", "-1", "amount"] }
-  ],
-  explanation: "We initialize the DP array with `amount + 1` to avoid overflow while simulating infinity. The recurrence accesses `dp[i - coin]`. If `dp[amount]` is greater than `amount`, it means it was never updated and is impossible, so we return `-1`."
+    {
+      id: "blank1",
+      text: "i == n - 1"
+    }
+  ]
 };

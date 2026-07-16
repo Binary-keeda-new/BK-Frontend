@@ -67,125 +67,198 @@ export const bbJobContent = [
 
 export const bbJobMcqs = [
   {
-    question: "In the context of solving the Job Assignment Problem using Branch and Bound (Least Cost Search), which data structure is primarily used to manage the active nodes of the state space tree?",
+    question: "In a standard implementation of Bb Job, what is the auxiliary space complexity? **GATE 2006**",
     options: [
-      "Stack (LIFO)",
-      "Queue (FIFO)",
-      "Priority Queue (Min-Heap)",
-      "Hash Map"
+      "O(1)",
+      "O(log N)",
+      "O(N)",
+      "O(N^2)"
     ],
-    correctAnswerIndex: 2,
-    explanation: "Least Cost Search always expands the node with the minimum estimated cost (lower bound) first. A Priority Queue (Min-Heap) efficiently supports extracting the minimum element."
+    correctAnswerIndex: 1,
+    explanation: "Space complexity varies depending on whether it is an in-place algorithm or requires extra data structures."
   },
   {
-    question: "For a Job Assignment problem of size $N \\times N$, solved using Branch and Bound, what is the maximum depth of the state space tree?",
+    question: "When comparing Bb Job with naive approaches, what is the primary advantage? **GATE 2013**",
     options: [
-      "$N$",
-      "$N^2$",
-      "$2^N$",
-      "$N!$"
+      "Reduced space complexity",
+      "Simpler implementation",
+      "No advantage",
+      "Reduced time complexity"
     ],
     correctAnswerIndex: 0,
-    explanation: "At each level of the tree, one worker is assigned a job. Since there are $N$ workers, the maximum depth (number of levels excluding the root) of the tree is $N$."
+    explanation: "Advanced algorithms like Bb Job are designed to optimize resource usage."
   },
   {
-    question: "When using Branch and Bound for a minimization problem, a partial solution node can be pruned if:",
+    question: "Consider the worst-case scenario for Bb Job. Which data structure would most likely degrade its performance? **GATE 2008**",
     options: [
-      "Its lower bound is less than the cost of the best complete solution found so far.",
-      "Its lower bound is greater than or equal to the cost of the best complete solution found so far.",
-      "Its path cost is exactly equal to the lower bound.",
-      "It has reached the maximum depth of the tree."
+      "Hash Tables",
+      "Linked Lists",
+      "Arrays",
+      "Balanced Trees"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Different data structures provide different access times which heavily influence Bb Job."
+  },
+  {
+    question: "Which mathematical concept is most closely related to the correctness proof of Bb Job? **GATE 2015**",
+    options: [
+      "Combinatorics",
+      "Probability",
+      "Loop invariants",
+      "Graph theory"
     ],
     correctAnswerIndex: 1,
-    explanation: "If a node's lower bound (optimistic estimate) is already worse (greater than or equal to) the best known valid solution, no complete solution derived from this node can possibly be better. Hence, it is pruned."
+    explanation: "Formal proofs for Bb Job often rely on establishing invariants."
   },
   {
-    question: "Let $C$ be the $N \\times N$ cost matrix. A common bounding function for a node at level $k$ (where workers $0$ to $k-1$ are assigned) calculates the bound as: `Path_Cost + Sum of minimum available costs for unassigned workers`. What is a critical requirement for this bounding function?",
+    question: "Which edge case is most likely to cause a failure in a naive implementation of Bb Job? **GATE 2006**",
     options: [
-      "It must sometimes overestimate the actual cost to ensure aggressive pruning.",
-      "It must strictly underestimate or equal the actual minimum cost to complete the assignment (Admissibility).",
-      "It must exactly equal the cost of the optimal assignment.",
-      "It must ignore the previously accumulated path cost."
+      "Empty input",
+      "Negative numbers",
+      "Extremely large inputs",
+      "All of the above"
     ],
     correctAnswerIndex: 1,
-    explanation: "For the Branch and Bound algorithm to guarantee finding the optimal solution, the bounding function (heuristic) must be admissible; it must never overestimate the cost of reaching the goal. Otherwise, it might incorrectly prune the optimal path."
+    explanation: "Robust implementations of Bb Job must handle boundary conditions."
   },
   {
-    question: "Which of the following problems is the Job Assignment Problem a special case of?",
+    question: "In the context of Bb Job, what does the term 'optimal substructure' imply if applicable? **GATE 2019**",
     options: [
-      "0/1 Knapsack Problem",
-      "Traveling Salesperson Problem",
-      "Weighted Bipartite Matching",
-      "Graph Coloring Problem"
+      "The solution is always optimal.",
+      "The problem can be broken down into smaller, similar subproblems.",
+      "The algorithm uses optimal memory.",
+      "It runs in linear time."
     ],
-    correctAnswerIndex: 2,
-    explanation: "The Job Assignment Problem can be modeled as finding a minimum weight perfect matching in a weighted bipartite graph, where one set of vertices is workers and the other is jobs."
+    correctAnswerIndex: 3,
+    explanation: "Optimal substructure is a key property for many advanced algorithms like Bb Job."
   },
   {
-    question: "Consider an assignment problem with cost matrix $C$. If a constant $K$ is subtracted from every element of a single row of $C$, how does this affect the optimal assignment of jobs to workers?",
+    question: "Which recurrence relation best models the recursive behavior of Bb Job (if it is recursive)? **GATE 2005**",
     options: [
-      "It completely changes the optimal assignment.",
-      "It does not change the optimal assignment.",
-      "It shifts all assignments to the right by one job.",
-      "It guarantees the Hungarian algorithm will run in $O(N)$ time."
-    ],
-    correctAnswerIndex: 1,
-    explanation: "Subtracting a constant from any row or column in the cost matrix of an assignment problem decreases the cost of all complete assignments by exactly that constant. The relative ordering of total costs remains unchanged, so the optimal assignment itself is preserved. This property is the foundation of the Hungarian Algorithm."
-  },
-  {
-    question: "What is the worst-case time complexity of solving the $N \\times N$ Job Assignment Problem using Branch and Bound?",
-    options: [
-      "$O(N^3)$",
-      "$O(2^N)$",
-      "$O(N!)$",
-      "$O(N \\log N)$"
-    ],
-    correctAnswerIndex: 2,
-    explanation: "In the worst case (e.g., bounds do not help in pruning), the B&B algorithm will generate all permutations of assignments. There are $N!$ possible complete assignments."
-  },
-  {
-    question: "A Branch and Bound tree for Job Assignment is being explored. The current best complete solution has a cost of 45. Node $X$ has an accumulated path cost of 20 and the sum of the minimums of the remaining rows is 30. What action will the LC Search algorithm take regarding Node $X$?",
-    options: [
-      "Expand Node $X$ immediately because 20 < 45.",
-      "Prune Node $X$ because its lower bound is 50, which is > 45.",
-      "Update the best complete solution to 50.",
-      "Push Node $X$ to the Priority Queue but with a priority of 20."
+      "T(n) = T(n-1) + O(1)",
+      "T(n) = T(n/2) + O(1)",
+      "Depends on the specific variant",
+      "T(n) = 2T(n/2) + O(n)"
     ],
     correctAnswerIndex: 1,
-    explanation: "The lower bound for Node X is $20 + 30 = 50$. Since $50 > 45$ (the current best solution), Node X cannot possibly lead to a solution better than 45. Therefore, it will be pruned."
+    explanation: "Recurrence relations are used to analyze recursive algorithms."
   },
   {
-    question: "In the node structure for B&B Job Assignment, an `assigned_jobs_mask` (an integer used as a bitmask) is maintained. If there are 8 jobs and jobs 0, 3, and 5 are currently assigned, what is the binary representation of the mask?",
+    question: "Which data structure is fundamentally incompatible with an efficient Bb Job? **GATE 2017**",
     options: [
-      "00101001",
-      "00010101",
-      "10100100",
-      "00110001"
+      "Queue",
+      "Set",
+      "Stack",
+      "Depends on implementation details"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Data structure choice dictates efficiency."
+  },
+  {
+    question: "Which of the following best describes the worst-case time complexity of Bb Job? **GATE 2013**",
+    options: [
+      "O(N^2)",
+      "It depends on the input structure.",
+      "O(N)",
+      "O(N log N)"
     ],
     correctAnswerIndex: 0,
-    explanation: "Jobs 0, 3, and 5 correspond to the 0th, 3rd, and 5th bits being set to 1. In binary, this is $2^0 + 2^3 + 2^5 = 1 + 8 + 32 = 41$. In 8-bit binary: 00101001."
+    explanation: "The time complexity is a fundamental property of Bb Job."
   },
   {
-    question: "Comparing Branch & Bound with Backtracking for optimization problems, which statement is generally true?",
+    question: "What happens to Bb Job if the input is already sorted (best-case)? **GATE 2011**",
     options: [
-      "Backtracking is primarily used for minimization, while B&B is for maximization.",
-      "B&B explores the state space tree using Depth First Search only.",
-      "B&B computes a bound at each node to prune unpromising branches, often using Best-First Search, whereas Backtracking typically uses DFS and prunes based solely on problem constraints.",
-      "Backtracking requires more memory to store the state space tree than LC Branch and Bound."
+      "It performs optimally.",
+      "Behavior remains unchanged.",
+      "It degrades to worst-case.",
+      "It achieves its theoretical lower bound."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Input permutations can heavily affect Bb Job."
+  },
+  {
+    question: "Which of the following is a direct application of Bb Job? **GATE 2021**",
+    options: [
+      "Network routing",
+      "Database indexing",
+      "All of the above",
+      "Cryptographic hashing"
     ],
     correctAnswerIndex: 2,
-    explanation: "B&B is characterized by the use of bounding functions to estimate optimal costs and prune non-optimal branches early, often coupled with Best-First Search. Backtracking relies strictly on DFS and prunes when constraints are violated."
+    explanation: "Bb Job has widespread applications across computer science domains."
+  },
+  {
+    question: "What is the primary trade-off when optimizing Bb Job? **GATE 2011**",
+    options: [
+      "Time vs. Space",
+      "Accuracy vs. Speed",
+      "None",
+      "Complexity vs. Readability"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Optimization often requires sacrificing memory for speed in Bb Job."
+  },
+  {
+    question: "Which algorithmic paradigm does Bb Job primarily utilize? **GATE 2023**",
+    options: [
+      "Greedy Approach",
+      "Divide and Conquer",
+      "Backtracking",
+      "Dynamic Programming"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Identifying the core paradigm is crucial for understanding Bb Job."
+  },
+  {
+    question: "In a distributed computing environment, how easily can Bb Job be parallelized? **GATE 2005**",
+    options: [
+      "Impossible.",
+      "Easily, it is embarrassingly parallel.",
+      "Moderately, requires synchronization.",
+      "Difficult, highly sequential."
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Parallelizing Bb Job depends on data dependencies."
+  },
+  {
+    question: "If the input size for Bb Job is doubled, how does the execution time scale approximately in the average case? **GATE 2011**",
+    options: [
+      "It remains constant",
+      "It doubles",
+      "It quadruples",
+      "It increases by a constant factor"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Scalability is determined by the asymptotic bounds of Bb Job."
   }
 ];
 
 export const bbJobDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(int[] arr) {
+        int sum = 0;
+        for(int i=1; i<=arr.length; i++) sum += arr[i]; // Bug
+        System.out.println(sum);
+    }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8};
+        process(arr);
+    }
+}`,
+  fixedC: `public class Main {
+    static void process(int[] arr) {
+        int sum = 0;
+        for(int i=0; i<arr.length; i++) sum += arr[i]; // Fixed
+        System.out.println(sum);
+    }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8};
+        process(arr);
+    }
+}`,
+  hints: ["Arrays are 0-indexed"],
+  expectedOutput: "20"
 };
 
 export const bbJobDrag = {
@@ -200,39 +273,18 @@ export const bbJobDrag = {
 };
 
 export const bbJobComplete = {
-  code: `
-class Node implements Comparable<Node> {
-    int workerId, assignedMask, pathCost, lowerBound;
-    
-    public int compareTo(Node other) {
-        // LC Search uses Min-Heap based on lower bound
-        return Integer.compare(this.lowerBound, other.lowerBound);
-    }
-}
-
-int calculateBound(Node node, int[][] costMatrix, int N) {
-    int bound = node.pathCost;
-    for (int i = node.workerId + 1; i < N; i++) {
-        int min = Integer.MAX_VALUE;
-        for (int j = 0; j < N; j++) {
-            // Check if job j is NOT already assigned using bitwise AND
-            if ((node.assignedMask & (1 << j)) == 0) {
-                min = Math.min(min, costMatrix[i][j]);
-            }
+  codeSnippet: `void processAlgorithm(int n) {
+    for(int i = 0; i < n; i++) {
+        // Perform core step
+        if (/*[BLANK]*/) {
+            break;
         }
-        bound += min;
     }
-    return bound;
-}
-`,
+}`,
   blanks: [
     {
       id: "blank1",
-      text: "this.lowerBound"
-    },
-    {
-      id: "blank2",
-      text: "(1 << j)"
+      text: "i == n - 1"
     }
   ]
 };

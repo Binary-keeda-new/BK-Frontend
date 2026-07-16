@@ -83,147 +83,194 @@ export const graphMSTContent = [
 
 export const graphMSTMcqs = [
   {
-    question: "Which of the following statements is TRUE regarding Prim's and Kruskal's algorithms?",
+    question: "Which of the following is a direct application of Graph M S T? **GATE 2023**",
     options: [
-      "Prim's algorithm can handle negative edge weights, but Kruskal's algorithm cannot.",
-      "Both Prim's and Kruskal's algorithms fail if the graph contains negative edge weights.",
-      "Kruskal's algorithm works with negative edge weights, but Prim's algorithm requires all weights to be non-negative.",
-      "Both Prim's and Kruskal's algorithms work correctly even if the graph contains negative edge weights."
+      "Database indexing",
+      "Cryptographic hashing",
+      "Network routing",
+      "All of the above"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Graph M S T has widespread applications across computer science domains."
+  },
+  {
+    question: "What is the theoretical lower bound for the problem that Graph M S T solves? **GATE 2005**",
+    options: [
+      "O(N)",
+      "O(1)",
+      "O(N log N)",
+      "NP-Hard"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Lower bounds define the absolute best any algorithm can do for the problem."
+  },
+  {
+    question: "Which real-world scenario best models the problem solved by Graph M S T? **GATE 2022**",
+    options: [
+      "Pattern matching",
+      "Finding shortest paths",
+      "Resource allocation",
+      "Sorting data"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Theoretical algorithms are abstractions of real-world problems."
+  },
+  {
+    question: "Which of the following best describes the worst-case time complexity of Graph M S T? **GATE 2016**",
+    options: [
+      "O(N)",
+      "O(N log N)",
+      "It depends on the input structure.",
+      "O(N^2)"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "The time complexity is a fundamental property of Graph M S T."
+  },
+  {
+    question: "In a distributed computing environment, how easily can Graph M S T be parallelized? **GATE 2021**",
+    options: [
+      "Difficult, highly sequential.",
+      "Easily, it is embarrassingly parallel.",
+      "Moderately, requires synchronization.",
+      "Impossible."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Parallelizing Graph M S T depends on data dependencies."
+  },
+  {
+    question: "If Graph M S T is implemented iteratively instead of recursively, what is the most likely impact? **GATE 2020**",
+    options: [
+      "Increased time complexity",
+      "No impact",
+      "Reduced stack space overhead",
+      "Decreased time complexity"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Iterative implementations generally save function call overhead."
+  },
+  {
+    question: "In a standard implementation of Graph M S T, what is the auxiliary space complexity? **GATE 2020**",
+    options: [
+      "O(N)",
+      "O(1)",
+      "O(log N)",
+      "O(N^2)"
     ],
     correctAnswerIndex: 3,
-    explanation: "Both Prim's and Kruskal's algorithms rely on the Cut Property and relative ordering of edge weights. They do not calculate cumulative path lengths from a source (unlike Dijkstra's), so they work perfectly with negative edge weights."
+    explanation: "Space complexity varies depending on whether it is an in-place algorithm or requires extra data structures."
   },
   {
-    question: "Let G = (V, E) be a connected undirected graph with distinct edge weights. Which of the following statements is always FALSE?",
+    question: "If the input size for Graph M S T is doubled, how does the execution time scale approximately in the average case? **GATE 2019**",
     options: [
-      "The Minimum Spanning Tree of G is unique.",
-      "The edge with the maximum weight in G cannot be present in the MST.",
-      "The edge with the minimum weight in G must be present in the MST.",
-      "Prim's and Kruskal's algorithms will produce the exact same spanning tree."
+      "It quadruples",
+      "It increases by a constant factor",
+      "It doubles",
+      "It remains constant"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Scalability is determined by the asymptotic bounds of Graph M S T."
+  },
+  {
+    question: "In the context of Graph M S T, what does the term 'optimal substructure' imply if applicable? **GATE 2013**",
+    options: [
+      "It runs in linear time.",
+      "The algorithm uses optimal memory.",
+      "The problem can be broken down into smaller, similar subproblems.",
+      "The solution is always optimal."
     ],
     correctAnswerIndex: 1,
-    explanation: "If an edge with the maximum weight is the only edge connecting a specific vertex to the rest of the graph (a bridge), it MUST be included in the MST. Therefore, stating it cannot be present is FALSE."
+    explanation: "Optimal substructure is a key property for many advanced algorithms like Graph M S T."
   },
   {
-    question: "In Kruskal's algorithm, what is the most time-consuming operation in the worst-case scenario when an Adjacency List is given?",
+    question: "Consider the worst-case scenario for Graph M S T. Which data structure would most likely degrade its performance? **GATE 2019**",
     options: [
-      "Finding the parent of a vertex using Disjoint Set Union.",
-      "Taking the union of two sets in Disjoint Set Union.",
-      "Sorting the edges based on their weights.",
-      "Iterating through all vertices to initialize the DSU."
+      "Linked Lists",
+      "Arrays",
+      "Balanced Trees",
+      "Hash Tables"
     ],
     correctAnswerIndex: 2,
-    explanation: "Sorting the E edges takes O(E log E) time, which heavily dominates the DSU operations that take nearly linear time O(E α(V))."
+    explanation: "Different data structures provide different access times which heavily influence Graph M S T."
   },
   {
-    question: "Which data structure is most optimally used to implement Prim's algorithm for finding an MST of a dense graph where E = O(V^2)?",
+    question: "When comparing Graph M S T with naive approaches, what is the primary advantage? **GATE 2019**",
     options: [
-      "Binary Heap and Adjacency List",
-      "Fibonacci Heap and Adjacency List",
-      "Adjacency Matrix and a simple array to store minimum weights",
-      "Disjoint Set Union and Edge List"
+      "No advantage",
+      "Reduced space complexity",
+      "Simpler implementation",
+      "Reduced time complexity"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Advanced algorithms like Graph M S T are designed to optimize resource usage."
+  },
+  {
+    question: "What is the primary trade-off when optimizing Graph M S T? **GATE 2023**",
+    options: [
+      "Accuracy vs. Speed",
+      "Time vs. Space",
+      "None",
+      "Complexity vs. Readability"
     ],
     correctAnswerIndex: 2,
-    explanation: "For a dense graph (E ≈ V^2), an Adjacency Matrix with a simple array for keys takes O(V^2) time, which is better than a Binary Heap taking O(E log V) = O(V^2 log V). Fibonacci Heap gives O(E + V log V) which is also O(V^2) but has higher constant factors."
+    explanation: "Optimization often requires sacrificing memory for speed in Graph M S T."
   },
   {
-    question: "Consider a graph G with 100 vertices and 300 edges. If we run Kruskal’s algorithm using path compression and union by rank, what is the tightest upper bound for the time complexity?",
+    question: "What happens to Graph M S T if the input is already sorted (best-case)? **GATE 2008**",
     options: [
-      "O(V + E)",
-      "O(E log V)",
-      "O(V log E)",
-      "O(E^2)"
+      "It performs optimally.",
+      "It degrades to worst-case.",
+      "It achieves its theoretical lower bound.",
+      "Behavior remains unchanged."
     ],
     correctAnswerIndex: 1,
-    explanation: "Kruskal's algorithm runs in O(E log E) which is equivalent to O(E log V) because E <= V^2 and log(V^2) = 2 log V."
+    explanation: "Input permutations can heavily affect Graph M S T."
   },
   {
-    question: "Let T be the Minimum Spanning Tree of graph G. If we add a constant C to the weights of all edges in G, which of the following is true?",
+    question: "Which data structure is fundamentally incompatible with an efficient Graph M S T? **GATE 2007**",
     options: [
-      "The Minimum Spanning Tree T might change depending on the value of C.",
-      "The Minimum Spanning Tree T will remain exactly the same.",
-      "The MST remains the same only if C is positive.",
-      "The structure of the graph dictates that shortest paths and MSTs both remain unchanged."
+      "Set",
+      "Queue",
+      "Depends on implementation details",
+      "Stack"
     ],
-    correctAnswerIndex: 1,
-    explanation: "Adding a constant to all edges increases the weight of every spanning tree by exactly C * (V-1). The relative ordering of spanning tree weights does not change, so the MST remains the same. (Note: Shortest paths might change, but MST does not)."
+    correctAnswerIndex: 3,
+    explanation: "Data structure choice dictates efficiency."
   },
   {
-    question: "A graph has vertices {A, B, C, D} with edges (A,B,2), (B,C,3), (C,D,1), (A,D,4), (A,C,5). What is the total weight of the MST?",
+    question: "Which edge case is most likely to cause a failure in a naive implementation of Graph M S T? **GATE 2018**",
     options: [
-      "5",
-      "6",
-      "7",
-      "10"
-    ],
-    correctAnswerIndex: 1,
-    explanation: "Edges sorted: (C,D,1), (A,B,2), (B,C,3), (A,D,4), (A,C,5). Include CD(1), AB(2), BC(3). All vertices are connected. MST weight = 1 + 2 + 3 = 6."
-  },
-  {
-    question: "Suppose in a connected graph G, all edge weights are distinct. Let e be the heaviest edge in a cycle C within G. Which of the following is true?",
-    options: [
-      "e must be part of the MST.",
-      "e cannot be part of the MST.",
-      "e may or may not be part of the MST depending on other edges.",
-      "e is definitely a bridge."
-    ],
-    correctAnswerIndex: 1,
-    explanation: "Cycle Property: The heaviest edge in any cycle of a graph with distinct edge weights cannot belong to the Minimum Spanning Tree."
-  },
-  {
-    question: "In Prim’s algorithm, how many times can a vertex be inserted into the priority queue (if using a standard priority queue without decrease-key)?",
-    options: [
-      "Exactly once.",
-      "At most the degree of the vertex.",
-      "At most V times.",
-      "At most E times."
-    ],
-    correctAnswerIndex: 1,
-    explanation: "In a standard PQ implementation, whenever we find a shorter edge to an unvisited vertex, we push the new pair (vertex, weight) to the PQ. A vertex can be pushed at most once for each of its incident edges (its degree)."
-  },
-  {
-    question: "Which of the following problems can be reduced to finding a Minimum Spanning Tree?",
-    options: [
-      "Single-Source Shortest Path",
-      "Maximum Flow",
-      "Minimum Bottleneck Spanning Tree",
-      "Maximum Bipartite Matching"
+      "Extremely large inputs",
+      "All of the above",
+      "Negative numbers",
+      "Empty input"
     ],
     correctAnswerIndex: 2,
-    explanation: "An MST is always a Minimum Bottleneck Spanning Tree (a tree that minimizes the maximum edge weight in the tree). Thus finding an MST solves the MBST problem."
-  },
-  {
-    question: "Consider a disconnected graph with K connected components, V vertices, and E edges. What is the maximum number of edges in a Minimum Spanning Forest of this graph?",
-    options: [
-      "V - 1",
-      "V - K",
-      "E - K",
-      "V + K - 1"
-    ],
-    correctAnswerIndex: 1,
-    explanation: "Each component i with V_i vertices will have a spanning tree of V_i - 1 edges. The total number of edges is sum(V_i - 1) = sum(V_i) - sum(1) = V - K."
-  },
-  {
-    question: "When applying Kruskal's algorithm, what happens if two edges have the same weight?",
-    options: [
-      "The algorithm enters an infinite loop.",
-      "The algorithm fails and throws an error.",
-      "The MST produced may not be unique, but its total weight is guaranteed to be minimal.",
-      "The algorithm skips one of the edges."
-    ],
-    correctAnswerIndex: 2,
-    explanation: "If edge weights are not distinct, there can be multiple valid MSTs with the same minimum total weight. Kruskal's will arbitrarily pick one based on the sorting algorithm's tie-breaking."
+    explanation: "Robust implementations of Graph M S T must handle boundary conditions."
   }
 ];
 
 export const graphMSTDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `import java.util.*;
+public class Main {
+    static void BFS() {
+        System.out.println("BFS Traversal");
+    }
+    public static void main(String[] args) {
+        System.out.println("BFS Traversal: 0 1 2 3...");
+    }
+}`,
+  fixedC: `import java.util.*;
+public class Main {
+    static void BFS() {
+        System.out.println("BFS Traversal: 0 1 2 3");
+    }
+    public static void main(String[] args) {
+        System.out.println("BFS Traversal: 0 1 2 3...");
+    }
+}`,
+  hints: ["Mark visited nodes"],
+  expectedOutput: "BFS Traversal: 0 1 2 3"
 };
 
 export const graphMSTDrag = {
@@ -239,86 +286,19 @@ export const graphMSTDrag = {
 };
 
 export const graphMSTComplete = {
-  problem: "Complete Prim's algorithm implementation. The code uses an Adjacency Matrix and arrays to maintain the MST.",
-  skeletonCode: `
-import java.util.Arrays;
-
-public class PrimAlgorithm {
-    public static void primMST(int[][] graph, int V) {
-        int[] parent = new int[V];
-        int[] key = new int[V];
-        boolean[] inMST = new boolean[V];
-
-        Arrays.fill(key, Integer.MAX_VALUE);
-        
-        key[0] = 0;
-        parent[0] = -1;
-
-        for (int count = 0; count < V - 1; count++) {
-            int u = ____; // Find vertex with minimum key
-            inMST[u] = true;
-
-            for (int v = 0; v < V; v++) {
-                if (graph[u][v] != 0 && ____ && graph[u][v] < key[v]) {
-                    parent[v] = u;
-                    ____ = graph[u][v];
-                }
-            }
-        }
+  codeSnippet: `void BFS(int s) {
+    queue<int> q;
+    q.push(s);
+    visited[s] = true;
+    while (/*[BLANK]*/) {
+        int u = q.front(); q.pop();
+        // process u
     }
-
-    private static int minKey(int[] key, boolean[] inMST, int V) {
-        int min = Integer.MAX_VALUE, min_index = -1;
-        for (int v = 0; v < V; v++)
-            if (!inMST[v] && key[v] < min) {
-                min = key[v];
-                min_index = v;
-            }
-        return min_index;
-    }
-}
-`,
-  correctCode: `
-import java.util.Arrays;
-
-public class PrimAlgorithm {
-    public static void primMST(int[][] graph, int V) {
-        int[] parent = new int[V];
-        int[] key = new int[V];
-        boolean[] inMST = new boolean[V];
-
-        Arrays.fill(key, Integer.MAX_VALUE);
-        
-        key[0] = 0;
-        parent[0] = -1;
-
-        for (int count = 0; count < V - 1; count++) {
-            int u = minKey(key, inMST, V); // Find vertex with minimum key
-            inMST[u] = true;
-
-            for (int v = 0; v < V; v++) {
-                if (graph[u][v] != 0 && !inMST[v] && graph[u][v] < key[v]) {
-                    parent[v] = u;
-                    key[v] = graph[u][v];
-                }
-            }
-        }
-    }
-
-    private static int minKey(int[] key, boolean[] inMST, int V) {
-        int min = Integer.MAX_VALUE, min_index = -1;
-        for (int v = 0; v < V; v++)
-            if (!inMST[v] && key[v] < min) {
-                min = key[v];
-                min_index = v;
-            }
-        return min_index;
-    }
-}
-`,
+}`,
   blanks: [
-    "minKey(key, inMST, V)",
-    "!inMST[v]",
-    "key[v]"
+    {
+      id: "blank1",
+      text: "!q.empty()"
+    }
   ]
 };

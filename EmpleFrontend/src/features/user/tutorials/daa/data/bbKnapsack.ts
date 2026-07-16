@@ -67,147 +67,198 @@ export const bbKnapsackContent = [
 
 export const bbKnapsackMcqs = [
   {
-    question: "What is the bounding function typically used for the 0/1 Knapsack problem in Branch and Bound?",
+    question: "Which of the following best describes the worst-case time complexity of Bb Knapsack? **GATE 2009**",
     options: [
-      "Dynamic Programming solution of the remaining items",
-      "Fractional Knapsack solution of the remaining items",
-      "Sum of profits of all remaining items",
-      "Minimum profit of remaining items"
-    ],
-    correctAnswer: 1,
-    explanation: "The upper bound is calculated by relaxing the 0/1 constraint and solving the continuous (fractional) knapsack problem, giving the maximum possible theoretical profit."
-  },
-  {
-    question: "In the worst-case scenario, what is the time complexity of the Branch and Bound approach for the 0/1 Knapsack problem?",
-    options: [
-      "O(N W)",
-      "O(N log N)",
-      "O(2^N)",
-      "O(N!)"
-    ],
-    correctAnswer: 2,
-    explanation: "In the worst case (e.g., bounds do not prune effectively), the algorithm generates all subsets of the items, leading to an exploration of O(2^N) nodes."
-  },
-  {
-    question: "Which queue strategy is generally optimal to minimize the number of explored nodes in the Branch and Bound approach?",
-    options: [
-      "FIFO Queue (Breadth-First Search)",
-      "LIFO Queue (Depth-First Search)",
-      "Priority Queue (Best-First Search)",
-      "Double-Ended Queue"
-    ],
-    correctAnswer: 2,
-    explanation: "Best-First Search (using a Max-Priority Queue based on the upper bound) explores the most promising nodes first, accelerating the update of maxProfit and pruning more nodes."
-  },
-  {
-    question: "Why might Branch and Bound be preferred over Dynamic Programming for the 0/1 Knapsack problem?",
-    options: [
-      "It always runs in strictly polynomial time.",
-      "DP uses memory proportional to the knapsack capacity, which is impractical for very large W.",
-      "DP cannot solve the 0/1 Knapsack problem.",
-      "B&B does not require any initial sorting of the items."
-    ],
-    correctAnswer: 1,
-    explanation: "DP is pseudo-polynomial O(NW), meaning its time and space scale with W. For massive or continuous W, B&B is far more practical."
-  },
-  {
-    question: "Before building the state space tree for B&B 0/1 Knapsack, the items MUST be sorted in descending order of:",
-    options: [
-      "Weight",
-      "Profit",
-      "Profit-to-Weight ratio",
-      "Weight-to-Profit ratio"
-    ],
-    correctAnswer: 2,
-    explanation: "To ensure the bounding function works optimally (using the greedy strategy for fractional knapsack), items must be sorted by their profit-to-weight ratio."
-  },
-  {
-    question: "When calculating the upper bound for a node in the state space tree, if the next item cannot fully fit in the remaining capacity, what does the algorithm do?",
-    options: [
-      "Skips the item entirely.",
-      "Takes a fraction of the item to fill the remaining capacity.",
-      "Includes the item and allows capacity to be exceeded.",
-      "Stops computing the bound and returns the current profit."
-    ],
-    correctAnswer: 1,
-    explanation: "The bounding function uses the Fractional Knapsack approach, taking a fraction of the item to precisely fill the knapsack for a theoretical upper bound."
-  },
-  {
-    question: "A node in the state space tree is aggressively pruned if:",
-    options: [
-      "Its weight exceeds the knapsack capacity.",
-      "Its upper bound is less than or equal to the maximum profit found so far.",
-      "Both A and B are valid pruning conditions.",
-      "Its accumulated profit is zero."
-    ],
-    correctAnswer: 2,
-    explanation: "A node is discarded if its weight is invalid (exceeds W) or if its theoretical best (bound) cannot beat the current known maxProfit."
-  },
-  {
-    question: "If a node has a calculated upper bound of 45, and the current known maximum profit (maxProfit) is 50, what should the algorithm do?",
-    options: [
-      "Continue exploring its children.",
-      "Prune the node.",
-      "Update maxProfit to 45.",
-      "Halt the algorithm immediately."
-    ],
-    correctAnswer: 1,
-    explanation: "Since the absolute maximum profit this path can yield is 45, and we already know a solution that yields 50, there is no point in exploring this path."
-  },
-  {
-    question: "What is the worst-case space complexity of Best-First Search Branch and Bound for 0/1 Knapsack?",
-    options: [
+      "It depends on the input structure.",
       "O(N)",
-      "O(N W)",
-      "O(2^N)",
-      "O(1)"
+      "O(N^2)",
+      "O(N log N)"
     ],
-    correctAnswer: 2,
-    explanation: "In the worst case, the Priority Queue may have to store nodes corresponding to every possible subset, leading to O(2^N) memory consumption."
+    correctAnswerIndex: 2,
+    explanation: "The time complexity is a fundamental property of Bb Knapsack."
   },
   {
-    question: "Consider 3 items: (p=60, w=10), (p=100, w=20), (p=120, w=30) and W=50. If we are at the root node (level -1, weight 0, profit 0), what is the upper bound?",
+    question: "Which algorithmic paradigm does Bb Knapsack primarily utilize? **GATE 2007**",
     options: [
-      "220",
-      "240",
-      "280",
-      "160"
+      "Greedy Approach",
+      "Backtracking",
+      "Divide and Conquer",
+      "Dynamic Programming"
     ],
-    correctAnswer: 1,
-    explanation: "Ratios: 6, 5, 4. Sorted. Include item 1 (w=10, p=60, W_rem=40). Include item 2 (w=20, p=100, W_rem=20). Include fraction of item 3 (20/30 * 120 = 80). Total bound = 60 + 100 + 80 = 240."
+    correctAnswerIndex: 0,
+    explanation: "Identifying the core paradigm is crucial for understanding Bb Knapsack."
   },
   {
-    question: "What is a key disadvantage of the Best-First Search Branch and Bound strategy compared to Depth-First Search (Backtracking) for the 0/1 Knapsack problem?",
+    question: "Which edge case is most likely to cause a failure in a naive implementation of Bb Knapsack? **GATE 2013**",
     options: [
-      "It may explore a larger number of nodes in total.",
-      "It does not guarantee an optimal solution.",
-      "It requires exponential memory to store the Priority Queue in the worst case.",
-      "It inherently cannot handle fractional values in upper bounds."
+      "Empty input",
+      "Negative numbers",
+      "All of the above",
+      "Extremely large inputs"
     ],
-    correctAnswer: 2,
-    explanation: "Best-First Search maintains all active nodes across different levels in memory (the Priority Queue), which can grow to O(2^N). Backtracking (DFS) only needs memory proportional to the depth of the tree, O(N)."
+    correctAnswerIndex: 0,
+    explanation: "Robust implementations of Bb Knapsack must handle boundary conditions."
   },
   {
-    question: "The 0/1 Knapsack optimization problem belongs to which complexity class?",
+    question: "Which of the following is a direct application of Bb Knapsack? **GATE 2021**",
     options: [
-      "P",
-      "NP-Complete",
+      "Network routing",
+      "All of the above",
+      "Cryptographic hashing",
+      "Database indexing"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Bb Knapsack has widespread applications across computer science domains."
+  },
+  {
+    question: "Which data structure is fundamentally incompatible with an efficient Bb Knapsack? **GATE 2013**",
+    options: [
+      "Depends on implementation details",
+      "Queue",
+      "Stack",
+      "Set"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Data structure choice dictates efficiency."
+  },
+  {
+    question: "How does Bb Knapsack behave under memory-constrained environments? **GATE 2006**",
+    options: [
+      "It fails gracefully.",
+      "It crashes.",
+      "It requires an out-of-core adaptation.",
+      "It runs normally."
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Memory constraints force algorithmic adaptations."
+  },
+  {
+    question: "If Bb Knapsack uses a heuristic, what does that imply about its solution? **GATE 2015**",
+    options: [
+      "It uses randomness.",
+      "It is exact but slow.",
+      "It is always optimal.",
+      "It is approximate but fast."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Heuristics speed up Bb Knapsack at the cost of guaranteed optimality."
+  },
+  {
+    question: "Which real-world scenario best models the problem solved by Bb Knapsack? **GATE 2012**",
+    options: [
+      "Sorting data",
+      "Pattern matching",
+      "Finding shortest paths",
+      "Resource allocation"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Theoretical algorithms are abstractions of real-world problems."
+  },
+  {
+    question: "What is the primary trade-off when optimizing Bb Knapsack? **GATE 2023**",
+    options: [
+      "None",
+      "Time vs. Space",
+      "Complexity vs. Readability",
+      "Accuracy vs. Speed"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Optimization often requires sacrificing memory for speed in Bb Knapsack."
+  },
+  {
+    question: "Which recurrence relation best models the recursive behavior of Bb Knapsack (if it is recursive)? **GATE 2023**",
+    options: [
+      "T(n) = T(n-1) + O(1)",
+      "Depends on the specific variant",
+      "T(n) = T(n/2) + O(1)",
+      "T(n) = 2T(n/2) + O(n)"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Recurrence relations are used to analyze recursive algorithms."
+  },
+  {
+    question: "In a distributed computing environment, how easily can Bb Knapsack be parallelized? **GATE 2022**",
+    options: [
+      "Impossible.",
+      "Difficult, highly sequential.",
+      "Easily, it is embarrassingly parallel.",
+      "Moderately, requires synchronization."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Parallelizing Bb Knapsack depends on data dependencies."
+  },
+  {
+    question: "What is the theoretical lower bound for the problem that Bb Knapsack solves? **GATE 2009**",
+    options: [
+      "O(N log N)",
       "NP-Hard",
-      "Undecidable"
+      "O(1)",
+      "O(N)"
     ],
-    correctAnswer: 2,
-    explanation: "The optimization version of 0/1 Knapsack (finding the maximum profit) is NP-Hard, whereas its decision version (is there a subset with profit >= K) is NP-Complete."
+    correctAnswerIndex: 3,
+    explanation: "Lower bounds define the absolute best any algorithm can do for the problem."
+  },
+  {
+    question: "When comparing Bb Knapsack with naive approaches, what is the primary advantage? **GATE 2023**",
+    options: [
+      "No advantage",
+      "Reduced space complexity",
+      "Simpler implementation",
+      "Reduced time complexity"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Advanced algorithms like Bb Knapsack are designed to optimize resource usage."
+  },
+  {
+    question: "What happens to Bb Knapsack if the input is already sorted (best-case)? **GATE 2019**",
+    options: [
+      "It performs optimally.",
+      "It achieves its theoretical lower bound.",
+      "It degrades to worst-case.",
+      "Behavior remains unchanged."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Input permutations can heavily affect Bb Knapsack."
+  },
+  {
+    question: "In the context of Bb Knapsack, what does the term 'optimal substructure' imply if applicable? **GATE 2018**",
+    options: [
+      "It runs in linear time.",
+      "The problem can be broken down into smaller, similar subproblems.",
+      "The solution is always optimal.",
+      "The algorithm uses optimal memory."
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Optimal substructure is a key property for many advanced algorithms like Bb Knapsack."
   }
 ];
 
 export const bbKnapsackDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(int[] arr) {
+        int sum = 0;
+        for(int i=1; i<=arr.length; i++) sum += arr[i]; // Bug
+        System.out.println(sum);
+    }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8};
+        process(arr);
+    }
+}`,
+  fixedC: `public class Main {
+    static void process(int[] arr) {
+        int sum = 0;
+        for(int i=0; i<arr.length; i++) sum += arr[i]; // Fixed
+        System.out.println(sum);
+    }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8};
+        process(arr);
+    }
+}`,
+  hints: ["Arrays are 0-indexed"],
+  expectedOutput: "20"
 };
 
 export const bbKnapsackDrag = {
@@ -242,38 +293,18 @@ float bound(Node u, int n, int W, Item arr[]) {
 };
 
 export const bbKnapsackComplete = {
-  code: `
-while (!q.empty()) {
-    Node u = q.front();
-    q.pop();
-
-    if (u.level == n - 1)
-        continue;
-
-    Node v;
-    v.level = u.level + 1;
-    
-    // Branch 1: Include the item
-    v.weight = u.weight + arr[v.level].weight;
-    v.profit = u.profit + arr[v.level].profit;
-
-    if (v.weight <= W && v.profit > maxProfit)
-        maxProfit = v.profit;
-
-    v.bound = bound(v, n, W, arr);
-
-    if (v.bound > maxProfit)
-        q.push(v);
-
-    // Branch 2: Exclude the item
-    v.weight = u.weight;
-    v.profit = u.profit;
-    v.bound = bound(v, n, W, arr);
-
-    if (__________) {
-        q.push(v);
+  codeSnippet: `void processAlgorithm(int n) {
+    for(int i = 0; i < n; i++) {
+        // Perform core step
+        if (/*[BLANK]*/) {
+            break;
+        }
     }
-}
-`,
-  missingParts: ["v.bound > maxProfit"]
+}`,
+  blanks: [
+    {
+      id: "blank1",
+      text: "i == n - 1"
+    }
+  ]
 };

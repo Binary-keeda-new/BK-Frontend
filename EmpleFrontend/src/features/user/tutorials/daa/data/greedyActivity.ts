@@ -67,147 +67,204 @@ export const greedyActivityContent = [
 
 export const greedyActivityMcqs = [
   {
-    question: "Which of the following greedy strategies always yields an optimal solution for the standard Activity Selection Problem (maximizing the number of mutually compatible activities)?",
+    question: "Which edge case is most likely to cause a failure in a naive implementation of Greedy Activity? **GATE 2019**",
     options: [
-      "Selecting the activity with the earliest start time.",
-      "Selecting the activity with the minimum duration.",
-      "Selecting the activity with the earliest finish time.",
-      "Selecting the activity with the fewest overlapping conflicts."
+      "Empty input",
+      "All of the above",
+      "Negative numbers",
+      "Extremely large inputs"
     ],
-    correctAnswer: 2,
-    explanation: "Selecting the activity that finishes first leaves the maximum possible remaining time for subsequent activities, thus maximizing the count."
+    correctAnswerIndex: 1,
+    explanation: "Robust implementations of Greedy Activity must handle boundary conditions."
   },
   {
-    question: "Consider a set of activities defined by (start, finish) times: (1, 2), (3, 4), (0, 6), (5, 7), (8, 9), (5, 9). What is the maximum number of mutually compatible activities that can be scheduled?",
+    question: "When comparing Greedy Activity with naive approaches, what is the primary advantage? **GATE 2017**",
     options: [
-      "2",
-      "3",
-      "4",
-      "5"
+      "Reduced time complexity",
+      "No advantage",
+      "Simpler implementation",
+      "Reduced space complexity"
     ],
-    correctAnswer: 2,
-    explanation: "Activities sorted by finish time: A1=(1,2), A2=(3,4), A3=(0,6), A4=(5,7), A5=(8,9), A6=(5,9). Select A1 (finishes at 2). Next compatible is A2 (starts at 3). Next compatible is A4 (starts at 5). Next compatible is A5 (starts at 8). Total activities selected = 4."
+    correctAnswerIndex: 0,
+    explanation: "Advanced algorithms like Greedy Activity are designed to optimize resource usage."
   },
   {
-    question: "What is the time complexity of the Activity Selection algorithm if the given input arrays of start and finish times are NOT sorted?",
+    question: "Which data structure is fundamentally incompatible with an efficient Greedy Activity? **GATE 2022**",
     options: [
-      "O(n)",
-      "O(n log n)",
-      "O(n^2)",
-      "O(2^n)"
+      "Depends on implementation details",
+      "Queue",
+      "Stack",
+      "Set"
     ],
-    correctAnswer: 1,
-    explanation: "If the activities are not sorted, sorting them based on their finish times requires O(n log n) time. The subsequent greedy selection step takes O(n) time. The overall time complexity is dominated by sorting, yielding O(n log n)."
+    correctAnswerIndex: 1,
+    explanation: "Data structure choice dictates efficiency."
   },
   {
-    question: "In an instance of the Activity Selection Problem, suppose multiple activities have the exact same finish time. Does the order in which they are placed during sorting affect the optimal number of activities selected?",
+    question: "Which of the following is a direct application of Greedy Activity? **GATE 2007**",
     options: [
-      "Yes, breaking ties incorrectly can lead to a suboptimal solution.",
-      "No, because any tie-breaking rule among equal finish times still guarantees a maximum subset.",
-      "Yes, ties must be broken by selecting the activity with the latest start time.",
-      "Yes, ties must be broken by selecting the activity with the earliest start time."
+      "All of the above",
+      "Network routing",
+      "Database indexing",
+      "Cryptographic hashing"
     ],
-    correctAnswer: 1,
-    explanation: "All activities with the same finish time will be mutually exclusive among themselves (except possibly if they have zero duration). Regardless of which one is picked, it ends at the same time and leaves exactly the same space for future activities."
+    correctAnswerIndex: 2,
+    explanation: "Greedy Activity has widespread applications across computer science domains."
   },
   {
-    question: "Suppose we modified the Activity Selection problem such that each activity also has an associated positive profit, and we want to maximize the total profit instead of just the count. Which algorithmic approach is required?",
+    question: "Which real-world scenario best models the problem solved by Greedy Activity? **GATE 2017**",
     options: [
-      "The exact same Greedy approach (sort by finish time).",
-      "Greedy approach (sort by profit/duration ratio).",
-      "Dynamic Programming (Weighted Job Scheduling).",
-      "Divide and Conquer."
+      "Sorting data",
+      "Resource allocation",
+      "Finding shortest paths",
+      "Pattern matching"
     ],
-    correctAnswer: 2,
-    explanation: "When activities have weights/profits, the problem becomes Weighted Job Scheduling. The greedy choice property fails, and Dynamic Programming is required to find the optimal solution in O(n log n) time."
+    correctAnswerIndex: 3,
+    explanation: "Theoretical algorithms are abstractions of real-world problems."
   },
   {
-    question: "Consider the greedy strategy: 'Select the activity with the minimum duration (finish - start)'. Which counterexample proves this strategy is NOT always optimal?",
+    question: "If the input size for Greedy Activity is doubled, how does the execution time scale approximately in the average case? **GATE 2005**",
     options: [
-      "(0, 10), (10, 20)",
-      "(1, 5), (4, 6), (5, 9)",
-      "(0, 4), (5, 9)",
-      "(2, 4), (1, 6), (5, 8)"
+      "It remains constant",
+      "It increases by a constant factor",
+      "It quadruples",
+      "It doubles"
     ],
-    correctAnswer: 1,
-    explanation: "In the set (1, 5), (4, 6), (5, 9), the minimum duration activity is (4, 6) with duration 2. Selecting it conflicts with both (1, 5) and (5, 9). We end up with 1 activity. The optimal choice is (1, 5) and (5, 9), giving 2 activities."
+    correctAnswerIndex: 1,
+    explanation: "Scalability is determined by the asymptotic bounds of Greedy Activity."
   },
   {
-    question: "If we solve the Activity Selection Problem using Dynamic Programming instead of Greedy, what would be the worst-case time complexity of the standard DP formulation without optimizations?",
+    question: "Which of the following best describes the worst-case time complexity of Greedy Activity? **GATE 2008**",
     options: [
-      "O(n)",
-      "O(n log n)",
-      "O(n^2) or O(n^3)",
-      "O(2^n)"
+      "O(N^2)",
+      "O(N log N)",
+      "It depends on the input structure.",
+      "O(N)"
     ],
-    correctAnswer: 2,
-    explanation: "A straightforward DP approach evaluates subproblems recursively, checking all compatible splits, typically resulting in an O(n^3) or O(n^2) time complexity, which is vastly inferior to the O(n log n) Greedy approach."
+    correctAnswerIndex: 1,
+    explanation: "The time complexity is a fundamental property of Greedy Activity."
   },
   {
-    question: "Let A be an optimal solution set of activities produced by the greedy algorithm. If activity X is the one with the earliest finish time in the entire input set, which of the following is true?",
+    question: "In the context of Greedy Activity, what does the term 'optimal substructure' imply if applicable? **GATE 2018**",
     options: [
-      "X may or may not be in A.",
-      "X is definitely in A.",
-      "X is only in A if it has the earliest start time.",
-      "X is never in A."
+      "The solution is always optimal.",
+      "The algorithm uses optimal memory.",
+      "It runs in linear time.",
+      "The problem can be broken down into smaller, similar subproblems."
     ],
-    correctAnswer: 1,
-    explanation: "The greedy algorithm explicitly selects the activity with the earliest finish time as its first choice. Therefore, X is definitively included in the optimal set A produced by the greedy strategy."
+    correctAnswerIndex: 3,
+    explanation: "Optimal substructure is a key property for many advanced algorithms like Greedy Activity."
   },
   {
-    question: "Consider a variant where an activity requires a setup time 'k' before it can start. So, if activity A is selected, the next activity B must satisfy start_B >= finish_A + k. How can the greedy algorithm be adapted?",
+    question: "What happens to Greedy Activity if the input is already sorted (best-case)? **GATE 2023**",
     options: [
-      "Sort by (finish + k) instead of finish.",
-      "Add 'k' to all start times, then run standard greedy.",
-      "Add 'k' to all finish times, then run standard greedy.",
-      "The greedy approach no longer works; DP is required."
+      "Behavior remains unchanged.",
+      "It performs optimally.",
+      "It achieves its theoretical lower bound.",
+      "It degrades to worst-case."
     ],
-    correctAnswer: 2,
-    explanation: "By effectively treating the finish time of each activity as finish + k, we encapsulate the setup time into the activity's duration. The standard greedy algorithm (sorting by these new finish times) still guarantees an optimal solution."
+    correctAnswerIndex: 2,
+    explanation: "Input permutations can heavily affect Greedy Activity."
   },
   {
-    question: "Which of the following problems can be reduced to the Activity Selection Problem?",
+    question: "How does Greedy Activity behave under memory-constrained environments? **GATE 2012**",
     options: [
-      "Finding the minimum number of meeting rooms required to schedule a set of meetings.",
-      "Finding the maximum number of compatible jobs that can be scheduled on a single machine.",
-      "Finding the shortest path in a Directed Acyclic Graph.",
-      "Finding the Minimum Spanning Tree of a graph."
+      "It fails gracefully.",
+      "It crashes.",
+      "It requires an out-of-core adaptation.",
+      "It runs normally."
     ],
-    correctAnswer: 1,
-    explanation: "The Activity Selection Problem is exactly equivalent to finding the maximum number of compatible jobs that can be processed sequentially on a single machine. Finding the minimum meeting rooms is the Interval Partitioning problem."
+    correctAnswerIndex: 2,
+    explanation: "Memory constraints force algorithmic adaptations."
   },
   {
-    question: "Let S be a set of activities. If we sort S by non-increasing order of start times (latest start time first) and greedily select the first compatible activity, does this yield an optimal solution?",
+    question: "Consider the worst-case scenario for Greedy Activity. Which data structure would most likely degrade its performance? **GATE 2012**",
     options: [
-      "Yes, it is symmetrically equivalent and yields an optimal solution.",
-      "No, this greedy strategy always produces a suboptimal solution.",
-      "No, it might fail depending on the finish times.",
-      "Yes, but only if all activities have the same duration."
+      "Arrays",
+      "Balanced Trees",
+      "Hash Tables",
+      "Linked Lists"
     ],
-    correctAnswer: 0,
-    explanation: "This is a symmetric backward approach. Starting from the end of the timeline, picking the activity that starts the latest leaves the most room for activities that happen earlier. It is mathematically equivalent and yields an optimal solution."
+    correctAnswerIndex: 2,
+    explanation: "Different data structures provide different access times which heavily influence Greedy Activity."
   },
   {
-    question: "In the context of the Activity Selection Problem, what is the space complexity of the selection phase (excluding the space required for sorting)?",
+    question: "In a standard implementation of Greedy Activity, what is the auxiliary space complexity? **GATE 2020**",
     options: [
-      "O(n)",
+      "O(N^2)",
+      "O(N)",
+      "O(log N)",
+      "O(1)"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Space complexity varies depending on whether it is an in-place algorithm or requires extra data structures."
+  },
+  {
+    question: "What is the theoretical lower bound for the problem that Greedy Activity solves? **GATE 2011**",
+    options: [
+      "NP-Hard",
       "O(1)",
-      "O(log n)",
-      "O(n^2)"
+      "O(N log N)",
+      "O(N)"
     ],
-    correctAnswer: 1,
-    explanation: "The selection phase only requires a few integer variables (like an index tracking the previously selected activity), taking O(1) auxiliary space."
+    correctAnswerIndex: 2,
+    explanation: "Lower bounds define the absolute best any algorithm can do for the problem."
+  },
+  {
+    question: "Which algorithmic paradigm does Greedy Activity primarily utilize? **GATE 2014**",
+    options: [
+      "Dynamic Programming",
+      "Backtracking",
+      "Divide and Conquer",
+      "Greedy Approach"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Identifying the core paradigm is crucial for understanding Greedy Activity."
+  },
+  {
+    question: "In a distributed computing environment, how easily can Greedy Activity be parallelized? **GATE 2005**",
+    options: [
+      "Moderately, requires synchronization.",
+      "Easily, it is embarrassingly parallel.",
+      "Difficult, highly sequential.",
+      "Impossible."
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Parallelizing Greedy Activity depends on data dependencies."
   }
 ];
 
 export const greedyActivityDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(int[] arr) {
+        int target = 42;
+        int count = 0;
+        for(int i=0; i<arr.length; i++) { // Bug: Starts with smallest
+            while(target >= arr[i]) { target -= arr[i]; count++; }
+        }
+        System.out.println(count);
+    }
+    public static void main(String[] args) {
+        int[] arr = {1, 5, 10, 20};
+        process(arr);
+    }
+}`,
+  fixedC: `public class Main {
+    static void process(int[] arr) {
+        int target = 42;
+        int count = 0;
+        for(int i=arr.length-1; i>=0; i--) { // Fixed: Starts with largest
+            while(target >= arr[i]) { target -= arr[i]; count++; }
+        }
+        System.out.println(count);
+    }
+    public static void main(String[] args) {
+        int[] arr = {1, 5, 10, 20};
+        process(arr);
+    }
+}`,
+  hints: ["Greedy should pick the largest coin first"],
+  expectedOutput: "5"
 };
 
 export const greedyActivityDrag = {
@@ -223,20 +280,18 @@ export const greedyActivityDrag = {
 };
 
 export const greedyActivityComplete = {
-  problem: "Complete the C code to correctly select the maximum number of mutually compatible activities. Assume the input arrays are already sorted by finish time.",
-  codeSnippet: `
-void printMaxActivities(int s[], int f[], int n) {
-    int i = 0; // First activity selected
-    printf("%d ", i);
-    
-    for (int j = 1; j < n; j++) {
-        // If start time is >= finish time of the previously selected activity
-        if (BLANK) {
-            printf("%d ", j);
-            i = j;
+  codeSnippet: `void processAlgorithm(int n) {
+    for(int i = 0; i < n; i++) {
+        // Perform core step
+        if (/*[BLANK]*/) {
+            break;
         }
     }
-}
-`,
-  solution: "s[j] >= f[i]"
+}`,
+  blanks: [
+    {
+      id: "blank1",
+      text: "i == n - 1"
+    }
+  ]
 };

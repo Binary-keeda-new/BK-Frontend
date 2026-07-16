@@ -214,7 +214,8 @@ export const module1Drag: DragExercise = {
 
 export const module1Complete: CompleteExercise = {
   instruction: "Fill in the blanks to complete the definition of asymptotic notations.",
-  template: "Big O defines the BLANK_1 bound, Big Omega defines the BLANK_2 bound, and Big Theta defines the BLANK_3 bound.",
+  template: "Big O defines the /*[BLANK]*/ bound, Big Omega defines the /*[BLANK]*/ bound, and Big Theta defines the /*[BLANK]*/ bound.",
   blanks: ["upper", "lower", "tight"],
   answer: "Big O defines the upper bound, Big Omega defines the lower bound, and Big Theta defines the tight bound."
 };
+

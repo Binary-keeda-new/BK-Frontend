@@ -255,4 +255,16 @@ export const chapter02_MCQ = [
   }
 ];
 
-export const chapter02_COMPLETE_EXERCISES = [];
+export const chapter02_COMPLETE_EXERCISES = [
+  {
+    template: `public class Main {
+    public static void main(String[] args) {
+        ___ number = 10;
+        System.out.println(number);
+    }
+}`,
+    blanks: [
+      "int"
+    ]
+  }
+];

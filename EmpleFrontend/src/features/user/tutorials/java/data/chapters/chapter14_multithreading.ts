@@ -245,4 +245,15 @@ export const chapter14_MCQ = [
   }
 ];
 
-export const chapter14_COMPLETE_EXERCISES = [];
+export const chapter14_COMPLETE_EXERCISES = [
+  {
+    template: `class MyThread extends ___ {
+    public void run() {
+        System.out.println("Thread is running");
+    }
+}`,
+    blanks: [
+      "Thread"
+    ]
+  }
+];

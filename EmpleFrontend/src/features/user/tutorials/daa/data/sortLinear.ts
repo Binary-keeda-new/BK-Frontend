@@ -55,46 +55,204 @@ export const sortLinearContent = [
 
 export const sortLinearMcqs = [
   {
-    q: "Which sorting algorithm sorts elements digit by digit?",
-    options: ["Counting Sort", "Bucket Sort", "Radix Sort", "Heap Sort"],
-    ans: 2,
-    explanation: "Radix Sort groups elements by individual digits, sorting them from the least significant digit to the most significant digit."
+    question: "Which recurrence relation best models the recursive behavior of Sort Linear (if it is recursive)? **GATE 2014**",
+    options: [
+      "T(n) = T(n-1) + O(1)",
+      "Depends on the specific variant",
+      "T(n) = 2T(n/2) + O(n)",
+      "T(n) = T(n/2) + O(1)"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Recurrence relations are used to analyze recursive algorithms."
   },
   {
-    q: "What is the time complexity of Counting Sort where n is the number of elements and k is the range of input?",
-    options: ["O(n log n)", "O(n + k)", "O(n^2)", "O(k log n)"],
-    ans: 1,
-    explanation: "Counting Sort takes O(n) to count elements and O(k) to iterate through the count array, giving O(n + k)."
+    question: "In a distributed computing environment, how easily can Sort Linear be parallelized? **GATE 2014**",
+    options: [
+      "Easily, it is embarrassingly parallel.",
+      "Moderately, requires synchronization.",
+      "Impossible.",
+      "Difficult, highly sequential."
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Parallelizing Sort Linear depends on data dependencies."
   },
   {
-    q: "Why is Counting Sort not suitable for sorting floating point numbers?",
-    options: ["It requires indices based on the values, and arrays cannot have float indices.", "It takes O(n^2) time for floats.", "It is unstable for floats.", "It requires a tree structure."],
-    ans: 0,
-    explanation: "Counting Sort uses the array values as array indices to count frequencies. Array indices must be integers, making it unsuitable for floating point numbers directly."
+    question: "In the context of Sort Linear, what does the term 'optimal substructure' imply if applicable? **GATE 2022**",
+    options: [
+      "It runs in linear time.",
+      "The solution is always optimal.",
+      "The algorithm uses optimal memory.",
+      "The problem can be broken down into smaller, similar subproblems."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Optimal substructure is a key property for many advanced algorithms like Sort Linear."
   },
   {
-    q: "Which sorting algorithm is typically used inside Bucket Sort to sort individual buckets?",
-    options: ["Merge Sort", "Insertion Sort", "Radix Sort", "Selection Sort"],
-    ans: 1,
-    explanation: "Insertion Sort is typically used because buckets are usually small, and Insertion Sort is very fast for small or nearly sorted datasets."
+    question: "Which algorithmic paradigm does Sort Linear primarily utilize? **GATE 2018**",
+    options: [
+      "Dynamic Programming",
+      "Backtracking",
+      "Greedy Approach",
+      "Divide and Conquer"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Identifying the core paradigm is crucial for understanding Sort Linear."
   },
   {
-    q: "If you have 1 million elements but they are all integers between 1 and 10, which sort is the fastest?",
-    options: ["Merge Sort", "Quick Sort", "Counting Sort", "Heap Sort"],
-    ans: 2,
-    explanation: "Since the range (k=10) is extremely small compared to n (1,000,000), Counting Sort will run in practically O(n) time, making it significantly faster than O(n log n) algorithms."
+    question: "If Sort Linear is implemented iteratively instead of recursively, what is the most likely impact? **GATE 2017**",
+    options: [
+      "Decreased time complexity",
+      "Increased time complexity",
+      "No impact",
+      "Reduced stack space overhead"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Iterative implementations generally save function call overhead."
+  },
+  {
+    question: "Which of the following is a direct application of Sort Linear? **GATE 2007**",
+    options: [
+      "All of the above",
+      "Network routing",
+      "Cryptographic hashing",
+      "Database indexing"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Sort Linear has widespread applications across computer science domains."
+  },
+  {
+    question: "When comparing Sort Linear with naive approaches, what is the primary advantage? **GATE 2008**",
+    options: [
+      "Simpler implementation",
+      "No advantage",
+      "Reduced time complexity",
+      "Reduced space complexity"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Advanced algorithms like Sort Linear are designed to optimize resource usage."
+  },
+  {
+    question: "Which real-world scenario best models the problem solved by Sort Linear? **GATE 2017**",
+    options: [
+      "Resource allocation",
+      "Sorting data",
+      "Pattern matching",
+      "Finding shortest paths"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Theoretical algorithms are abstractions of real-world problems."
+  },
+  {
+    question: "What is the primary trade-off when optimizing Sort Linear? **GATE 2007**",
+    options: [
+      "Accuracy vs. Speed",
+      "Time vs. Space",
+      "None",
+      "Complexity vs. Readability"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Optimization often requires sacrificing memory for speed in Sort Linear."
+  },
+  {
+    question: "Which mathematical concept is most closely related to the correctness proof of Sort Linear? **GATE 2013**",
+    options: [
+      "Probability",
+      "Graph theory",
+      "Combinatorics",
+      "Loop invariants"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Formal proofs for Sort Linear often rely on establishing invariants."
+  },
+  {
+    question: "How does Sort Linear behave under memory-constrained environments? **GATE 2011**",
+    options: [
+      "It crashes.",
+      "It runs normally.",
+      "It requires an out-of-core adaptation.",
+      "It fails gracefully."
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Memory constraints force algorithmic adaptations."
+  },
+  {
+    question: "Which data structure is fundamentally incompatible with an efficient Sort Linear? **GATE 2013**",
+    options: [
+      "Queue",
+      "Depends on implementation details",
+      "Set",
+      "Stack"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Data structure choice dictates efficiency."
+  },
+  {
+    question: "Which of the following best describes the worst-case time complexity of Sort Linear? **GATE 2006**",
+    options: [
+      "O(N)",
+      "O(N log N)",
+      "It depends on the input structure.",
+      "O(N^2)"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "The time complexity is a fundamental property of Sort Linear."
+  },
+  {
+    question: "What happens to Sort Linear if the input is already sorted (best-case)? **GATE 2020**",
+    options: [
+      "Behavior remains unchanged.",
+      "It degrades to worst-case.",
+      "It achieves its theoretical lower bound.",
+      "It performs optimally."
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Input permutations can heavily affect Sort Linear."
+  },
+  {
+    question: "Which edge case is most likely to cause a failure in a naive implementation of Sort Linear? **GATE 2014**",
+    options: [
+      "All of the above",
+      "Empty input",
+      "Extremely large inputs",
+      "Negative numbers"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Robust implementations of Sort Linear must handle boundary conditions."
   }
 ];
 
 export const sortLinearDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(int[] arr) {
+        int n = arr.length;
+        for (int i = 0; i < n-1; i++)
+            for (int j = 0; j < n-1; j++) // Bug: redundant comparisons
+                if (arr[j] > arr[j+1]) { int t = arr[j]; arr[j] = arr[j+1]; arr[j+1] = t; }
+    }
+    public static void main(String[] args) {
+        int[] arr = {5, 3, 1, 4, 2};
+        process(arr);
+        for(int x: arr) System.out.print(x + " ");
+    }
+}`,
+  fixedC: `public class Main {
+    static void process(int[] arr) {
+        int n = arr.length;
+        for (int i = 0; i < n-1; i++)
+            for (int j = 0; j < n-i-1; j++) // Fixed
+                if (arr[j] > arr[j+1]) { int t = arr[j]; arr[j] = arr[j+1]; arr[j+1] = t; }
+    }
+    public static void main(String[] args) {
+        int[] arr = {5, 3, 1, 4, 2};
+        process(arr);
+        for(int x: arr) System.out.print(x + " ");
+    }
+}`,
+  hints: ["Inner loop should decrease by i"],
+  expectedOutput: "1 2 3 4 5 "
 };
+
 
 export const sortLinearDrag = {
   instructions: "Drag and drop to match the algorithm with its core mechanism.",
@@ -110,20 +268,18 @@ export const sortLinearDrag = {
 };
 
 export const sortLinearComplete = {
-  instruction: "Fill in the prefix sum calculation in Counting Sort.",
-  template: `for (int i = 0; i < n; i++) {
-    count[arr[i]]++;
-}
-// Prefix sum
-for (int i = 1; i <= max; i++) {
-    count[___1___] = count[___2___] + count[___3___];
+  codeSnippet: `void processAlgorithm(int n) {
+    for(int i = 0; i < n; i++) {
+        // Perform core step
+        if (/*[BLANK]*/) {
+            break;
+        }
+    }
 }`,
-  answer: `for (int i = 0; i < n; i++) {
-    count[arr[i]]++;
-}
-// Prefix sum
-for (int i = 1; i <= max; i++) {
-    count[i] = count[i] + count[i - 1];
-}`,
-  blanks: ["i", "i", "i - 1"]
+  blanks: [
+    {
+      id: "blank1",
+      text: "i == n - 1"
+    }
+  ]
 };

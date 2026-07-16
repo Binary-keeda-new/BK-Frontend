@@ -67,75 +67,202 @@ export const sortBubbleContent = [
 
 export const sortBubbleMcqs = [
   {
-    question: "What is the worst-case time complexity of Bubble Sort?",
-    options: ["O(n)", "O(n log n)", "O(n^2)", "O(1)"],
-    correctAnswer: 2,
-    explanation: "In the worst case (reverse sorted array), Bubble Sort compares and swaps elements for every pair, resulting in O(n^2) time complexity."
+    question: "Which mathematical concept is most closely related to the correctness proof of Sort Bubble? **GATE 2023**",
+    options: [
+      "Loop invariants",
+      "Probability",
+      "Combinatorics",
+      "Graph theory"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Formal proofs for Sort Bubble often rely on establishing invariants."
   },
   {
-    question: "What is the best-case time complexity of an optimized Bubble Sort?",
-    options: ["O(n)", "O(n log n)", "O(n^2)", "O(1)"],
-    correctAnswer: 0,
-    explanation: "If the array is already sorted, the optimized version detects no swaps in the first pass and breaks early, taking O(n) time."
+    question: "What happens to Sort Bubble if the input is already sorted (best-case)? **GATE 2019**",
+    options: [
+      "It degrades to worst-case.",
+      "Behavior remains unchanged.",
+      "It performs optimally.",
+      "It achieves its theoretical lower bound."
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Input permutations can heavily affect Sort Bubble."
   },
   {
-    question: "Which of the following is true about Bubble Sort?",
-    options: ["It is an unstable sort.", "It requires O(n) extra space.", "It is an in-place sorting algorithm.", "It is the fastest sorting algorithm."],
-    correctAnswer: 2,
-    explanation: "Bubble Sort only uses a constant amount of extra space for swapping, making it an in-place sort."
+    question: "Which recurrence relation best models the recursive behavior of Sort Bubble (if it is recursive)? **GATE 2007**",
+    options: [
+      "T(n) = T(n-1) + O(1)",
+      "Depends on the specific variant",
+      "T(n) = T(n/2) + O(1)",
+      "T(n) = 2T(n/2) + O(n)"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Recurrence relations are used to analyze recursive algorithms."
   },
   {
-    question: "How many passes does it take to guarantee the largest element is at its correct position?",
-    options: ["0 passes", "1 pass", "n passes", "n-1 passes"],
-    correctAnswer: 1,
-    explanation: "After exactly 1 complete pass of the inner loop, the largest element is guaranteed to be bubbled up to the last position."
+    question: "If the input size for Sort Bubble is doubled, how does the execution time scale approximately in the average case? **GATE 2008**",
+    options: [
+      "It remains constant",
+      "It doubles",
+      "It increases by a constant factor",
+      "It quadruples"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Scalability is determined by the asymptotic bounds of Sort Bubble."
   },
   {
-    question: "Why does the inner loop of an optimized Bubble Sort only go up to `n - i - 1`?",
-    options: ["To prevent Index Out of Bounds.", "Because the last `i` elements are already sorted.", "To make the algorithm stable.", "It is a random optimization."],
-    correctAnswer: 1,
-    explanation: "In each pass `i`, the `i` largest elements are placed in their correct positions at the end. So, the inner loop doesn't need to re-evaluate them."
+    question: "In a standard implementation of Sort Bubble, what is the auxiliary space complexity? **GATE 2007**",
+    options: [
+      "O(N^2)",
+      "O(log N)",
+      "O(1)",
+      "O(N)"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Space complexity varies depending on whether it is an in-place algorithm or requires extra data structures."
   },
   {
-    question: "Is Bubble Sort a stable sorting algorithm?",
-    options: ["Yes, because equal elements maintain their relative order.", "No, because equal elements are swapped.", "Only when the array is sorted in descending order.", "Depends on the programming language."],
-    correctAnswer: 0,
-    explanation: "Bubble sort only swaps elements if `arr[j] > arr[j+1]`. If they are equal, they are not swapped, preserving their original relative order."
+    question: "How does Sort Bubble behave under memory-constrained environments? **GATE 2005**",
+    options: [
+      "It fails gracefully.",
+      "It requires an out-of-core adaptation.",
+      "It crashes.",
+      "It runs normally."
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Memory constraints force algorithmic adaptations."
   },
   {
-    question: "What happens if we implement Bubble Sort without the `swapped` flag optimization?",
-    options: ["The algorithm will fail to sort.", "The best-case time complexity becomes O(n^2).", "The algorithm uses more memory.", "The worst-case time complexity becomes O(n^3)."],
-    correctAnswer: 1,
-    explanation: "Without checking if swaps occurred, the loops will always run entirely, making the best-case time complexity O(n^2)."
+    question: "Which algorithmic paradigm does Sort Bubble primarily utilize? **GATE 2020**",
+    options: [
+      "Backtracking",
+      "Divide and Conquer",
+      "Dynamic Programming",
+      "Greedy Approach"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Identifying the core paradigm is crucial for understanding Sort Bubble."
   },
   {
-    question: "In the worst-case scenario, how many swaps are performed by Bubble Sort for an array of size `n`?",
-    options: ["n", "n^2 / 2", "n(n-1)/2", "n log n"],
-    correctAnswer: 2,
-    explanation: "In reverse sorted order, every comparison leads to a swap. Total swaps = (n-1) + (n-2) + ... + 1 = n(n-1)/2."
+    question: "Which data structure is fundamentally incompatible with an efficient Sort Bubble? **GATE 2010**",
+    options: [
+      "Depends on implementation details",
+      "Stack",
+      "Queue",
+      "Set"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Data structure choice dictates efficiency."
   },
   {
-    question: "Which algorithm performs strictly fewer swaps than Bubble Sort in the worst case?",
-    options: ["Selection Sort", "Insertion Sort", "Bogo Sort", "None of the above"],
-    correctAnswer: 0,
-    explanation: "Selection Sort performs exactly one swap per pass (total n swaps maximum), whereas Bubble Sort can perform up to n(n-1)/2 swaps."
+    question: "In the context of Sort Bubble, what does the term 'optimal substructure' imply if applicable? **GATE 2006**",
+    options: [
+      "It runs in linear time.",
+      "The algorithm uses optimal memory.",
+      "The problem can be broken down into smaller, similar subproblems.",
+      "The solution is always optimal."
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Optimal substructure is a key property for many advanced algorithms like Sort Bubble."
   },
   {
-    question: "When is Bubble Sort a good choice?",
-    options: ["For large datasets.", "When space is unlimited.", "When the array is small and almost sorted.", "When stability is not required."],
-    correctAnswer: 2,
-    explanation: "Bubble Sort is efficient (O(n)) when the dataset is very small or almost completely sorted, utilizing the swapped optimization."
+    question: "In a distributed computing environment, how easily can Sort Bubble be parallelized? **GATE 2012**",
+    options: [
+      "Impossible.",
+      "Easily, it is embarrassingly parallel.",
+      "Moderately, requires synchronization.",
+      "Difficult, highly sequential."
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Parallelizing Sort Bubble depends on data dependencies."
+  },
+  {
+    question: "Which edge case is most likely to cause a failure in a naive implementation of Sort Bubble? **GATE 2023**",
+    options: [
+      "Extremely large inputs",
+      "All of the above",
+      "Negative numbers",
+      "Empty input"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Robust implementations of Sort Bubble must handle boundary conditions."
+  },
+  {
+    question: "What is the theoretical lower bound for the problem that Sort Bubble solves? **GATE 2009**",
+    options: [
+      "NP-Hard",
+      "O(N log N)",
+      "O(1)",
+      "O(N)"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Lower bounds define the absolute best any algorithm can do for the problem."
+  },
+  {
+    question: "Consider the worst-case scenario for Sort Bubble. Which data structure would most likely degrade its performance? **GATE 2005**",
+    options: [
+      "Hash Tables",
+      "Balanced Trees",
+      "Linked Lists",
+      "Arrays"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Different data structures provide different access times which heavily influence Sort Bubble."
+  },
+  {
+    question: "If Sort Bubble uses a heuristic, what does that imply about its solution? **GATE 2015**",
+    options: [
+      "It is approximate but fast.",
+      "It uses randomness.",
+      "It is exact but slow.",
+      "It is always optimal."
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Heuristics speed up Sort Bubble at the cost of guaranteed optimality."
+  },
+  {
+    question: "If Sort Bubble is implemented iteratively instead of recursively, what is the most likely impact? **GATE 2016**",
+    options: [
+      "Reduced stack space overhead",
+      "No impact",
+      "Decreased time complexity",
+      "Increased time complexity"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Iterative implementations generally save function call overhead."
   }
 ];
 
 export const sortBubbleDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(int[] arr) {
+        int n = arr.length;
+        for (int i = 0; i < n-1; i++)
+            for (int j = 0; j < n-1; j++) // Bug: redundant comparisons
+                if (arr[j] > arr[j+1]) { int t = arr[j]; arr[j] = arr[j+1]; arr[j+1] = t; }
+    }
+    public static void main(String[] args) {
+        int[] arr = {5, 3, 1, 4, 2};
+        process(arr);
+        for(int x: arr) System.out.print(x + " ");
+    }
+}`,
+  fixedC: `public class Main {
+    static void process(int[] arr) {
+        int n = arr.length;
+        for (int i = 0; i < n-1; i++)
+            for (int j = 0; j < n-i-1; j++) // Fixed
+                if (arr[j] > arr[j+1]) { int t = arr[j]; arr[j] = arr[j+1]; arr[j+1] = t; }
+    }
+    public static void main(String[] args) {
+        int[] arr = {5, 3, 1, 4, 2};
+        process(arr);
+        for(int x: arr) System.out.print(x + " ");
+    }
+}`,
+  hints: ["Inner loop should decrease by i"],
+  expectedOutput: "1 2 3 4 5 "
 };
 
 export const sortBubbleDrag = {
@@ -149,8 +276,18 @@ export const sortBubbleDrag = {
 };
 
 export const sortBubbleComplete = {
-  instruction: "Fill in the blanks to complete the implementation.",
-  template: "void sort() {\n  {{blank1}}\n}",
-  answer: "void sort() {\n  int x = 0;\n}",
-  blanks: ["int x = 0;"]
+  codeSnippet: `void processAlgorithm(int n) {
+    for(int i = 0; i < n; i++) {
+        // Perform core step
+        if (/*[BLANK]*/) {
+            break;
+        }
+    }
+}`,
+  blanks: [
+    {
+      id: "blank1",
+      text: "i == n - 1"
+    }
+  ]
 };

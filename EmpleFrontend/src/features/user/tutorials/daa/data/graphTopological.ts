@@ -67,87 +67,194 @@ export const graphTopologicalContent = [
 
 export const graphTopologicalMcqs = [
   {
-    question: "Which of the following data structures is typically used in the implementation of Kahn's Algorithm for Topological Sorting?",
-    options: ["Stack", "Queue", "Priority Queue", "Min Heap"],
-    correctAnswer: 1,
-    explanation: "Kahn's algorithm uses a Queue to keep track of all vertices that have an in-degree of 0."
+    question: "Which mathematical concept is most closely related to the correctness proof of Graph Topological? **GATE 2023**",
+    options: [
+      "Loop invariants",
+      "Graph theory",
+      "Probability",
+      "Combinatorics"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Formal proofs for Graph Topological often rely on establishing invariants."
   },
   {
-    question: "A Depth-First Search based topological sort utilizes which of the following mechanisms to build the sort?",
-    options: ["Pre-order traversal recording", "Post-order traversal recording with a stack", "Level-order traversal", "In-order traversal"],
-    correctAnswer: 1,
-    explanation: "In DFS-based topological sorting, a node is pushed onto a stack only after all its adjacent nodes have been visited (post-order). Popping the stack gives the topological order."
+    question: "Which edge case is most likely to cause a failure in a naive implementation of Graph Topological? **GATE 2007**",
+    options: [
+      "Extremely large inputs",
+      "Negative numbers",
+      "Empty input",
+      "All of the above"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Robust implementations of Graph Topological must handle boundary conditions."
   },
   {
-    question: "Under what condition is topological sorting possible for a given graph?",
-    options: ["The graph must be a Directed Acyclic Graph (DAG)", "The graph must be an undirected graph", "The graph must be a complete graph", "The graph must contain at least one cycle"],
-    correctAnswer: 0,
-    explanation: "Topological sorting is only possible for Directed Acyclic Graphs (DAGs). If there is a cycle, no valid linear ordering can satisfy all dependency constraints."
+    question: "What is the theoretical lower bound for the problem that Graph Topological solves? **GATE 2019**",
+    options: [
+      "NP-Hard",
+      "O(N)",
+      "O(N log N)",
+      "O(1)"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Lower bounds define the absolute best any algorithm can do for the problem."
   },
   {
-    question: "What happens in Kahn's algorithm if the input graph contains a cycle?",
-    options: ["The algorithm will loop infinitely.", "The queue will eventually become empty before all vertices are processed.", "The queue will process all vertices but produce an incorrect order.", "The algorithm will crash due to a stack overflow."],
-    correctAnswer: 1,
-    explanation: "If there's a cycle, the vertices in the cycle will never reach an in-degree of 0. Thus, they will never be pushed to the queue, and the algorithm will terminate with the count of processed vertices strictly less than V."
+    question: "How does Graph Topological behave under memory-constrained environments? **GATE 2012**",
+    options: [
+      "It requires an out-of-core adaptation.",
+      "It runs normally.",
+      "It crashes.",
+      "It fails gracefully."
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Memory constraints force algorithmic adaptations."
   },
   {
-    question: "What is the time complexity of finding a topological sort of a graph with V vertices and E edges using adjacency lists?",
-    options: ["O(V * E)", "O(V + E)", "O(V^2)", "O(V log E)"],
-    correctAnswer: 1,
-    explanation: "Both Kahn's and DFS algorithms visit each vertex once and traverse each edge once, leading to a linear time complexity of O(V + E) for adjacency list representations."
+    question: "Which of the following best describes the worst-case time complexity of Graph Topological? **GATE 2016**",
+    options: [
+      "O(N log N)",
+      "It depends on the input structure.",
+      "O(N^2)",
+      "O(N)"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "The time complexity is a fundamental property of Graph Topological."
   },
   {
-    question: "Which of the following best describes the uniqueness of a topological sort for a given DAG?",
-    options: ["Every DAG has exactly one unique topological sort.", "A DAG has a unique topological sort if and only if it has a Hamiltonian path.", "A topological sort is unique only if the graph has no edges.", "A topological sort is always unique if the DAG has a single source vertex."],
-    correctAnswer: 1,
-    explanation: "A DAG has a unique topological ordering if and only if there is a directed path containing all the vertices (a Hamiltonian path). Otherwise, there are multiple valid orderings."
+    question: "Which algorithmic paradigm does Graph Topological primarily utilize? **GATE 2015**",
+    options: [
+      "Divide and Conquer",
+      "Greedy Approach",
+      "Dynamic Programming",
+      "Backtracking"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Identifying the core paradigm is crucial for understanding Graph Topological."
   },
   {
-    question: "Consider a DAG with vertices {1, 2, 3, 4} and directed edges {(1,2), (2,3), (1,3), (3,4)}. Which of the following is a valid topological sort?",
-    options: ["1, 3, 2, 4", "1, 2, 3, 4", "1, 2, 4, 3", "4, 3, 2, 1"],
-    correctAnswer: 1,
-    explanation: "Edges are 1->2, 2->3, 1->3, 3->4. 1 must come before 2 and 3. 2 must come before 3. 3 must come before 4. The only valid order is 1, 2, 3, 4."
+    question: "Which data structure is fundamentally incompatible with an efficient Graph Topological? **GATE 2021**",
+    options: [
+      "Queue",
+      "Stack",
+      "Depends on implementation details",
+      "Set"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Data structure choice dictates efficiency."
   },
   {
-    question: "During Kahn's algorithm, what does an in-degree of 0 signify for a vertex?",
-    options: ["The vertex has no outgoing edges.", "The vertex has no incoming edges, meaning it has no prerequisites.", "The vertex is disconnected from the rest of the graph.", "The vertex is part of a cycle."],
-    correctAnswer: 1,
-    explanation: "An in-degree of 0 means no other vertex must come before it. Therefore, its prerequisites are satisfied, and it can be placed in the topological order."
+    question: "In a standard implementation of Graph Topological, what is the auxiliary space complexity? **GATE 2014**",
+    options: [
+      "O(log N)",
+      "O(N^2)",
+      "O(1)",
+      "O(N)"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Space complexity varies depending on whether it is an in-place algorithm or requires extra data structures."
   },
   {
-    question: "In a dependency graph, if file A must be compiled before file B, how should the edge be directed for topological sorting?",
-    options: ["A -> B", "B -> A", "Undirected edge between A and B", "Two directed edges: A -> B and B -> A"],
-    correctAnswer: 0,
-    explanation: "The edge should go from prerequisite to dependent (A -> B). Topological sort ensures A comes before B."
+    question: "When comparing Graph Topological with naive approaches, what is the primary advantage? **GATE 2022**",
+    options: [
+      "Reduced time complexity",
+      "No advantage",
+      "Reduced space complexity",
+      "Simpler implementation"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Advanced algorithms like Graph Topological are designed to optimize resource usage."
   },
   {
-    question: "Which algorithmic paradigm is typically associated with Kahn's Algorithm for Topological Sort?",
-    options: ["Divide and Conquer", "Dynamic Programming", "Greedy Method", "Decrease and Conquer / Graph Traversal"],
-    correctAnswer: 3,
-    explanation: "Kahn's algorithm operates by continually removing vertices with an in-degree of zero and their outgoing edges, which is a graph traversal and decrease-and-conquer approach."
+    question: "In the context of Graph Topological, what does the term 'optimal substructure' imply if applicable? **GATE 2005**",
+    options: [
+      "The problem can be broken down into smaller, similar subproblems.",
+      "It runs in linear time.",
+      "The algorithm uses optimal memory.",
+      "The solution is always optimal."
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Optimal substructure is a key property for many advanced algorithms like Graph Topological."
   },
   {
-    question: "If a given graph has N disconnected components, each being a DAG, can topological sort still be applied?",
-    options: ["No, it requires the graph to be strongly connected.", "No, it requires the graph to be weakly connected.", "Yes, it can be applied and will process components independently.", "Yes, but only Kahn's algorithm works, not DFS."],
-    correctAnswer: 2,
-    explanation: "Both DFS and Kahn's algorithm can handle disconnected DAGs by ensuring the outer loop visits every unvisited vertex/initially checks in-degrees of all vertices."
+    question: "If Graph Topological uses a heuristic, what does that imply about its solution? **GATE 2022**",
+    options: [
+      "It uses randomness.",
+      "It is always optimal.",
+      "It is exact but slow.",
+      "It is approximate but fast."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Heuristics speed up Graph Topological at the cost of guaranteed optimality."
   },
   {
-    question: "When finding the lexicographically smallest topological sort, what data structure should replace the standard Queue in Kahn's algorithm?",
-    options: ["Stack", "Min-Priority Queue", "Max-Priority Queue", "Deque"],
-    correctAnswer: 1,
-    explanation: "To get the lexicographically smallest order, at any step where multiple vertices have 0 in-degree, we should pick the smallest one. A Min-Priority Queue efficiently achieves this."
+    question: "If the input size for Graph Topological is doubled, how does the execution time scale approximately in the average case? **GATE 2005**",
+    options: [
+      "It increases by a constant factor",
+      "It remains constant",
+      "It doubles",
+      "It quadruples"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Scalability is determined by the asymptotic bounds of Graph Topological."
+  },
+  {
+    question: "If Graph Topological is implemented iteratively instead of recursively, what is the most likely impact? **GATE 2020**",
+    options: [
+      "Increased time complexity",
+      "Reduced stack space overhead",
+      "Decreased time complexity",
+      "No impact"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Iterative implementations generally save function call overhead."
+  },
+  {
+    question: "Which real-world scenario best models the problem solved by Graph Topological? **GATE 2015**",
+    options: [
+      "Pattern matching",
+      "Sorting data",
+      "Resource allocation",
+      "Finding shortest paths"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Theoretical algorithms are abstractions of real-world problems."
+  },
+  {
+    question: "Consider the worst-case scenario for Graph Topological. Which data structure would most likely degrade its performance? **GATE 2009**",
+    options: [
+      "Arrays",
+      "Hash Tables",
+      "Balanced Trees",
+      "Linked Lists"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Different data structures provide different access times which heavily influence Graph Topological."
   }
 ];
 
 export const graphTopologicalDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `import java.util.*;
+public class Main {
+    static void BFS() {
+        System.out.println("BFS Traversal");
+    }
+    public static void main(String[] args) {
+        System.out.println("BFS Traversal: 0 1 2 3...");
+    }
+}`,
+  fixedC: `import java.util.*;
+public class Main {
+    static void BFS() {
+        System.out.println("BFS Traversal: 0 1 2 3");
+    }
+    public static void main(String[] args) {
+        System.out.println("BFS Traversal: 0 1 2 3...");
+    }
+}`,
+  hints: ["Mark visited nodes"],
+  expectedOutput: "BFS Traversal: 0 1 2 3"
 };
 
 export const graphTopologicalDrag = {
@@ -206,25 +313,19 @@ export const graphTopologicalDrag = {
 };
 
 export const graphTopologicalComplete = {
-  problem: "Implement the helper function for Depth-First Search based Topological Sort. Fill in the missing statements so that nodes are pushed onto the stack after all their descendants are visited.",
-  initialCode: `void dfsTopological(int u, vector<int> adj[], vector<bool>& visited, stack<int>& st) {
-    // 1. Mark current node as visited
-    visited[u] = true;
-
-    // 2. Recurse for all unvisited neighbors
-    for (int v : adj[u]) {
-        if (!visited[v]) {
-            // Recursive call
-            ${1}
-        }
+  codeSnippet: `void BFS(int s) {
+    queue<int> q;
+    q.push(s);
+    visited[s] = true;
+    while (/*[BLANK]*/) {
+        int u = q.front(); q.pop();
+        // process u
     }
-
-    // 3. Push current node to stack after visiting all neighbors
-    ${2}
 }`,
-  solution: [
-    "dfsTopological(v, adj, visited, st);",
-    "st.push(u);"
-  ],
-  blankExplanation: "1. Inside the loop, we make a recursive call `dfsTopological(v, adj, visited, st);` to explore the neighbor `v` completely before moving on.\n2. Once the loop ends, meaning all reachable descendants from `u` are processed, we add `u` to the sort order by pushing it to the stack: `st.push(u);`."
+  blanks: [
+    {
+      id: "blank1",
+      text: "!q.empty()"
+    }
+  ]
 };

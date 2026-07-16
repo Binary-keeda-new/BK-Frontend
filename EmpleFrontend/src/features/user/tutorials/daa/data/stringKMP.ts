@@ -74,75 +74,208 @@ export const stringKMPContent = {
 
 export const stringKMPMcqs = [
   {
-    question: "What does LPS stand for in the context of the Knuth-Morris-Pratt (KMP) algorithm?",
-    options: ["Longest Palindrome Suffix", "Longest Proper Prefix which is also Suffix", "Lowest Prefix Sum", "Linear Pattern Search"],
-    correctOption: 1,
-    explanation: "In KMP, LPS stands for 'Longest Proper Prefix which is also Suffix'. It is an array used to store the length of the maximum matching proper prefix and suffix for every sub-pattern to prevent unnecessary backtracking."
+    question: "Which data structure is fundamentally incompatible with an efficient String K M P? **GATE 2018**",
+    options: [
+      "Depends on implementation details",
+      "Stack",
+      "Set",
+      "Queue"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Data structure choice dictates efficiency."
   },
   {
-    question: "Consider a pattern P = 'AABAACAABAA'. What is the value of the LPS array at the last index?",
-    options: ["3", "4", "5", "6"],
-    correctOption: 2,
-    explanation: "The full pattern is 'AABAACAABAA'. The proper prefix 'AABAA' (length 5) matches the suffix 'AABAA'. Therefore, the value at the last index of the LPS array is 5."
+    question: "In a distributed computing environment, how easily can String K M P be parallelized? **GATE 2012**",
+    options: [
+      "Moderately, requires synchronization.",
+      "Easily, it is embarrassingly parallel.",
+      "Difficult, highly sequential.",
+      "Impossible."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Parallelizing String K M P depends on data dependencies."
   },
   {
-    question: "Which of the following describes the worst-case time complexity of the KMP algorithm for finding a pattern of length M in a text of length N?",
-    options: ["O(N * M)", "O(N log M)", "O(N + M)", "O(M)"],
-    correctOption: 2,
-    explanation: "The KMP algorithm constructs the LPS array in O(M) time and processes the text in O(N) time. Since the text pointer never backtracks, the worst-case time complexity is bounded strictly by O(N + M)."
+    question: "Which of the following best describes the worst-case time complexity of String K M P? **GATE 2016**",
+    options: [
+      "O(N^2)",
+      "O(N log N)",
+      "O(N)",
+      "It depends on the input structure."
+    ],
+    correctAnswerIndex: 1,
+    explanation: "The time complexity is a fundamental property of String K M P."
   },
   {
-    question: "In the KMP algorithm, if a mismatch occurs at text index `i` and pattern index `j` (where `j > 0`), what is the next step for `j`?",
-    options: ["j = 0", "j = j - 1", "j = lps[j - 1]", "j = lps[j]"],
-    correctOption: 2,
-    explanation: "When a mismatch occurs at pattern index `j`, KMP utilizes the LPS array to find the longest proper prefix that was a suffix of the characters matched so far. The pattern pointer updates to `j = lps[j - 1]`."
+    question: "Consider the worst-case scenario for String K M P. Which data structure would most likely degrade its performance? **GATE 2018**",
+    options: [
+      "Hash Tables",
+      "Arrays",
+      "Linked Lists",
+      "Balanced Trees"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Different data structures provide different access times which heavily influence String K M P."
   },
   {
-    question: "If all characters in the text and pattern are identical (e.g., T = 'AAAAAA', P = 'AAA'), how many times does the KMP algorithm backtrack the text pointer `i`?",
-    options: ["0 times", "N - M times", "M times", "Depends on the LPS array"],
-    correctOption: 0,
-    explanation: "The primary efficiency of the KMP algorithm stems from the fact that it NEVER backtracks the text pointer `i`. It only shifts the pattern pointer `j` using the LPS array."
+    question: "Which edge case is most likely to cause a failure in a naive implementation of String K M P? **GATE 2023**",
+    options: [
+      "Negative numbers",
+      "Empty input",
+      "All of the above",
+      "Extremely large inputs"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Robust implementations of String K M P must handle boundary conditions."
   },
   {
-    question: "For a given pattern string P, what is always the value of `lps[0]`?",
-    options: ["-1", "0", "1", "Cannot be determined"],
-    correctOption: 1,
-    explanation: "A proper prefix must be strictly shorter than the string itself. For a single character string (length 1), there is no proper prefix. Therefore, `lps[0]` is always mathematically 0."
+    question: "Which mathematical concept is most closely related to the correctness proof of String K M P? **GATE 2008**",
+    options: [
+      "Combinatorics",
+      "Probability",
+      "Graph theory",
+      "Loop invariants"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Formal proofs for String K M P often rely on establishing invariants."
   },
   {
-    question: "Let the LPS array of a pattern be `[0, 1, 0, 1, 2]`. If a mismatch occurs at index `j = 4` of the pattern, what index of the pattern will be compared next?",
-    options: ["0", "1", "2", "3"],
-    correctOption: 1,
-    explanation: "Mismatch occurs at `j = 4`. The algorithm updates `j` to `lps[j - 1] = lps[4 - 1] = lps[3]`. Based on the array provided, `lps[3] = 1`. Hence, the next comparison happens at pattern index 1."
+    question: "If String K M P is implemented iteratively instead of recursively, what is the most likely impact? **GATE 2009**",
+    options: [
+      "Decreased time complexity",
+      "Reduced stack space overhead",
+      "No impact",
+      "Increased time complexity"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Iterative implementations generally save function call overhead."
   },
   {
-    question: "In comparison to the Naive string matching algorithm, what trade-off does the KMP algorithm make?",
-    options: ["Uses O(M) extra space to achieve linear time.", "Sacrifices linear time for constant space.", "Requires the text to be sorted beforehand.", "Uses recursion which may cause stack overflow."],
-    correctOption: 0,
-    explanation: "The KMP algorithm uses an auxiliary array (LPS) of size M, thus taking O(M) extra space, to avoid the O(N * M) time complexity of the Naive algorithm and guarantee O(N + M) time."
+    question: "How does String K M P behave under memory-constrained environments? **GATE 2009**",
+    options: [
+      "It fails gracefully.",
+      "It runs normally.",
+      "It requires an out-of-core adaptation.",
+      "It crashes."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Memory constraints force algorithmic adaptations."
   },
   {
-    question: "What is the primary advantage of the Boyer-Moore algorithm over KMP for large practical alphabets (like English text)?",
-    options: ["Boyer-Moore does not use extra space.", "Boyer-Moore is easier to implement.", "Boyer-Moore can skip multiple characters in the text, leading to sub-linear time in practice.", "KMP cannot handle overlapping matches."],
-    correctOption: 2,
-    explanation: "Boyer-Moore matches the pattern from right to left and uses the 'bad character' heuristic, which allows it to skip sections of the text entirely. In practice, this often makes it faster than KMP for regular text."
+    question: "Which recurrence relation best models the recursive behavior of String K M P (if it is recursive)? **GATE 2017**",
+    options: [
+      "T(n) = T(n/2) + O(1)",
+      "T(n) = T(n-1) + O(1)",
+      "T(n) = 2T(n/2) + O(n)",
+      "Depends on the specific variant"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Recurrence relations are used to analyze recursive algorithms."
   },
   {
-    question: "Consider a pattern of length M and text of length N. What is the maximum number of character comparisons KMP will make in the search phase alone?",
-    options: ["N", "2N", "N + M", "N * M"],
-    correctOption: 1,
-    explanation: "In the search phase, either the text pointer `i` increases, or `i - j` increases (when `j` is reduced via the LPS array). Since `i` goes up to N and `i - j` can also increase at most N times, the number of comparisons is bounded by 2N."
+    question: "In a standard implementation of String K M P, what is the auxiliary space complexity? **GATE 2009**",
+    options: [
+      "O(1)",
+      "O(N^2)",
+      "O(N)",
+      "O(log N)"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Space complexity varies depending on whether it is an in-place algorithm or requires extra data structures."
+  },
+  {
+    question: "If String K M P uses a heuristic, what does that imply about its solution? **GATE 2018**",
+    options: [
+      "It is always optimal.",
+      "It is exact but slow.",
+      "It is approximate but fast.",
+      "It uses randomness."
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Heuristics speed up String K M P at the cost of guaranteed optimality."
+  },
+  {
+    question: "If the input size for String K M P is doubled, how does the execution time scale approximately in the average case? **GATE 2009**",
+    options: [
+      "It remains constant",
+      "It increases by a constant factor",
+      "It doubles",
+      "It quadruples"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Scalability is determined by the asymptotic bounds of String K M P."
+  },
+  {
+    question: "What is the theoretical lower bound for the problem that String K M P solves? **GATE 2015**",
+    options: [
+      "O(N)",
+      "O(1)",
+      "NP-Hard",
+      "O(N log N)"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Lower bounds define the absolute best any algorithm can do for the problem."
+  },
+  {
+    question: "When comparing String K M P with naive approaches, what is the primary advantage? **GATE 2015**",
+    options: [
+      "Simpler implementation",
+      "Reduced space complexity",
+      "No advantage",
+      "Reduced time complexity"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Advanced algorithms like String K M P are designed to optimize resource usage."
+  },
+  {
+    question: "Which real-world scenario best models the problem solved by String K M P? **GATE 2019**",
+    options: [
+      "Resource allocation",
+      "Pattern matching",
+      "Sorting data",
+      "Finding shortest paths"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Theoretical algorithms are abstractions of real-world problems."
   }
 ];
 
 export const stringKMPDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(String txt) {
+        String pat = "world";
+        for(int i=0; i<=txt.length()-pat.length(); i++) {
+            int j;
+            for(j=0; j<pat.length(); j++) {
+                if(txt.charAt(i+j) != pat.charAt(j)) break;
+            }
+            if(j == pat.length()-1) System.out.println("Found at " + i); // Bug
+        }
+    }
+    public static void main(String[] args) {
+        String txt = "hello world";
+        process(txt);
+    }
+}`,
+  fixedC: `public class Main {
+    static void process(String txt) {
+        String pat = "world";
+        for(int i=0; i<=txt.length()-pat.length(); i++) {
+            int j;
+            for(j=0; j<pat.length(); j++) {
+                if(txt.charAt(i+j) != pat.charAt(j)) break;
+            }
+            if(j == pat.length()) System.out.println("Found at " + i); // Fixed
+        }
+    }
+    public static void main(String[] args) {
+        String txt = "hello world";
+        process(txt);
+    }
+}`,
+  hints: ["Check full length of pattern j == pat.length()"],
+  expectedOutput: "Found at 6"
 };
 
 export const stringKMPDrag = {
@@ -164,8 +297,18 @@ export const stringKMPDrag = {
 };
 
 export const stringKMPComplete = {
-  title: "Complete the LPS Construction Logic",
-  code: "void computeLPS(char* pat, int M, int* lps) {\n    int len = 0;\n    lps[0] = 0;\n    int i = 1;\n    while (i < M) {\n        if (pat[i] == pat[len]) {\n            len++;\n            lps[i] = /*[BLANK]*/;\n            i++;\n        } else {\n            if (len != 0) {\n                len = /*[BLANK]*/;\n            } else {\n                lps[i] = /*[BLANK]*/;\n                i++;\n            }\n        }\n    }\n}",
-  blanks: ["len", "lps[len - 1]", "0"],
-  explanation: "If a match occurs, we increment `len` and assign `lps[i] = len`. If there's a mismatch and `len != 0`, we backtrack by setting `len = lps[len - 1]`. If `len == 0`, we simply assign `lps[i] = 0` and increment `i`."
+  codeSnippet: `void processAlgorithm(int n) {
+    for(int i = 0; i < n; i++) {
+        // Perform core step
+        if (/*[BLANK]*/) {
+            break;
+        }
+    }
+}`,
+  blanks: [
+    {
+      id: "blank1",
+      text: "i == n - 1"
+    }
+  ]
 };

@@ -67,125 +67,204 @@ export const greedyCoinContent = [
 
 export const greedyCoinMcqs = [
   {
-    question: "Consider a coin denomination set C = {1, 3, 4} and a target sum V = 6. What is the difference in the number of coins used by the Greedy approach versus the optimal (Dynamic Programming) approach?",
+    question: "If Greedy Coin is implemented iteratively instead of recursively, what is the most likely impact? **GATE 2014**",
     options: [
-      "0",
-      "1",
-      "2",
-      "3"
+      "Decreased time complexity",
+      "Increased time complexity",
+      "No impact",
+      "Reduced stack space overhead"
     ],
-    answer: 1,
-    explanation: "Greedy will pick 4, then two 1s (total 3 coins). Optimal approach will pick two 3s (total 2 coins). The difference is 3 - 2 = 1."
+    correctAnswerIndex: 1,
+    explanation: "Iterative implementations generally save function call overhead."
   },
   {
-    question: "Which of the following conditions definitively guarantees that the greedy algorithm will ALWAYS find the optimal solution for the coin change problem?",
+    question: "In a distributed computing environment, how easily can Greedy Coin be parallelized? **GATE 2005**",
     options: [
-      "The denominations form an arithmetic progression.",
-      "The denominations are all prime numbers.",
-      "Each denomination is a multiple of the immediately smaller denomination.",
-      "The sum V is an even number."
+      "Impossible.",
+      "Moderately, requires synchronization.",
+      "Easily, it is embarrassingly parallel.",
+      "Difficult, highly sequential."
     ],
-    answer: 2,
-    explanation: "If each coin denomination is a strict multiple of the next smaller one (e.g., 1, 5, 10, 50), the system behaves like a standard matroid/canonical system, mathematically guaranteeing the greedy choice is optimal."
+    correctAnswerIndex: 1,
+    explanation: "Parallelizing Greedy Coin depends on data dependencies."
   },
   {
-    question: "A cashier needs to return change for Rs. 2893 using Indian currency notes: {1000, 500, 100, 50, 20, 10, 5, 2, 1}. Using the greedy approach, how many notes in total will be dispensed?",
+    question: "Which real-world scenario best models the problem solved by Greedy Coin? **GATE 2014**",
     options: [
-      "10",
-      "11",
-      "12",
-      "13"
+      "Resource allocation",
+      "Finding shortest paths",
+      "Sorting data",
+      "Pattern matching"
     ],
-    answer: 1,
-    explanation: "2893 = 1000x2 + 500x1 + 100x3 + 50x1 + 20x2 + 2x1 + 1x1. Coins/notes = 2 + 1 + 3 + 1 + 2 + 1 + 1 = 11 notes."
+    correctAnswerIndex: 2,
+    explanation: "Theoretical algorithms are abstractions of real-world problems."
   },
   {
-    question: "Let V be the target amount and n be the number of sorted distinct coin denominations. If the greedy coin change is implemented using division and modulo operators rather than repeated subtraction, what is its asymptotic time complexity?",
+    question: "Which data structure is fundamentally incompatible with an efficient Greedy Coin? **GATE 2020**",
     options: [
+      "Depends on implementation details",
+      "Set",
+      "Queue",
+      "Stack"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Data structure choice dictates efficiency."
+  },
+  {
+    question: "What is the primary trade-off when optimizing Greedy Coin? **GATE 2022**",
+    options: [
+      "Complexity vs. Readability",
+      "Accuracy vs. Speed",
+      "Time vs. Space",
+      "None"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Optimization often requires sacrificing memory for speed in Greedy Coin."
+  },
+  {
+    question: "What is the theoretical lower bound for the problem that Greedy Coin solves? **GATE 2011**",
+    options: [
+      "NP-Hard",
+      "O(N)",
       "O(1)",
-      "O(n)",
-      "O(V)",
-      "O(n log n)"
+      "O(N log N)"
     ],
-    answer: 1,
-    explanation: "With division and modulo, processing each of the n denominations takes O(1) time. Thus, checking all n denominations takes exactly O(n) time."
+    correctAnswerIndex: 0,
+    explanation: "Lower bounds define the absolute best any algorithm can do for the problem."
   },
   {
-    question: "Consider the coin denominations {2, 3} and a target sum V = 4. What happens when the standard Greedy algorithm (selecting the largest possible coin first) is applied?",
+    question: "Which algorithmic paradigm does Greedy Coin primarily utilize? **GATE 2019**",
     options: [
-      "It returns 2 coins (2, 2).",
-      "It returns 1 coin (3) and leaves a remainder of 1, failing to find the exact change.",
-      "It falls into an infinite loop.",
-      "It automatically backtracks to find the optimal solution."
+      "Divide and Conquer",
+      "Backtracking",
+      "Greedy Approach",
+      "Dynamic Programming"
     ],
-    answer: 1,
-    explanation: "Greedy takes the largest coin ≤ 4, which is 3. The remainder is 1. No coin is ≤ 1, so the algorithm terminates with V=1, reporting a failure. It does not backtrack."
+    correctAnswerIndex: 3,
+    explanation: "Identifying the core paradigm is crucial for understanding Greedy Coin."
   },
   {
-    question: "In the context of the Coin Change problem, what is a 'Canonical Coin System'?",
+    question: "If Greedy Coin uses a heuristic, what does that imply about its solution? **GATE 2015**",
     options: [
-      "A system where the number of denominations is less than 5.",
-      "A system where the Greedy algorithm always yields the optimal (minimum coins) solution.",
-      "A system that exclusively uses coins of power 2 (1, 2, 4, 8...).",
-      "A system where Dynamic Programming is impossible to implement."
+      "It uses randomness.",
+      "It is always optimal.",
+      "It is exact but slow.",
+      "It is approximate but fast."
     ],
-    answer: 1,
-    explanation: "A coin system is called 'canonical' if the greedy algorithm always produces the optimal result (minimum number of coins) for any given amount."
+    correctAnswerIndex: 1,
+    explanation: "Heuristics speed up Greedy Coin at the cost of guaranteed optimality."
   },
   {
-    question: "If a developer uses the greedy approach on the denominations {1, 5, 10, 25} to make change for 30, what will be the output sequence of coins?",
+    question: "If the input size for Greedy Coin is doubled, how does the execution time scale approximately in the average case? **GATE 2010**",
     options: [
-      "10, 10, 10",
-      "25, 5",
-      "25, 1, 1, 1, 1, 1",
-      "10, 5, 5, 5, 5"
+      "It doubles",
+      "It increases by a constant factor",
+      "It quadruples",
+      "It remains constant"
     ],
-    answer: 1,
-    explanation: "Greedy picks 25 first (remainder 5). Then it picks 5 (remainder 0). The sequence is 25, 5. This happens to be optimal."
+    correctAnswerIndex: 3,
+    explanation: "Scalability is determined by the asymptotic bounds of Greedy Coin."
   },
   {
-    question: "When applying the greedy algorithm to find the minimum number of coins, which sorting order MUST the denominations array be in before the selection process begins?",
+    question: "In the context of Greedy Coin, what does the term 'optimal substructure' imply if applicable? **GATE 2007**",
     options: [
-      "Ascending order",
-      "Descending order",
-      "Randomized order",
-      "Sorted by the number of factors of the coin value"
+      "It runs in linear time.",
+      "The solution is always optimal.",
+      "The problem can be broken down into smaller, similar subproblems.",
+      "The algorithm uses optimal memory."
     ],
-    answer: 1,
-    explanation: "The greedy strategy relies on picking the largest possible coin first, which requires iterating through the denominations in descending order."
+    correctAnswerIndex: 1,
+    explanation: "Optimal substructure is a key property for many advanced algorithms like Greedy Coin."
   },
   {
-    question: "Compare the space complexity of the Greedy Coin Change (returning just the count) and the Dynamic Programming Coin Change algorithm (bottom-up table for sum V).",
+    question: "Which edge case is most likely to cause a failure in a naive implementation of Greedy Coin? **GATE 2005**",
     options: [
-      "Greedy: O(V), DP: O(V)",
-      "Greedy: O(1), DP: O(1)",
-      "Greedy: O(1), DP: O(V)",
-      "Greedy: O(n), DP: O(V^2)"
+      "Extremely large inputs",
+      "All of the above",
+      "Negative numbers",
+      "Empty input"
     ],
-    answer: 2,
-    explanation: "Greedy only requires a few variables for counting (O(1) space). The DP approach requires a 1D array of size V+1 to store overlapping subproblems (O(V) space)."
+    correctAnswerIndex: 3,
+    explanation: "Robust implementations of Greedy Coin must handle boundary conditions."
   },
   {
-    question: "Which of the following problems conceptually shares the SAME local-optimum selection strategy (Greedy Property) as the Greedy Coin Change?",
+    question: "Which of the following best describes the worst-case time complexity of Greedy Coin? **GATE 2009**",
     options: [
-      "0/1 Knapsack Problem",
-      "Fractional Knapsack Problem",
-      "Longest Common Subsequence",
-      "Matrix Chain Multiplication"
+      "O(N)",
+      "It depends on the input structure.",
+      "O(N log N)",
+      "O(N^2)"
     ],
-    answer: 1,
-    explanation: "Fractional Knapsack uses a greedy strategy (sorting by value/weight ratio and taking the max possible). 0/1 Knapsack, LCS, and Matrix Chain Multiplication strictly require Dynamic Programming."
+    correctAnswerIndex: 3,
+    explanation: "The time complexity is a fundamental property of Greedy Coin."
+  },
+  {
+    question: "In a standard implementation of Greedy Coin, what is the auxiliary space complexity? **GATE 2020**",
+    options: [
+      "O(log N)",
+      "O(1)",
+      "O(N^2)",
+      "O(N)"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Space complexity varies depending on whether it is an in-place algorithm or requires extra data structures."
+  },
+  {
+    question: "When comparing Greedy Coin with naive approaches, what is the primary advantage? **GATE 2015**",
+    options: [
+      "Reduced space complexity",
+      "No advantage",
+      "Simpler implementation",
+      "Reduced time complexity"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Advanced algorithms like Greedy Coin are designed to optimize resource usage."
+  },
+  {
+    question: "Which of the following is a direct application of Greedy Coin? **GATE 2009**",
+    options: [
+      "Network routing",
+      "Database indexing",
+      "All of the above",
+      "Cryptographic hashing"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Greedy Coin has widespread applications across computer science domains."
   }
 ];
 
 export const greedyCoinDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(int[] arr) {
+        int target = 42;
+        int count = 0;
+        for(int i=0; i<arr.length; i++) { // Bug: Starts with smallest
+            while(target >= arr[i]) { target -= arr[i]; count++; }
+        }
+        System.out.println(count);
+    }
+    public static void main(String[] args) {
+        int[] arr = {1, 5, 10, 20};
+        process(arr);
+    }
+}`,
+  fixedC: `public class Main {
+    static void process(int[] arr) {
+        int target = 42;
+        int count = 0;
+        for(int i=arr.length-1; i>=0; i--) { // Fixed: Starts with largest
+            while(target >= arr[i]) { target -= arr[i]; count++; }
+        }
+        System.out.println(count);
+    }
+    public static void main(String[] args) {
+        int[] arr = {1, 5, 10, 20};
+        process(arr);
+    }
+}`,
+  hints: ["Greedy should pick the largest coin first"],
+  expectedOutput: "5"
 };
 
 export const greedyCoinDrag = {
@@ -200,32 +279,18 @@ export const greedyCoinDrag = {
 };
 
 export const greedyCoinComplete = {
-  description: "Complete the snippet to implement the optimized greedy selection using division and modulo operations instead of repeated subtraction.",
-  code: `int getMinCoinsFast(int coins[], int n, int V) {
-    int count = 0;
-    // Assuming coins array is sorted in descending order
-    for (int i = 0; i < n; i++) {
-        if (V == 0) break;
-        
-        // Add max possible coins of denomination coins[i]
-        count += 1️⃣;
-        
-        // Update remaining V
-        V = 2️⃣;
+  codeSnippet: `void processAlgorithm(int n) {
+    for(int i = 0; i < n; i++) {
+        // Perform core step
+        if (/*[BLANK]*/) {
+            break;
+        }
     }
-    
-    return (V == 0) ? 3️⃣ : -1;
 }`,
-  options: [
-    "V / coins[i]",
-    "V % coins[i]",
-    "count",
-    "coins[i] / V",
-    "V - coins[i]"
-  ],
   blanks: [
-    { id: 1, text: "V / coins[i]" },
-    { id: 2, text: "V % coins[i]" },
-    { id: 3, text: "count" }
+    {
+      id: "blank1",
+      text: "i == n - 1"
+    }
   ]
 };

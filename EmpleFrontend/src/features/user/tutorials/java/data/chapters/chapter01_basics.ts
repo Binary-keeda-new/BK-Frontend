@@ -247,9 +247,13 @@ export const chapter01_MCQ = [
 
 export const chapter01_COMPLETE_EXERCISES = [
   {
-    instruction: "Complete the basic Java Hello World program.",
-    template: "public class Main {\n    public static void ___(String[] args) {\n        System.out.___(\"Hello World\");\n    }\n}",
-    answer: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-    blanks: ["main", "println|print|printf|format"]
+    template: `public class Main {
+    public static void ___(String[] args) {
+        System.out.println("Hello World");
+    }
+}`,
+    blanks: [
+      "main"
+    ]
   }
 ];

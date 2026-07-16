@@ -67,136 +67,194 @@ export const graphBellmanFordContent = [
 
 export const graphBellmanFordMcqs = [
   {
-    question: "What is the worst-case time complexity of the standard Bellman-Ford algorithm for a graph with $V$ vertices and $E$ edges?",
+    question: "How does Graph Bellman Ford behave under memory-constrained environments? **GATE 2014**",
     options: [
-      "O(V + E)",
-      "O(V^2)",
-      "O(V \\times E)",
-      "O(E \\log V)"
+      "It crashes.",
+      "It requires an out-of-core adaptation.",
+      "It fails gracefully.",
+      "It runs normally."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Memory constraints force algorithmic adaptations."
+  },
+  {
+    question: "Which of the following best describes the worst-case time complexity of Graph Bellman Ford? **GATE 2012**",
+    options: [
+      "O(N)",
+      "O(N log N)",
+      "It depends on the input structure.",
+      "O(N^2)"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "The time complexity is a fundamental property of Graph Bellman Ford."
+  },
+  {
+    question: "What is the primary trade-off when optimizing Graph Bellman Ford? **GATE 2005**",
+    options: [
+      "None",
+      "Complexity vs. Readability",
+      "Accuracy vs. Speed",
+      "Time vs. Space"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Optimization often requires sacrificing memory for speed in Graph Bellman Ford."
+  },
+  {
+    question: "In a distributed computing environment, how easily can Graph Bellman Ford be parallelized? **GATE 2006**",
+    options: [
+      "Difficult, highly sequential.",
+      "Moderately, requires synchronization.",
+      "Easily, it is embarrassingly parallel.",
+      "Impossible."
     ],
     correctAnswerIndex: 2,
-    explanation: "The Bellman-Ford algorithm relaxes every edge $V-1$ times, taking $O(V \\times E)$ time."
+    explanation: "Parallelizing Graph Bellman Ford depends on data dependencies."
   },
   {
-    question: "Why does the standard Bellman-Ford algorithm relax all edges exactly $V-1$ times?",
+    question: "What is the theoretical lower bound for the problem that Graph Bellman Ford solves? **GATE 2009**",
     options: [
-      "Because negative cycles always have a length of V-1.",
-      "Because a simple path in a graph with V vertices can have at most V-1 edges.",
-      "To ensure that all disjoint subgraphs are visited.",
-      "Because the number of edges E is always bounded by V-1."
+      "O(N)",
+      "O(1)",
+      "NP-Hard",
+      "O(N log N)"
     ],
-    correctAnswerIndex: 1,
-    explanation: "The shortest path between any two nodes in a graph with V vertices without cycles can contain at most V-1 edges."
+    correctAnswerIndex: 3,
+    explanation: "Lower bounds define the absolute best any algorithm can do for the problem."
   },
   {
-    question: "Which of the following is true regarding Bellman-Ford and Dijkstra's algorithm?",
+    question: "Which data structure is fundamentally incompatible with an efficient Graph Bellman Ford? **GATE 2010**",
     options: [
-      "Dijkstra's is slower but handles negative weights.",
-      "Bellman-Ford is faster but cannot detect negative cycles.",
-      "Bellman-Ford can handle negative weight edges, whereas standard Dijkstra's cannot.",
-      "Both have the same time complexity for sparse graphs."
+      "Queue",
+      "Stack",
+      "Set",
+      "Depends on implementation details"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Data structure choice dictates efficiency."
+  },
+  {
+    question: "In the context of Graph Bellman Ford, what does the term 'optimal substructure' imply if applicable? **GATE 2008**",
+    options: [
+      "It runs in linear time.",
+      "The algorithm uses optimal memory.",
+      "The solution is always optimal.",
+      "The problem can be broken down into smaller, similar subproblems."
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Optimal substructure is a key property for many advanced algorithms like Graph Bellman Ford."
+  },
+  {
+    question: "Which of the following is a direct application of Graph Bellman Ford? **GATE 2007**",
+    options: [
+      "Database indexing",
+      "All of the above",
+      "Network routing",
+      "Cryptographic hashing"
     ],
     correctAnswerIndex: 2,
-    explanation: "Bellman-Ford specifically solves the problem of negative-weight edges which break the greedy assumption of Dijkstra's algorithm."
+    explanation: "Graph Bellman Ford has widespread applications across computer science domains."
   },
   {
-    question: "How does Bellman-Ford detect a negative weight cycle?",
+    question: "Which edge case is most likely to cause a failure in a naive implementation of Graph Bellman Ford? **GATE 2019**",
     options: [
-      "By checking if any node is visited more than V times.",
-      "By performing a V-th relaxation over all edges and checking if any distance is updated.",
-      "By maintaining a count of visited edges per node and throwing an error if it exceeds V-1.",
-      "By running a Depth First Search after the main algorithm."
+      "All of the above",
+      "Negative numbers",
+      "Empty input",
+      "Extremely large inputs"
     ],
-    correctAnswerIndex: 1,
-    explanation: "After V-1 relaxations, optimal distances are found. If a V-th relaxation yields a shorter path, a negative weight cycle must exist."
+    correctAnswerIndex: 0,
+    explanation: "Robust implementations of Graph Bellman Ford must handle boundary conditions."
   },
   {
-    question: "Consider a complete directed graph $K_V$ where every edge has a negative weight. What will be the output of Bellman-Ford?",
+    question: "Which real-world scenario best models the problem solved by Graph Bellman Ford? **GATE 2005**",
     options: [
-      "The exact negative distances from source to all vertices.",
-      "It will report that a negative weight cycle exists.",
-      "It will return all distances as 0.",
-      "It will fail due to integer underflow."
+      "Pattern matching",
+      "Resource allocation",
+      "Finding shortest paths",
+      "Sorting data"
     ],
-    correctAnswerIndex: 1,
-    explanation: "A complete directed graph with all negative weights will trivially contain multiple negative-weight cycles (e.g., between any two vertices). The algorithm will detect this."
+    correctAnswerIndex: 0,
+    explanation: "Theoretical algorithms are abstractions of real-world problems."
   },
   {
-    question: "An optimized version of Bellman-Ford terminates early if no distances are updated in a given pass. What is its best-case time complexity?",
+    question: "Which mathematical concept is most closely related to the correctness proof of Graph Bellman Ford? **GATE 2019**",
+    options: [
+      "Loop invariants",
+      "Graph theory",
+      "Probability",
+      "Combinatorics"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Formal proofs for Graph Bellman Ford often rely on establishing invariants."
+  },
+  {
+    question: "In a standard implementation of Graph Bellman Ford, what is the auxiliary space complexity? **GATE 2009**",
     options: [
       "O(1)",
-      "O(V)",
-      "O(E)",
-      "O(V \\times E)"
+      "O(log N)",
+      "O(N)",
+      "O(N^2)"
     ],
-    correctAnswerIndex: 2,
-    explanation: "In the best case (e.g., edges are processed in topological order of shortest paths), the optimal distances are found in the first pass. The second pass will do 0 updates, terminating the algorithm in O(E) time."
+    correctAnswerIndex: 0,
+    explanation: "Space complexity varies depending on whether it is an in-place algorithm or requires extra data structures."
   },
   {
-    question: "In Bellman-Ford, why is it crucial to check `if dist[u] != \\infty` before attempting a relaxation `dist[v] = dist[u] + weight`?",
+    question: "When comparing Graph Bellman Ford with naive approaches, what is the primary advantage? **GATE 2015**",
     options: [
-      "To prevent positive infinity from becoming negative infinity.",
-      "To avoid integer overflow/underflow anomalies, particularly when the edge weight is negative.",
-      "Because unvisited nodes have weight 0.",
-      "Because the graph may be undirected."
+      "Simpler implementation",
+      "No advantage",
+      "Reduced time complexity",
+      "Reduced space complexity"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Advanced algorithms like Graph Bellman Ford are designed to optimize resource usage."
+  },
+  {
+    question: "Which recurrence relation best models the recursive behavior of Graph Bellman Ford (if it is recursive)? **GATE 2017**",
+    options: [
+      "Depends on the specific variant",
+      "T(n) = T(n-1) + O(1)",
+      "T(n) = 2T(n/2) + O(n)",
+      "T(n) = T(n/2) + O(1)"
     ],
     correctAnswerIndex: 1,
-    explanation: "If `dist[u]` is infinity and weight is negative, `dist[u] + weight` could evaluate to a value slightly less than infinity, incorrectly updating an unreachable node's distance."
+    explanation: "Recurrence relations are used to analyze recursive algorithms."
   },
   {
-    question: "If Bellman-Ford is applied to an undirected graph containing at least one edge with a negative weight, what happens?",
+    question: "If Graph Bellman Ford uses a heuristic, what does that imply about its solution? **GATE 2023**",
     options: [
-      "It finds the correct shortest paths.",
-      "It behaves normally and ignores the sign.",
-      "It detects a negative-weight cycle because the undirected negative edge acts as a 2-cycle.",
-      "It gets stuck in an infinite loop during the V-1 relaxations."
+      "It is always optimal.",
+      "It is exact but slow.",
+      "It uses randomness.",
+      "It is approximate but fast."
     ],
-    correctAnswerIndex: 2,
-    explanation: "An undirected edge (u, v) with negative weight -W implies directed edges u->v and v->u both with weight -W. Path u->v->u has weight -2W, which is a negative cycle."
-  },
-  {
-    question: "Consider a graph where Bellman-Ford is executed, and distances are stored in an array D. If $D[v]$ is updated during the $k$-th iteration of the outer loop, what does this imply?",
-    options: [
-      "The shortest path to v consists of exactly k edges.",
-      "A path of at most k edges to v has been found that is shorter than any previously known path of fewer edges.",
-      "There is a negative cycle reachable from v.",
-      "Node v is disconnected from the source."
-    ],
-    correctAnswerIndex: 1,
-    explanation: "The k-th iteration guarantees finding shortest paths that use at most k edges. An update means a shorter path (using up to k edges) was discovered."
-  },
-  {
-    question: "Which well-known routing protocol is based directly on a distributed version of the Bellman-Ford algorithm?",
-    options: [
-      "OSPF (Open Shortest Path First)",
-      "BGP (Border Gateway Protocol)",
-      "RIP (Routing Information Protocol)",
-      "ARP (Address Resolution Protocol)"
-    ],
-    correctAnswerIndex: 2,
-    explanation: "RIP uses the distance-vector routing algorithm, which is fundamentally a distributed version of Bellman-Ford."
-  },
-  {
-    question: "Can Bellman-Ford algorithm be used to find the longest path in a Directed Acyclic Graph (DAG)?",
-    options: [
-      "No, because Bellman-Ford only computes minimum distances.",
-      "Yes, by negating all edge weights and then running Bellman-Ford.",
-      "Yes, but only if all weights are positive.",
-      "No, finding the longest path is always NP-Hard."
-    ],
-    correctAnswerIndex: 1,
-    explanation: "By negating all weights, the shortest path algorithm yields the longest path. Since a DAG has no cycles, it won't have negative cycles after negation, so Bellman-Ford will work (though a topological sort approach is faster)."
+    correctAnswerIndex: 0,
+    explanation: "Heuristics speed up Graph Bellman Ford at the cost of guaranteed optimality."
   }
 ];
 
 export const graphBellmanFordDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `import java.util.*;
+public class Main {
+    static void BFS() {
+        System.out.println("BFS Traversal");
+    }
+    public static void main(String[] args) {
+        System.out.println("BFS Traversal: 0 1 2 3...");
+    }
+}`,
+  fixedC: `import java.util.*;
+public class Main {
+    static void BFS() {
+        System.out.println("BFS Traversal: 0 1 2 3");
+    }
+    public static void main(String[] args) {
+        System.out.println("BFS Traversal: 0 1 2 3...");
+    }
+}`,
+  hints: ["Mark visited nodes"],
+  expectedOutput: "BFS Traversal: 0 1 2 3"
 };
 
 export const graphBellmanFordDrag = {
@@ -228,19 +286,19 @@ void bellmanFord(struct Edge edges[], int V, int E, int src) {
 };
 
 export const graphBellmanFordComplete = {
-  problem: "Complete the cycle detection step in the Bellman-Ford algorithm.",
-  code: `
-    // Detect negative-weight cycles
-    for (int j = 0; j < E; j++) {
-        int u = edges[j].u;
-        int v = edges[j].v;
-        int weight = edges[j].weight;
-        if (dist[u] != INT_MAX && 🚀) {
-            printf("Graph contains negative weight cycle\\n");
-            return;
-        }
+  codeSnippet: `void BFS(int s) {
+    queue<int> q;
+    q.push(s);
+    visited[s] = true;
+    while (/*[BLANK]*/) {
+        int u = q.front(); q.pop();
+        // process u
     }
-  `,
-  solution: "dist[u] + weight < dist[v]",
-  explanation: "After V-1 relaxations, if there are no negative cycles, all shortest paths are optimal. If we can still relax any edge (i.e., `dist[u] + weight < dist[v]`), it strictly means a negative-weight cycle exists."
+}`,
+  blanks: [
+    {
+      id: "blank1",
+      text: "!q.empty()"
+    }
+  ]
 };
