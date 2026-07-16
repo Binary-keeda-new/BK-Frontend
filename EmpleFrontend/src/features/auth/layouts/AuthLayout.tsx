@@ -2,6 +2,7 @@
 'use client'
 
 import Link from 'next/link'
+import { LOGO_URL } from '@/shared/constants/assets'
 import { ReactNode, useEffect, useState } from 'react'
 import '@/features/auth/auth.css'
 import Image from 'next/image'
@@ -56,7 +57,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
             
             <Link href="/" className="nav-brand">
               <Image
-                src="/logo-final.png"
+                src={LOGO_URL}
                 alt="logo"
                 width={100}
                 height={100}

@@ -1,5 +1,5 @@
 "use client";
-
+import { LOGO_URL } from '@/shared/constants/assets'
 import { useState, useRef, useEffect } from "react";
 import {
   Clapperboard,
@@ -263,10 +263,10 @@ export default function Topbar() {
         {/* Logo */}
         <div
           className="flex items-center cursor-pointer transition-transform hover:scale-105"
-          onClick={() => router.push(isAuthenticated ? "/user/dashboard" : "/landing")}
+          onClick={() => router.push("/")}
         >
           <img
-            src="/logo-final.png"
+            src={LOGO_URL}
             alt="emple"
             className="h-[75px] w-auto object-contain"
           />

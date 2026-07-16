@@ -1,4 +1,4 @@
-export type EventType = 'hackathon' | 'techfest' | 'our-hackathon'
+export type EventType = 'hackathon' | 'techfest' | 'our-hackathon' | 'research-conference'
 
 export interface Event {
   _id: string

@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { LOGO_URL } from '@/shared/constants/assets'
 
 export type AdminSection =
   | 'dashboard'
@@ -206,7 +207,7 @@ export default function Sidebar({
           <div className="relative h-[42px] flex-1">
             {!collapsed ? (
               <Image
-                src="/logo-final.png"
+                src={LOGO_URL}
                 alt="Logo"
                 fill
                 className="object-contain object-left"

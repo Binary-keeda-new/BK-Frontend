@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LOGO_URL } from '@/shared/constants/assets'
 
 export default function LegalNavbar() {
   return (
@@ -17,7 +18,7 @@ export default function LegalNavbar() {
         <div className="flex h-24 items-center">
           <Link href="/">
             <img
-              src="/logo-final.png"
+              src={LOGO_URL}
               alt="Emple"
               className="h-16 md:h-20 w-auto cursor-pointer"
             />

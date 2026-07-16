@@ -164,7 +164,8 @@ export default function SignupPage() {
         console.error('Error details:', JSON.stringify(resp?.error))
         const errorCode = resp.error?.errorCode
         if (errorCode === 'E062107') {
-          setError('An account with this email already exists. Please sign in instead.')
+          setError('You already have an account! Redirecting to login....')
+          setTimeout(() => router.replace('/auth/login'), 2000)
         } else {
           setError(`Signup failed: ${resp.error?.errorMessage || 'Please try again.'}`)
         }
