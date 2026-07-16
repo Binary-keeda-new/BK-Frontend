@@ -10,6 +10,8 @@ import {
   fetchEventById, fetchRegistrationStatus, registerForEvent,
   fetchSubmissionStatus, submitSolution
 } from '../api/events.api'
+import { useWallet } from "@/providers/WalletProvider";
+import { useNotification } from "@/providers/NotificationProvider";
 
 const TYPE_CONFIG = {
   hackathon: { label: 'Hackathon', color: 'text-[#f26522]', bg: 'bg-[#2a1a10]', Icon: Trophy },
@@ -32,6 +34,9 @@ export default function EventDetailPage({ id }: { id: string }) {
   const [event, setEvent] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [descExpanded, setDescExpanded] = useState(false)
+  const { config: walletConfig, refreshWallet } = useWallet()
+  const { notifyReward } = useNotification()
+  const submissionReward = walletConfig?.HACKATHON?.SUBMISSION_REWARD || 50
 
   const [isRegistered, setIsRegistered] = useState(false)
   const [regLoading, setRegLoading] = useState(false)
@@ -144,6 +149,8 @@ export default function EventDetailPage({ id }: { id: string }) {
       await submitSolution(id, subForm)
       setHasSubmitted(true)
       setSubSuccess(true)
+      notifyReward("Hackathon Submission Reward", "Great work!", submissionReward)
+      refreshWallet()
     } catch (err: any) {
       setSubError(err.message || 'Submission not available yet')
     } finally {
@@ -349,7 +356,14 @@ export default function EventDetailPage({ id }: { id: string }) {
             {/* Submit section */}
             {isEmple && (
               <div ref={submitRef} id="submit" className="scroll-mt-20 flex flex-col gap-4 pb-10">
-                <h2 className="text-white font-semibold text-sm border-l-2 border-[#f26522] pl-3">Submit Solution</h2>
+                <div className="flex items-center justify-between">
+                  <h2 className="text-white font-semibold text-sm border-l-2 border-[#f26522] pl-3">Submit Solution</h2>
+                  {!hasSubmitted && (
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-green-500/10 border border-green-500/20 text-green-400 rounded-md text-xs font-medium">
+                      <span>🪙</span> Earn {submissionReward} Coins on Submission
+                    </div>
+                  )}
+                </div>
                 {!isRegistered ? (
                   <div className="flex flex-col items-center justify-center py-16 text-center">
                     <Lock size={40} className="text-[#333] mb-3" />

@@ -83,6 +83,10 @@ export default function LoginPage() {
       }
 
       const syncData = JSON.parse(syncText)
+      if (syncData.isNewUser) {
+        sessionStorage.setItem('show_signup_bonus', 'true')
+      }
+      
       const user = syncData.data?.user || syncData.user
       const role = user?.role
       const isEmailVerified = user?.isEmailVerified

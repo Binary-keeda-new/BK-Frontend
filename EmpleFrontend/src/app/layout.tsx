@@ -4,6 +4,8 @@ import "./landing/landing.css";
 import { ThemeProvider } from "../providers/ThemeContext";
 import { AuthProvider } from "@descope/nextjs-sdk";
 import { AppAuthProvider } from "@/providers/AppAuthProvider";
+import { WalletProvider } from "@/providers/WalletProvider";
+import { NotificationProvider } from "@/providers/NotificationProvider";
 
 export const dynamic = "force-dynamic";
 
@@ -36,7 +38,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         >
           <AppAuthProvider>
-            <ThemeProvider>{children}</ThemeProvider>
+            <NotificationProvider>
+              <WalletProvider>
+                <ThemeProvider>{children}</ThemeProvider>
+              </WalletProvider>
+            </NotificationProvider>
           </AppAuthProvider>
         </AuthProvider>
       </body>

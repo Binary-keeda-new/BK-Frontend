@@ -16,7 +16,9 @@ import SlideDrawer from "@/shared/components/ui/SlideDrawer";
 import MediaFeedWidget from "@/features/user/dashboard/components/MediaFeedWidget";
 import AIAssistantWidget from "@/features/ai-assistant/components/AIAssistantWidget";
 import EmptyState from "@/shared/components/ui/EmptyState";
-// import WalletBadge from "@/features/wallet/components/WalletBadge";
+import WalletBadge from "@/features/wallet/components/WalletBadge";
+import { useWallet } from "@/providers/WalletProvider";
+import { useNotification } from "@/providers/NotificationProvider";
 
 type Task = {
   text: string;
@@ -177,6 +179,10 @@ export default function Topbar() {
 
   const { session, isAuthenticated } = useSession() as any;
   const { user, isUserLoading } = useUser();
+  const { config, refreshWallet } = useWallet();
+  const { notifyReward } = useNotification();
+  
+  const todoReward = config?.TODO?.COMPLETION_REWARD || 5;
 
   const userEmail = user?.email || session?.user?.email || session?.token?.email;
   const fullName = user?.name || session?.user?.name || session?.token?.name;
@@ -253,7 +259,7 @@ export default function Topbar() {
         {/* Logo */}
         <div
           className="flex items-center cursor-pointer transition-transform hover:scale-105"
-          onClick={() => router.push(isAuthenticated ? "/user/dashboard" : "/landing")}
+          onClick={() => router.push("/")}
         >
           <img
             src="/logo-final.png"
@@ -266,7 +272,7 @@ export default function Topbar() {
         <div className="flex items-center gap-1 sm:gap-3">
 
           {/* Coin Badge */}
-          {/* isAuthenticated && <WalletBadge /> */}
+          {isAuthenticated && <WalletBadge />}
 
           {/* Media button */}
           {isAuthenticated && (
@@ -361,7 +367,7 @@ export default function Topbar() {
                       backgroundSize: "32px 32px",
                     }}
                   >
-                    <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center justify-between mb-2">
                       <h3 className="text-white font-semibold text-lg">
                         To Do List
                       </h3>
@@ -377,6 +383,11 @@ export default function Topbar() {
                         <RotateCcw size={18} />
                       </button>
                     </div>
+                    <div className="mb-4">
+                      <div className="inline-flex items-center gap-1.5 px-2 py-1 bg-green-500/10 border border-green-500/20 text-green-400 rounded-md text-xs font-medium">
+                        <span>🪙</span> Earn {todoReward} Coins on completing 3 daily todos
+                      </div>
+                    </div>
 
                     <div className="space-y-4">
                       {tasks.map((task, index) => (
@@ -386,8 +397,22 @@ export default function Topbar() {
                             checked={task.done}
                             onChange={() => {
                               const updated = [...tasks];
-                              updated[index].done = !updated[index].done;
+                              const isNowDone = !updated[index].done;
+                              updated[index].done = isNowDone;
                               setTasks(updated);
+
+                              if (isNowDone) {
+                                const completedCount = updated.filter(t => t.done && t.text.trim() !== "").length;
+                                if (completedCount >= 3) {
+                                  const todayStr = new Date().toISOString().split('T')[0];
+                                  const rewardKey = `todo_reward_${todayStr}`;
+                                  if (!localStorage.getItem(rewardKey)) {
+                                    notifyReward("Todo Milestone", "3 tasks completed!", todoReward);
+                                    refreshWallet();
+                                    localStorage.setItem(rewardKey, 'true');
+                                  }
+                                }
+                              }
                             }}
                             className="w-5 h-5 rounded-full accent-orange-500"
                           />
