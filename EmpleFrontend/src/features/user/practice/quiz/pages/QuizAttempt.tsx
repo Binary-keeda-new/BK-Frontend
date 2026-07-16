@@ -140,7 +140,6 @@ export default function QuizAttemptPage() {
       }
 
       setAttemptId(startedAttempt._id);
-      await loadAttempt(startedAttempt._id);
 
       // Only notify if we just started it (createdAt is recent) to prevent toast on refresh
       const isNew = Date.now() - new Date(startedAttempt.createdAt).getTime() < 10000;
