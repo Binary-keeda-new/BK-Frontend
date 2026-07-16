@@ -16,6 +16,8 @@ import SlideDrawer from "@/shared/components/ui/SlideDrawer";
 import MediaFeedWidget from "@/features/user/dashboard/components/MediaFeedWidget";
 import AIAssistantWidget from "@/features/ai-assistant/components/AIAssistantWidget";
 import EmptyState from "@/shared/components/ui/EmptyState";
+import { MessageCircleQuestion } from "lucide-react";
+import RequestFormDrawer from "@/features/user/requests/components/RequestFormDrawer";
 // import WalletBadge from "@/features/wallet/components/WalletBadge";
 
 type Task = {
@@ -178,7 +180,7 @@ export default function Topbar() {
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const todoRef = useRef<HTMLDivElement>(null);
-
+  const [requestOpen, setRequestOpen] = useState(false);
   const sdk = useDescope();
   const router = useRouter();
 
@@ -189,6 +191,7 @@ export default function Topbar() {
   const fullName = user?.name || session?.user?.name || session?.token?.name;
   const displayName = fullName || userEmail || "User";
 
+  
   const initials = fullName
     ? fullName
         .split(" ")
@@ -333,6 +336,18 @@ export default function Topbar() {
             </button>
           )}
 
+          {/* Raise a Request button */}
+{isAuthenticated && (
+  <button
+    title="Raise a Request"
+    onClick={() => setRequestOpen(true)}
+    className="w-11 h-11 flex items-center justify-center rounded-full text-[var(--muted2)]
+      transition-all duration-300 hover:-translate-y-[2px] hover:bg-orange-500/10 hover:text-orange-500"
+  >
+    <MessageCircleQuestion size={20} />
+  </button>
+)}
+
           {/* Productivity Button */}
 <button
   onClick={() => router.push("/user/productivity")}
@@ -456,6 +471,8 @@ export default function Topbar() {
           onMarkAllRead={handleMarkAllRead}
         />
       </SlideDrawer>
+      {/* Request Drawer */}
+<RequestFormDrawer isOpen={requestOpen} onClose={() => setRequestOpen(false)} />
 
     </header>
   );

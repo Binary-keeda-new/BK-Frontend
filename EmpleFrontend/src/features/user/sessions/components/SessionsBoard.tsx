@@ -8,10 +8,15 @@ const ITEMS_PER_PAGE = 9;
 
 // ── Session Card ────────────────────────────────────────────────────────────
 function SessionCard({ session, onWatch }: { session: Session; onWatch: (s: Session) => void }) {
-  const isWorkshop = session.category === 'workshop';
-  const categoryColor = isWorkshop ? '#a855f7' : '#ef4444';
-  const categoryBg = isWorkshop ? 'rgba(168,85,247,0.1)' : 'rgba(239,68,68,0.1)';
-  const categoryLabel = isWorkshop ? 'Workshop' : 'YT Session';
+  const categoryColor =
+    session.category === 'workshop' ? '#a855f7' :
+    session.category === 'bk-session' ? '#0ea5e9' : '#ef4444'
+  const categoryBg =
+    session.category === 'workshop' ? 'rgba(168,85,247,0.1)' :
+    session.category === 'bk-session' ? 'rgba(14,165,233,0.1)' : 'rgba(239,68,68,0.1)'
+  const categoryLabel =
+    session.category === 'workshop' ? 'Workshop' :
+    session.category === 'bk-session' ? 'BK Session' : 'YT Session'
 
   return (
     <article
@@ -33,7 +38,7 @@ function SessionCard({ session, onWatch }: { session: Session; onWatch: (s: Sess
         (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)';
         (e.currentTarget as HTMLElement).style.boxShadow = 'none';
       }}
-      onClick={() => onWatch(session)}
+      onClick={() => { if (session.category !== 'bk-session') onWatch(session); }}
     >
       {/* Thumbnail */}
       <div style={{ position: 'relative', width: '100%', aspectRatio: '16/9', background: 'var(--surface2)', overflow: 'hidden' }}>
@@ -45,27 +50,36 @@ function SessionCard({ session, onWatch }: { session: Session; onWatch: (s: Sess
           />
         ) : (
           <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--muted)' }}>
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <polygon points="5 3 19 12 5 21 5 3" />
+            </svg>
           </div>
         )}
-        {/* Play overlay */}
-        <div style={{
-          position: 'absolute', inset: 0,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          background: 'rgba(0,0,0,0.3)',
-          opacity: 0, transition: 'opacity 0.2s',
-        }}
-          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity = '1'; }}
-          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity = '0'; }}
-        >
-          <div style={{
-            width: 48, height: 48, borderRadius: '50%',
-            background: 'rgba(255,255,255,0.9)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+
+        {/* Play overlay — only for non BK sessions */}
+        {session.category !== 'bk-session' && (
+          <div
+            style={{
+              position: 'absolute', inset: 0,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: 'rgba(0,0,0,0.3)',
+              opacity: 0, transition: 'opacity 0.2s',
+            }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity = '1'; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity = '0'; }}
+          >
+            <div style={{
+              width: 48, height: 48, borderRadius: '50%',
+              background: 'rgba(255,255,255,0.9)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="#000">
+                <polygon points="5 3 19 12 5 21 5 3" />
+              </svg>
+            </div>
           </div>
-        </div>
+        )}
+
         {/* Category badge */}
         <span style={{
           position: 'absolute', top: 10, left: 10,
@@ -84,25 +98,56 @@ function SessionCard({ session, onWatch }: { session: Session; onWatch: (s: Sess
           {session.title}
         </h3>
         {session.description && (
-          <p style={{ margin: 0, fontSize: 13, color: 'var(--muted)', lineHeight: 1.6,
-            display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+          <p style={{
+            margin: 0, fontSize: 13, color: 'var(--muted)', lineHeight: 1.6,
+            display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden',
+          }}>
             {session.description}
           </p>
         )}
+
         <div style={{ marginTop: 'auto', paddingTop: 8 }}>
-          <button
-            onClick={e => { e.stopPropagation(); onWatch(session); }}
-            style={{
-              width: '100%', padding: '9px 0', borderRadius: 9,
-              background: 'var(--orange)', color: '#fff',
-              fontSize: 13, fontWeight: 700, border: 'none', cursor: 'pointer',
-              transition: 'opacity 0.15s',
-            }}
-            onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.opacity = '0.88'; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.opacity = '1'; }}
-          >
-            Watch Now
-          </button>
+          {session.category === 'bk-session' ? (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+              {session.scheduledAt && (
+                <p style={{
+                  margin: 0, fontSize: 12, color: '#0ea5e9',
+                  fontWeight: 600, textAlign: 'center',
+                }}>
+                  📅 {new Date(session.scheduledAt).toLocaleString()}
+                </p>
+              )}
+              <a
+                href={session.meetingLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={e => e.stopPropagation()}
+                style={{
+                  width: '100%', padding: '9px 0', borderRadius: 9,
+                  background: '#0ea5e9', color: '#fff',
+                  fontSize: 13, fontWeight: 700, border: 'none', cursor: 'pointer',
+                  textDecoration: 'none', textAlign: 'center', display: 'block',
+                  transition: 'opacity 0.15s',
+                }}
+              >
+                Join Session
+              </a>
+            </div>
+          ) : (
+            <button
+              onClick={e => { e.stopPropagation(); onWatch(session); }}
+              style={{
+                width: '100%', padding: '9px 0', borderRadius: 9,
+                background: 'var(--orange)', color: '#fff',
+                fontSize: 13, fontWeight: 700, border: 'none', cursor: 'pointer',
+                transition: 'opacity 0.15s',
+              }}
+              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.opacity = '0.88'; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.opacity = '1'; }}
+            >
+              Watch Now
+            </button>
+          )}
         </div>
       </div>
     </article>
@@ -272,6 +317,7 @@ export default function SessionsBoard() {
     { key: 'all', label: 'All' },
     { key: 'workshop', label: 'Workshop' },
     { key: 'yt-session', label: 'YT Session' },
+    { key: 'bk-session', label: 'BK Session' },
   ];
 
   return (
