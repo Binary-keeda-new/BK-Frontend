@@ -134,30 +134,31 @@ export default function Sidebar() {
 
       {/* Collapsed */}
      <button
-  onClick={() => setCollapsed(!collapsed)}
-  className="
-    absolute
-    top-[63px]
-    -right-4
-    w-7
-    h-7
-    z-[9999]
-    rounded-full
-    bg-[#F15A22]
-    text-white
-    flex
-    items-center
-    justify-center
-    shadow-lg
-    hover:scale-105
-    transition-all
-  "
->
-    {collapsed ? (
-     <ChevronRight size={18} strokeWidth={2.8} />
-     ) : (
-     <ChevronLeft size={18} strokeWidth={2.8} />
-    )}
+      onClick={() => setCollapsed(!collapsed)}
+      className="
+        absolute
+        top-[85px]
+        -right-3.5
+        w-7
+        h-7
+        z-[9999]
+        rounded-full
+        bg-[var(--surface)]
+        border border-[var(--border)]
+        text-[var(--muted2)]
+        hover:text-white
+        flex
+        items-center
+        justify-center
+        shadow-md
+        transition-all
+      "
+    >
+        {collapsed ? (
+         <ChevronRight size={16} strokeWidth={2.5} />
+         ) : (
+         <ChevronLeft size={16} strokeWidth={2.5} />
+        )}
     </button>
 
 
