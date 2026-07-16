@@ -270,4 +270,15 @@ export const chapter11_MCQ = [
   }
 ];
 
-export const chapter11_COMPLETE_EXERCISES = [];
+export const chapter11_COMPLETE_EXERCISES = [
+  {
+    template: `class Dog ___ Animal {
+    public void bark() {
+        System.out.println("Woof");
+    }
+}`,
+    blanks: [
+      "extends"
+    ]
+  }
+];

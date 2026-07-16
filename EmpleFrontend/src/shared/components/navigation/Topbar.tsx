@@ -1,5 +1,5 @@
 "use client";
-
+import { LOGO_URL } from '@/shared/constants/assets'
 import { useState, useRef, useEffect } from "react";
 import {
   Clapperboard,
@@ -19,6 +19,9 @@ import EmptyState from "@/shared/components/ui/EmptyState";
 import WalletBadge from "@/features/wallet/components/WalletBadge";
 import { useWallet } from "@/providers/WalletProvider";
 import { useNotification } from "@/providers/NotificationProvider";
+import { MessageCircleQuestion } from "lucide-react";
+import RequestFormDrawer from "@/features/user/requests/components/RequestFormDrawer";
+// import WalletBadge from "@/features/wallet/components/WalletBadge";
 
 type Task = {
   text: string;
@@ -169,11 +172,18 @@ export default function Topbar() {
   const [notifOpen, setNotifOpen] = useState(false);
   const [tasks, setTasks] = useState<Task[]>([{ text: "", done: false }]);
   const [allNotifications, setAllNotifications] = useState<any[]>([]);
-  const [readIds, setReadIds] = useState<Set<string>>(new Set());
+  const [readIds, setReadIds] = useState<Set<string>>(() => {
+  try {
+    const stored = localStorage.getItem('readNotificationIds')
+    return stored ? new Set(JSON.parse(stored)) : new Set()
+  } catch {
+    return new Set()
+  }
+});
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const todoRef = useRef<HTMLDivElement>(null);
-
+  const [requestOpen, setRequestOpen] = useState(false);
   const sdk = useDescope();
   const router = useRouter();
 
@@ -188,6 +198,7 @@ export default function Topbar() {
   const fullName = user?.name || session?.user?.name || session?.token?.name;
   const displayName = fullName || userEmail || "User";
 
+  
   const initials = fullName
     ? fullName
         .split(" ")
@@ -220,20 +231,23 @@ export default function Topbar() {
   };
 
   const handleToggleRead = (id: string) => {
-    setReadIds(prev => {
-      const next = new Set(prev)
-      if (next.has(id)) {
-        next.delete(id)
-      } else {
-        next.add(id)
-      }
-      return next
-    })
-  }
+  setReadIds(prev => {
+    const next = new Set(prev)
+    if (next.has(id)) {
+      next.delete(id)
+    } else {
+      next.add(id)
+    }
+    localStorage.setItem('readNotificationIds', JSON.stringify([...next]))
+    return next
+  })
+}
 
   const handleMarkAllRead = () => {
-    setReadIds(new Set(allNotifications.map(n => n._id)))
-  }
+  const allIds = new Set(allNotifications.map(n => n._id))
+  setReadIds(allIds)
+  localStorage.setItem('readNotificationIds', JSON.stringify([...allIds]))
+}
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -262,7 +276,7 @@ export default function Topbar() {
           onClick={() => router.push("/")}
         >
           <img
-            src="/logo-final.png"
+            src={LOGO_URL}
             alt="emple"
             className="h-[75px] w-auto object-contain"
           />
@@ -453,6 +467,36 @@ export default function Topbar() {
               </div>
             </div>
           )}
+          {/* Raise a Request button */}
+{isAuthenticated && (
+  <button
+    title="Raise a Request"
+    onClick={() => setRequestOpen(true)}
+    className="w-11 h-11 flex items-center justify-center rounded-full text-[var(--muted2)]
+      transition-all duration-300 hover:-translate-y-[2px] hover:bg-orange-500/10 hover:text-orange-500"
+  >
+    <MessageCircleQuestion size={20} />
+  </button>
+)}
+
+          {/* Productivity Button */}
+<button
+  onClick={() => router.push("/user/productivity")}
+  className="
+    w-10 h-10
+    rounded-full
+    flex items-center justify-center
+    cursor-pointer
+    text-gray-400
+    transition-all duration-300 ease-out
+    hover:bg-[rgba(249,115,22,0.12)]
+    hover:text-[#f97316]
+    hover:-translate-y-1
+  "
+  title="Productivity Hub"
+>
+  <ListTodo size={22} />
+</button>
 
           {/* Avatar Dropdown */}
           {isAuthenticated ? (
@@ -558,6 +602,8 @@ export default function Topbar() {
           onMarkAllRead={handleMarkAllRead}
         />
       </SlideDrawer>
+      {/* Request Drawer */}
+<RequestFormDrawer isOpen={requestOpen} onClose={() => setRequestOpen(false)} />
 
     </header>
   );

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useSession } from "@descope/nextjs-sdk/client";
 import { Lock } from "lucide-react";
 import LoginGate from "@/shared/components/access/LoginGate";
@@ -112,28 +113,14 @@ export default function Sidebar() {
       `}
       style={{ background: "var(--surface)", borderRight: "1px solid var(--border)" }}
     >
-      {/* Floating Collapse Toggle */}
-      <button
-        onClick={() => setCollapsed(!collapsed)}
-        className="absolute -right-3.5 top-[82px] w-7 h-7 flex items-center justify-center bg-[var(--surface)] border border-[var(--border)] rounded-full text-[var(--muted2)] hover:text-[var(--orange)] shadow-md z-50 cursor-pointer transition-colors"
-        title="Toggle Sidebar"
-      >
-        <svg
-          width="14" height="14" viewBox="0 0 12 12" fill="none"
-          stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"
-          style={{ transform: collapsed ? "scaleX(-1)" : "scaleX(1)", transition: "transform 380ms ease" }}
-        >
-          <polyline points="8,2 4,6 8,10"/>
-        </svg>
-      </button>
       {/* Logo */}
       <div className={`flex items-center ${collapsed ? "justify-center" : "justify-start"} px-[16px] py-5 min-h-[64px] flex-shrink-0`}>
-        <div className={`flex items-center gap-2 ${collapsed ? "hidden" : "flex"}`}>
+        <Link href="/" className={`flex items-center gap-2 ${collapsed ? "hidden" : "flex"}`} style={{ textDecoration: 'none' }}>
           <div
-            className="w-9 h-9 rounded-[10px] flex items-center justify-center flex-shrink-0 font-extrabold text-base text-white italic font-syne transition-all duration-200 hover:scale-[1.07] hover:-rotate-3"
-            style={{ background: "var(--orange)", boxShadow: "0 4px 14px rgba(241,90,34,0.35)" }}
+            className="w-9 h-9 rounded-[10px] flex items-center justify-center flex-shrink-0 font-extrabold text-base text-white italicfont-syne transition-all duration-200 hover:scale-[1.07] hover:-rotate-3"
+            style={{ background: "var(--orange)", boxShadow: "0 4px14px rgba(241,90,34,0.35)" }}
           >
-            e
+          e
           </div>
           <span
             className="font-syne text-xl font-extrabold tracking-tight whitespace-nowrap"
@@ -141,8 +128,38 @@ export default function Sidebar() {
           >
             <em className="not-italic" style={{ color: "var(--orange)" }}>e</em>mple
           </span>
-        </div>
+        </Link>
       </div>
+
+
+      {/* Collapsed */}
+     <button
+  onClick={() => setCollapsed(!collapsed)}
+  className="
+    absolute
+    top-[63px]
+    -right-4
+    w-7
+    h-7
+    z-[9999]
+    rounded-full
+    bg-[#F15A22]
+    text-white
+    flex
+    items-center
+    justify-center
+    shadow-lg
+    hover:scale-105
+    transition-all
+  "
+>
+    {collapsed ? (
+     <ChevronRight size={18} strokeWidth={2.8} />
+     ) : (
+     <ChevronLeft size={18} strokeWidth={2.8} />
+    )}
+    </button>
+
 
       {/* Nav items */}
       <nav className="flex-1 px-[10px] py-1 overflow-y-auto overflow-x-hidden">

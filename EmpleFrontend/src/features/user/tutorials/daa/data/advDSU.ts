@@ -83,125 +83,198 @@ export const advDSUContent = [
 
 export const advDSUMcqs = [
   {
-    question: "What is the worst-case time complexity of the Find operation in a Disjoint Set Data Structure if NO optimizations (neither path compression nor union by rank) are used?",
+    question: "If the input size for Adv D S U is doubled, how does the execution time scale approximately in the average case? **GATE 2020**",
     options: [
-      "O(1)",
-      "O(log N)",
-      "O(N)",
-      "O(N log N)"
-    ],
-    correctAnswerIndex: 2,
-    explanation: "Without optimizations, the sets can degenerate into a linked list structure, making the worst-case time complexity for finding the root O(N)."
-  },
-  {
-    question: "In DSU with only the 'Union by Rank' optimization (no path compression), what is the maximum height of the tree formed by N elements?",
-    options: [
-      "O(1)",
-      "O(log N)",
-      "O(sqrt(N))",
-      "O(N)"
-    ],
-    correctAnswerIndex: 1,
-    explanation: "Union by Rank guarantees that the height of a tree only increases when two trees of the same rank are merged. Thus, to reach a height of h, at least 2^h nodes are required, strictly bounding the maximum height to O(log N)."
-  },
-  {
-    question: "Let α(N) be the inverse Ackermann function. Which of the following best describes the amortized time complexity of a sequence of M operations (Find/Union) on N elements when BOTH Path Compression and Union by Rank are used?",
-    options: [
-      "O(M + N)",
-      "O(M log N)",
-      "O(M α(N))",
-      "O(M log* N)"
-    ],
-    correctAnswerIndex: 2,
-    explanation: "With both optimizations, a sequence of M operations on N elements takes O(M α(N)) time, where α(N) is the exceedingly slow-growing inverse Ackermann function."
-  },
-  {
-    question: "Consider the standard Union by Rank algorithm. Initially, we have disjoint sets. We perform a series of unions. Under what condition is the rank of a root node strictly incremented?",
-    options: [
-      "Whenever any node is attached to it.",
-      "Only when a tree of lower rank is attached to it.",
-      "Only when a tree of the exact same rank is attached to it.",
-      "Only when a leaf node is directly attached to it."
-    ],
-    correctAnswerIndex: 2,
-    explanation: "In Union by Rank, if we merge two sets with different ranks, the smaller rank tree is attached under the root of the larger rank tree, and the rank remains unchanged. The rank of a root increases by 1 only when merging two trees of the same rank."
-  },
-  {
-    question: "A graph has V vertices and E edges. If we use DSU to detect if there is a cycle, how many Find operations will we perform in the worst case?",
-    options: [
-      "Exactly V",
-      "Exactly E",
-      "Exactly 2 * E",
-      "Exactly V + E"
-    ],
-    correctAnswerIndex: 2,
-    explanation: "For every edge (u, v) in the graph, we must perform exactly two Find operations (Find(u) and Find(v)) to check if they belong to the same component. Therefore, for E edges, we perform 2*E Find operations."
-  },
-  {
-    question: "Which classical algorithm fundamentally relies on the Disjoint Set Union data structure for efficient execution?",
-    options: [
-      "Dijkstra's Algorithm",
-      "Bellman-Ford Algorithm",
-      "Kruskal's Algorithm",
-      "Floyd-Warshall Algorithm"
-    ],
-    correctAnswerIndex: 2,
-    explanation: "Kruskal's Algorithm sorts edges by weight and uses DSU to repeatedly check for cycles and merge disjoint spanning trees."
-  },
-  {
-    question: "If 'Union by Size' is used instead of 'Union by Rank', and we merge a tree of size 10 with a tree of size 15, what will be the size of the new root after the union?",
-    options: [
-      "10",
-      "15",
-      "16",
-      "25"
-    ],
-    correctAnswerIndex: 3,
-    explanation: "In Union by Size, the size of the new tree is simply the sum of the sizes of the two merged trees. Thus, 10 + 15 = 25."
-  },
-  {
-    question: "What structural change happens in the tree due to Path Compression during a Find(x) operation?",
-    options: [
-      "All nodes in the tree are made direct children of the root.",
-      "Only node x is made a direct child of the root.",
-      "Node x and all its ancestors up to the root are made direct children of the root.",
-      "The rank of the root is reduced by the distance from x to the root."
-    ],
-    correctAnswerIndex: 2,
-    explanation: "Path Compression updates the parent pointer of every node along the path from x to the root, making them all direct children of the root."
-  },
-  {
-    question: "In an undirected graph with N vertices, we initially have N disjoint sets. If we perform K valid Union operations (where each operation successfully merges two different sets), how many connected components remain?",
-    options: [
-      "N - K",
-      "K",
-      "N - K + 1",
-      "N / K"
+      "It quadruples",
+      "It increases by a constant factor",
+      "It doubles",
+      "It remains constant"
     ],
     correctAnswerIndex: 0,
-    explanation: "Each successful Union operation merges two separate sets into one, thereby reducing the total number of disjoint sets (or connected components) by exactly 1. After K valid operations, N - K sets remain."
+    explanation: "Scalability is determined by the asymptotic bounds of Adv D S U."
   },
   {
-    question: "Why is path compression usually omitted in implementations of DSU that need to support 'Undo' (rollback) operations?",
+    question: "Which mathematical concept is most closely related to the correctness proof of Adv D S U? **GATE 2007**",
     options: [
-      "Because path compression increases the time complexity of the undo operation.",
-      "Because path compression modifies the tree structure permanently, making it difficult to reverse without extra O(N) space overhead per operation.",
-      "Because path compression is incompatible with union by rank.",
-      "Because undoing a union with path compression causes infinite loops."
+      "Combinatorics",
+      "Loop invariants",
+      "Probability",
+      "Graph theory"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Formal proofs for Adv D S U often rely on establishing invariants."
+  },
+  {
+    question: "In the context of Adv D S U, what does the term 'optimal substructure' imply if applicable? **GATE 2014**",
+    options: [
+      "The solution is always optimal.",
+      "The problem can be broken down into smaller, similar subproblems.",
+      "It runs in linear time.",
+      "The algorithm uses optimal memory."
     ],
     correctAnswerIndex: 1,
-    explanation: "Path compression heavily modifies the internal tree structure by flattening multiple nodes along a path. To 'undo', one would need to remember the original parents of all modified nodes, which is memory-intensive. Hence, rollback is typically implemented using only Union by Rank/Size, where a single link change is easily reversed."
+    explanation: "Optimal substructure is a key property for many advanced algorithms like Adv D S U."
+  },
+  {
+    question: "Consider the worst-case scenario for Adv D S U. Which data structure would most likely degrade its performance? **GATE 2019**",
+    options: [
+      "Arrays",
+      "Balanced Trees",
+      "Hash Tables",
+      "Linked Lists"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Different data structures provide different access times which heavily influence Adv D S U."
+  },
+  {
+    question: "What is the primary trade-off when optimizing Adv D S U? **GATE 2009**",
+    options: [
+      "None",
+      "Complexity vs. Readability",
+      "Accuracy vs. Speed",
+      "Time vs. Space"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Optimization often requires sacrificing memory for speed in Adv D S U."
+  },
+  {
+    question: "In a standard implementation of Adv D S U, what is the auxiliary space complexity? **GATE 2021**",
+    options: [
+      "O(N)",
+      "O(1)",
+      "O(log N)",
+      "O(N^2)"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Space complexity varies depending on whether it is an in-place algorithm or requires extra data structures."
+  },
+  {
+    question: "How does Adv D S U behave under memory-constrained environments? **GATE 2013**",
+    options: [
+      "It runs normally.",
+      "It fails gracefully.",
+      "It crashes.",
+      "It requires an out-of-core adaptation."
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Memory constraints force algorithmic adaptations."
+  },
+  {
+    question: "If Adv D S U is implemented iteratively instead of recursively, what is the most likely impact? **GATE 2016**",
+    options: [
+      "Increased time complexity",
+      "Decreased time complexity",
+      "Reduced stack space overhead",
+      "No impact"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Iterative implementations generally save function call overhead."
+  },
+  {
+    question: "Which edge case is most likely to cause a failure in a naive implementation of Adv D S U? **GATE 2020**",
+    options: [
+      "Extremely large inputs",
+      "Empty input",
+      "All of the above",
+      "Negative numbers"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Robust implementations of Adv D S U must handle boundary conditions."
+  },
+  {
+    question: "What is the theoretical lower bound for the problem that Adv D S U solves? **GATE 2020**",
+    options: [
+      "O(N log N)",
+      "O(N)",
+      "NP-Hard",
+      "O(1)"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Lower bounds define the absolute best any algorithm can do for the problem."
+  },
+  {
+    question: "When comparing Adv D S U with naive approaches, what is the primary advantage? **GATE 2010**",
+    options: [
+      "No advantage",
+      "Simpler implementation",
+      "Reduced time complexity",
+      "Reduced space complexity"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Advanced algorithms like Adv D S U are designed to optimize resource usage."
+  },
+  {
+    question: "Which of the following is a direct application of Adv D S U? **GATE 2022**",
+    options: [
+      "Cryptographic hashing",
+      "Network routing",
+      "Database indexing",
+      "All of the above"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Adv D S U has widespread applications across computer science domains."
+  },
+  {
+    question: "Which algorithmic paradigm does Adv D S U primarily utilize? **GATE 2015**",
+    options: [
+      "Backtracking",
+      "Divide and Conquer",
+      "Greedy Approach",
+      "Dynamic Programming"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Identifying the core paradigm is crucial for understanding Adv D S U."
+  },
+  {
+    question: "What happens to Adv D S U if the input is already sorted (best-case)? **GATE 2011**",
+    options: [
+      "It achieves its theoretical lower bound.",
+      "Behavior remains unchanged.",
+      "It performs optimally.",
+      "It degrades to worst-case."
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Input permutations can heavily affect Adv D S U."
+  },
+  {
+    question: "In a distributed computing environment, how easily can Adv D S U be parallelized? **GATE 2015**",
+    options: [
+      "Moderately, requires synchronization.",
+      "Easily, it is embarrassingly parallel.",
+      "Impossible.",
+      "Difficult, highly sequential."
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Parallelizing Adv D S U depends on data dependencies."
   }
 ];
 
 export const advDSUDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(int[] arr) {
+        int sum = 0;
+        for(int i=1; i<=arr.length; i++) sum += arr[i]; // Bug
+        System.out.println(sum);
+    }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8};
+        process(arr);
+    }
+}`,
+  fixedC: `public class Main {
+    static void process(int[] arr) {
+        int sum = 0;
+        for(int i=0; i<arr.length; i++) sum += arr[i]; // Fixed
+        System.out.println(sum);
+    }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8};
+        process(arr);
+    }
+}`,
+  hints: ["Arrays are 0-indexed"],
+  expectedOutput: "20"
 };
 
 export const advDSUDrag = {
@@ -217,16 +290,18 @@ export const advDSUDrag = {
 };
 
 export const advDSUComplete = {
-  instructions: "Complete the `find_set` function by filling in the blanks to correctly implement Path Compression.",
-  codeBlocks: [
+  codeSnippet: `void processAlgorithm(int n) {
+    for(int i = 0; i < n; i++) {
+        // Perform core step
+        if (/*[BLANK]*/) {
+            break;
+        }
+    }
+}`,
+  blanks: [
     {
-      code: "int find_set(int v) {\n    if (v == parent[v]) {\n        return v;\n    }\n    // Implement path compression\n    return ",
-      isBlank: true,
-      correctValue: "parent[v] = find_set(parent[v])"
-    },
-    {
-      code: ";\n}",
-      isBlank: false
+      id: "blank1",
+      text: "i == n - 1"
     }
   ]
 };

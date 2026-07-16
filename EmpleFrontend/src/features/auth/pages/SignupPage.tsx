@@ -60,17 +60,25 @@ export default function SignupPage() {
       return
     }
 
-    // Debounce — wait 400ms after user stops typing
     if (debounceRef.current) clearTimeout(debounceRef.current)
 
     debounceRef.current = setTimeout(async () => {
       setFetchingUni(true)
       try {
-        const res = await fetch(
-          `http://universities.hipolabs.com/search?name=${encodeURIComponent(form.college)}&country=India`
-        )
+        let res
+        try {
+          // Try https first (for production)
+          res = await fetch(
+            `https://universities.hipolabs.com/search?name=${encodeURIComponent(form.college)}&country=India`
+          )
+        } catch {
+          // Fallback to http (for localhost)
+          res = await fetch(
+            `http://universities.hipolabs.com/search?name=${encodeURIComponent(form.college)}&country=India`
+          )
+        }
         const data = await res.json()
-        const names = data.map((u: any) => u.name).slice(0, 8) // max 8 results
+        const names = data.map((u: any) => u.name).slice(0, 8)
         setUniversities(names)
         setShowDropdown(names.length > 0)
       } catch {
@@ -156,7 +164,8 @@ export default function SignupPage() {
         console.error('Error details:', JSON.stringify(resp?.error))
         const errorCode = resp.error?.errorCode
         if (errorCode === 'E062107') {
-          setError('An account with this email already exists. Please sign in instead.')
+          setError('You already have an account! Redirecting to login....')
+          setTimeout(() => router.replace('/auth/login'), 2000)
         } else {
           setError(`Signup failed: ${resp.error?.errorMessage || 'Please try again.'}`)
         }
@@ -277,7 +286,7 @@ export default function SignupPage() {
             {/* College with autocomplete */}
             <div className="auth-field" style={{ position: 'relative' }} ref={dropdownRef}>
               <label className="auth-label">College / University</label>
-              <div className="auth-input-wrap">
+              <div className="auth-input-wrap" style={{ position: 'relative' }}>
                 <input
                   className="auth-input"
                   type="text"

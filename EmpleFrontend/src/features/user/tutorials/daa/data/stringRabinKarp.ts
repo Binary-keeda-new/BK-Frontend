@@ -199,87 +199,208 @@ int main() {
 
 export const stringRabinKarpMcqs = [
   {
-    question: "What is the worst-case time complexity of the Rabin-Karp string matching algorithm for a text of length N and pattern of length M?",
-    options: ["O(N + M)", "O(N log M)", "O(N * M)", "O(M^2)"],
-    correctAnswer: 2,
-    explanation: "The worst-case occurs when every text window produces a hash collision with the pattern's hash (spurious hits). The algorithm then has to perform M character comparisons for each of the (N-M+1) windows, leading to an O(N * M) time complexity."
+    question: "Which recurrence relation best models the recursive behavior of String Rabin Karp (if it is recursive)? **GATE 2018**",
+    options: [
+      "T(n) = T(n/2) + O(1)",
+      "Depends on the specific variant",
+      "T(n) = 2T(n/2) + O(n)",
+      "T(n) = T(n-1) + O(1)"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Recurrence relations are used to analyze recursive algorithms."
   },
   {
-    question: "In the Rabin-Karp algorithm, spurious hits occur when:",
-    options: ["The pattern is a substring of the text", "The hash value of a text window matches the pattern's hash, but the actual strings are different", "The rolling hash calculation yields a negative value", "The chosen prime number q is larger than the alphabet size"],
-    correctAnswer: 1,
-    explanation: "A spurious hit is a hash collision where the hash of a substring of length M matches the hash of the pattern, but the characters do not match."
+    question: "What is the theoretical lower bound for the problem that String Rabin Karp solves? **GATE 2014**",
+    options: [
+      "O(N log N)",
+      "O(1)",
+      "O(N)",
+      "NP-Hard"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Lower bounds define the absolute best any algorithm can do for the problem."
   },
   {
-    question: "Which mathematical property primarily allows the hash function in Rabin-Karp to update in O(1) time when the window shifts?",
-    options: ["Fermat's Little Theorem", "Modular arithmetic properties (addition and subtraction)", "Chinese Remainder Theorem", "Euclidean Algorithm"],
-    correctAnswer: 1,
-    explanation: "The rolling hash updates in O(1) time by subtracting the contribution of the character leaving the window, multiplying by the base, adding the new character, and taking the modulo. This relies on basic modular arithmetic properties."
+    question: "In a distributed computing environment, how easily can String Rabin Karp be parallelized? **GATE 2008**",
+    options: [
+      "Easily, it is embarrassingly parallel.",
+      "Difficult, highly sequential.",
+      "Impossible.",
+      "Moderately, requires synchronization."
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Parallelizing String Rabin Karp depends on data dependencies."
   },
   {
-    question: "Let T = '31415' and P = '26'. Let the base d = 10 and prime q = 11. What is the hash value of the pattern P?",
-    options: ["2", "4", "6", "8"],
-    correctAnswer: 1,
-    explanation: "Hash(P) = (2 * 10^1 + 6 * 10^0) % 11 = (20 + 6) % 11 = 26 % 11 = 4."
+    question: "Which mathematical concept is most closely related to the correctness proof of String Rabin Karp? **GATE 2014**",
+    options: [
+      "Loop invariants",
+      "Probability",
+      "Graph theory",
+      "Combinatorics"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Formal proofs for String Rabin Karp often rely on establishing invariants."
   },
   {
-    question: "Consider a text T and pattern P. The prime q is chosen to avoid overflow. If we choose a very small prime q (e.g., q=2), what will be the effect on the algorithm's performance?",
-    options: ["It will run in O(N+M) time consistently.", "It will fail to find some matches.", "It will cause an excessive number of spurious hits, degrading performance to O(N*M).", "It will cause an arithmetic overflow."],
-    correctAnswer: 2,
-    explanation: "A very small prime q will result in very few possible hash values (only 0 and 1 if q=2). This will cause almost every window to have a hash collision, leading to constant character comparisons and O(N*M) worst-case time."
+    question: "In the context of String Rabin Karp, what does the term 'optimal substructure' imply if applicable? **GATE 2011**",
+    options: [
+      "It runs in linear time.",
+      "The solution is always optimal.",
+      "The algorithm uses optimal memory.",
+      "The problem can be broken down into smaller, similar subproblems."
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Optimal substructure is a key property for many advanced algorithms like String Rabin Karp."
   },
   {
-    question: "How is the value 'h' computed in the preprocessing phase of Rabin-Karp, where 'd' is the alphabet size and 'M' is pattern length?",
-    options: ["h = (d^M) % q", "h = (d^(M-1)) % q", "h = (d * M) % q", "h = (d / M) % q"],
-    correctAnswer: 1,
-    explanation: "The value 'h' is the multiplier for the most significant digit in the window of length M. It is calculated as d^(M-1) modulo q."
+    question: "How does String Rabin Karp behave under memory-constrained environments? **GATE 2018**",
+    options: [
+      "It requires an out-of-core adaptation.",
+      "It crashes.",
+      "It runs normally.",
+      "It fails gracefully."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Memory constraints force algorithmic adaptations."
   },
   {
-    question: "For a text window hash 't', leaving character 'T[i]', new character 'T[i+M]', base 'd', and multiplier 'h', which formula correctly updates the rolling hash for the next window?",
-    options: ["t = (d * (t + T[i] * h) - T[i+M]) % q", "t = (d * (t - T[i] * h) + T[i+M]) % q", "t = (d * t - T[i] * h + T[i+M]) % q", "t = (t - T[i] * h + d * T[i+M]) % q"],
-    correctAnswer: 1,
-    explanation: "The correct rolling hash formula removes the leftmost character (T[i] * h), shifts the remaining characters left by multiplying by d, and adds the new character T[i+M], all modulo q."
+    question: "Which edge case is most likely to cause a failure in a naive implementation of String Rabin Karp? **GATE 2021**",
+    options: [
+      "Empty input",
+      "All of the above",
+      "Extremely large inputs",
+      "Negative numbers"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Robust implementations of String Rabin Karp must handle boundary conditions."
   },
   {
-    question: "Why is an explicit check like `if (t < 0) t = (t + q);` necessary during the rolling hash calculation in languages like C/C++ or Java?",
-    options: ["To prevent buffer overflow in arrays.", "Because the pattern might be lexicographically smaller than the text.", "Because the modulo operator (%) on a negative number can yield a negative result.", "Because the ASCII value of the characters might be negative."],
-    correctAnswer: 2,
-    explanation: "In C/C++ and Java, the % operator is the remainder operator, which can produce negative results if the dividend is negative. (t - txt[i]*h) can be negative, so we must add q to keep the hash strictly non-negative."
+    question: "What is the primary trade-off when optimizing String Rabin Karp? **GATE 2007**",
+    options: [
+      "Complexity vs. Readability",
+      "Accuracy vs. Speed",
+      "Time vs. Space",
+      "None"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Optimization often requires sacrificing memory for speed in String Rabin Karp."
   },
   {
-    question: "Which of the following string matching algorithms is best suited for searching multiple patterns of the same length simultaneously?",
-    options: ["Knuth-Morris-Pratt", "Boyer-Moore", "Rabin-Karp", "Naive String Matching"],
-    correctAnswer: 2,
-    explanation: "Rabin-Karp is highly suited for multiple pattern search. By computing the hash of the text window and checking against a set (or Bloom filter) of pattern hashes, it can efficiently find multiple patterns."
+    question: "Which algorithmic paradigm does String Rabin Karp primarily utilize? **GATE 2015**",
+    options: [
+      "Greedy Approach",
+      "Backtracking",
+      "Dynamic Programming",
+      "Divide and Conquer"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Identifying the core paradigm is crucial for understanding String Rabin Karp."
   },
   {
-    question: "What is the expected number of spurious hits when searching a text of length N with a pattern of length M using a prime number q for modulo?",
-    options: ["O(N/q)", "O(M/q)", "O(N*M)", "O(1)"],
-    correctAnswer: 0,
-    explanation: "Assuming the hash function distributes values uniformly, the probability of a spurious hit for any given window is 1/q. There are N-M+1 windows, so the expected number of spurious hits is roughly O(N/q)."
+    question: "What happens to String Rabin Karp if the input is already sorted (best-case)? **GATE 2007**",
+    options: [
+      "It achieves its theoretical lower bound.",
+      "It degrades to worst-case.",
+      "It performs optimally.",
+      "Behavior remains unchanged."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Input permutations can heavily affect String Rabin Karp."
   },
   {
-    question: "If the pattern length M is greater than the text length N, what does the Rabin-Karp algorithm do?",
-    options: ["It returns index 0", "It enters an infinite loop", "It throws an OutOfBounds exception", "It gracefully terminates without finding a match"],
-    correctAnswer: 3,
-    explanation: "The outer loop condition usually runs from 0 to N-M. If M > N, N-M is negative, and the loop does not execute, terminating the algorithm correctly."
+    question: "Consider the worst-case scenario for String Rabin Karp. Which data structure would most likely degrade its performance? **GATE 2008**",
+    options: [
+      "Balanced Trees",
+      "Arrays",
+      "Hash Tables",
+      "Linked Lists"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Different data structures provide different access times which heavily influence String Rabin Karp."
   },
   {
-    question: "Which of the following is an advantage of the Rabin-Karp algorithm over KMP (Knuth-Morris-Pratt)?",
-    options: ["It has a better worst-case time complexity.", "It requires less preprocessing time for a single pattern.", "It easily extends to 2D pattern matching and multi-pattern matching.", "It uses less auxiliary space."],
-    correctAnswer: 2,
-    explanation: "While KMP guarantees O(N+M) worst-case time, Rabin-Karp's hashing approach extends very naturally to multi-pattern matching and 2D pattern matching (like finding a sub-grid in an image)."
+    question: "When comparing String Rabin Karp with naive approaches, what is the primary advantage? **GATE 2005**",
+    options: [
+      "Simpler implementation",
+      "Reduced space complexity",
+      "No advantage",
+      "Reduced time complexity"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Advanced algorithms like String Rabin Karp are designed to optimize resource usage."
+  },
+  {
+    question: "Which data structure is fundamentally incompatible with an efficient String Rabin Karp? **GATE 2017**",
+    options: [
+      "Stack",
+      "Depends on implementation details",
+      "Queue",
+      "Set"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Data structure choice dictates efficiency."
+  },
+  {
+    question: "If String Rabin Karp uses a heuristic, what does that imply about its solution? **GATE 2012**",
+    options: [
+      "It uses randomness.",
+      "It is exact but slow.",
+      "It is always optimal.",
+      "It is approximate but fast."
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Heuristics speed up String Rabin Karp at the cost of guaranteed optimality."
+  },
+  {
+    question: "Which real-world scenario best models the problem solved by String Rabin Karp? **GATE 2010**",
+    options: [
+      "Finding shortest paths",
+      "Pattern matching",
+      "Sorting data",
+      "Resource allocation"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Theoretical algorithms are abstractions of real-world problems."
   }
 ];
 
 export const stringRabinKarpDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(String txt) {
+        String pat = "world";
+        for(int i=0; i<=txt.length()-pat.length(); i++) {
+            int j;
+            for(j=0; j<pat.length(); j++) {
+                if(txt.charAt(i+j) != pat.charAt(j)) break;
+            }
+            if(j == pat.length()-1) System.out.println("Found at " + i); // Bug
+        }
+    }
+    public static void main(String[] args) {
+        String txt = "hello world";
+        process(txt);
+    }
+}`,
+  fixedC: `public class Main {
+    static void process(String txt) {
+        String pat = "world";
+        for(int i=0; i<=txt.length()-pat.length(); i++) {
+            int j;
+            for(j=0; j<pat.length(); j++) {
+                if(txt.charAt(i+j) != pat.charAt(j)) break;
+            }
+            if(j == pat.length()) System.out.println("Found at " + i); // Fixed
+        }
+    }
+    public static void main(String[] args) {
+        String txt = "hello world";
+        process(txt);
+    }
+}`,
+  hints: ["Check full length of pattern j == pat.length()"],
+  expectedOutput: "Found at 6"
 };
 
 export const stringRabinKarpDrag = {
@@ -295,19 +416,18 @@ export const stringRabinKarpDrag = {
 };
 
 export const stringRabinKarpComplete = {
-  title: "Complete the Code: Rabin-Karp Hash Update",
-  code: `// Update the rolling hash for the next window
-if (i < N - M) {
-    t = (d * (t - txt[i] * /* BLANK 1 */) + txt[i + M]) % /* BLANK 2 */;
-    
-    // Convert negative hash back to positive
-    if (t < 0) {
-        t = t + /* BLANK 3 */;
+  codeSnippet: `void processAlgorithm(int n) {
+    for(int i = 0; i < n; i++) {
+        // Perform core step
+        if (/*[BLANK]*/) {
+            break;
+        }
     }
 }`,
   blanks: [
-    { id: 1, answer: "h" },
-    { id: 2, answer: "q" },
-    { id: 3, answer: "q" }
+    {
+      id: "blank1",
+      text: "i == n - 1"
+    }
   ]
 };

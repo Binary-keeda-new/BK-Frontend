@@ -12,13 +12,6 @@ export default function CallbackPage() {
         const params = new URLSearchParams(window.location.search)
         const code = params.get('code')
 
-        // If came from signup page, redirect to login
-        const fromSignup = params.get('from') === 'signup'
-        if (fromSignup) {
-          window.location.replace('/auth/login')
-          return
-        }
-
         if (!code) {
           window.location.replace('/auth/login?error=missing_code')
           return

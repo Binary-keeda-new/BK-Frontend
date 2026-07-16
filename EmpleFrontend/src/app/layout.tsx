@@ -6,6 +6,7 @@ import { AuthProvider } from "@descope/nextjs-sdk";
 import { AppAuthProvider } from "@/providers/AppAuthProvider";
 import { WalletProvider } from "@/providers/WalletProvider";
 import { NotificationProvider } from "@/providers/NotificationProvider";
+import HelpChatWidget from "@/shared/components/help-chatbot/HelpChatWidget";
 
 export const dynamic = "force-dynamic";
 
@@ -43,6 +44,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <ThemeProvider>{children}</ThemeProvider>
               </WalletProvider>
             </NotificationProvider>
+            <ThemeProvider>
+              {children}
+              <HelpChatWidget />
+            </ThemeProvider>
           </AppAuthProvider>
         </AuthProvider>
       </body>

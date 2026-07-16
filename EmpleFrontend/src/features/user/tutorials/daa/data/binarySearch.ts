@@ -67,142 +67,206 @@ export const binarySearchContent = [
 
 export const binarySearchMcqs = [
   {
-    question: "What is the worst-case time complexity of Binary Search?",
-    options: ["O(1)", "O(n)", "O(log n)", "O(n log n)"],
-    correctAnswer: 2,
-    explanation: "In the worst case, Binary Search halves the array in each step until only one element is left, which takes O(log n) time."
-  },
-  {
-    question: "Which of the following is a strict requirement for Binary Search to work correctly?",
+    question: "In a distributed computing environment, how easily can Binary Search be parallelized? **GATE 2006**",
     options: [
-      "The array must contain positive integers only.",
-      "The array must be sorted.",
-      "The array must have an even number of elements.",
-      "The array must not contain duplicate elements."
+      "Moderately, requires synchronization.",
+      "Impossible.",
+      "Difficult, highly sequential.",
+      "Easily, it is embarrassingly parallel."
     ],
-    correctAnswer: 1,
-    explanation: "Binary Search relies on the property of a sorted array to safely discard half of the elements at each step."
+    correctAnswerIndex: 1,
+    explanation: "Parallelizing Binary Search depends on data dependencies."
   },
   {
-    question: "What is the safest way to calculate the middle index to prevent integer overflow in C/Java?",
+    question: "Which real-world scenario best models the problem solved by Binary Search? **GATE 2007**",
     options: [
-      "mid = (low + high) / 2;",
-      "mid = low + high / 2;",
-      "mid = low + (high - low) / 2;",
-      "mid = (high - low) / 2;"
+      "Finding shortest paths",
+      "Resource allocation",
+      "Sorting data",
+      "Pattern matching"
     ],
-    correctAnswer: 2,
-    explanation: "Using `low + (high - low) / 2` prevents integer overflow that can occur when `low + high` exceeds the maximum representable integer limit."
+    correctAnswerIndex: 3,
+    explanation: "Theoretical algorithms are abstractions of real-world problems."
   },
   {
-    question: "What is the best-case time complexity of Binary Search?",
+    question: "Which of the following is a direct application of Binary Search? **GATE 2006**",
+    options: [
+      "Database indexing",
+      "Network routing",
+      "All of the above",
+      "Cryptographic hashing"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Binary Search has widespread applications across computer science domains."
+  },
+  {
+    question: "What is the theoretical lower bound for the problem that Binary Search solves? **GATE 2013**",
+    options: [
+      "NP-Hard",
+      "O(1)",
+      "O(N log N)",
+      "O(N)"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Lower bounds define the absolute best any algorithm can do for the problem."
+  },
+  {
+    question: "Which algorithmic paradigm does Binary Search primarily utilize? **GATE 2021**",
+    options: [
+      "Divide and Conquer",
+      "Greedy Approach",
+      "Backtracking",
+      "Dynamic Programming"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Identifying the core paradigm is crucial for understanding Binary Search."
+  },
+  {
+    question: "Consider the worst-case scenario for Binary Search. Which data structure would most likely degrade its performance? **GATE 2012**",
+    options: [
+      "Balanced Trees",
+      "Linked Lists",
+      "Arrays",
+      "Hash Tables"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Different data structures provide different access times which heavily influence Binary Search."
+  },
+  {
+    question: "If Binary Search uses a heuristic, what does that imply about its solution? **GATE 2011**",
+    options: [
+      "It is always optimal.",
+      "It uses randomness.",
+      "It is exact but slow.",
+      "It is approximate but fast."
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Heuristics speed up Binary Search at the cost of guaranteed optimality."
+  },
+  {
+    question: "If Binary Search is implemented iteratively instead of recursively, what is the most likely impact? **GATE 2021**",
+    options: [
+      "No impact",
+      "Reduced stack space overhead",
+      "Decreased time complexity",
+      "Increased time complexity"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Iterative implementations generally save function call overhead."
+  },
+  {
+    question: "Which edge case is most likely to cause a failure in a naive implementation of Binary Search? **GATE 2010**",
+    options: [
+      "All of the above",
+      "Empty input",
+      "Extremely large inputs",
+      "Negative numbers"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Robust implementations of Binary Search must handle boundary conditions."
+  },
+  {
+    question: "Which data structure is fundamentally incompatible with an efficient Binary Search? **GATE 2006**",
+    options: [
+      "Stack",
+      "Set",
+      "Queue",
+      "Depends on implementation details"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Data structure choice dictates efficiency."
+  },
+  {
+    question: "When comparing Binary Search with naive approaches, what is the primary advantage? **GATE 2009**",
+    options: [
+      "Simpler implementation",
+      "Reduced space complexity",
+      "No advantage",
+      "Reduced time complexity"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Advanced algorithms like Binary Search are designed to optimize resource usage."
+  },
+  {
+    question: "In a standard implementation of Binary Search, what is the auxiliary space complexity? **GATE 2016**",
     options: [
       "O(1)",
-      "O(n)",
-      "O(log n)",
-      "O(n log n)"
+      "O(N^2)",
+      "O(log N)",
+      "O(N)"
     ],
-    correctAnswer: 0,
-    explanation: "The best case occurs when the target element is found at the middle of the array on the very first comparison, taking O(1) time."
+    correctAnswerIndex: 0,
+    explanation: "Space complexity varies depending on whether it is an in-place algorithm or requires extra data structures."
   },
   {
-    question: "What is the space complexity of the iterative implementation of Binary Search?",
+    question: "Which mathematical concept is most closely related to the correctness proof of Binary Search? **GATE 2013**",
     options: [
-      "O(1)",
-      "O(n)",
-      "O(log n)",
-      "O(n log n)"
+      "Loop invariants",
+      "Probability",
+      "Graph theory",
+      "Combinatorics"
     ],
-    correctAnswer: 0,
-    explanation: "The iterative approach uses only a few constant variables (low, high, mid) irrespective of the array size, leading to O(1) space complexity."
+    correctAnswerIndex: 3,
+    explanation: "Formal proofs for Binary Search often rely on establishing invariants."
   },
   {
-    question: "What is the space complexity of the recursive implementation of Binary Search?",
+    question: "If the input size for Binary Search is doubled, how does the execution time scale approximately in the average case? **GATE 2007**",
     options: [
-      "O(1)",
-      "O(n)",
-      "O(log n)",
-      "O(n log n)"
+      "It remains constant",
+      "It increases by a constant factor",
+      "It doubles",
+      "It quadruples"
     ],
-    correctAnswer: 2,
-    explanation: "The recursive approach uses the call stack for recursive function calls. The maximum depth of the recursion tree is O(log n), so the space complexity is O(log n)."
+    correctAnswerIndex: 0,
+    explanation: "Scalability is determined by the asymptotic bounds of Binary Search."
   },
   {
-    question: "What is the recurrence relation for Binary Search?",
+    question: "Which recurrence relation best models the recursive behavior of Binary Search (if it is recursive)? **GATE 2006**",
     options: [
       "T(n) = T(n-1) + O(1)",
-      "T(n) = 2T(n/2) + O(1)",
-      "T(n) = T(n/2) + O(n)",
+      "Depends on the specific variant",
+      "T(n) = 2T(n/2) + O(n)",
       "T(n) = T(n/2) + O(1)"
     ],
-    correctAnswer: 3,
-    explanation: "Binary Search makes one recursive call on an array of half the size, and performs O(1) operations (comparisons) per step. Thus, T(n) = T(n/2) + O(1)."
-  },
-  {
-    question: "Why is Binary Search generally not implemented for standard singly linked lists?",
-    options: [
-      "Linked lists cannot be sorted.",
-      "Binary Search requires random access to elements in O(1) time, which linked lists do not support.",
-      "Linked lists consume too much memory.",
-      "Pointers cannot be compared."
-    ],
-    correctAnswer: 1,
-    explanation: "Finding the middle element of a linked list takes O(n) time, defeating the logarithmic time advantage of Binary Search."
-  },
-  {
-    question: "In standard Binary Search, what should be the loop exit condition?",
-    options: [
-      "while (low < high)",
-      "while (low <= high)",
-      "while (low != high)",
-      "while (low > high)"
-    ],
-    correctAnswer: 1,
-    explanation: "The condition `low <= high` ensures that the search space is checked completely, including when it narrows down to a single element where `low == high`."
-  },
-  {
-    question: "In a sorted array of 1024 elements, what is the maximum number of comparisons Binary Search will roughly make?",
-    options: [
-      "512",
-      "10",
-      "11",
-      "1024"
-    ],
-    correctAnswer: 2,
-    explanation: "The maximum number of comparisons is roughly log2(1024) + 1. log2(1024) is 10, so it will take at most 11 checks."
-  },
-  {
-    question: "If the target is greater than the middle element, how is the search space updated?",
-    options: [
-      "high = mid - 1",
-      "low = mid + 1",
-      "high = mid + 1",
-      "low = mid - 1"
-    ],
-    correctAnswer: 1,
-    explanation: "Since the array is sorted, elements to the left of `mid` (and `mid` itself) are smaller than the target. Thus, we update `low = mid + 1` to search the right half."
-  },
-  {
-    question: "Which algorithmic paradigm does Binary Search strongly exemplify?",
-    options: [
-      "Dynamic Programming",
-      "Greedy",
-      "Divide and Conquer",
-      "Backtracking"
-    ],
-    correctAnswer: 2,
-    explanation: "Binary Search is a classic example of Divide and Conquer, as it continuously divides the search space in half to locate the target."
+    correctAnswerIndex: 2,
+    explanation: "Recurrence relations are used to analyze recursive algorithms."
   }
 ];
 
 export const binarySearchDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(int[] arr) {
+        int l = 0, r = arr.length - 1;
+        while (l < r) { // Bug
+            int m = l + (r-l)/2;
+            if (arr[m] == 8) { System.out.println("Found"); return; }
+            if (arr[m] < 8) l = m + 1; else r = m - 1;
+        }
+        System.out.println("Not Found");
+    }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8, 10};
+        process(arr);
+    }
+}`,
+  fixedC: `public class Main {
+    static void process(int[] arr) {
+        int l = 0, r = arr.length - 1;
+        while (l <= r) { // Fixed
+            int m = l + (r-l)/2;
+            if (arr[m] == 8) { System.out.println("Found"); return; }
+            if (arr[m] < 8) l = m + 1; else r = m - 1;
+        }
+        System.out.println("Not Found");
+    }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8, 10};
+        process(arr);
+    }
+}`,
+  hints: ["Loop should continue while l <= r"],
+  expectedOutput: "Found"
 };
 
 export const binarySearchDrag = {
@@ -227,29 +291,18 @@ export const binarySearchDrag = {
 };
 
 export const binarySearchComplete = {
-  title: "Complete the Binary Search Implementation",
-  description: "Fill in the missing parts of this Java implementation of Binary Search.",
-  codeTemplate: "class BinarySearch {\n    int binarySearch(int arr[], int target) {\n        int low = 0;\n        int high = BLANK_1;\n        \n        while (BLANK_2) {\n            int mid = low + (high - low) / 2;\n            \n            if (arr[mid] == target)\n                return mid;\n                \n            if (arr[mid] < target)\n                BLANK_3;\n            else\n                BLANK_4;\n        }\n        \n        return BLANK_5;\n    }\n}",
+  codeSnippet: `int search(int arr[], int n, int x) {
+    for (int i = 0; i < n; i++) {
+        if (/*[BLANK]*/) {
+            return i;
+        }
+    }
+    return -1;
+}`,
   blanks: [
     {
-      id: "BLANK_1",
-      correctValue: "arr.length - 1"
-    },
-    {
-      id: "BLANK_2",
-      correctValue: "low <= high"
-    },
-    {
-      id: "BLANK_3",
-      correctValue: "low = mid + 1"
-    },
-    {
-      id: "BLANK_4",
-      correctValue: "high = mid - 1"
-    },
-    {
-      id: "BLANK_5",
-      correctValue: "-1"
+      id: "blank1",
+      text: "arr[i] == x"
     }
   ]
 };

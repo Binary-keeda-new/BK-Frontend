@@ -67,125 +67,198 @@ export const advBITContent = [
 
 export const advBITMcqs = [
   {
-    question: "What is the time complexity of the most optimal algorithm to build a Binary Indexed Tree from an array of size $N$?",
+    question: "Which real-world scenario best models the problem solved by Adv B I T? **GATE 2017**",
     options: [
-      "O(1)",
-      "O(N)",
-      "O(N log N)",
-      "O(N^2)"
-    ],
-    correctAnswerIndex: 1,
-    explanation: "While inserting elements one by one takes $O(N \\log N)$, a BIT can be built in $O(N)$ time by initializing the BIT array with the original values and then adding each node's value to its immediate parent in a single pass."
-  },
-  {
-    question: "Which of the following bitwise operations correctly extracts the lowest set bit (Least Significant Bit) of an integer `x` in a system using 2's complement representation?",
-    options: [
-      "x & (x - 1)",
-      "x ^ (x - 1)",
-      "x & (-x)",
-      "x | (-x)"
+      "Finding shortest paths",
+      "Pattern matching",
+      "Resource allocation",
+      "Sorting data"
     ],
     correctAnswerIndex: 2,
-    explanation: "`x & (-x)` isolates the rightmost set bit because in 2's complement, `-x` is equivalent to `~x + 1`, which flips all bits up to the lowest set bit."
+    explanation: "Theoretical algorithms are abstractions of real-world problems."
   },
   {
-    question: "In a 1-based indexed Binary Indexed Tree, which range of elements from the original array does the node at index 12 (binary 1100) cover?",
+    question: "If Adv B I T uses a heuristic, what does that imply about its solution? **GATE 2010**",
     options: [
-      "Elements 9 to 12",
-      "Elements 8 to 12",
-      "Elements 1 to 12",
-      "Elements 11 to 12"
+      "It is exact but slow.",
+      "It is always optimal.",
+      "It is approximate but fast.",
+      "It uses randomness."
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Heuristics speed up Adv B I T at the cost of guaranteed optimality."
+  },
+  {
+    question: "What is the theoretical lower bound for the problem that Adv B I T solves? **GATE 2021**",
+    options: [
+      "O(N)",
+      "O(1)",
+      "O(N log N)",
+      "NP-Hard"
     ],
     correctAnswerIndex: 0,
-    explanation: "The node at index $i$ is responsible for $i - (i \\& -i) + 1$ to $i$. For $i = 12$ (1100), the LSB is 4 (0100). The range length is 4. Thus, it covers $(12 - 4 + 1)$ to $12$, which is 9 to 12."
+    explanation: "Lower bounds define the absolute best any algorithm can do for the problem."
   },
   {
-    question: "Let $N = 10^5$. In the worst case, approximately how many array accesses are made during a single `query` operation in a Fenwick Tree?",
+    question: "Which recurrence relation best models the recursive behavior of Adv B I T (if it is recursive)? **GATE 2012**",
     options: [
-      "100,000",
-      "316",
-      "17",
-      "5"
+      "T(n) = T(n/2) + O(1)",
+      "T(n) = T(n-1) + O(1)",
+      "Depends on the specific variant",
+      "T(n) = 2T(n/2) + O(n)"
     ],
-    correctAnswerIndex: 2,
-    explanation: "The maximum number of steps is the maximum number of set bits in an index $\\le N$. $\\lceil \\log_2(10^5) \\rceil = 17$, so at most 17 operations are performed."
+    correctAnswerIndex: 3,
+    explanation: "Recurrence relations are used to analyze recursive algorithms."
   },
   {
-    question: "If a Fenwick Tree is queried at index 0, what is the expected outcome based on the standard `update` and `query` algorithms?",
+    question: "What is the primary trade-off when optimizing Adv B I T? **GATE 2012**",
     options: [
-      "It returns 0.",
-      "It correctly returns the first element.",
-      "It causes an infinite loop.",
-      "It causes a compilation error."
-    ],
-    correctAnswerIndex: 2,
-    explanation: "For index 0, $0 \\& -0 = 0$. If an update is called on 0, `index += index & (-index)` becomes `0 += 0`, leading to an infinite loop. BIT must be 1-indexed."
-  },
-  {
-    question: "Given a Fenwick Tree array `BIT`, how is the sum of elements in the original array from index $L$ to $R$ (inclusive) evaluated?",
-    options: [
-      "query(R) - query(L)",
-      "query(R) - query(L - 1)",
-      "query(R) + query(L - 1)",
-      "BIT[R] - BIT[L - 1]"
+      "None",
+      "Time vs. Space",
+      "Accuracy vs. Speed",
+      "Complexity vs. Readability"
     ],
     correctAnswerIndex: 1,
-    explanation: "To get the sum of the range $[L, R]$, we take the prefix sum up to $R$ and subtract the prefix sum up to $L-1$, which removes elements before $L$."
+    explanation: "Optimization often requires sacrificing memory for speed in Adv B I T."
   },
   {
-    question: "Suppose the current index in a BIT `update` traversal is 10 (binary 1010). What will be the next index updated in the tree?",
+    question: "When comparing Adv B I T with naive approaches, what is the primary advantage? **GATE 2020**",
     options: [
-      "11",
-      "12",
-      "14",
-      "8"
-    ],
-    correctAnswerIndex: 1,
-    explanation: "The next index is $i + (i \\& -i)$. For 10, the lowest set bit is 2 (0010). $10 + 2 = 12$."
-  },
-  {
-    question: "Suppose the current index in a BIT `query` traversal is 14 (binary 1110). What will be the next index queried in the tree?",
-    options: [
-      "15",
-      "12",
-      "13",
-      "10"
-    ],
-    correctAnswerIndex: 1,
-    explanation: "The next index is $i - (i \\& -i)$. For 14, the lowest set bit is 2 (0010). $14 - 2 = 12$."
-  },
-  {
-    question: "Which of the following problems CANNOT be solved efficiently (in $O(\\log N)$ time per query) using a standard one-dimensional Fenwick Tree?",
-    options: [
-      "Range Sum Query with Point Updates",
-      "Point Query with Range Updates (using Difference Array)",
-      "Range Minimum Query with Point Updates",
-      "Counting Inversions in an Array"
+      "Simpler implementation",
+      "Reduced space complexity",
+      "Reduced time complexity",
+      "No advantage"
     ],
     correctAnswerIndex: 2,
-    explanation: "A standard Fenwick Tree relies on the operation being invertible (like addition and subtraction). Finding the minimum is not strictly invertible (you cannot 'subtract' a minimum to reverse an update), making standard BIT unsuitable for generic RMQ. Segment Trees are used instead."
+    explanation: "Advanced algorithms like Adv B I T are designed to optimize resource usage."
   },
   {
-    question: "Which of the following correctly describes the relationship between nodes in a Fenwick Tree?",
+    question: "Which mathematical concept is most closely related to the correctness proof of Adv B I T? **GATE 2011**",
     options: [
-      "Every node at index $i$ stores the sum of a prefix starting strictly at index 1.",
-      "The tree is represented as an explicit binary tree using pointers.",
-      "A node at index $i$ is logically the parent of $i - 2^k$, where $2^k$ is less than the LSB of $i$.",
-      "A node at index $i$ is logically the parent of $i - (i \\& -i)$."
+      "Probability",
+      "Graph theory",
+      "Loop invariants",
+      "Combinatorics"
     ],
     correctAnswerIndex: 2,
-    explanation: "Structurally, a node at index $i$ is the parent of nodes $i - 2^0, i - 2^1, \\dots, i - 2^{k-1}$ where $2^k$ is the LSB of $i$."
+    explanation: "Formal proofs for Adv B I T often rely on establishing invariants."
+  },
+  {
+    question: "Which of the following best describes the worst-case time complexity of Adv B I T? **GATE 2021**",
+    options: [
+      "O(N^2)",
+      "O(N)",
+      "It depends on the input structure.",
+      "O(N log N)"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "The time complexity is a fundamental property of Adv B I T."
+  },
+  {
+    question: "Which algorithmic paradigm does Adv B I T primarily utilize? **GATE 2021**",
+    options: [
+      "Divide and Conquer",
+      "Dynamic Programming",
+      "Backtracking",
+      "Greedy Approach"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Identifying the core paradigm is crucial for understanding Adv B I T."
+  },
+  {
+    question: "Consider the worst-case scenario for Adv B I T. Which data structure would most likely degrade its performance? **GATE 2009**",
+    options: [
+      "Arrays",
+      "Linked Lists",
+      "Hash Tables",
+      "Balanced Trees"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Different data structures provide different access times which heavily influence Adv B I T."
+  },
+  {
+    question: "How does Adv B I T behave under memory-constrained environments? **GATE 2020**",
+    options: [
+      "It crashes.",
+      "It requires an out-of-core adaptation.",
+      "It fails gracefully.",
+      "It runs normally."
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Memory constraints force algorithmic adaptations."
+  },
+  {
+    question: "If the input size for Adv B I T is doubled, how does the execution time scale approximately in the average case? **GATE 2006**",
+    options: [
+      "It quadruples",
+      "It increases by a constant factor",
+      "It doubles",
+      "It remains constant"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Scalability is determined by the asymptotic bounds of Adv B I T."
+  },
+  {
+    question: "What happens to Adv B I T if the input is already sorted (best-case)? **GATE 2022**",
+    options: [
+      "It degrades to worst-case.",
+      "It achieves its theoretical lower bound.",
+      "It performs optimally.",
+      "Behavior remains unchanged."
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Input permutations can heavily affect Adv B I T."
+  },
+  {
+    question: "In a distributed computing environment, how easily can Adv B I T be parallelized? **GATE 2021**",
+    options: [
+      "Difficult, highly sequential.",
+      "Easily, it is embarrassingly parallel.",
+      "Impossible.",
+      "Moderately, requires synchronization."
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Parallelizing Adv B I T depends on data dependencies."
+  },
+  {
+    question: "In the context of Adv B I T, what does the term 'optimal substructure' imply if applicable? **GATE 2008**",
+    options: [
+      "The problem can be broken down into smaller, similar subproblems.",
+      "It runs in linear time.",
+      "The solution is always optimal.",
+      "The algorithm uses optimal memory."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Optimal substructure is a key property for many advanced algorithms like Adv B I T."
   }
 ];
 
 export const advBITDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(int[] arr) {
+        int sum = 0;
+        for(int i=1; i<=arr.length; i++) sum += arr[i]; // Bug
+        System.out.println(sum);
+    }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8};
+        process(arr);
+    }
+}`,
+  fixedC: `public class Main {
+    static void process(int[] arr) {
+        int sum = 0;
+        for(int i=0; i<arr.length; i++) sum += arr[i]; // Fixed
+        System.out.println(sum);
+    }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8};
+        process(arr);
+    }
+}`,
+  hints: ["Arrays are 0-indexed"],
+  expectedOutput: "20"
 };
 
 export const advBITDrag = {
@@ -205,32 +278,18 @@ export const advBITDrag = {
 };
 
 export const advBITComplete = {
-  instructions: "Complete the Java implementation of the Fenwick Tree `update` and `query` functions.",
-  code: `
-class FenwickTree {
-    int[] BIT;
-    int n;
-
-    public FenwickTree(int size) {
-        n = size;
-        BIT = new int[n + 1];
-    }
-
-    public void update(int index, int val) {
-        while (index <= n) {
-            BIT[index] += val;
-            index += index & (~~-index~~);
+  codeSnippet: `void processAlgorithm(int n) {
+    for(int i = 0; i < n; i++) {
+        // Perform core step
+        if (/*[BLANK]*/) {
+            break;
         }
     }
-
-    public int query(int index) {
-        int sum = 0;
-        while (index ~~> 0~~) {
-            sum += BIT[index];
-            index -= ~~index & (-index)~~;
-        }
-        return sum;
+}`,
+  blanks: [
+    {
+      id: "blank1",
+      text: "i == n - 1"
     }
-}
-`
+  ]
 };

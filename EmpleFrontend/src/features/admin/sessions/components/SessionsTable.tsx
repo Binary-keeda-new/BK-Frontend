@@ -46,8 +46,11 @@ export default function SessionsTable() {
     })
   }
 
-  const categoryColor = (cat: string) => cat === 'workshop' ? '#a855f7' : '#ef4444'
-  const categoryLabel = (cat: string) => cat === 'workshop' ? 'Workshop' : 'YT Session'
+  const categoryColor = (cat: string) =>
+    cat === 'workshop' ? '#a855f7' : cat === 'bk-session' ? '#0ea5e9' : '#ef4444'
+
+  const categoryLabel = (cat: string) =>
+    cat === 'workshop' ? 'Workshop' : cat === 'bk-session' ? 'BK Session' : 'YT Session'
 
   return (
     <div style={{ padding: '28px 24px', minHeight: '100vh', background: 'var(--bg)' }}>
@@ -60,7 +63,7 @@ export default function SessionsTable() {
           </p>
         </div>
         <button
-          onClick={() => { setEditTarget(null); setModalOpen(true); }}
+          onClick={() => { setEditTarget(null); setModalOpen(true) }}
           style={{
             padding: '9px 18px', borderRadius: 10,
             background: 'rgb(241,90,34)', color: '#fff',
@@ -95,7 +98,7 @@ export default function SessionsTable() {
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr style={{ background: 'var(--surface)', borderBottom: '1px solid var(--border)' }}>
-                {['Thumbnail', 'Title', 'Category', 'Video Link', 'Actions'].map(h => (
+                {['Thumbnail', 'Title', 'Category', 'Link', 'Actions'].map(h => (
                   <th key={h} style={{
                     padding: '12px 16px', textAlign: 'left',
                     fontSize: 12, fontWeight: 600, color: 'var(--muted)',
@@ -123,10 +126,20 @@ export default function SessionsTable() {
                       flexShrink: 0,
                     }}>
                       {session.thumbnail ? (
-                        <img src={session.thumbnail} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        <img
+                          src={session.thumbnail}
+                          alt=""
+                          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        />
                       ) : (
-                        <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--muted)' }}>
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                        <div style={{
+                          width: '100%', height: '100%',
+                          display: 'flex', alignItems: 'center',
+                          justifyContent: 'center', color: 'var(--muted)',
+                        }}>
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                            <polygon points="5 3 19 12 5 21 5 3" />
+                          </svg>
                         </div>
                       )}
                     </div>
@@ -160,9 +173,30 @@ export default function SessionsTable() {
                     </span>
                   </td>
 
-                  {/* Video Link */}
+                  {/* Video Link / Meeting Link */}
                   <td style={{ padding: '12px 16px' }}>
-                    
+                    {session.category === 'bk-session' ? (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                        <a
+                          href={session.meetingLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{
+                            fontSize: 12, color: '#0ea5e9',
+                            textDecoration: 'none', fontWeight: 500,
+                            maxWidth: 180, display: 'block',
+                            overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                          }}
+                        >
+                          {session.meetingLink || '—'}
+                        </a>
+                        {session.scheduledAt && (
+                          <span style={{ fontSize: 11, color: 'var(--muted)' }}>
+                            📅 {new Date(session.scheduledAt).toLocaleString()}
+                          </span>
+                        )}
+                      </div>
+                    ) : (
                       <a
                         href={session.videoLink}
                         target="_blank"
@@ -170,19 +204,20 @@ export default function SessionsTable() {
                         style={{
                           fontSize: 12, color: 'rgb(241,90,34)',
                           textDecoration: 'none', fontWeight: 500,
-                        maxWidth: 180, display: 'block',
-                        overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
-                      }}
-                    >
-                      {session.videoLink}
-                    </a>
+                          maxWidth: 180, display: 'block',
+                          overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                        }}
+                      >
+                        {session.videoLink}
+                      </a>
+                    )}
                   </td>
 
                   {/* Actions */}
                   <td style={{ padding: '12px 16px' }}>
                     <div style={{ display: 'flex', gap: 8 }}>
                       <button
-                        onClick={() => { setEditTarget(session as any); setModalOpen(true); }}
+                        onClick={() => { setEditTarget(session as any); setModalOpen(true) }}
                         style={{
                           padding: '6px 14px', borderRadius: 8, fontSize: 12, fontWeight: 600,
                           background: 'var(--surface2)', border: '1px solid var(--border)',
@@ -213,7 +248,7 @@ export default function SessionsTable() {
       <SessionFormModal
         isOpen={modalOpen}
         editTarget={editTarget}
-        onClose={() => { setModalOpen(false); setEditTarget(null); }}
+        onClose={() => { setModalOpen(false); setEditTarget(null) }}
         onSuccess={handleSuccess}
       />
     </div>

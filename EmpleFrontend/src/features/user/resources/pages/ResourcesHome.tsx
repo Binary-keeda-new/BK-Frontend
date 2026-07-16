@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { Map, Newspaper, HelpCircle, Award, BookOpen, Lightbulb, Target } from "lucide-react";
+import { Map, Newspaper, HelpCircle, Award, BookOpen, Lightbulb, Target, PaperclipIcon } from "lucide-react";
 const RESOURCES_CARDS = [
   {
     title: "Roadmaps",
@@ -46,7 +46,7 @@ const RESOURCES_CARDS = [
   title: "GATE Notes",
   href: "/user/resources/gate-notes",
   description: "Access GATE preparation notes and study material.",
-  icon: "📚",
+  icon: BookOpen,
   topics: ["OS", "DBMS", "CN", "COA"],
   color: "#123456",
 },
@@ -54,7 +54,7 @@ const RESOURCES_CARDS = [
   title: "Career Paths",
   href: "/user/resources/career-paths",
   description: "Explore career paths with roadmaps, salaries and quizzes.",
-  icon: "🎯",
+  icon: Target,
   topics: ["Business Analyst", "Data Analyst", "BD", "Testing"],
   color: "#f97316",
 },
@@ -62,7 +62,7 @@ const RESOURCES_CARDS = [
   title: "BK SDE Sheet",
   href: "/user/resources/bk-sde-sheet",
   description: "Your SDE prep hub — coding sheet, core CS subjects and aptitude all in one place",
-  icon: "📋",
+  icon: PaperclipIcon,
   topics: ["Coding", "OS", "DBMS", "CN", "Aptitude"],
   color: "#f97316",
 },

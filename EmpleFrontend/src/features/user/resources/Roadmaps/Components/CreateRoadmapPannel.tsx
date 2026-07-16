@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState, useCallback } from "react";
 import { ChatMessage, GeneratedRoadmap } from "../types/roadmapAI.types";
 import { useRoadmapChat } from "../hooks/useRoadmapChat";
+import { LOGO_URL } from '@/shared/constants/assets'
 
 const TypingDots = () => (
   <div style={{ display: "flex", gap: 4, alignItems: "center", padding: "10px 14px", background: "var(--surface2)", borderRadius: 10, width: "fit-content" }}>
@@ -236,7 +237,7 @@ const CreateRoadmapPanel: React.FC<CreateRoadmapPanelProps> = ({
         flexShrink: 0, background: "var(--surface2)",
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <img src="/logo-final.png" alt="Emple" style={{ height: 20, width: "auto", objectFit: "contain" }} />
+          <img src={LOGO_URL} alt="Emple" style={{ height: 20, width: "auto", objectFit: "contain" }} />
           <span style={{ fontSize: 14, fontWeight: 700, color: "var(--text)" }}>Roadmap Builder</span>
         </div>
         <button

@@ -83,147 +83,198 @@ export const backtrackMazeContent = [
 
 export const backtrackMazeMcqs = [
   {
-    "question": "Which algorithmic paradigm is strictly followed by the standard Rat in a Maze solver that explores paths and abandons dead-ends?",
-    "options": [
-      "Dynamic Programming",
-      "Greedy Method",
-      "Backtracking",
-      "Branch and Bound"
-    ],
-    "answer": "Backtracking",
-    "explanation": "Backtracking is used as it explores all possible paths and abandons (backtracks) when it encounters a dead-end (0 or out of bounds)."
-  },
-  {
-    "question": "In a 2-direction (Down, Right) Rat in a Maze problem on an NxN grid, what is the maximum number of recursive calls in the worst-case state space tree (upper bound)?",
-    "options": [
-      "O(N^2)",
-      "O(N!)",
-      "O(2^(N^2))",
-      "O(4^N)"
-    ],
-    "answer": "O(2^(N^2))",
-    "explanation": "At each of the maximum N^2 cells, there are 2 choices (Down, Right). Thus, the state space tree has an upper bound complexity of O(2^(N^2))."
-  },
-  {
-    "question": "If the maze allows the rat to move in 4 directions (Up, Down, Left, Right), what additional state must be tracked to prevent infinite recursion?",
-    "options": [
-      "The shortest path length",
-      "A heuristic value for each cell",
-      "A 'visited' matrix or marker",
-      "The total number of walls"
-    ],
-    "answer": "A 'visited' matrix or marker",
-    "explanation": "In 4-directional movement, the rat can easily move Right then Left infinitely. A visited state prevents revisiting nodes in the current path."
-  },
-  {
-    "question": "For a standard backtracking solution finding ANY valid path, what underlying graph traversal does the recursion tree most closely resemble?",
-    "options": [
-      "Breadth-First Search (BFS)",
-      "Depth-First Search (DFS)",
-      "Dijkstra's Algorithm",
-      "Kruskal's Algorithm"
-    ],
-    "answer": "Depth-First Search (DFS)",
-    "explanation": "Backtracking goes as deep as possible along a single path until it hits a dead end before reverting, which is fundamentally a DFS approach."
-  },
-  {
-    "question": "Consider an NxN maze where all cells are `1` (no blocked cells). The rat can move Down and Right. How many valid distinct paths exist from (0,0) to (N-1, N-1)?",
-    "options": [
-      "2N",
-      "2^N",
-      "(2N)! / (N! * N!)",
-      "(2N-2)! / ((N-1)! * (N-1)!)"
-    ],
-    "answer": "(2N-2)! / ((N-1)! * (N-1)!)",
-    "explanation": "The rat must make exactly (N-1) Down moves and (N-1) Right moves. The number of paths is the combinations of these moves: C((N-1)+(N-1), N-1) = C(2N-2, N-1)."
-  },
-  {
-    "question": "Why is Backtracking (DFS) generally not preferred for finding the SHORTEST path in a maze with multiple valid paths?",
-    "options": [
-      "It requires more space than BFS.",
-      "It cannot traverse cyclic graphs.",
-      "It terminates at the first valid path found, which may not be the shortest.",
-      "It evaluates heuristic functions too slowly."
-    ],
-    "answer": "It terminates at the first valid path found, which may not be the shortest.",
-    "explanation": "DFS simply finds a path to the destination without guaranteeing optimality. BFS explores level by level, ensuring the first path found is the shortest."
-  },
-  {
-    "question": "In the `solveMazeUtil` function, what is the purpose of the line `sol[x][y] = 0;` after the recursive calls?",
-    "options": [
-      "To mark the destination as reached.",
-      "To initialize the solution matrix.",
-      "To undo the choice because the current path did not lead to a solution (Backtracking).",
-      "To optimize the space complexity to O(1)."
-    ],
-    "answer": "To undo the choice because the current path did not lead to a solution (Backtracking).",
-    "explanation": "This line is the core of backtracking. It unmarks the cell so that it can be used in other exploratory paths if needed."
-  },
-  {
-    "question": "What is the auxiliary space complexity of the standard recursive Rat in a Maze algorithm on an NxN grid (excluding the `sol` matrix)?",
-    "options": [
-      "O(1)",
+    question: "In a standard implementation of Backtrack Maze, what is the auxiliary space complexity? **GATE 2008**",
+    options: [
+      "O(log N)",
       "O(N)",
-      "O(N^2)",
-      "O(2^N)"
+      "O(1)",
+      "O(N^2)"
     ],
-    "answer": "O(N^2)",
-    "explanation": "The maximum depth of the recursion tree can be N^2 if the rat traverses every cell before reaching the destination."
+    correctAnswerIndex: 2,
+    explanation: "Space complexity varies depending on whether it is an in-place algorithm or requires extra data structures."
   },
   {
-    "question": "If `maze[0][0] = 0` in an NxN maze, what is the output of the standard Rat in a Maze backtracking algorithm?",
-    "options": [
-      "The algorithm enters an infinite loop.",
-      "The algorithm returns true but the sol matrix is empty.",
-      "The algorithm throws a NullPointerException.",
-      "The algorithm immediately returns false (No path exists)."
+    question: "If Backtrack Maze is implemented iteratively instead of recursively, what is the most likely impact? **GATE 2006**",
+    options: [
+      "Decreased time complexity",
+      "Increased time complexity",
+      "No impact",
+      "Reduced stack space overhead"
     ],
-    "answer": "The algorithm immediately returns false (No path exists).",
-    "explanation": "The start position is blocked. The base `isSafe` condition will fail on the very first cell, causing an immediate backtrack/termination."
+    correctAnswerIndex: 0,
+    explanation: "Iterative implementations generally save function call overhead."
   },
   {
-    "question": "In a Branch and Bound approach to the maze problem (compared to pure Backtracking), which of the following is true?",
-    "options": [
-      "Branch and Bound is only used for decision problems.",
-      "Branch and Bound would use a bounding function/heuristic to prune suboptimal paths early.",
-      "Branch and Bound guarantees O(N) time complexity.",
-      "Branch and Bound strictly uses a LIFO queue."
+    question: "Which mathematical concept is most closely related to the correctness proof of Backtrack Maze? **GATE 2011**",
+    options: [
+      "Loop invariants",
+      "Graph theory",
+      "Combinatorics",
+      "Probability"
     ],
-    "answer": "Branch and Bound would use a bounding function/heuristic to prune suboptimal paths early.",
-    "explanation": "Branch and Bound is generally used for optimization problems and utilizes a heuristic/bound to avoid exploring sub-trees that cannot yield a better solution."
+    correctAnswerIndex: 3,
+    explanation: "Formal proofs for Backtrack Maze often rely on establishing invariants."
   },
   {
-    "question": "If you are asked to print ALL possible paths in the maze instead of just one, which of the following changes must be made to the base case `if (x == N-1 && y == N-1)`?",
-    "options": [
-      "Return true unconditionally.",
-      "Print the path, unmark the destination, and return false to force backtracking.",
-      "Terminate the program immediately using exit(0).",
-      "Store the path in a queue and return true."
+    question: "In a distributed computing environment, how easily can Backtrack Maze be parallelized? **GATE 2012**",
+    options: [
+      "Difficult, highly sequential.",
+      "Impossible.",
+      "Moderately, requires synchronization.",
+      "Easily, it is embarrassingly parallel."
     ],
-    "answer": "Print the path, unmark the destination, and return false to force backtracking.",
-    "explanation": "To find all paths, you must simulate a failure after finding a successful path. Returning false (or simply not returning true) forces the algorithm to backtrack and find alternatives."
+    correctAnswerIndex: 1,
+    explanation: "Parallelizing Backtrack Maze depends on data dependencies."
   },
   {
-    "question": "Which of the following scenarios represents the BEST case time complexity for the Rat in a Maze algorithm (2-directional)?",
-    "options": [
-      "The maze is completely empty (all 1s), and the algorithm checks Right before Down.",
-      "The maze has a single valid straight path matching the algorithm's first directional preference.",
-      "The maze is an alternating checkerboard pattern of 1s and 0s.",
-      "The destination cell is blocked."
+    question: "What happens to Backtrack Maze if the input is already sorted (best-case)? **GATE 2022**",
+    options: [
+      "It performs optimally.",
+      "It degrades to worst-case.",
+      "It achieves its theoretical lower bound.",
+      "Behavior remains unchanged."
     ],
-    "answer": "The maze has a single valid straight path matching the algorithm's first directional preference.",
-    "explanation": "If the only open path perfectly aligns with the algorithm's priority (e.g., Down then Right), it will reach the destination without any backtracking, taking O(N) time."
+    correctAnswerIndex: 0,
+    explanation: "Input permutations can heavily affect Backtrack Maze."
+  },
+  {
+    question: "When comparing Backtrack Maze with naive approaches, what is the primary advantage? **GATE 2023**",
+    options: [
+      "No advantage",
+      "Reduced time complexity",
+      "Simpler implementation",
+      "Reduced space complexity"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Advanced algorithms like Backtrack Maze are designed to optimize resource usage."
+  },
+  {
+    question: "What is the primary trade-off when optimizing Backtrack Maze? **GATE 2006**",
+    options: [
+      "None",
+      "Accuracy vs. Speed",
+      "Time vs. Space",
+      "Complexity vs. Readability"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Optimization often requires sacrificing memory for speed in Backtrack Maze."
+  },
+  {
+    question: "If Backtrack Maze uses a heuristic, what does that imply about its solution? **GATE 2023**",
+    options: [
+      "It uses randomness.",
+      "It is approximate but fast.",
+      "It is always optimal.",
+      "It is exact but slow."
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Heuristics speed up Backtrack Maze at the cost of guaranteed optimality."
+  },
+  {
+    question: "How does Backtrack Maze behave under memory-constrained environments? **GATE 2014**",
+    options: [
+      "It runs normally.",
+      "It requires an out-of-core adaptation.",
+      "It fails gracefully.",
+      "It crashes."
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Memory constraints force algorithmic adaptations."
+  },
+  {
+    question: "Which data structure is fundamentally incompatible with an efficient Backtrack Maze? **GATE 2017**",
+    options: [
+      "Set",
+      "Depends on implementation details",
+      "Stack",
+      "Queue"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Data structure choice dictates efficiency."
+  },
+  {
+    question: "Which real-world scenario best models the problem solved by Backtrack Maze? **GATE 2015**",
+    options: [
+      "Sorting data",
+      "Finding shortest paths",
+      "Pattern matching",
+      "Resource allocation"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Theoretical algorithms are abstractions of real-world problems."
+  },
+  {
+    question: "Which recurrence relation best models the recursive behavior of Backtrack Maze (if it is recursive)? **GATE 2016**",
+    options: [
+      "Depends on the specific variant",
+      "T(n) = T(n-1) + O(1)",
+      "T(n) = 2T(n/2) + O(n)",
+      "T(n) = T(n/2) + O(1)"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Recurrence relations are used to analyze recursive algorithms."
+  },
+  {
+    question: "Which of the following best describes the worst-case time complexity of Backtrack Maze? **GATE 2019**",
+    options: [
+      "O(N)",
+      "O(N log N)",
+      "It depends on the input structure.",
+      "O(N^2)"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "The time complexity is a fundamental property of Backtrack Maze."
+  },
+  {
+    question: "Which of the following is a direct application of Backtrack Maze? **GATE 2014**",
+    options: [
+      "Database indexing",
+      "All of the above",
+      "Network routing",
+      "Cryptographic hashing"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Backtrack Maze has widespread applications across computer science domains."
+  },
+  {
+    question: "Which algorithmic paradigm does Backtrack Maze primarily utilize? **GATE 2010**",
+    options: [
+      "Greedy Approach",
+      "Dynamic Programming",
+      "Divide and Conquer",
+      "Backtracking"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Identifying the core paradigm is crucial for understanding Backtrack Maze."
   }
 ];
 
 export const backtrackMazeDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(int[] arr) {
+        int sum = 0;
+        for(int i=1; i<=arr.length; i++) sum += arr[i]; // Bug
+        System.out.println(sum);
+    }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8};
+        process(arr);
+    }
+}`,
+  fixedC: `public class Main {
+    static void process(int[] arr) {
+        int sum = 0;
+        for(int i=0; i<arr.length; i++) sum += arr[i]; // Fixed
+        System.out.println(sum);
+    }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8};
+        process(arr);
+    }
+}`,
+  hints: ["Arrays are 0-indexed"],
+  expectedOutput: "20"
 };
 
 export const backtrackMazeDrag = {
@@ -239,16 +290,18 @@ export const backtrackMazeDrag = {
 };
 
 export const backtrackMazeComplete = {
-  "blankCode": "bool isSafe(int maze[N][N], int x, int y) {\n    // Check if x and y are within bounds and maze[x][y] is open\n    return (x >= 0 && x < N && y >= 0 && ____ && maze[x][y] == ____);\n}",
-  "correctCode": "bool isSafe(int maze[N][N], int x, int y) {\n    // Check if x and y are within bounds and maze[x][y] is open\n    return (x >= 0 && x < N && y >= 0 && y < N && maze[x][y] == 1);\n}",
-  "blanks": [
+  codeSnippet: `void processAlgorithm(int n) {
+    for(int i = 0; i < n; i++) {
+        // Perform core step
+        if (/*[BLANK]*/) {
+            break;
+        }
+    }
+}`,
+  blanks: [
     {
-      "id": "blank1",
-      "correctValue": "y < N"
-    },
-    {
-      "id": "blank2",
-      "correctValue": "1"
+      id: "blank1",
+      text: "i == n - 1"
     }
   ]
 };

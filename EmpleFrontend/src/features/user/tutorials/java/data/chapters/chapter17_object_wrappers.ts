@@ -105,4 +105,16 @@ export const chapter17_MCQ = [
     }
 ];
 
-export const chapter17_COMPLETE_EXERCISES = [];
+export const chapter17_COMPLETE_EXERCISES = [
+  {
+    template: `public class Main {
+    public static void main(String[] args) {
+        // Autoboxing converts primitive to wrapper
+        ___ num = 10;
+    }
+}`,
+    blanks: [
+      "Integer"
+    ]
+  }
+];

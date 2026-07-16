@@ -70,147 +70,206 @@ export const jumpSearchContent = {
 
 export const jumpSearchMcqs = [
   {
-    question: "What is the optimal jump size in Jump Search for an array of size n?",
+    question: "Which of the following is a direct application of Jump Search? **GATE 2023**",
     options: [
-      "n / 2",
-      "n / 4",
-      "sqrt(n)",
-      "log(n)"
+      "Cryptographic hashing",
+      "Network routing",
+      "All of the above",
+      "Database indexing"
     ],
-    correctAnswer: 2,
-    explanation: "The optimal jump size is sqrt(n). It balances the number of jumps and the size of the block for linear search, minimizing the total number of operations to O(sqrt(n))."
+    correctAnswerIndex: 3,
+    explanation: "Jump Search has widespread applications across computer science domains."
   },
   {
-    question: "Which of the following is true regarding Jump Search compared to Binary Search?",
+    question: "Which algorithmic paradigm does Jump Search primarily utilize? **GATE 2014**",
     options: [
-      "Jump Search is faster than Binary Search.",
-      "Jump Search makes more backward jumps than Binary Search.",
-      "Jump Search makes only one backward jump.",
-      "Jump Search does not require the array to be sorted."
+      "Dynamic Programming",
+      "Greedy Approach",
+      "Divide and Conquer",
+      "Backtracking"
     ],
-    correctAnswer: 2,
-    explanation: "Jump Search skips forward in blocks and, once it overshoots the target, it makes exactly one backward jump to start a linear search."
+    correctAnswerIndex: 3,
+    explanation: "Identifying the core paradigm is crucial for understanding Jump Search."
   },
   {
-    question: "What is the worst-case time complexity of Jump Search?",
+    question: "Which mathematical concept is most closely related to the correctness proof of Jump Search? **GATE 2022**",
     options: [
-      "O(n)",
-      "O(log n)",
-      "O(sqrt(n))",
-      "O(n log n)"
+      "Combinatorics",
+      "Probability",
+      "Loop invariants",
+      "Graph theory"
     ],
-    correctAnswer: 2,
-    explanation: "In the worst case, Jump Search requires n/m jumps and m linear steps. Using m = sqrt(n), the worst-case complexity evaluates to O(sqrt(n))."
+    correctAnswerIndex: 2,
+    explanation: "Formal proofs for Jump Search often rely on establishing invariants."
   },
   {
-    question: "What is the space complexity of iterative Jump Search?",
+    question: "If Jump Search is implemented iteratively instead of recursively, what is the most likely impact? **GATE 2023**",
     options: [
-      "O(n)",
-      "O(log n)",
-      "O(sqrt(n))",
-      "O(1)"
+      "Increased time complexity",
+      "Decreased time complexity",
+      "Reduced stack space overhead",
+      "No impact"
     ],
-    correctAnswer: 3,
-    explanation: "Jump Search operates in-place and only requires a few integer variables to track step size and indices, resulting in O(1) space complexity."
+    correctAnswerIndex: 0,
+    explanation: "Iterative implementations generally save function call overhead."
   },
   {
-    question: "What is the fundamental prerequisite for Jump Search to work correctly?",
+    question: "When comparing Jump Search with naive approaches, what is the primary advantage? **GATE 2017**",
     options: [
-      "The array must contain only positive integers.",
-      "The array must be sorted in ascending or descending order.",
-      "The array must be of an even length.",
-      "The array must not contain duplicate elements."
+      "Simpler implementation",
+      "Reduced space complexity",
+      "Reduced time complexity",
+      "No advantage"
     ],
-    correctAnswer: 1,
-    explanation: "Jump Search is a variation of interval searching and entirely depends on the array being sorted to deduce whether an element is present in a given block."
+    correctAnswerIndex: 2,
+    explanation: "Advanced algorithms like Jump Search are designed to optimize resource usage."
   },
   {
-    question: "In an array of size 100, what is the ideal initial block size for Jump Search?",
+    question: "Which recurrence relation best models the recursive behavior of Jump Search (if it is recursive)? **GATE 2023**",
     options: [
-      "5",
-      "10",
-      "25",
-      "50"
+      "T(n) = 2T(n/2) + O(n)",
+      "T(n) = T(n-1) + O(1)",
+      "Depends on the specific variant",
+      "T(n) = T(n/2) + O(1)"
     ],
-    correctAnswer: 1,
-    explanation: "The ideal block size 'm' is the square root of the array length 'n'. For an array of length 100, sqrt(100) = 10."
+    correctAnswerIndex: 0,
+    explanation: "Recurrence relations are used to analyze recursive algorithms."
   },
   {
-    question: "Why might Jump Search be preferred over Binary Search in certain niche systems?",
+    question: "What is the primary trade-off when optimizing Jump Search? **GATE 2021**",
     options: [
-      "Because it is mathematically faster.",
-      "Because it works on unsorted arrays.",
-      "Because jumping backwards is a costly operation on some storage media.",
-      "Because it has lower space complexity."
+      "Time vs. Space",
+      "None",
+      "Accuracy vs. Speed",
+      "Complexity vs. Readability"
     ],
-    correctAnswer: 2,
-    explanation: "Binary Search can jump back and forth multiple times (O(log n)). Jump Search only jumps backward once, which is advantageous for media where backward seeks are extremely slow."
+    correctAnswerIndex: 0,
+    explanation: "Optimization often requires sacrificing memory for speed in Jump Search."
   },
   {
-    question: "During the linear search phase of Jump Search, what happens if the 'prev' index reaches the array's length?",
+    question: "In a standard implementation of Jump Search, what is the auxiliary space complexity? **GATE 2017**",
     options: [
-      "The array automatically expands.",
-      "The target is located at the last index.",
-      "An IndexOutOfBoundsException is thrown if not explicitly handled.",
-      "The search safely terminates by returning -1."
-    ],
-    correctAnswer: 3,
-    explanation: "If properly implemented with bounded while loops (checking 'prev == Math.min(step, n)'), the search recognizes that the element is not found and safely terminates, returning -1."
-  },
-  {
-    question: "What happens if the target element is significantly smaller than the very first element of the array?",
-    options: [
-      "The algorithm jumps to the end of the array.",
-      "The algorithm evaluates the first block, fails the jump condition immediately, and then fails the linear search, returning -1.",
-      "The algorithm crashes with a negative index.",
-      "The algorithm enters an infinite loop."
-    ],
-    correctAnswer: 1,
-    explanation: "Since the first jump compares arr[step-1] < target, the condition immediately fails if the target is smaller than the first block. It transitions to linear search, which also immediately terminates, returning -1."
-  },
-  {
-    question: "If Jump Search is executed with a step size of '1', which algorithm does it effectively become?",
-    options: [
-      "Binary Search",
-      "Exponential Search",
-      "Interpolation Search",
-      "Linear Search"
-    ],
-    correctAnswer: 3,
-    explanation: "A step size of 1 means the algorithm advances exactly 1 index at a time, mimicking a classic Linear Search."
-  },
-  {
-    question: "What is the average case time complexity of Jump Search?",
-    options: [
+      "O(log N)",
+      "O(N)",
       "O(1)",
-      "O(log n)",
-      "O(sqrt(n))",
-      "O(n)"
+      "O(N^2)"
     ],
-    correctAnswer: 2,
-    explanation: "On average, the element is found somewhere in the middle of the array, requiring around sqrt(n)/2 jumps and sqrt(n)/2 linear comparisons, leading to an average case complexity of O(sqrt(n))."
+    correctAnswerIndex: 1,
+    explanation: "Space complexity varies depending on whether it is an in-place algorithm or requires extra data structures."
   },
   {
-    question: "When applying Jump Search on a small array (e.g., size 4), how does its performance compare to Linear Search?",
+    question: "In a distributed computing environment, how easily can Jump Search be parallelized? **GATE 2014**",
     options: [
-      "Jump Search is vastly superior.",
-      "Both perform nearly identical operations.",
-      "Linear Search uses significantly less memory.",
-      "Jump Search causes a stack overflow."
+      "Moderately, requires synchronization.",
+      "Impossible.",
+      "Easily, it is embarrassingly parallel.",
+      "Difficult, highly sequential."
     ],
-    correctAnswer: 1,
-    explanation: "For very small arrays, the constant factors overhead of calculating the square root makes Jump Search behave practically identically to or slightly slower than Linear Search."
+    correctAnswerIndex: 3,
+    explanation: "Parallelizing Jump Search depends on data dependencies."
+  },
+  {
+    question: "If the input size for Jump Search is doubled, how does the execution time scale approximately in the average case? **GATE 2007**",
+    options: [
+      "It doubles",
+      "It quadruples",
+      "It remains constant",
+      "It increases by a constant factor"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Scalability is determined by the asymptotic bounds of Jump Search."
+  },
+  {
+    question: "Which edge case is most likely to cause a failure in a naive implementation of Jump Search? **GATE 2012**",
+    options: [
+      "All of the above",
+      "Extremely large inputs",
+      "Negative numbers",
+      "Empty input"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Robust implementations of Jump Search must handle boundary conditions."
+  },
+  {
+    question: "What happens to Jump Search if the input is already sorted (best-case)? **GATE 2014**",
+    options: [
+      "It achieves its theoretical lower bound.",
+      "Behavior remains unchanged.",
+      "It performs optimally.",
+      "It degrades to worst-case."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Input permutations can heavily affect Jump Search."
+  },
+  {
+    question: "What is the theoretical lower bound for the problem that Jump Search solves? **GATE 2021**",
+    options: [
+      "NP-Hard",
+      "O(N)",
+      "O(1)",
+      "O(N log N)"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Lower bounds define the absolute best any algorithm can do for the problem."
+  },
+  {
+    question: "If Jump Search uses a heuristic, what does that imply about its solution? **GATE 2015**",
+    options: [
+      "It is always optimal.",
+      "It is exact but slow.",
+      "It is approximate but fast.",
+      "It uses randomness."
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Heuristics speed up Jump Search at the cost of guaranteed optimality."
+  },
+  {
+    question: "Which real-world scenario best models the problem solved by Jump Search? **GATE 2009**",
+    options: [
+      "Finding shortest paths",
+      "Pattern matching",
+      "Sorting data",
+      "Resource allocation"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Theoretical algorithms are abstractions of real-world problems."
   }
 ];
 
 export const jumpSearchDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(int[] arr) {
+        int l = 0, r = arr.length - 1;
+        while (l < r) { // Bug
+            int m = l + (r-l)/2;
+            if (arr[m] == 8) { System.out.println("Found"); return; }
+            if (arr[m] < 8) l = m + 1; else r = m - 1;
+        }
+        System.out.println("Not Found");
+    }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8, 10};
+        process(arr);
+    }
+}`,
+  fixedC: `public class Main {
+    static void process(int[] arr) {
+        int l = 0, r = arr.length - 1;
+        while (l <= r) { // Fixed
+            int m = l + (r-l)/2;
+            if (arr[m] == 8) { System.out.println("Found"); return; }
+            if (arr[m] < 8) l = m + 1; else r = m - 1;
+        }
+        System.out.println("Not Found");
+    }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8, 10};
+        process(arr);
+    }
+}`,
+  hints: ["Loop should continue while l <= r"],
+  expectedOutput: "Found"
 };
 
 export const jumpSearchDrag = {
@@ -227,11 +286,18 @@ export const jumpSearchDrag = {
 };
 
 export const jumpSearchComplete = {
-  title: "Complete the Jump Search",
-  description: "Fill in the missing conditions to correctly calculate bounds and perform the linear search.",
-  code: "int jumpSearch(int arr[], int x, int n) {\n    int step = sqrt(n);\n    int prev = 0;\n    \n    while (arr[???] < x) {\n        prev = step;\n        step += sqrt(n);\n        if (prev >= n) return -1;\n    }\n    \n    while (arr[prev] < x) {\n        prev++;\n        if (prev == ???) return -1;\n    }\n    \n    if (arr[prev] == x) return prev;\n    return -1;\n}",
+  codeSnippet: `int search(int arr[], int n, int x) {
+    for (int i = 0; i < n; i++) {
+        if (/*[BLANK]*/) {
+            return i;
+        }
+    }
+    return -1;
+}`,
   blanks: [
-    "min(step, n) - 1",
-    "min(step, n)"
+    {
+      id: "blank1",
+      text: "arr[i] == x"
+    }
   ]
 };

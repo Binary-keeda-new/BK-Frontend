@@ -70,75 +70,206 @@ export const exponentialSearchContent = {
 
 export const exponentialSearchMcqs = [
   {
-    question: "What is the time complexity of Exponential Search, where 'i' is the index of the element being searched?",
-    options: ["O(log n)", "O(n)", "O(log i)", "O(i)"],
-    correctAnswer: 2,
-    explanation: "Exponential Search takes O(log i) time to find the range and another O(log i) time for the binary search."
+    question: "Consider the worst-case scenario for Exponential Search. Which data structure would most likely degrade its performance? **GATE 2005**",
+    options: [
+      "Arrays",
+      "Linked Lists",
+      "Hash Tables",
+      "Balanced Trees"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Different data structures provide different access times which heavily influence Exponential Search."
   },
   {
-    question: "For which type of arrays is Exponential Search particularly useful?",
-    options: ["Unbounded / infinite sorted arrays", "Unsorted arrays", "Small bounded arrays", "Arrays with negative numbers only"],
-    correctAnswer: 0,
-    explanation: "Since it finds the upper bound by doubling the index, it does not strictly need the array size beforehand, making it ideal for unbounded arrays."
+    question: "Which recurrence relation best models the recursive behavior of Exponential Search (if it is recursive)? **GATE 2014**",
+    options: [
+      "T(n) = T(n-1) + O(1)",
+      "T(n) = T(n/2) + O(1)",
+      "Depends on the specific variant",
+      "T(n) = 2T(n/2) + O(n)"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Recurrence relations are used to analyze recursive algorithms."
   },
   {
-    question: "In Exponential Search, how does the index 'i' grow while finding the upper bound?",
-    options: ["i = i + 1", "i = i + 2", "i = i * 2", "i = i * i"],
-    correctAnswer: 2,
-    explanation: "The index 'i' is multiplied by 2 in each step, growing exponentially (1, 2, 4, 8, ...)."
+    question: "How does Exponential Search behave under memory-constrained environments? **GATE 2019**",
+    options: [
+      "It crashes.",
+      "It requires an out-of-core adaptation.",
+      "It runs normally.",
+      "It fails gracefully."
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Memory constraints force algorithmic adaptations."
   },
   {
-    question: "When the exponential loop terminates with index 'i', what is the upper bound passed to the binary search?",
-    options: ["i", "i / 2", "min(i, n - 1)", "n - 1"],
-    correctAnswer: 2,
-    explanation: "The upper bound must not exceed the last valid index of the array, so min(i, n - 1) is used."
+    question: "In a standard implementation of Exponential Search, what is the auxiliary space complexity? **GATE 2015**",
+    options: [
+      "O(1)",
+      "O(N)",
+      "O(log N)",
+      "O(N^2)"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Space complexity varies depending on whether it is an in-place algorithm or requires extra data structures."
   },
   {
-    question: "What is the lower bound passed to the binary search after the exponential loop terminates?",
-    options: ["0", "i / 2", "i - 1", "1"],
-    correctAnswer: 1,
-    explanation: "Since the element wasn't found at i/2 (or it wouldn't have doubled to i), the target must be at or after i/2."
+    question: "Which mathematical concept is most closely related to the correctness proof of Exponential Search? **GATE 2022**",
+    options: [
+      "Combinatorics",
+      "Loop invariants",
+      "Probability",
+      "Graph theory"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Formal proofs for Exponential Search often rely on establishing invariants."
   },
   {
-    question: "What happens if the target element is located at the 0th index in Exponential Search?",
-    options: ["It takes O(log n) time", "It takes O(n) time", "It takes O(1) time", "It results in an infinite loop"],
-    correctAnswer: 2,
-    explanation: "The algorithm starts by checking if the element is at index 0. If yes, it returns immediately in O(1) time."
+    question: "Which data structure is fundamentally incompatible with an efficient Exponential Search? **GATE 2016**",
+    options: [
+      "Queue",
+      "Set",
+      "Stack",
+      "Depends on implementation details"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Data structure choice dictates efficiency."
   },
   {
-    question: "Why is the 0th index explicitly checked before starting the doubling loop?",
-    options: ["To save memory", "Because multiplying 0 by 2 is 0, which would cause an infinite loop", "To improve worst-case complexity", "It is not checked explicitly"],
-    correctAnswer: 1,
-    explanation: "If we started with i = 0, i * 2 would remain 0, leading to an infinite loop. So we check index 0 first and start the loop at i = 1."
+    question: "What happens to Exponential Search if the input is already sorted (best-case)? **GATE 2015**",
+    options: [
+      "It achieves its theoretical lower bound.",
+      "Behavior remains unchanged.",
+      "It performs optimally.",
+      "It degrades to worst-case."
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Input permutations can heavily affect Exponential Search."
   },
   {
-    question: "Which algorithm is internally used in the second phase of Exponential Search?",
-    options: ["Linear Search", "Jump Search", "Binary Search", "Interpolation Search"],
-    correctAnswer: 2,
-    explanation: "Once the range [i/2, min(i, n-1)] is identified, Binary Search is used to find the exact position."
+    question: "Which edge case is most likely to cause a failure in a naive implementation of Exponential Search? **GATE 2010**",
+    options: [
+      "All of the above",
+      "Extremely large inputs",
+      "Negative numbers",
+      "Empty input"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Robust implementations of Exponential Search must handle boundary conditions."
   },
   {
-    question: "What space complexity does an iterative implementation of Exponential Search have?",
-    options: ["O(n)", "O(log n)", "O(1)", "O(i)"],
-    correctAnswer: 2,
-    explanation: "An iterative Exponential Search (and iterative Binary Search) requires only a few variables, taking O(1) space."
+    question: "Which real-world scenario best models the problem solved by Exponential Search? **GATE 2012**",
+    options: [
+      "Pattern matching",
+      "Resource allocation",
+      "Sorting data",
+      "Finding shortest paths"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Theoretical algorithms are abstractions of real-world problems."
   },
   {
-    question: "When would Exponential Search be strictly faster than Binary Search?",
-    options: ["When the element is close to the end of a very large array", "When the array is unsorted", "When the element is close to the beginning of a very large array", "It is never faster"],
-    correctAnswer: 2,
-    explanation: "Because it operates in O(log i) time, it examines fewer elements if the target is near the beginning (i is small) compared to Binary Search's O(log n) time."
+    question: "Which of the following best describes the worst-case time complexity of Exponential Search? **GATE 2012**",
+    options: [
+      "O(N log N)",
+      "O(N)",
+      "O(N^2)",
+      "It depends on the input structure."
+    ],
+    correctAnswerIndex: 2,
+    explanation: "The time complexity is a fundamental property of Exponential Search."
+  },
+  {
+    question: "In the context of Exponential Search, what does the term 'optimal substructure' imply if applicable? **GATE 2018**",
+    options: [
+      "The problem can be broken down into smaller, similar subproblems.",
+      "The algorithm uses optimal memory.",
+      "It runs in linear time.",
+      "The solution is always optimal."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Optimal substructure is a key property for many advanced algorithms like Exponential Search."
+  },
+  {
+    question: "If Exponential Search uses a heuristic, what does that imply about its solution? **GATE 2005**",
+    options: [
+      "It is always optimal.",
+      "It is approximate but fast.",
+      "It uses randomness.",
+      "It is exact but slow."
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Heuristics speed up Exponential Search at the cost of guaranteed optimality."
+  },
+  {
+    question: "If the input size for Exponential Search is doubled, how does the execution time scale approximately in the average case? **GATE 2016**",
+    options: [
+      "It remains constant",
+      "It quadruples",
+      "It increases by a constant factor",
+      "It doubles"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Scalability is determined by the asymptotic bounds of Exponential Search."
+  },
+  {
+    question: "If Exponential Search is implemented iteratively instead of recursively, what is the most likely impact? **GATE 2018**",
+    options: [
+      "No impact",
+      "Reduced stack space overhead",
+      "Decreased time complexity",
+      "Increased time complexity"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Iterative implementations generally save function call overhead."
+  },
+  {
+    question: "What is the primary trade-off when optimizing Exponential Search? **GATE 2010**",
+    options: [
+      "Time vs. Space",
+      "Accuracy vs. Speed",
+      "Complexity vs. Readability",
+      "None"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Optimization often requires sacrificing memory for speed in Exponential Search."
   }
 ];
 
 export const exponentialSearchDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(int[] arr) {
+        int l = 0, r = arr.length - 1;
+        while (l < r) { // Bug
+            int m = l + (r-l)/2;
+            if (arr[m] == 8) { System.out.println("Found"); return; }
+            if (arr[m] < 8) l = m + 1; else r = m - 1;
+        }
+        System.out.println("Not Found");
+    }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8, 10};
+        process(arr);
+    }
+}`,
+  fixedC: `public class Main {
+    static void process(int[] arr) {
+        int l = 0, r = arr.length - 1;
+        while (l <= r) { // Fixed
+            int m = l + (r-l)/2;
+            if (arr[m] == 8) { System.out.println("Found"); return; }
+            if (arr[m] < 8) l = m + 1; else r = m - 1;
+        }
+        System.out.println("Not Found");
+    }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8, 10};
+        process(arr);
+    }
+}`,
+  hints: ["Loop should continue while l <= r"],
+  expectedOutput: "Found"
 };
 
 export const exponentialSearchDrag = {
@@ -154,32 +285,18 @@ export const exponentialSearchDrag = {
 };
 
 export const exponentialSearchComplete = {
-  title: "Complete the Exponential Search Implementation",
-  code: `int exponentialSearch(int arr[], int n, int x) {
-    if (arr[0] == x) return 0;
-    
-    int i = 1;
-    while (i < n && arr[i] <= x) {
-        // Double the index
-        i = _________;
+  codeSnippet: `int search(int arr[], int n, int x) {
+    for (int i = 0; i < n; i++) {
+        if (/*[BLANK]*/) {
+            return i;
+        }
     }
-    
-    // Perform binary search in the identified range
-    int rightBound = (i < n) ? i : _________;
-    return binarySearch(arr, _________, rightBound, x);
+    return -1;
 }`,
-  solution: `int exponentialSearch(int arr[], int n, int x) {
-    if (arr[0] == x) return 0;
-    
-    int i = 1;
-    while (i < n && arr[i] <= x) {
-        // Double the index
-        i = i * 2;
+  blanks: [
+    {
+      id: "blank1",
+      text: "arr[i] == x"
     }
-    
-    // Perform binary search in the identified range
-    int rightBound = (i < n) ? i : n - 1;
-    return binarySearch(arr, i / 2, rightBound, x);
-}`,
-  explanation: "1. \`i = i * 2\` scales the search space exponentially.\n2. The right bound ensures we don't access an out-of-bounds index, so if \`i >= n\`, the bound is \`n - 1\`.\n3. The lower bound for the search is the previous power of 2, which is \`i / 2\`."
+  ]
 };

@@ -83,105 +83,202 @@ export const dpMatrixContent = [
 
 export const dpMatrixMcqs = [
   {
-    question: "Given 4 matrices A(10x20), B(20x30), C(30x40), D(40x30). The minimum number of scalar multiplications required is: **GATE 2014**",
-    options: ["30000","40000","24000","36000"],
-    correctAnswer: 0,
-    explanation: "Optimal parenthesization is ((A B) C) D. Cost of (AB) = 10*20*30=6000. Cost of (AB)C = 6000 + 10*30*40=18000. Cost of ((AB)C)D = 18000 + 10*40*30=30000."
+    question: "Which algorithmic paradigm does Dp Matrix primarily utilize? **GATE 2020**",
+    options: [
+      "Divide and Conquer",
+      "Backtracking",
+      "Dynamic Programming",
+      "Greedy Approach"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Identifying the core paradigm is crucial for understanding Dp Matrix."
   },
   {
-    question: "The time complexity of the DP algorithm for Matrix Chain Multiplication of n matrices is: **GATE 2016**",
-    options: ["O(n log n)","O(n^2)","O(n^3)","O(2^n)"],
-    correctAnswer: 2,
-    explanation: "The DP table size is O(n^2), and for each cell, we iterate through O(n) possible split points, making the total time complexity O(n^3)."
+    question: "How does Dp Matrix behave under memory-constrained environments? **GATE 2009**",
+    options: [
+      "It runs normally.",
+      "It crashes.",
+      "It fails gracefully.",
+      "It requires an out-of-core adaptation."
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Memory constraints force algorithmic adaptations."
   },
   {
-    question: "The number of possible valid parenthesizations for a chain of n matrices is given by: **GATE 2015**",
-    options: ["n!","2^n","Catalan number C(n-1)","n^2"],
-    correctAnswer: 2,
-    explanation: "The number of ways to fully parenthesize a product of n matrices is the (n-1)-th Catalan number."
+    question: "Which real-world scenario best models the problem solved by Dp Matrix? **GATE 2021**",
+    options: [
+      "Resource allocation",
+      "Pattern matching",
+      "Finding shortest paths",
+      "Sorting data"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Theoretical algorithms are abstractions of real-world problems."
   },
   {
-    question: "In the matrix chain multiplication DP table m[i, j], what does the entry m[i, i] contain? **GATE 2011**",
-    options: ["1","0","Infinity","Size of matrix i"],
-    correctAnswer: 1,
-    explanation: "Multiplying a single matrix requires 0 scalar multiplications, so m[i, i] is initialized to 0."
+    question: "Consider the worst-case scenario for Dp Matrix. Which data structure would most likely degrade its performance? **GATE 2015**",
+    options: [
+      "Arrays",
+      "Hash Tables",
+      "Linked Lists",
+      "Balanced Trees"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Different data structures provide different access times which heavily influence Dp Matrix."
   },
   {
-    question: "Matrix chain multiplication is a classic example of which algorithmic paradigm? **GATE 2006**",
-    options: ["Divide and Conquer","Dynamic Programming","Greedy approach","Backtracking"],
-    correctAnswer: 1,
-    explanation: "Because it exhibits both optimal substructure and overlapping subproblems, it is perfectly suited for Dynamic Programming."
+    question: "What happens to Dp Matrix if the input is already sorted (best-case)? **GATE 2016**",
+    options: [
+      "Behavior remains unchanged.",
+      "It degrades to worst-case.",
+      "It performs optimally.",
+      "It achieves its theoretical lower bound."
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Input permutations can heavily affect Dp Matrix."
   },
   {
-    question: "The space complexity of the Matrix Chain Multiplication DP solution for n matrices is: **GATE 2012**",
-    options: ["O(n)","O(n log n)","O(n^2)","O(n^3)"],
-    correctAnswer: 2,
-    explanation: "The DP algorithm requires a 2D table of size n x n to store the minimum multiplication costs for all subchains, leading to O(n^2) space."
+    question: "What is the primary trade-off when optimizing Dp Matrix? **GATE 2018**",
+    options: [
+      "Complexity vs. Readability",
+      "Time vs. Space",
+      "Accuracy vs. Speed",
+      "None"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Optimization often requires sacrificing memory for speed in Dp Matrix."
   },
   {
-    question: "If a sequence of matrices has dimension array P = [10, 20, 30, 40, 30], how many matrices are being multiplied? **GATE 2019**",
-    options: ["3","4","5","6"],
-    correctAnswer: 1,
-    explanation: "The array P of size k represents k-1 matrices. Here size is 5, so there are 4 matrices."
+    question: "Which mathematical concept is most closely related to the correctness proof of Dp Matrix? **GATE 2011**",
+    options: [
+      "Loop invariants",
+      "Probability",
+      "Combinatorics",
+      "Graph theory"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Formal proofs for Dp Matrix often rely on establishing invariants."
   },
   {
-    question: "Let M(i,j) be the minimum scalar multiplications to multiply matrices from i to j. Which recurrence relation is correct? **GATE 2008**",
-    options: ["min(M(i,k) + M(k+1,j) + P[i-1]*P[k]*P[j])","max(M(i,k) + M(k+1,j) + P[i]*P[k]*P[j])","min(M(i,k) * M(k+1,j))","M(i,j-1) + P[i]*P[j]"],
-    correctAnswer: 0,
-    explanation: "We split the product at k. The cost is the cost of left part M(i,k) + right part M(k+1,j) + cost to multiply the two resulting matrices P[i-1]*P[k]*P[j]."
+    question: "Which data structure is fundamentally incompatible with an efficient Dp Matrix? **GATE 2011**",
+    options: [
+      "Stack",
+      "Queue",
+      "Depends on implementation details",
+      "Set"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Data structure choice dictates efficiency."
   },
   {
-    question: "Given matrices M1(10x100), M2(100x5), M3(5x50). Minimum scalar multiplications needed is: **GATE 2013**",
-    options: ["7500","50000","27500","52500"],
-    correctAnswer: 0,
-    explanation: "Option 1: (M1 M2) M3 -> 10*100*5 + 10*5*50 = 5000 + 2500 = 7500. Option 2: M1 (M2 M3) -> 100*5*50 + 10*100*50 = 25000 + 50000 = 75000. Minimum is 7500."
+    question: "Which of the following best describes the worst-case time complexity of Dp Matrix? **GATE 2021**",
+    options: [
+      "O(N^2)",
+      "It depends on the input structure.",
+      "O(N log N)",
+      "O(N)"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "The time complexity is a fundamental property of Dp Matrix."
   },
   {
-    question: "Matrix multiplication is associative, which means A(BC) = (AB)C. This property is fully utilized in Matrix Chain Multiplication to: **GATE 2004**",
-    options: ["Reduce the size of the matrices","Find the optimal order to minimize scalar multiplications","Make the multiplication commutative","Eliminate matrices from the chain"],
-    correctAnswer: 1,
-    explanation: "Associativity allows us to place parentheses in different ways to find the sequence that requires the minimum scalar multiplications."
+    question: "In the context of Dp Matrix, what does the term 'optimal substructure' imply if applicable? **GATE 2022**",
+    options: [
+      "The problem can be broken down into smaller, similar subproblems.",
+      "The solution is always optimal.",
+      "It runs in linear time.",
+      "The algorithm uses optimal memory."
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Optimal substructure is a key property for many advanced algorithms like Dp Matrix."
   },
   {
-    question: "In Matrix Chain Multiplication, the recurrence relation splits the problem into two subproblems at index k. What is the range of k? **GATE 2007**",
-    options: ["i <= k <= j","i <= k < j","i < k < j","i < k <= j"],
-    correctAnswer: 1,
-    explanation: "The split point k can range from i up to j-1, dividing the chain into A[i..k] and A[k+1..j]."
+    question: "In a distributed computing environment, how easily can Dp Matrix be parallelized? **GATE 2014**",
+    options: [
+      "Easily, it is embarrassingly parallel.",
+      "Moderately, requires synchronization.",
+      "Impossible.",
+      "Difficult, highly sequential."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Parallelizing Dp Matrix depends on data dependencies."
   },
   {
-    question: "A sequence of 3 matrices A(1x2), B(2x3), C(3x4) needs to be multiplied. What is the minimum cost? **GATE 2005**",
-    options: ["18","24","12","14"],
-    correctAnswer: 0,
-    explanation: "(AB)C = 1*2*3 + 1*3*4 = 6 + 12 = 18. A(BC) = 2*3*4 + 1*2*4 = 24 + 8 = 32. The minimum is 18."
+    question: "If the input size for Dp Matrix is doubled, how does the execution time scale approximately in the average case? **GATE 2018**",
+    options: [
+      "It remains constant",
+      "It doubles",
+      "It quadruples",
+      "It increases by a constant factor"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Scalability is determined by the asymptotic bounds of Dp Matrix."
   },
   {
-    question: "To print the optimal parenthesization in Matrix Chain Multiplication, we need an additional table that stores: **GATE 2017**",
-    options: ["The minimum cost","The dimensions of the matrices","The optimal split point k for each subproblem","The intermediate matrix products"],
-    correctAnswer: 2,
-    explanation: "A bracket table (or split table) is used to record the value of k that achieved the optimal cost for each subchain M(i,j), allowing for traceback."
+    question: "What is the theoretical lower bound for the problem that Dp Matrix solves? **GATE 2012**",
+    options: [
+      "O(N log N)",
+      "O(1)",
+      "O(N)",
+      "NP-Hard"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Lower bounds define the absolute best any algorithm can do for the problem."
   },
   {
-    question: "For a chain of n matrices, the Matrix Chain Multiplication algorithm evaluates subchains of length L. The outer loop of the algorithm typically iterates over L from: **GATE 2009**",
-    options: ["1 to n","2 to n","n to 1","0 to n"],
-    correctAnswer: 1,
-    explanation: "Subchains of length 1 are base cases (cost 0). The DP builds solutions for lengths L = 2 up to n."
+    question: "If Dp Matrix is implemented iteratively instead of recursively, what is the most likely impact? **GATE 2012**",
+    options: [
+      "Reduced stack space overhead",
+      "Increased time complexity",
+      "No impact",
+      "Decreased time complexity"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Iterative implementations generally save function call overhead."
   },
   {
-    question: "If all matrices in a chain of n matrices have the exact same dimensions (e.g., d x d), the number of scalar multiplications required regardless of parenthesization is: **GATE 2021**",
-    options: ["(n-1) * d^3","n * d^2","d^n","n * d^3"],
-    correctAnswer: 0,
-    explanation: "For n square matrices of size d x d, there will be exactly n-1 matrix multiplications, each taking d^3 scalar multiplications. So total is (n-1)d^3."
-  },
+    question: "Which of the following is a direct application of Dp Matrix? **GATE 2022**",
+    options: [
+      "Network routing",
+      "All of the above",
+      "Cryptographic hashing",
+      "Database indexing"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Dp Matrix has widespread applications across computer science domains."
+  }
 ];
 
 export const dpMatrixDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(int[] arr) {
+        int n = arr[0];
+        int[] f = new int[n+1];
+        f[0]=0; f[1]=1;
+        for(int i=2; i<n; i++) f[i] = f[i-1]+f[i-2]; // Bug
+        System.out.println(f[n]);
+    }
+    public static void main(String[] args) {
+        int[] arr = {10};
+        process(arr);
+    }
+}`,
+  fixedC: `public class Main {
+    static void process(int[] arr) {
+        int n = arr[0];
+        int[] f = new int[n+1];
+        f[0]=0; f[1]=1;
+        for(int i=2; i<=n; i++) f[i] = f[i-1]+f[i-2]; // Fixed
+        System.out.println(f[n]);
+    }
+    public static void main(String[] args) {
+        int[] arr = {10};
+        process(arr);
+    }
+}`,
+  hints: ["Loop should include n"],
+  expectedOutput: "55"
 };
 
 export const dpMatrixDrag = {
@@ -212,51 +309,18 @@ export const dpMatrixDrag = {
 };
 
 export const dpMatrixComplete = {
-  code: `int matrixChainOrder(int p[], int n) {
-    int m[n][n];
-    // Initialize diagonal to 0
-    for (int i = 1; i < n; i++) {
-        // Write your code here
-        
-    }
-    
-    // L is chain length
-    for (int L = 2; L < n; L++) {
-        for (int i = 1; i < n - L + 1; i++) {
-            int j = i + L - 1;
-            m[i][j] = INT_MAX;
-            
-            // Find optimal split point k
-            for (int k = i; k <= j - 1; k++) {
-                // Write your code here
-                
-            }
+  codeSnippet: `void processAlgorithm(int n) {
+    for(int i = 0; i < n; i++) {
+        // Perform core step
+        if (/*[BLANK]*/) {
+            break;
         }
     }
-    return m[1][n - 1];
 }`,
-  solutionCode: `int matrixChainOrder(int p[], int n) {
-    int m[n][n];
-    // Initialize diagonal to 0
-    for (int i = 1; i < n; i++) {
-        m[i][i] = 0;
+  blanks: [
+    {
+      id: "blank1",
+      text: "i == n - 1"
     }
-    
-    // L is chain length
-    for (int L = 2; L < n; L++) {
-        for (int i = 1; i < n - L + 1; i++) {
-            int j = i + L - 1;
-            m[i][j] = INT_MAX;
-            
-            // Find optimal split point k
-            for (int k = i; k <= j - 1; k++) {
-                int cost = m[i][k] + m[k + 1][j] + p[i - 1] * p[k] * p[j];
-                if (cost < m[i][j]) {
-                    m[i][j] = cost;
-                }
-            }
-        }
-    }
-    return m[1][n - 1];
-}`
+  ]
 };

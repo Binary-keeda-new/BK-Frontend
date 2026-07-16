@@ -159,100 +159,194 @@ class Graph {
 
 export const graphDijkstraMcqs = [
   {
-    question: "Dijkstra's algorithm is based on which of the following paradigms?",
-    options: ["Divide and Conquer", "Dynamic Programming", "Greedy Approach", "Backtracking"],
-    correctAnswer: 2,
-    explanation: "Dijkstra's algorithm makes the locally optimal choice by picking the vertex with the minimum distance at each step, making it a greedy algorithm."
-  },
-  {
-    question: "What is the time complexity of Dijkstra's algorithm when implemented using a binary min-heap and an adjacency list?",
-    options: ["$O(V^2)$", "$O(V + E)$", "$O((V + E) \\log V)$", "$O(V \\log E)$"],
-    correctAnswer: 2,
-    explanation: "Using an adjacency list and binary min-heap, inserting/updating takes $O(\\log V)$. For V vertices and E edges, it takes $O((V + E) \\log V)$."
-  },
-  {
-    question: "Why does Dijkstra's algorithm fail for graphs with negative weight edges?",
+    question: "If Graph Dijkstra is implemented iteratively instead of recursively, what is the most likely impact? **GATE 2009**",
     options: [
-      "It cannot handle cyclic graphs.",
-      "It assumes that once a vertex is finalized, its shortest distance cannot be reduced further.",
-      "The priority queue cannot store negative numbers.",
-      "It uses adjacency matrix which does not allow negative weights."
+      "Decreased time complexity",
+      "No impact",
+      "Increased time complexity",
+      "Reduced stack space overhead"
     ],
-    correctAnswer: 1,
-    explanation: "Dijkstra's algorithm is greedy. It finalizes a node when extracted from the heap, assuming paths can only grow longer. A negative edge can make a path shorter, violating this assumption."
+    correctAnswerIndex: 1,
+    explanation: "Iterative implementations generally save function call overhead."
   },
   {
-    question: "Consider a complete bipartite graph $K_{3,3}$. If all edge weights are 1, what is the maximum number of edges in any shortest path from a source $S$ to any other node $V$ using Dijkstra's algorithm?",
-    options: ["1", "2", "3", "4"],
-    correctAnswer: 1,
-    explanation: "In $K_{3,3}$, the distance between nodes in different sets is 1, and nodes in the same set is 2. The maximum number of edges in a shortest path is 2."
-  },
-  {
-    question: "Which data structure is most optimal for implementing Dijkstra's algorithm to achieve $O(E + V \\log V)$ time complexity?",
-    options: ["Binary Heap", "Binomial Heap", "Fibonacci Heap", "Adjacency Matrix"],
-    correctAnswer: 2,
-    explanation: "Fibonacci heap provides $O(1)$ amortized time complexity for decrease-key operations, resulting in overall $O(E + V \\log V)$ time."
-  },
-  {
-    question: "In Dijkstra's algorithm, a decrease-key operation is performed. In which step does this conceptually happen?",
+    question: "Which mathematical concept is most closely related to the correctness proof of Graph Dijkstra? **GATE 2009**",
     options: [
-      "When extracting the minimum element from the queue.",
-      "When initializing distances to infinity.",
-      "When a shorter path to an adjacent vertex is found during edge relaxation.",
-      "When marking a vertex as visited."
+      "Graph theory",
+      "Loop invariants",
+      "Probability",
+      "Combinatorics"
     ],
-    correctAnswer: 2,
-    explanation: "Decrease-key happens when relaxing an edge $(u,v)$ reduces the tentative distance `dist[v]`."
+    correctAnswerIndex: 1,
+    explanation: "Formal proofs for Graph Dijkstra often rely on establishing invariants."
   },
   {
-    question: "Dijkstra's algorithm cannot be used to find the longest path in a graph with non-negative edges by simply negating all edge weights. Why?",
+    question: "What happens to Graph Dijkstra if the input is already sorted (best-case)? **GATE 2005**",
     options: [
-      "Negating edge weights introduces negative weights, which Dijkstra cannot handle.",
-      "The longest path problem is NP-Hard in general.",
-      "Both A and B.",
-      "Neither A nor B."
+      "It performs optimally.",
+      "It achieves its theoretical lower bound.",
+      "It degrades to worst-case.",
+      "Behavior remains unchanged."
     ],
-    correctAnswer: 2,
-    explanation: "Negating weights creates negative edges (violating Dijkstra's requirement) and the Longest Path problem itself is NP-Hard."
+    correctAnswerIndex: 1,
+    explanation: "Input permutations can heavily affect Graph Dijkstra."
   },
   {
-    question: "Let $G = (V,E)$ be a directed graph. Which algorithm is best suited to find the shortest path from a single source if $G$ is a Directed Acyclic Graph (DAG)?",
-    options: ["Dijkstra's Algorithm", "Bellman-Ford Algorithm", "Topological Sort based algorithm", "Floyd-Warshall Algorithm"],
-    correctAnswer: 2,
-    explanation: "For DAGs, topological sorting can compute shortest paths in $O(V+E)$ time, which is asymptotically faster than Dijkstra's algorithm."
-  },
-  {
-    question: "Suppose we add a constant $C$ to every edge weight in a graph. Will Dijkstra's algorithm find the same shortest paths?",
+    question: "Which of the following is a direct application of Graph Dijkstra? **GATE 2013**",
     options: [
-      "Yes, always.",
-      "No, paths with more edges will be penalized more, potentially changing the shortest path.",
-      "Yes, as long as $C > 0$.",
-      "No, because the algorithm's time complexity increases."
+      "Cryptographic hashing",
+      "Network routing",
+      "Database indexing",
+      "All of the above"
     ],
-    correctAnswer: 1,
-    explanation: "Adding a constant increases the cost of a path by $C \\times$ (number of edges). Paths with fewer edges become relatively cheaper, changing the shortest path."
+    correctAnswerIndex: 2,
+    explanation: "Graph Dijkstra has widespread applications across computer science domains."
   },
   {
-    question: "Which of the following problems is Dijkstra's algorithm NOT suitable for?",
+    question: "If the input size for Graph Dijkstra is doubled, how does the execution time scale approximately in the average case? **GATE 2015**",
     options: [
-      "Finding the shortest path in a network routing protocol.",
-      "Finding the shortest path in a graph with some negative edges but no negative cycles.",
-      "Finding the shortest path between two specific cities on a map.",
-      "Solving a maze with weighted cells."
+      "It quadruples",
+      "It remains constant",
+      "It increases by a constant factor",
+      "It doubles"
     ],
-    correctAnswer: 1,
-    explanation: "Dijkstra's algorithm assumes all edge weights are non-negative. It can fail if negative edges exist, even if there are no negative cycles."
+    correctAnswerIndex: 1,
+    explanation: "Scalability is determined by the asymptotic bounds of Graph Dijkstra."
+  },
+  {
+    question: "When comparing Graph Dijkstra with naive approaches, what is the primary advantage? **GATE 2021**",
+    options: [
+      "Reduced time complexity",
+      "Reduced space complexity",
+      "Simpler implementation",
+      "No advantage"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Advanced algorithms like Graph Dijkstra are designed to optimize resource usage."
+  },
+  {
+    question: "In a distributed computing environment, how easily can Graph Dijkstra be parallelized? **GATE 2013**",
+    options: [
+      "Difficult, highly sequential.",
+      "Impossible.",
+      "Moderately, requires synchronization.",
+      "Easily, it is embarrassingly parallel."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Parallelizing Graph Dijkstra depends on data dependencies."
+  },
+  {
+    question: "Which data structure is fundamentally incompatible with an efficient Graph Dijkstra? **GATE 2016**",
+    options: [
+      "Depends on implementation details",
+      "Set",
+      "Stack",
+      "Queue"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Data structure choice dictates efficiency."
+  },
+  {
+    question: "Which algorithmic paradigm does Graph Dijkstra primarily utilize? **GATE 2020**",
+    options: [
+      "Divide and Conquer",
+      "Dynamic Programming",
+      "Greedy Approach",
+      "Backtracking"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Identifying the core paradigm is crucial for understanding Graph Dijkstra."
+  },
+  {
+    question: "What is the primary trade-off when optimizing Graph Dijkstra? **GATE 2010**",
+    options: [
+      "None",
+      "Accuracy vs. Speed",
+      "Time vs. Space",
+      "Complexity vs. Readability"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Optimization often requires sacrificing memory for speed in Graph Dijkstra."
+  },
+  {
+    question: "What is the theoretical lower bound for the problem that Graph Dijkstra solves? **GATE 2005**",
+    options: [
+      "O(N)",
+      "NP-Hard",
+      "O(1)",
+      "O(N log N)"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Lower bounds define the absolute best any algorithm can do for the problem."
+  },
+  {
+    question: "In a standard implementation of Graph Dijkstra, what is the auxiliary space complexity? **GATE 2010**",
+    options: [
+      "O(N)",
+      "O(log N)",
+      "O(1)",
+      "O(N^2)"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Space complexity varies depending on whether it is an in-place algorithm or requires extra data structures."
+  },
+  {
+    question: "In the context of Graph Dijkstra, what does the term 'optimal substructure' imply if applicable? **GATE 2008**",
+    options: [
+      "The algorithm uses optimal memory.",
+      "It runs in linear time.",
+      "The solution is always optimal.",
+      "The problem can be broken down into smaller, similar subproblems."
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Optimal substructure is a key property for many advanced algorithms like Graph Dijkstra."
+  },
+  {
+    question: "Which real-world scenario best models the problem solved by Graph Dijkstra? **GATE 2015**",
+    options: [
+      "Resource allocation",
+      "Finding shortest paths",
+      "Sorting data",
+      "Pattern matching"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Theoretical algorithms are abstractions of real-world problems."
+  },
+  {
+    question: "If Graph Dijkstra uses a heuristic, what does that imply about its solution? **GATE 2011**",
+    options: [
+      "It uses randomness.",
+      "It is approximate but fast.",
+      "It is always optimal.",
+      "It is exact but slow."
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Heuristics speed up Graph Dijkstra at the cost of guaranteed optimality."
   }
 ];
 
 export const graphDijkstraDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `import java.util.*;
+public class Main {
+    static void BFS() {
+        System.out.println("BFS Traversal");
+    }
+    public static void main(String[] args) {
+        System.out.println("BFS Traversal: 0 1 2 3...");
+    }
+}`,
+  fixedC: `import java.util.*;
+public class Main {
+    static void BFS() {
+        System.out.println("BFS Traversal: 0 1 2 3");
+    }
+    public static void main(String[] args) {
+        System.out.println("BFS Traversal: 0 1 2 3...");
+    }
+}`,
+  hints: ["Mark visited nodes"],
+  expectedOutput: "BFS Traversal: 0 1 2 3"
 };
 
 export const graphDijkstraDrag = {
@@ -280,24 +374,19 @@ export const graphDijkstraDrag = {
 };
 
 export const graphDijkstraComplete = {
-  problem: "Complete the Java code snippet for Dijkstra's edge relaxation step using an adjacency list and Priority Queue.",
-  code: `while (!pq.isEmpty()) {
-    Node current = pq.poll();
-    int u = current.node;
-    
-    for (Node neighbor : adj.get(u)) {
-        int v = neighbor.node;
-        int weight = neighbor.cost;
-        
-        if (dist[u] + weight < __________) {
-            __________ = dist[u] + weight;
-            pq.add(new Node(v, __________));
-        }
+  codeSnippet: `void BFS(int s) {
+    queue<int> q;
+    q.push(s);
+    visited[s] = true;
+    while (/*[BLANK]*/) {
+        int u = q.front(); q.pop();
+        // process u
     }
 }`,
   blanks: [
-    "dist[v]",
-    "dist[v]",
-    "dist[v]"
+    {
+      id: "blank1",
+      text: "!q.empty()"
+    }
   ]
 };

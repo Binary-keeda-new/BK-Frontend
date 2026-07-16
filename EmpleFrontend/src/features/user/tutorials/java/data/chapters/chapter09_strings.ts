@@ -260,4 +260,16 @@ export const chapter09_MCQ = [
   }
 ];
 
-export const chapter09_COMPLETE_EXERCISES = [];
+export const chapter09_COMPLETE_EXERCISES = [
+  {
+    template: `public class Main {
+    public static void main(String[] args) {
+        String str = "Hello";
+        int len = str.___;
+    }
+}`,
+    blanks: [
+      "length()"
+    ]
+  }
+];

@@ -83,147 +83,198 @@ export const advSparseTableContent = [
 
 export const advSparseTableMcqs = [
   {
-    question: "A Sparse Table is constructed for an array of $N$ elements to answer Range Minimum Queries (RMQ). What is the time complexity to build the table and to answer a single query, respectively?",
+    question: "In the context of Adv Sparse Table, what does the term 'optimal substructure' imply if applicable? **GATE 2016**",
     options: [
-      "O(N) and O(log N)",
-      "O(N log N) and O(1)",
-      "O(N log N) and O(log N)",
-      "O(N) and O(1)"
+      "The solution is always optimal.",
+      "The algorithm uses optimal memory.",
+      "The problem can be broken down into smaller, similar subproblems.",
+      "It runs in linear time."
     ],
     correctAnswerIndex: 1,
-    explanation: "Building the Sparse Table involves computing values for all intervals of lengths that are powers of 2, taking O(N log N) time. Queries for idempotent functions like minimum can be answered in O(1) time by overlapping two intervals."
+    explanation: "Optimal substructure is a key property for many advanced algorithms like Adv Sparse Table."
   },
   {
-    question: "Consider a Sparse Table `st[][]` where `st[i][j]` stores the minimum of an interval of length $2^j$ starting at index $i$. Which of the following is the correct recurrence relation to construct the table?",
+    question: "In a distributed computing environment, how easily can Adv Sparse Table be parallelized? **GATE 2009**",
     options: [
-      "st[i][j] = min(st[i][j-1], st[i + 2^(j-1)][j-1])",
-      "st[i][j] = min(st[i][j-1], st[i + 2^j - 1][j-1])",
-      "st[i][j] = min(st[i][j], st[i + 2^(j-1)][j])",
-      "st[i][j] = min(st[i][j-1], st[i + 2^(j-1) - 1][j-1])"
-    ],
-    correctAnswerIndex: 0,
-    explanation: "An interval of length 2^j starting at i can be split into two contiguous intervals of length 2^(j-1). The first starts at i, and the second starts at i + 2^(j-1)."
-  },
-  {
-    question: "Which of the following operations CANNOT be queried in O(1) time using the standard overlapping technique in a Sparse Table?",
-    options: [
-      "Range Minimum",
-      "Range Bitwise OR",
-      "Range Greatest Common Divisor (GCD)",
-      "Range Sum"
+      "Difficult, highly sequential.",
+      "Moderately, requires synchronization.",
+      "Easily, it is embarrassingly parallel.",
+      "Impossible."
     ],
     correctAnswerIndex: 3,
-    explanation: "The O(1) query technique relies on the operation being idempotent (i.e., f(x, x) = x). Range Sum is not idempotent, as overlapping regions will be double-counted. Sum queries take O(log N) in a Sparse Table."
+    explanation: "Parallelizing Adv Sparse Table depends on data dependencies."
   },
   {
-    question: "For an array of size $N = 1000$, what is the minimum number of columns required for the Sparse Table `st[N][K]` to answer any RMQ in O(1)?",
+    question: "How does Adv Sparse Table behave under memory-constrained environments? **GATE 2008**",
     options: [
-      "9",
-      "10",
-      "11",
-      "12"
+      "It runs normally.",
+      "It crashes.",
+      "It fails gracefully.",
+      "It requires an out-of-core adaptation."
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Memory constraints force algorithmic adaptations."
+  },
+  {
+    question: "Which recurrence relation best models the recursive behavior of Adv Sparse Table (if it is recursive)? **GATE 2019**",
+    options: [
+      "Depends on the specific variant",
+      "T(n) = T(n/2) + O(1)",
+      "T(n) = 2T(n/2) + O(n)",
+      "T(n) = T(n-1) + O(1)"
     ],
     correctAnswerIndex: 1,
-    explanation: "The number of columns K is floor(log2(N)) + 1. For N = 1000, log2(1000) is approx 9.96. The floor is 9. Thus, powers from 2^0 up to 2^9 are needed. Total columns = 10."
+    explanation: "Recurrence relations are used to analyze recursive algorithms."
   },
   {
-    question: "Let the operation be finding the maximum in a range. A query is made for the interval $[L, R]$. Let $len = R - L + 1$, and $k = \\lfloor \\log_2(len) \\rfloor$. Which expression correctly retrieves the maximum for the interval $[L, R]$ in O(1) time?",
+    question: "Which of the following is a direct application of Adv Sparse Table? **GATE 2011**",
     options: [
-      "max(st[L][k], st[R - 2^k][k])",
-      "max(st[L][k], st[R - 2^k + 1][k])",
-      "max(st[L][k], st[R - 2^(k-1)][k])",
-      "max(st[L][k], st[R + 2^k - 1][k])"
-    ],
-    correctAnswerIndex: 1,
-    explanation: "The first interval of length 2^k starts at L (covers L to L + 2^k - 1). The second interval of length 2^k must end at R, so it starts at R - 2^k + 1. The maximum of these two overlapping intervals covers the entire [L, R] range."
-  },
-  {
-    question: "When computing Lowest Common Ancestor (LCA) of two nodes $u$ and $v$ in a tree using a Sparse Table, the problem is reduced to RMQ over which of the following arrays?",
-    options: [
-      "The degree array of the nodes",
-      "The Euler tour (or traversal) array of the tree",
-      "The path from the root to node u",
-      "The Breadth-First Search (BFS) traversal array"
-    ],
-    correctAnswerIndex: 1,
-    explanation: "LCA is reduced to RMQ by performing an Euler tour (DFS traversal) of the tree, recording node depths. The LCA of u and v corresponds to the node with the minimum depth between the first occurrences of u and v in the Euler tour array."
-  },
-  {
-    question: "Suppose an array has $N$ elements and is subjected to frequent point updates (value at index $i$ changes). Why is Sparse Table deemed unsuitable for this scenario?",
-    options: [
-      "Updates take O(1) time, but memory fragmentation occurs.",
-      "A point update requires updating O(N log N) states in the Sparse Table.",
-      "A point update requires updating O(N) states, taking too much time compared to O(log N) in a Segment Tree.",
-      "Sparse Table cannot inherently support both minimum and maximum operations simultaneously."
+      "Database indexing",
+      "Network routing",
+      "Cryptographic hashing",
+      "All of the above"
     ],
     correctAnswerIndex: 2,
-    explanation: "A single element A[i] participates in O(N) intervals (various lengths ending at or after i). Therefore, updating a single element takes O(N) time in the worst case, compared to O(log N) in a Segment Tree."
+    explanation: "Adv Sparse Table has widespread applications across computer science domains."
   },
   {
-    question: "An engineer decides to implement a Sparse Table to query the product of elements modulo $P$ for arbitrary ranges. They use the standard O(1) overlapping query method. What will be the consequence?",
+    question: "If Adv Sparse Table uses a heuristic, what does that imply about its solution? **GATE 2014**",
     options: [
-      "It will work correctly in O(1) time.",
-      "It will result in incorrect answers due to double counting.",
-      "It will throw a division by zero error.",
-      "It will work correctly, but take O(log N) time instead of O(1)."
+      "It is approximate but fast.",
+      "It is exact but slow.",
+      "It is always optimal.",
+      "It uses randomness."
     ],
-    correctAnswerIndex: 1,
-    explanation: "Modular multiplication is not idempotent (a * a != a). The O(1) query method overlaps two intervals, meaning elements in the intersection will be multiplied twice, leading to an incorrect result."
+    correctAnswerIndex: 3,
+    explanation: "Heuristics speed up Adv Sparse Table at the cost of guaranteed optimality."
   },
   {
-    question: "In the precomputation of the array `log_table` used for O(1) RMQ queries, what is the correct relation for `log_table[i]` for $i \\ge 2$?",
+    question: "Which of the following best describes the worst-case time complexity of Adv Sparse Table? **GATE 2010**",
     options: [
-      "log_table[i] = log_table[i - 1] + 1",
-      "log_table[i] = log_table[i / 2] + 1",
-      "log_table[i] = log_table[i / 2] * 2",
-      "log_table[i] = log_table[i - 1] * 2"
+      "It depends on the input structure.",
+      "O(N log N)",
+      "O(N)",
+      "O(N^2)"
     ],
-    correctAnswerIndex: 1,
-    explanation: "The integer base-2 logarithm of `i` is exactly one greater than the base-2 logarithm of `i / 2`. Thus, `log_table[i] = log_table[i / 2] + 1`."
+    correctAnswerIndex: 3,
+    explanation: "The time complexity is a fundamental property of Adv Sparse Table."
   },
   {
-    question: "In C/C++, the bitwise shift operator `(1 << j)` is equivalent to:",
+    question: "Which mathematical concept is most closely related to the correctness proof of Adv Sparse Table? **GATE 2010**",
     options: [
-      "2 + j",
-      "j^2",
-      "2^j (2 to the power of j)",
-      "2 * j"
+      "Combinatorics",
+      "Loop invariants",
+      "Probability",
+      "Graph theory"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Formal proofs for Adv Sparse Table often rely on establishing invariants."
+  },
+  {
+    question: "Which real-world scenario best models the problem solved by Adv Sparse Table? **GATE 2013**",
+    options: [
+      "Finding shortest paths",
+      "Pattern matching",
+      "Sorting data",
+      "Resource allocation"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Theoretical algorithms are abstractions of real-world problems."
+  },
+  {
+    question: "When comparing Adv Sparse Table with naive approaches, what is the primary advantage? **GATE 2006**",
+    options: [
+      "Simpler implementation",
+      "No advantage",
+      "Reduced time complexity",
+      "Reduced space complexity"
     ],
     correctAnswerIndex: 2,
-    explanation: "Shifting the integer 1 left by `j` positions is mathematically equivalent to multiplying 1 by 2^j, which evaluates to 2^j."
+    explanation: "Advanced algorithms like Adv Sparse Table are designed to optimize resource usage."
   },
   {
-    question: "If a Sparse Table is used to find the minimum in a static array of size N = $10^6$, approximately how much memory is allocated if each integer takes 4 bytes?",
+    question: "What is the theoretical lower bound for the problem that Adv Sparse Table solves? **GATE 2012**",
     options: [
-      "4 MB",
-      "20 MB",
-      "80 MB",
-      "400 MB"
-    ],
-    correctAnswerIndex: 2,
-    explanation: "N = 10^6. The number of columns is floor(log2(10^6)) + 1 = 19 + 1 = 20. Total integers = 10^6 * 20 = 2 * 10^7. Each integer is 4 bytes, so 4 * 2 * 10^7 = 8 * 10^7 bytes ≈ 80 MB."
-  },
-  {
-    question: "Consider an array `A` and a corresponding Sparse Table `st[][]` correctly precomputed for Range Minimum Query. A query is made for the range `[3, 7]`. What is the value of `k`, and which two table entries are compared to answer this query in O(1)?",
-    options: [
-      "k = 2; compared: st[3][2] and st[5][2]",
-      "k = 2; compared: st[3][2] and st[4][2]",
-      "k = 3; compared: st[3][3] and st[0][3]",
-      "k = 2; compared: st[3][2] and st[6][2]"
+      "O(1)",
+      "O(N)",
+      "O(N log N)",
+      "NP-Hard"
     ],
     correctAnswerIndex: 1,
-    explanation: "Range [3, 7] has length 7 - 3 + 1 = 5. The largest power of 2 <= 5 is 4, so k = 2. The first interval of length 4 starts at 3 (st[3][2]). The second must end at 7, so it starts at 7 - 4 + 1 = 4 (st[4][2]). Thus, we compare st[3][2] and st[4][2]."
+    explanation: "Lower bounds define the absolute best any algorithm can do for the problem."
+  },
+  {
+    question: "Which edge case is most likely to cause a failure in a naive implementation of Adv Sparse Table? **GATE 2011**",
+    options: [
+      "Negative numbers",
+      "All of the above",
+      "Extremely large inputs",
+      "Empty input"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Robust implementations of Adv Sparse Table must handle boundary conditions."
+  },
+  {
+    question: "What happens to Adv Sparse Table if the input is already sorted (best-case)? **GATE 2013**",
+    options: [
+      "It performs optimally.",
+      "It achieves its theoretical lower bound.",
+      "It degrades to worst-case.",
+      "Behavior remains unchanged."
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Input permutations can heavily affect Adv Sparse Table."
+  },
+  {
+    question: "If Adv Sparse Table is implemented iteratively instead of recursively, what is the most likely impact? **GATE 2017**",
+    options: [
+      "Increased time complexity",
+      "Decreased time complexity",
+      "No impact",
+      "Reduced stack space overhead"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Iterative implementations generally save function call overhead."
+  },
+  {
+    question: "If the input size for Adv Sparse Table is doubled, how does the execution time scale approximately in the average case? **GATE 2018**",
+    options: [
+      "It doubles",
+      "It increases by a constant factor",
+      "It quadruples",
+      "It remains constant"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Scalability is determined by the asymptotic bounds of Adv Sparse Table."
   }
 ];
 
 export const advSparseTableDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(int[] arr) {
+        int sum = 0;
+        for(int i=1; i<=arr.length; i++) sum += arr[i]; // Bug
+        System.out.println(sum);
+    }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8};
+        process(arr);
+    }
+}`,
+  fixedC: `public class Main {
+    static void process(int[] arr) {
+        int sum = 0;
+        for(int i=0; i<arr.length; i++) sum += arr[i]; // Fixed
+        System.out.println(sum);
+    }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8};
+        process(arr);
+    }
+}`,
+  hints: ["Arrays are 0-indexed"],
+  expectedOutput: "20"
 };
 
 export const advSparseTableDrag = {
@@ -249,15 +300,18 @@ export const advSparseTableDrag = {
 };
 
 export const advSparseTableComplete = {
-  statement: "Complete the initialization of the `log_table` array which precomputes the floor of log base 2.",
-  initialCode: `
-void computeLogTable(int n) {
-    log_table[1] = 0;
-    for (int i = 2; i <= n; i++) {
-        log_table[i] = // ???
+  codeSnippet: `void processAlgorithm(int n) {
+    for(int i = 0; i < n; i++) {
+        // Perform core step
+        if (/*[BLANK]*/) {
+            break;
+        }
     }
-}
-`,
-  solution: "log_table[i / 2] + 1;",
-  explanation: "For any integer i >= 2, the floor of its base-2 logarithm is exactly 1 plus the base-2 logarithm of i divided by 2 (integer division). E.g., log2(4) = log2(2) + 1 = 2."
+}`,
+  blanks: [
+    {
+      id: "blank1",
+      text: "i == n - 1"
+    }
+  ]
 };

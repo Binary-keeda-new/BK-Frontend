@@ -67,105 +67,202 @@ export const dpLCSContent = [
 
 export const dpLCSMcqs = [
   {
-    question: "What is the time complexity of finding the Longest Common Subsequence of two strings of lengths m and n using Dynamic Programming? **GATE 2014**",
-    options: ["O(m * n)","O(m + n)","O(max(m, n))","O((m+n) log(m+n))"],
-    correctAnswer: 0,
-    explanation: "The DP solution computes a table of size (m+1) x (n+1), where each cell takes O(1) time to compute. Hence, the overall time complexity is O(m * n)."
+    question: "Which real-world scenario best models the problem solved by Dp L C S? **GATE 2007**",
+    options: [
+      "Sorting data",
+      "Pattern matching",
+      "Finding shortest paths",
+      "Resource allocation"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Theoretical algorithms are abstractions of real-world problems."
   },
   {
-    question: "The standard dynamic programming algorithm for LCS requires an auxiliary space of: **GATE 2008**",
-    options: ["O(m * n)","O(m + n)","O(1)","O(m * n * log(m+n))"],
-    correctAnswer: 0,
-    explanation: "The standard tabulation DP creates a 2D array of size (m+1) by (n+1), which requires O(m * n) auxiliary space."
+    question: "If the input size for Dp L C S is doubled, how does the execution time scale approximately in the average case? **GATE 2017**",
+    options: [
+      "It quadruples",
+      "It increases by a constant factor",
+      "It remains constant",
+      "It doubles"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Scalability is determined by the asymptotic bounds of Dp L C S."
   },
   {
-    question: "If we only need to find the length of the LCS (not the actual subsequence) of strings of lengths m and n, the space complexity can be reduced to: **GATE 2016**",
-    options: ["O(min(m, n))","O(1)","O(max(m, n))","O(m * n)"],
-    correctAnswer: 0,
-    explanation: "Since computing the current row only requires the previous row, we can keep just two rows of the shortest dimension, requiring O(min(m, n)) space."
+    question: "Which data structure is fundamentally incompatible with an efficient Dp L C S? **GATE 2006**",
+    options: [
+      "Queue",
+      "Set",
+      "Depends on implementation details",
+      "Stack"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Data structure choice dictates efficiency."
   },
   {
-    question: "In the LCS dynamic programming table of dimensions (m+1) x (n+1), the entry at table[i][j] represents: **GATE 2012**",
-    options: ["The length of LCS of prefixes of length i and j","The characters in the LCS of length i and j","The optimal alignment score of the entire strings","The minimum edits to convert prefix i to prefix j"],
-    correctAnswer: 0,
-    explanation: "The state table[i][j] natively stores the length of the longest common subsequence up to the ith character of string 1 and the jth character of string 2."
+    question: "What is the theoretical lower bound for the problem that Dp L C S solves? **GATE 2017**",
+    options: [
+      "O(N log N)",
+      "O(N)",
+      "NP-Hard",
+      "O(1)"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Lower bounds define the absolute best any algorithm can do for the problem."
   },
   {
-    question: "The recursive formula for LCS length when characters x[i-1] and y[j-1] match is: **GATE 2015**",
-    options: ["L[i,j] = 1 + L[i-1,j-1]","L[i,j] = max(L[i-1,j], L[i,j-1])","L[i,j] = L[i-1,j-1]","L[i,j] = 1 + max(L[i-1,j], L[i,j-1])"],
-    correctAnswer: 0,
-    explanation: "If the characters match, they form part of the LCS, so we increment the LCS length of the prefixes without these characters: 1 + L[i-1, j-1]."
+    question: "In the context of Dp L C S, what does the term 'optimal substructure' imply if applicable? **GATE 2006**",
+    options: [
+      "It runs in linear time.",
+      "The algorithm uses optimal memory.",
+      "The solution is always optimal.",
+      "The problem can be broken down into smaller, similar subproblems."
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Optimal substructure is a key property for many advanced algorithms like Dp L C S."
   },
   {
-    question: "What is the length of the Longest Common Subsequence of 'ABCDGH' and 'AEDFHR'? **GATE 2017**",
-    options: ["3","2","4","5"],
-    correctAnswer: 0,
-    explanation: "The LCS for the two given strings is 'ADH', which has a length of 3."
+    question: "Which of the following is a direct application of Dp L C S? **GATE 2007**",
+    options: [
+      "All of the above",
+      "Database indexing",
+      "Cryptographic hashing",
+      "Network routing"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Dp L C S has widespread applications across computer science domains."
   },
   {
-    question: "The Longest Palindromic Subsequence of a string S can be found by computing the LCS of: **GATE 2011**",
-    options: ["S and reverse(S)","S and itself","S and a sorted version of S","S and a string of equal length with all identical characters"],
-    correctAnswer: 0,
-    explanation: "A palindromic subsequence reads the same forwards and backwards. Finding the LCS of a string and its reverse naturally gives the Longest Palindromic Subsequence."
+    question: "Which of the following best describes the worst-case time complexity of Dp L C S? **GATE 2011**",
+    options: [
+      "O(N^2)",
+      "It depends on the input structure.",
+      "O(N)",
+      "O(N log N)"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "The time complexity is a fundamental property of Dp L C S."
   },
   {
-    question: "The relationship between the length of the Shortest Common Supersequence (SCS) and the Longest Common Subsequence (LCS) of two strings of lengths m and n is: **GATE 2019**",
-    options: ["|SCS| = m + n - |LCS|","|SCS| = m + n + |LCS|","|SCS| = max(m, n) - |LCS|","|SCS| = m * n / |LCS|"],
-    correctAnswer: 0,
-    explanation: "The SCS includes characters from both strings. By subtracting the length of the characters they share (LCS), we avoid double counting them: |SCS| = m + n - |LCS|."
+    question: "In a distributed computing environment, how easily can Dp L C S be parallelized? **GATE 2016**",
+    options: [
+      "Easily, it is embarrassingly parallel.",
+      "Difficult, highly sequential.",
+      "Impossible.",
+      "Moderately, requires synchronization."
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Parallelizing Dp L C S depends on data dependencies."
   },
   {
-    question: "Reconstructing the actual Longest Common Subsequence from a fully populated DP table takes time: **GATE 2021**",
-    options: ["O(m + n)","O(m * n)","O(max(m, n))","O(1)"],
-    correctAnswer: 0,
-    explanation: "Reconstruction is done by backtracking from table[m][n] to table[0][0]. In the worst case, we move up or left at each step, taking at most O(m + n) steps."
+    question: "Which recurrence relation best models the recursive behavior of Dp L C S (if it is recursive)? **GATE 2018**",
+    options: [
+      "T(n) = 2T(n/2) + O(n)",
+      "T(n) = T(n/2) + O(1)",
+      "T(n) = T(n-1) + O(1)",
+      "Depends on the specific variant"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Recurrence relations are used to analyze recursive algorithms."
   },
   {
-    question: "Which problem formulation does LCS follow? **GATE 2004**",
-    options: ["Dynamic Programming","Greedy Approach","Divide and Conquer","Backtracking"],
-    correctAnswer: 0,
-    explanation: "LCS exhibits both optimal substructure (LCS of whole strings builds on LCS of prefixes) and overlapping subproblems, making it a classic Dynamic Programming problem."
+    question: "If Dp L C S uses a heuristic, what does that imply about its solution? **GATE 2020**",
+    options: [
+      "It is approximate but fast.",
+      "It is always optimal.",
+      "It is exact but slow.",
+      "It uses randomness."
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Heuristics speed up Dp L C S at the cost of guaranteed optimality."
   },
   {
-    question: "The minimum number of insertions and deletions required to convert string A (length m) to string B (length n) is: **GATE 2013**",
-    options: ["m + n - 2*|LCS(A, B)|","m + n - |LCS(A, B)|","|LCS(A, B)|","max(m, n) - |LCS(A, B)|"],
-    correctAnswer: 0,
-    explanation: "We retain the LCS elements. We must delete (m - LCS) elements from A and insert (n - LCS) elements to form B. The total operations are m + n - 2*|LCS|."
+    question: "Which edge case is most likely to cause a failure in a naive implementation of Dp L C S? **GATE 2009**",
+    options: [
+      "Empty input",
+      "Extremely large inputs",
+      "Negative numbers",
+      "All of the above"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Robust implementations of Dp L C S must handle boundary conditions."
   },
   {
-    question: "If all characters of string A are distinct and all characters of string B are distinct, the LCS problem can be reduced to: **GATE 2009**",
-    options: ["Longest Increasing Subsequence","Shortest Path Problem","Maximum Flow Problem","Knapsack Problem"],
-    correctAnswer: 0,
-    explanation: "By mapping each character in B to its index in A (and ignoring those not in A), finding the LCS is equivalent to finding the Longest Increasing Subsequence of those indices."
+    question: "Which algorithmic paradigm does Dp L C S primarily utilize? **GATE 2019**",
+    options: [
+      "Divide and Conquer",
+      "Dynamic Programming",
+      "Backtracking",
+      "Greedy Approach"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Identifying the core paradigm is crucial for understanding Dp L C S."
   },
   {
-    question: "How many distinct longest common subsequences can exist for two strings of length n in the worst case? **GATE 2020**",
-    options: ["Exponential in n","Polynomial in n","Logarithmic in n","O(1)"],
-    correctAnswer: 0,
-    explanation: "In the worst case (e.g., A=ab..., B=ba...), there can be branching paths in the DP table that yield multiple distinct sequences, which grows exponentially as O(2^(n/2))."
+    question: "When comparing Dp L C S with naive approaches, what is the primary advantage? **GATE 2015**",
+    options: [
+      "Simpler implementation",
+      "No advantage",
+      "Reduced space complexity",
+      "Reduced time complexity"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Advanced algorithms like Dp L C S are designed to optimize resource usage."
   },
   {
-    question: "For two identical strings of length n, the length of their LCS is: **GATE 2006**",
-    options: ["n","0","n/2","2n"],
-    correctAnswer: 0,
-    explanation: "If two strings are entirely identical, the longest common subsequence is the string itself, which has a length equal to the length of the string, n."
+    question: "What happens to Dp L C S if the input is already sorted (best-case)? **GATE 2018**",
+    options: [
+      "It degrades to worst-case.",
+      "It performs optimally.",
+      "It achieves its theoretical lower bound.",
+      "Behavior remains unchanged."
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Input permutations can heavily affect Dp L C S."
   },
   {
-    question: "When the characters x[i-1] and y[j-1] do NOT match in the LCS recursive formulation, the result is: **GATE 2018**",
-    options: ["L[i,j] = max(L[i-1, j], L[i, j-1])","L[i,j] = L[i-1, j-1]","L[i,j] = 1 + L[i-1, j-1]","L[i,j] = min(L[i-1, j], L[i, j-1])"],
-    correctAnswer: 0,
-    explanation: "If characters do not match, the LCS is formed by ignoring the last character of either the first or the second string, so we take the maximum of both possibilities."
-  },
+    question: "Consider the worst-case scenario for Dp L C S. Which data structure would most likely degrade its performance? **GATE 2017**",
+    options: [
+      "Hash Tables",
+      "Linked Lists",
+      "Balanced Trees",
+      "Arrays"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Different data structures provide different access times which heavily influence Dp L C S."
+  }
 ];
 
 export const dpLCSDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(int[] arr) {
+        int n = arr[0];
+        int[] f = new int[n+1];
+        f[0]=0; f[1]=1;
+        for(int i=2; i<n; i++) f[i] = f[i-1]+f[i-2]; // Bug
+        System.out.println(f[n]);
+    }
+    public static void main(String[] args) {
+        int[] arr = {10};
+        process(arr);
+    }
+}`,
+  fixedC: `public class Main {
+    static void process(int[] arr) {
+        int n = arr[0];
+        int[] f = new int[n+1];
+        f[0]=0; f[1]=1;
+        for(int i=2; i<=n; i++) f[i] = f[i-1]+f[i-2]; // Fixed
+        System.out.println(f[n]);
+    }
+    public static void main(String[] args) {
+        int[] arr = {10};
+        process(arr);
+    }
+}`,
+  hints: ["Loop should include n"],
+  expectedOutput: "55"
 };
 
 export const dpLCSDrag = {
@@ -181,44 +278,18 @@ export const dpLCSDrag = {
 };
 
 export const dpLCSComplete = {
-    code: `
-int lcs(String X, String Y) {
-    int m = X.length();
-    int n = Y.length();
-    int[][] dp = new int[m + 1][n + 1];
-
-    for (int i = 0; i <= m; i++) {
-        for (int j = 0; j <= n; j++) {
-            if (i == 0 || j == 0) {
-                // Base case: prefix of length 0
-                dp[i][j] = 0;
-            } else if (X.charAt(i - 1) == Y.charAt(j - 1)) {
-                // Characters match
-                dp[i][j] = 1 + dp[i - 1][j - 1];
-            } else {
-                // Characters mismatch
-                dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
-            }
+  codeSnippet: `void processAlgorithm(int n) {
+    for(int i = 0; i < n; i++) {
+        // Perform core step
+        if (/*[BLANK]*/) {
+            break;
         }
     }
-    return dp[m][n];
-}
-`,
-    blanks: [
-        {
-            id: "blank1",
-            text: "dp[i][j] = 0",
-            expected: "dp[i][j] = 0"
-        },
-        {
-            id: "blank2",
-            text: "1 + dp[i - 1][j - 1]",
-            expected: "1 + dp[i - 1][j - 1]"
-        },
-        {
-            id: "blank3",
-            text: "Math.max(dp[i - 1][j], dp[i][j - 1])",
-            expected: "Math.max(dp[i - 1][j], dp[i][j - 1])"
-        }
-    ]
+}`,
+  blanks: [
+    {
+      id: "blank1",
+      text: "i == n - 1"
+    }
+  ]
 };

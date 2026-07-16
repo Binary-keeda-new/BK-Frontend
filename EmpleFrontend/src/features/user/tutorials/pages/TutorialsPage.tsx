@@ -5,6 +5,7 @@ import { Cpu, Workflow, BookOpen, Users, Star, Search, Clock, ListCollapse, Arro
 import CTutorialPage from "../c/pages/CTutorialPage"; // Import C tutorial feature directly
 import JavaTutorialPage from "../java/pages/JavaTutorialPage"; // Import Java tutorial feature
 import DAATutorialPage from "../daa/pages/DAATutorialPage";
+import DBMSTutorialPage from "../dbms/pages/DBMSTutorialPage";
 import TutorialsLandingPage from "./TutorialsLandingPage";
 import VideosPlaceholderPage from "./VideosPlaceholderPage";
 
@@ -39,7 +40,7 @@ const SUBJECTS = [
     color: "#ff6b35",
     difficulty: "Beginner",
     duration: "2-4 Weeks",
-    chapters: 12
+    chapters: 17
   },
   {
     id: "java",
@@ -49,7 +50,7 @@ const SUBJECTS = [
     color: "#e2433b",
     difficulty: "Intermediate",
     duration: "4-8 Weeks",
-    chapters: 18
+    chapters: 25
   },
   { 
     id: "daa",
@@ -60,7 +61,7 @@ const SUBJECTS = [
     disabled: false,
     difficulty: "Advanced",
     duration: "6-10 Weeks",
-    chapters: 18
+    chapters: 44
   },
   { 
     id: "dbms",
@@ -68,7 +69,7 @@ const SUBJECTS = [
     description: "Database Management Systems - Master SQL, normalization, and database architecture.", 
     icon: Cpu, 
     color: "#6c63ff",
-    disabled: true,
+    disabled: false,
     difficulty: "Intermediate",
     duration: "4-6 Weeks",
     chapters: 10
@@ -78,9 +79,8 @@ const SUBJECTS = [
 export function TutorialsNotesPage({ onBackToLanding }: { onBackToLanding: () => void }) {
   const [activeSubject, setActiveSubject] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [progressStatus, setProgressStatus] = useState<Record<string, boolean>>({});
-
-  useEffect(() => {
+  const [progressStatus, setProgressStatus] = useState<Record<string, boolean>>(() => {
+    if (typeof window === 'undefined') return {};
     const status: Record<string, boolean> = {};
     SUBJECTS.forEach(sub => {
       try {
@@ -93,8 +93,8 @@ export function TutorialsNotesPage({ onBackToLanding }: { onBackToLanding: () =>
         }
       } catch (e) {}
     });
-    setProgressStatus(status);
-  }, []);
+    return status;
+  });
 
   const t: Record<string, string> = {
     border: 'var(--border)',
@@ -108,6 +108,7 @@ export function TutorialsNotesPage({ onBackToLanding }: { onBackToLanding: () =>
   if (activeSubject === "c") return <CTutorialPage onBack={() => setActiveSubject(null)} />;
   if (activeSubject === "java") return <JavaTutorialPage onBack={() => setActiveSubject(null)} />;
   if (activeSubject === "daa") return <DAATutorialPage onBack={() => setActiveSubject(null)} />;
+  if (activeSubject === "dbms") return <DBMSTutorialPage onBack={() => setActiveSubject(null)} />;
 
   const filteredSubjects = SUBJECTS.filter(s => 
     s.title.toLowerCase().includes(searchQuery.toLowerCase()) || 

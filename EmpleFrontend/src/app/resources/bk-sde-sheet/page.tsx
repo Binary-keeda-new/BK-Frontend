@@ -1,8 +1,9 @@
+import type { Metadata } from "next";
 import BkSdeSheetHome from "@/features/user/resources/pages/BkSdeSheetHome";
 
-export const metadata = {
-  title: 'BK SDE Sheet | Emple',
-  description: 'Your SDE prep hub — coding sheet, core CS subjects and aptitude all in one place',
+export const metadata: Metadata = {
+  title: "BK SDE Sheet | Emple",
+  description: "Complete SDE interview prep — coding practice, core CS subjects and aptitude.",
 };
 
 export default function BkSdeSheetPage() {

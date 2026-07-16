@@ -1,4 +1,4 @@
-export type SessionCategory = 'workshop' | 'yt-session';
+export type SessionCategory = 'workshop' | 'yt-session' | 'bk-session';
 
 export interface Session {
   id: string;
@@ -8,7 +8,9 @@ export interface Session {
   category: SessionCategory;
   videoLink: string;
   thumbnail: string;
+  meetingLink?: string;
+  scheduledAt?: string;
   createdAt?: string;
 }
 
-export type SessionFilter = 'all' | 'workshop' | 'yt-session';
+export type SessionFilter = 'all' | 'workshop' | 'yt-session' | 'bk-session';

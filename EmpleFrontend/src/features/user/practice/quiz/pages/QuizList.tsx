@@ -69,10 +69,9 @@ function formatTitleFromSlug(slug: string) {
 function mapRouteCategoryToDbCategory(categorySlug: string) {
   const mapping: Record<string, string> = {
     "core-cs": "Core CS",
-    aptitude: "Aptitude",
-    "it-concepts": "IT Concepts",
-    upsc: "UPSC Mapping",
-    constitution: "Constitution",
+    "aptitude": "Aptitude",
+    "it-skills": "IT Skills",
+    "govt-exams": "Govt Exams",
   };
 
   return mapping[categorySlug] || formatTitleFromSlug(categorySlug);
@@ -80,7 +79,7 @@ function mapRouteCategoryToDbCategory(categorySlug: string) {
 
 function mapTopicSlugToDbSubcategory(categorySlug: string, topicSlug: string) {
   const dbCategory = mapRouteCategoryToDbCategory(categorySlug);
-  const options = QUIZ_CATEGORIES[dbCategory as keyof typeof QUIZ_CATEGORIES] || [];
+  const options = Object.keys(QUIZ_CATEGORIES[dbCategory as keyof typeof QUIZ_CATEGORIES] || {});
 
   return (
     options.find((item) => slugify(item) === topicSlug.toLowerCase()) ||
