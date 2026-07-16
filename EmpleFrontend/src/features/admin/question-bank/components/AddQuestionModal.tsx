@@ -82,9 +82,6 @@ export default function AddQuestionModal({
           <QuestionForm
             draft={newQ}
             setDraft={setNewQ}
-            onSubmit={onAddQuestion}
-            loading={addLoading}
-            submitLabel="Add Question"
           />
         ) : (
           <div className="space-y-4">
