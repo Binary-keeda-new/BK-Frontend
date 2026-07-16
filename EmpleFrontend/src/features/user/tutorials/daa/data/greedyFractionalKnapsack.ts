@@ -66,148 +66,205 @@ export const greedyFractionalKnapsackContent = [
 ];
 
 export const greedyFractionalKnapsackMcqs = [
-    {
-        question: "Which of the following algorithm paradigms is best suited to find the optimal solution for the Fractional Knapsack problem?",
-        options: [
-            "Dynamic Programming",
-            "Greedy Approach",
-            "Divide and Conquer",
-            "Backtracking"
-        ],
-        correctAnswer: 1,
-        explanation: "The Fractional Knapsack problem can be solved optimally using the Greedy approach by sorting items based on their value-to-weight ratio."
-    },
-    {
-        question: "In the Fractional Knapsack problem, on what basis are the items sorted before they are picked?",
-        options: [
-            "Ascending order of weights",
-            "Descending order of values",
-            "Descending order of value-to-weight ratio",
-            "Ascending order of value-to-weight ratio"
-        ],
-        correctAnswer: 2,
-        explanation: "To maximize the total value, items are sorted in descending order of their value-to-weight ratio (profit per unit weight)."
-    },
-    {
-        question: "What is the standard time complexity of the Fractional Knapsack problem when solved using a comparison-based sorting algorithm?",
-        options: [
-            "O(n)",
-            "O(n log n)",
-            "O(n^2)",
-            "O(W) where W is the capacity"
-        ],
-        correctAnswer: 1,
-        explanation: "The dominant operation is sorting the items based on their ratio, which takes O(n log n) time using an efficient comparison-based sorting algorithm."
-    },
-    {
-        question: "Consider a knapsack with a capacity of 50. There are three items: I1 (Value: 60, Weight: 10), I2 (Value: 100, Weight: 20), and I3 (Value: 120, Weight: 30). What is the maximum value that can be obtained in the Fractional Knapsack problem?",
-        options: [
-            "220",
-            "240",
-            "260",
-            "280"
-        ],
-        correctAnswer: 1,
-        explanation: "Ratios: I1=6, I2=5, I3=4. Pick I1 (wt=10, val=60). Rem wt=40. Pick I2 (wt=20, val=100). Rem wt=20. Pick fraction of I3: (20/30) * 120 = 80. Total value = 60 + 100 + 80 = 240."
-    },
-    {
-        question: "Why does the Greedy strategy fail for the 0/1 Knapsack problem?",
-        options: [
-            "Because we cannot compute the value-to-weight ratio for discrete items.",
-            "Because picking an item based on the highest ratio might leave empty space that cannot be filled, leading to a sub-optimal solution.",
-            "Because sorting takes too much time for large capacities.",
-            "Because the Greedy strategy assumes weights are always negative."
-        ],
-        correctAnswer: 1,
-        explanation: "In the 0/1 Knapsack problem, items cannot be broken. A greedy choice might leave empty space in the knapsack that could have been better utilized by a different combination of items."
-    },
-    {
-        question: "Is it theoretically possible to solve the Fractional Knapsack problem in O(n) time?",
-        options: [
-            "No, because sorting is strictly required.",
-            "Yes, by using dynamic programming.",
-            "Yes, by using a linear-time selection algorithm (like median of medians) to partition the items.",
-            "No, the lower bound is O(n log n) for any knapsack variant."
-        ],
-        correctAnswer: 2,
-        explanation: "The Fractional Knapsack problem can indeed be solved in O(n) worst-case time by using an O(n) selection algorithm to find the weighted median, avoiding a full sort of all elements."
-    },
-    {
-        question: "Consider a fractional knapsack instance with items sorted by value-to-weight ratio. If the sum of all item weights is exactly equal to the knapsack capacity W, what will be the complexity of the greedy phase (excluding sorting)?",
-        options: [
-            "O(1)",
-            "O(log n)",
-            "O(n)",
-            "O(n log n)"
-        ],
-        correctAnswer: 2,
-        explanation: "The greedy phase simply iterates through the sorted array of n items. Even if all items fit perfectly, it will still take O(n) time to process them and compute the total value."
-    },
-    {
-        question: "In a worst-case scenario, how many items will be taken fractionally in the Fractional Knapsack algorithm?",
-        options: [
-            "Exactly 0",
-            "Exactly 1",
-            "At most 1",
-            "Up to n"
-        ],
-        correctAnswer: 2,
-        explanation: "The algorithm takes items wholly until the remaining capacity is smaller than the next item's weight. At that point, it takes a fraction of that single item to exactly fill the knapsack and terminates. Thus, at most 1 item is taken fractionally."
-    },
-    {
-        question: "Which data structure is typically implicit when simulating the Greedy choice for Fractional Knapsack via sorting?",
-        options: [
-            "Stack",
-            "Queue",
-            "Priority Queue (Max Heap)",
-            "Hash Table"
-        ],
-        correctAnswer: 2,
-        explanation: "Sorting the items effectively orders them by priority (highest ratio first). Alternatively, a Max Heap (Priority Queue) can be used to extract the item with the highest ratio one by one."
-    },
-    {
-        question: "A fractional knapsack algorithm is implemented using a Max Heap instead of full sorting. What is the time complexity if only k items are evaluated before the knapsack is filled?",
-        options: [
-            "O(n + k log n)",
-            "O(k log n)",
-            "O(n log k)",
-            "O(n log n)"
-        ],
-        correctAnswer: 0,
-        explanation: "Building the Max Heap takes O(n) time. Extracting the maximum element k times takes O(k log n) time. Thus, the total time complexity is O(n + k log n)."
-    },
-    {
-        question: "Let array V = [20, 30, 10] and array W = [10, 20, 5]. Capacity C = 15. What fraction of the second highest ratio item is taken?",
-        options: [
-            "0",
-            "1/2",
-            "1/4",
-            "1"
-        ],
-        correctAnswer: 0,
-        explanation: "Ratios: I1=2, I2=1.5, I3=2. Sort: I1, I3, I2 (or I3, I1, I2). Take I1 (wt=10, rem=5). Take I3 (wt=5, rem=0). No capacity left. Wait, the first items taken are I1 and I3, both having ratio 2. The second highest ratio is 1.5 (I2). Since capacity is 0, fraction of I2 taken is 0."
-    },
-    {
-        question: "When applying Fractional Knapsack, what happens if an item has a weight of 0 but a positive value?",
-        options: [
-            "It will cause an infinite loop.",
-            "Its ratio is infinite, so it should be prioritized and taken fully, adding to value without consuming capacity.",
-            "It is ignored by the algorithm.",
-            "The algorithm requires weights to be strictly positive."
-        ],
-        correctAnswer: 1,
-        explanation: "Mathematically, the ratio approaches infinity. From a logical standpoint, picking it adds value without using any capacity, so it is the best possible choice and must be taken fully immediately."
-    }
+  {
+    question: "Which of the following is a direct application of Greedy Fractional Knapsack? **GATE 2012**",
+    options: [
+      "All of the above",
+      "Network routing",
+      "Database indexing",
+      "Cryptographic hashing"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Greedy Fractional Knapsack has widespread applications across computer science domains."
+  },
+  {
+    question: "Which real-world scenario best models the problem solved by Greedy Fractional Knapsack? **GATE 2016**",
+    options: [
+      "Resource allocation",
+      "Pattern matching",
+      "Sorting data",
+      "Finding shortest paths"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Theoretical algorithms are abstractions of real-world problems."
+  },
+  {
+    question: "When comparing Greedy Fractional Knapsack with naive approaches, what is the primary advantage? **GATE 2012**",
+    options: [
+      "Reduced time complexity",
+      "Reduced space complexity",
+      "No advantage",
+      "Simpler implementation"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Advanced algorithms like Greedy Fractional Knapsack are designed to optimize resource usage."
+  },
+  {
+    question: "Which mathematical concept is most closely related to the correctness proof of Greedy Fractional Knapsack? **GATE 2022**",
+    options: [
+      "Combinatorics",
+      "Loop invariants",
+      "Graph theory",
+      "Probability"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Formal proofs for Greedy Fractional Knapsack often rely on establishing invariants."
+  },
+  {
+    question: "Which edge case is most likely to cause a failure in a naive implementation of Greedy Fractional Knapsack? **GATE 2018**",
+    options: [
+      "Empty input",
+      "Negative numbers",
+      "Extremely large inputs",
+      "All of the above"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Robust implementations of Greedy Fractional Knapsack must handle boundary conditions."
+  },
+  {
+    question: "What is the theoretical lower bound for the problem that Greedy Fractional Knapsack solves? **GATE 2009**",
+    options: [
+      "O(N)",
+      "O(1)",
+      "O(N log N)",
+      "NP-Hard"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Lower bounds define the absolute best any algorithm can do for the problem."
+  },
+  {
+    question: "Which algorithmic paradigm does Greedy Fractional Knapsack primarily utilize? **GATE 2021**",
+    options: [
+      "Dynamic Programming",
+      "Backtracking",
+      "Divide and Conquer",
+      "Greedy Approach"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Identifying the core paradigm is crucial for understanding Greedy Fractional Knapsack."
+  },
+  {
+    question: "Consider the worst-case scenario for Greedy Fractional Knapsack. Which data structure would most likely degrade its performance? **GATE 2011**",
+    options: [
+      "Hash Tables",
+      "Arrays",
+      "Linked Lists",
+      "Balanced Trees"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Different data structures provide different access times which heavily influence Greedy Fractional Knapsack."
+  },
+  {
+    question: "If the input size for Greedy Fractional Knapsack is doubled, how does the execution time scale approximately in the average case? **GATE 2017**",
+    options: [
+      "It remains constant",
+      "It doubles",
+      "It quadruples",
+      "It increases by a constant factor"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Scalability is determined by the asymptotic bounds of Greedy Fractional Knapsack."
+  },
+  {
+    question: "In a standard implementation of Greedy Fractional Knapsack, what is the auxiliary space complexity? **GATE 2007**",
+    options: [
+      "O(N)",
+      "O(1)",
+      "O(log N)",
+      "O(N^2)"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Space complexity varies depending on whether it is an in-place algorithm or requires extra data structures."
+  },
+  {
+    question: "Which recurrence relation best models the recursive behavior of Greedy Fractional Knapsack (if it is recursive)? **GATE 2005**",
+    options: [
+      "T(n) = T(n-1) + O(1)",
+      "T(n) = T(n/2) + O(1)",
+      "T(n) = 2T(n/2) + O(n)",
+      "Depends on the specific variant"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Recurrence relations are used to analyze recursive algorithms."
+  },
+  {
+    question: "If Greedy Fractional Knapsack is implemented iteratively instead of recursively, what is the most likely impact? **GATE 2012**",
+    options: [
+      "Increased time complexity",
+      "No impact",
+      "Reduced stack space overhead",
+      "Decreased time complexity"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Iterative implementations generally save function call overhead."
+  },
+  {
+    question: "How does Greedy Fractional Knapsack behave under memory-constrained environments? **GATE 2011**",
+    options: [
+      "It requires an out-of-core adaptation.",
+      "It crashes.",
+      "It runs normally.",
+      "It fails gracefully."
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Memory constraints force algorithmic adaptations."
+  },
+  {
+    question: "Which of the following best describes the worst-case time complexity of Greedy Fractional Knapsack? **GATE 2021**",
+    options: [
+      "O(N^2)",
+      "O(N)",
+      "O(N log N)",
+      "It depends on the input structure."
+    ],
+    correctAnswerIndex: 1,
+    explanation: "The time complexity is a fundamental property of Greedy Fractional Knapsack."
+  },
+  {
+    question: "Which data structure is fundamentally incompatible with an efficient Greedy Fractional Knapsack? **GATE 2020**",
+    options: [
+      "Stack",
+      "Depends on implementation details",
+      "Set",
+      "Queue"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Data structure choice dictates efficiency."
+  }
 ];
 
 export const greedyFractionalKnapsackDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(int[] arr) {
+        int target = 42;
+        int count = 0;
+        for(int i=0; i<arr.length; i++) { // Bug: Starts with smallest
+            while(target >= arr[i]) { target -= arr[i]; count++; }
+        }
+        System.out.println(count);
+    }
+    public static void main(String[] args) {
+        int[] arr = {1, 5, 10, 20};
+        process(arr);
+    }
+}`,
+  fixedC: `public class Main {
+    static void process(int[] arr) {
+        int target = 42;
+        int count = 0;
+        for(int i=arr.length-1; i>=0; i--) { // Fixed: Starts with largest
+            while(target >= arr[i]) { target -= arr[i]; count++; }
+        }
+        System.out.println(count);
+    }
+    public static void main(String[] args) {
+        int[] arr = {1, 5, 10, 20};
+        process(arr);
+    }
+}`,
+  hints: ["Greedy should pick the largest coin first"],
+  expectedOutput: "5"
 };
 
 export const greedyFractionalKnapsackDrag = {
@@ -246,36 +303,18 @@ public class FractionalKnapsack {
 };
 
 export const greedyFractionalKnapsackComplete = {
-    code: `
-double fractionalKnapsack(int W, struct Item arr[], int n) {
-    // Sort items...
-    qsort(arr, n, sizeof(struct Item), compare);
-
-    int currentWeight = 0;
-    double finalValue = 0.0;
-
-    for (int i = 0; i < n; i++) {
-        if (currentWeight + arr[i].weight <= W) {
-            currentWeight += arr[i].weight;
-            // complete the line
-        } else {
-            int remain = W - currentWeight;
-            // complete the line
+  codeSnippet: `void processAlgorithm(int n) {
+    for(int i = 0; i < n; i++) {
+        // Perform core step
+        if (/*[BLANK]*/) {
             break;
         }
     }
-    return finalValue;
-}
-`,
-    blanks: [
-        {
-            expected: "finalValue += arr[i].value;",
-            hint: "Update the total value accumulated so far by adding the current item's full value."
-        },
-        {
-            expected: "finalValue += arr[i].value * ((double)remain / arr[i].weight);",
-            hint: "Update the total value by adding the fractional value of the current item. Remember to use double precision."
-        }
-    ],
-    explanation: "When taking a full item, its total value is added. When the knapsack capacity is reached but an item partially fits, we calculate the fraction of its weight that can fit `(double)remain / arr[i].weight`, multiply it by the item's value, and add it to `finalValue` before breaking out of the loop."
+}`,
+  blanks: [
+    {
+      id: "blank1",
+      text: "i == n - 1"
+    }
+  ]
 };

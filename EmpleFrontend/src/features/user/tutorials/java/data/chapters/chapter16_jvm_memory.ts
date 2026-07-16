@@ -105,4 +105,15 @@ export const chapter16_MCQ = [
     }
 ];
 
-export const chapter16_COMPLETE_EXERCISES = [];
+export const chapter16_COMPLETE_EXERCISES = [
+  {
+    template: `public class Main {
+    public static void main(String[] args) {
+        // The JVM handles memory deallocation using the ___ Collector.
+    }
+}`,
+    blanks: [
+      "Garbage"
+    ]
+  }
+];

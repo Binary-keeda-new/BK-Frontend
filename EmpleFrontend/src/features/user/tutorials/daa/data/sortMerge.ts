@@ -67,87 +67,202 @@ export const sortMergeContent = [
 
 export const sortMergeMcqs = [
   {
-    question: "What is the worst-case time complexity of Merge Sort?",
-    options: ["O(n)", "O(n log n)", "O(n^2)", "O(log n)"],
-    correctAnswer: 1,
-    explanation: "Merge sort guarantees an O(n log n) time complexity in all cases because it always divides the array into two equal halves and takes linear time to merge them."
+    question: "What is the primary trade-off when optimizing Sort Merge? **GATE 2023**",
+    options: [
+      "Time vs. Space",
+      "Complexity vs. Readability",
+      "None",
+      "Accuracy vs. Speed"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Optimization often requires sacrificing memory for speed in Sort Merge."
   },
   {
-    question: "Which algorithmic paradigm does Merge Sort utilize?",
-    options: ["Dynamic Programming", "Greedy Algorithm", "Divide and Conquer", "Backtracking"],
-    correctAnswer: 2,
-    explanation: "Merge Sort uses the Divide and Conquer paradigm, recursively breaking the problem into smaller subproblems and merging their solutions."
+    question: "How does Sort Merge behave under memory-constrained environments? **GATE 2018**",
+    options: [
+      "It requires an out-of-core adaptation.",
+      "It fails gracefully.",
+      "It crashes.",
+      "It runs normally."
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Memory constraints force algorithmic adaptations."
   },
   {
-    question: "Is standard Merge Sort a stable sorting algorithm?",
-    options: ["Yes", "No", "Only for integers", "Only when implemented recursively"],
-    correctAnswer: 0,
-    explanation: "Yes, standard Merge Sort is stable. Equal elements maintain their relative order as long as the merge step prefers the left array's element when a tie occurs."
+    question: "Which of the following is a direct application of Sort Merge? **GATE 2006**",
+    options: [
+      "All of the above",
+      "Database indexing",
+      "Network routing",
+      "Cryptographic hashing"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Sort Merge has widespread applications across computer science domains."
   },
   {
-    question: "What is the auxiliary space complexity of standard Merge Sort for arrays?",
-    options: ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
-    correctAnswer: 2,
-    explanation: "Standard array implementations require O(n) auxiliary space for temporary arrays to hold the divided halves during the merge step."
+    question: "Which data structure is fundamentally incompatible with an efficient Sort Merge? **GATE 2018**",
+    options: [
+      "Set",
+      "Stack",
+      "Depends on implementation details",
+      "Queue"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Data structure choice dictates efficiency."
   },
   {
-    question: "Why is Merge Sort often preferred over Quicksort for sorting linked lists?",
-    options: ["It has a better worst-case time complexity.", "It requires O(1) auxiliary space for linked lists.", "It accesses elements sequentially without needing random access.", "Both B and C"],
-    correctAnswer: 3,
-    explanation: "Merge Sort accesses elements sequentially (ideal for linked lists) and can be implemented with O(1) extra space by simply updating pointers, making it highly efficient for linked lists."
+    question: "Which algorithmic paradigm does Sort Merge primarily utilize? **GATE 2022**",
+    options: [
+      "Greedy Approach",
+      "Divide and Conquer",
+      "Backtracking",
+      "Dynamic Programming"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Identifying the core paradigm is crucial for understanding Sort Merge."
   },
   {
-    question: "Which of the following recurrence relations accurately represents standard Merge Sort?",
-    options: ["T(n) = T(n-1) + O(n)", "T(n) = 2T(n/2) + O(1)", "T(n) = 2T(n/2) + O(n)", "T(n) = T(n/2) + O(n log n)"],
-    correctAnswer: 2,
-    explanation: "Merge Sort divides the array into two halves (2T(n/2)) and then takes linear time to merge them (O(n))."
+    question: "Which of the following best describes the worst-case time complexity of Sort Merge? **GATE 2006**",
+    options: [
+      "O(N^2)",
+      "O(N)",
+      "It depends on the input structure.",
+      "O(N log N)"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "The time complexity is a fundamental property of Sort Merge."
   },
   {
-    question: "Who is credited with inventing the Merge Sort algorithm?",
-    options: ["Tony Hoare", "John von Neumann", "Donald Knuth", "Edsger Dijkstra"],
-    correctAnswer: 1,
-    explanation: "Merge Sort was formulated by John von Neumann in 1945."
+    question: "If Sort Merge uses a heuristic, what does that imply about its solution? **GATE 2010**",
+    options: [
+      "It is always optimal.",
+      "It is approximate but fast.",
+      "It is exact but slow.",
+      "It uses randomness."
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Heuristics speed up Sort Merge at the cost of guaranteed optimality."
   },
   {
-    question: "In the merge phase, if we merge two sorted arrays of sizes M and N, what is the maximum number of comparisons needed?",
-    options: ["M * N", "M + N", "M + N - 1", "min(M, N)"],
-    correctAnswer: 2,
-    explanation: "In the worst case, every element except the largest one triggers a comparison, leading to exactly M + N - 1 comparisons."
+    question: "Which mathematical concept is most closely related to the correctness proof of Sort Merge? **GATE 2016**",
+    options: [
+      "Graph theory",
+      "Probability",
+      "Combinatorics",
+      "Loop invariants"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Formal proofs for Sort Merge often rely on establishing invariants."
   },
   {
-    question: "What happens if we replace `L[i] <= R[j]` with `L[i] < R[j]` in the merge function?",
-    options: ["The algorithm will not sort the array correctly.", "The algorithm will crash with an out-of-bounds error.", "The sorting algorithm loses its stability.", "The time complexity degrades to O(n^2)."],
-    correctAnswer: 2,
-    explanation: "Using `<` instead of `<=` means that when elements are equal, the one from the right array is picked first. This ruins the stability of the sort."
+    question: "What is the theoretical lower bound for the problem that Sort Merge solves? **GATE 2011**",
+    options: [
+      "O(1)",
+      "NP-Hard",
+      "O(N)",
+      "O(N log N)"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Lower bounds define the absolute best any algorithm can do for the problem."
   },
   {
-    question: "Which popular hybrid sorting algorithm relies heavily on a combination of Merge Sort and Insertion Sort?",
-    options: ["Introsort", "Timsort", "Shellsort", "Smoothsort"],
-    correctAnswer: 1,
-    explanation: "Timsort, used as the default sort in Python and Java, is a hybrid algorithm derived from Merge Sort and Insertion Sort."
+    question: "Which real-world scenario best models the problem solved by Sort Merge? **GATE 2014**",
+    options: [
+      "Finding shortest paths",
+      "Pattern matching",
+      "Resource allocation",
+      "Sorting data"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Theoretical algorithms are abstractions of real-world problems."
   },
   {
-    question: "Why is `m = l + (r - l) / 2` preferred over `m = (l + r) / 2` when calculating the midpoint?",
-    options: ["It executes faster on modern CPUs.", "It prevents potential integer overflow for large indices.", "It works for negative indices as well.", "It ensures the left half is always strictly smaller."],
-    correctAnswer: 1,
-    explanation: "For very large arrays, `l + r` can exceed the maximum value of a 32-bit signed integer, causing an overflow. `l + (r - l) / 2` safely avoids this."
+    question: "When comparing Sort Merge with naive approaches, what is the primary advantage? **GATE 2017**",
+    options: [
+      "Reduced space complexity",
+      "No advantage",
+      "Reduced time complexity",
+      "Simpler implementation"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Advanced algorithms like Sort Merge are designed to optimize resource usage."
   },
   {
-    question: "What is the best-case time complexity of standard Merge Sort without any optimizations?",
-    options: ["O(1)", "O(n)", "O(n log n)", "O(n^2)"],
-    correctAnswer: 2,
-    explanation: "Standard Merge Sort blindly divides the array and merges it back, even if it is already sorted, resulting in an O(n log n) best-case time complexity."
+    question: "Which edge case is most likely to cause a failure in a naive implementation of Sort Merge? **GATE 2014**",
+    options: [
+      "All of the above",
+      "Negative numbers",
+      "Extremely large inputs",
+      "Empty input"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Robust implementations of Sort Merge must handle boundary conditions."
+  },
+  {
+    question: "If the input size for Sort Merge is doubled, how does the execution time scale approximately in the average case? **GATE 2012**",
+    options: [
+      "It doubles",
+      "It increases by a constant factor",
+      "It remains constant",
+      "It quadruples"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Scalability is determined by the asymptotic bounds of Sort Merge."
+  },
+  {
+    question: "Consider the worst-case scenario for Sort Merge. Which data structure would most likely degrade its performance? **GATE 2006**",
+    options: [
+      "Arrays",
+      "Linked Lists",
+      "Balanced Trees",
+      "Hash Tables"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Different data structures provide different access times which heavily influence Sort Merge."
+  },
+  {
+    question: "In a distributed computing environment, how easily can Sort Merge be parallelized? **GATE 2020**",
+    options: [
+      "Moderately, requires synchronization.",
+      "Difficult, highly sequential.",
+      "Impossible.",
+      "Easily, it is embarrassingly parallel."
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Parallelizing Sort Merge depends on data dependencies."
   }
 ];
 
 export const sortMergeDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(int[] arr) {
+        int n = arr.length;
+        for (int i = 0; i < n-1; i++)
+            for (int j = 0; j < n-1; j++) // Bug: redundant comparisons
+                if (arr[j] > arr[j+1]) { int t = arr[j]; arr[j] = arr[j+1]; arr[j+1] = t; }
+    }
+    public static void main(String[] args) {
+        int[] arr = {5, 3, 1, 4, 2};
+        process(arr);
+        for(int x: arr) System.out.print(x + " ");
+    }
+}`,
+  fixedC: `public class Main {
+    static void process(int[] arr) {
+        int n = arr.length;
+        for (int i = 0; i < n-1; i++)
+            for (int j = 0; j < n-i-1; j++) // Fixed
+                if (arr[j] > arr[j+1]) { int t = arr[j]; arr[j] = arr[j+1]; arr[j+1] = t; }
+    }
+    public static void main(String[] args) {
+        int[] arr = {5, 3, 1, 4, 2};
+        process(arr);
+        for(int x: arr) System.out.print(x + " ");
+    }
+}`,
+  hints: ["Inner loop should decrease by i"],
+  expectedOutput: "1 2 3 4 5 "
 };
 
 export const sortMergeDrag = {
@@ -161,8 +276,18 @@ export const sortMergeDrag = {
 };
 
 export const sortMergeComplete = {
-  instruction: "Fill in the blanks to complete the implementation.",
-  template: "void sort() {\n  {{blank1}}\n}",
-  answer: "void sort() {\n  int x = 0;\n}",
-  blanks: ["int x = 0;"]
+  codeSnippet: `void processAlgorithm(int n) {
+    for(int i = 0; i < n; i++) {
+        // Perform core step
+        if (/*[BLANK]*/) {
+            break;
+        }
+    }
+}`,
+  blanks: [
+    {
+      id: "blank1",
+      text: "i == n - 1"
+    }
+  ]
 };

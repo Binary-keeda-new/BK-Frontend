@@ -29,8 +29,22 @@ const [redirectEnabled, setRedirectEnabled] = useState(true);
         setLoading(true);
         setError(null);
 
-        const res = await getQuizAttemptResult(attemptId);
-        setResult(res.data);
+        let parsedResult = null;
+        const cached = sessionStorage.getItem(`quizResult_${attemptId}`);
+        if (cached && cached !== "undefined") {
+          try {
+            parsedResult = JSON.parse(cached);
+          } catch (e) {
+            console.error("Failed to parse cached result", e);
+          }
+        }
+
+        if (parsedResult) {
+          setResult(parsedResult);
+        } else {
+          const res = await getQuizAttemptResult(attemptId);
+          setResult(res.data);
+        }
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to load result");
       } finally {

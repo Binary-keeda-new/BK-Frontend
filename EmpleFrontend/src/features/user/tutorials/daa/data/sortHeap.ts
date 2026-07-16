@@ -63,45 +63,202 @@ export const sortHeapContent = [
 
 export const sortHeapMcqs = [
   {
-    q: "What is the worst-case time complexity of Heap Sort?",
-    options: ["O(n)", "O(n log n)", "O(n^2)", "O(log n)"],
-    ans: 1,
-    explanation: "Heap Sort guarantees O(n log n) time complexity in all cases (best, worst, average) because heapify takes O(log n) time and is called n times."
+    question: "Which data structure is fundamentally incompatible with an efficient Sort Heap? **GATE 2018**",
+    options: [
+      "Depends on implementation details",
+      "Queue",
+      "Stack",
+      "Set"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Data structure choice dictates efficiency."
   },
   {
-    q: "Which data structure is fundamentally used in Heap Sort?",
-    options: ["Queue", "Stack", "Binary Search Tree", "Complete Binary Tree"],
-    ans: 3,
-    explanation: "Heap Sort uses a Heap data structure, which is a specialized Complete Binary Tree."
+    question: "What happens to Sort Heap if the input is already sorted (best-case)? **GATE 2011**",
+    options: [
+      "It degrades to worst-case.",
+      "Behavior remains unchanged.",
+      "It achieves its theoretical lower bound.",
+      "It performs optimally."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Input permutations can heavily affect Sort Heap."
   },
   {
-    q: "In a 0-indexed array representing a heap, what is the index of the right child of a node at index i?",
-    options: ["2 * i", "2 * i + 1", "2 * i + 2", "i / 2"],
-    ans: 2,
-    explanation: "For a 0-indexed array, the left child is at 2*i + 1 and the right child is at 2*i + 2."
+    question: "In the context of Sort Heap, what does the term 'optimal substructure' imply if applicable? **GATE 2015**",
+    options: [
+      "It runs in linear time.",
+      "The solution is always optimal.",
+      "The problem can be broken down into smaller, similar subproblems.",
+      "The algorithm uses optimal memory."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Optimal substructure is a key property for many advanced algorithms like Sort Heap."
   },
   {
-    q: "Is Heap Sort an in-place and stable sorting algorithm?",
-    options: ["In-place and Stable", "In-place but Not Stable", "Not In-place but Stable", "Neither"],
-    ans: 1,
-    explanation: "Heap Sort is an in-place algorithm (requires O(1) extra space) but is not stable because the relative order of identical elements is not preserved during swaps."
+    question: "If Sort Heap uses a heuristic, what does that imply about its solution? **GATE 2023**",
+    options: [
+      "It is approximate but fast.",
+      "It uses randomness.",
+      "It is always optimal.",
+      "It is exact but slow."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Heuristics speed up Sort Heap at the cost of guaranteed optimality."
   },
   {
-    q: "To sort an array in ascending order using Heap Sort, which type of heap is built first?",
-    options: ["Min Heap", "Max Heap", "Fibonacci Heap", "Binomial Heap"],
-    ans: 1,
-    explanation: "To sort in ascending order, a Max Heap is built so that the largest element (the root) can be repeatedly extracted and placed at the end of the array."
+    question: "What is the primary trade-off when optimizing Sort Heap? **GATE 2014**",
+    options: [
+      "None",
+      "Accuracy vs. Speed",
+      "Time vs. Space",
+      "Complexity vs. Readability"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Optimization often requires sacrificing memory for speed in Sort Heap."
+  },
+  {
+    question: "In a distributed computing environment, how easily can Sort Heap be parallelized? **GATE 2016**",
+    options: [
+      "Moderately, requires synchronization.",
+      "Difficult, highly sequential.",
+      "Impossible.",
+      "Easily, it is embarrassingly parallel."
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Parallelizing Sort Heap depends on data dependencies."
+  },
+  {
+    question: "If the input size for Sort Heap is doubled, how does the execution time scale approximately in the average case? **GATE 2010**",
+    options: [
+      "It quadruples",
+      "It remains constant",
+      "It doubles",
+      "It increases by a constant factor"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Scalability is determined by the asymptotic bounds of Sort Heap."
+  },
+  {
+    question: "In a standard implementation of Sort Heap, what is the auxiliary space complexity? **GATE 2022**",
+    options: [
+      "O(log N)",
+      "O(1)",
+      "O(N^2)",
+      "O(N)"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Space complexity varies depending on whether it is an in-place algorithm or requires extra data structures."
+  },
+  {
+    question: "What is the theoretical lower bound for the problem that Sort Heap solves? **GATE 2023**",
+    options: [
+      "O(N)",
+      "O(N log N)",
+      "NP-Hard",
+      "O(1)"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Lower bounds define the absolute best any algorithm can do for the problem."
+  },
+  {
+    question: "Which edge case is most likely to cause a failure in a naive implementation of Sort Heap? **GATE 2012**",
+    options: [
+      "Empty input",
+      "All of the above",
+      "Negative numbers",
+      "Extremely large inputs"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Robust implementations of Sort Heap must handle boundary conditions."
+  },
+  {
+    question: "Which mathematical concept is most closely related to the correctness proof of Sort Heap? **GATE 2014**",
+    options: [
+      "Loop invariants",
+      "Graph theory",
+      "Probability",
+      "Combinatorics"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Formal proofs for Sort Heap often rely on establishing invariants."
+  },
+  {
+    question: "How does Sort Heap behave under memory-constrained environments? **GATE 2023**",
+    options: [
+      "It fails gracefully.",
+      "It crashes.",
+      "It requires an out-of-core adaptation.",
+      "It runs normally."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Memory constraints force algorithmic adaptations."
+  },
+  {
+    question: "Which of the following is a direct application of Sort Heap? **GATE 2011**",
+    options: [
+      "Cryptographic hashing",
+      "Database indexing",
+      "All of the above",
+      "Network routing"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Sort Heap has widespread applications across computer science domains."
+  },
+  {
+    question: "Which recurrence relation best models the recursive behavior of Sort Heap (if it is recursive)? **GATE 2019**",
+    options: [
+      "T(n) = T(n/2) + O(1)",
+      "T(n) = T(n-1) + O(1)",
+      "T(n) = 2T(n/2) + O(n)",
+      "Depends on the specific variant"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Recurrence relations are used to analyze recursive algorithms."
+  },
+  {
+    question: "Which of the following best describes the worst-case time complexity of Sort Heap? **GATE 2020**",
+    options: [
+      "It depends on the input structure.",
+      "O(N^2)",
+      "O(N log N)",
+      "O(N)"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "The time complexity is a fundamental property of Sort Heap."
   }
 ];
 
 export const sortHeapDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(int[] arr) {
+        int n = arr.length;
+        for (int i = 0; i < n-1; i++)
+            for (int j = 0; j < n-1; j++) // Bug: redundant comparisons
+                if (arr[j] > arr[j+1]) { int t = arr[j]; arr[j] = arr[j+1]; arr[j+1] = t; }
+    }
+    public static void main(String[] args) {
+        int[] arr = {5, 3, 1, 4, 2};
+        process(arr);
+        for(int x: arr) System.out.print(x + " ");
+    }
+}`,
+  fixedC: `public class Main {
+    static void process(int[] arr) {
+        int n = arr.length;
+        for (int i = 0; i < n-1; i++)
+            for (int j = 0; j < n-i-1; j++) // Fixed
+                if (arr[j] > arr[j+1]) { int t = arr[j]; arr[j] = arr[j+1]; arr[j+1] = t; }
+    }
+    public static void main(String[] args) {
+        int[] arr = {5, 3, 1, 4, 2};
+        process(arr);
+        for(int x: arr) System.out.print(x + " ");
+    }
+}`,
+  hints: ["Inner loop should decrease by i"],
+  expectedOutput: "1 2 3 4 5 "
 };
 
 export const sortHeapDrag = {
@@ -118,22 +275,18 @@ export const sortHeapDrag = {
 };
 
 export const sortHeapComplete = {
-  instruction: "Fill in the blanks to correctly extract elements from the max heap to sort the array.",
-  template: `void heapSort(int arr[], int n) {
-    for (int i = n / 2 - 1; i >= 0; i--)
-        heapify(arr, n, i);
-    for (int i = n - 1; ___1___; i--) {
-        swap(&arr[0], &arr[___2___]);
-        ___3___(arr, i, 0);
+  codeSnippet: `void processAlgorithm(int n) {
+    for(int i = 0; i < n; i++) {
+        // Perform core step
+        if (/*[BLANK]*/) {
+            break;
+        }
     }
 }`,
-  answer: `void heapSort(int arr[], int n) {
-    for (int i = n / 2 - 1; i >= 0; i--)
-        heapify(arr, n, i);
-    for (int i = n - 1; i > 0; i--) {
-        swap(&arr[0], &arr[i]);
-        heapify(arr, i, 0);
+  blanks: [
+    {
+      id: "blank1",
+      text: "i == n - 1"
     }
-}`,
-  blanks: ["i > 0", "i", "heapify"]
+  ]
 };

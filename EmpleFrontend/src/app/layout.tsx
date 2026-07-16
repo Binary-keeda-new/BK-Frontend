@@ -4,6 +4,7 @@ import "./landing/landing.css";
 import { ThemeProvider } from "../providers/ThemeContext";
 import { AuthProvider } from "@descope/nextjs-sdk";
 import { AppAuthProvider } from "@/providers/AppAuthProvider";
+import HelpChatWidget from "@/shared/components/help-chatbot/HelpChatWidget";
 
 export const dynamic = "force-dynamic";
 
@@ -38,6 +39,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <AppAuthProvider>
             <ThemeProvider>
               {children}
+              <HelpChatWidget />
             </ThemeProvider>
           </AppAuthProvider>
         </AuthProvider>

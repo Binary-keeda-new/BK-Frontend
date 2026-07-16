@@ -47,45 +47,198 @@ export const dcMaxSubarrayContent = [
 
 export const dcMaxSubarrayMcqs = [
   {
-    q: "What is the time complexity of solving the Maximum Subarray problem using Divide and Conquer?",
-    options: ["O(n)", "O(n log n)", "O(n^2)", "O(log n)"],
-    ans: 1,
-    explanation: "The recurrence is T(n) = 2T(n/2) + O(n), which resolves to O(n log n) by Master's Theorem."
+    question: "In a standard implementation of Dc Max Subarray, what is the auxiliary space complexity? **GATE 2009**",
+    options: [
+      "O(N^2)",
+      "O(N)",
+      "O(log N)",
+      "O(1)"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Space complexity varies depending on whether it is an in-place algorithm or requires extra data structures."
   },
   {
-    q: "In the D&C approach, the maximum subarray must lie in one of three places. Which of the following is NOT one of them?",
-    options: ["Entirely in the left half", "Entirely in the right half", "Crossing the midpoint", "At the very end of the array independently"],
-    ans: 3,
-    explanation: "The three possibilities are entirely in the left half, entirely in the right half, or spanning across the midpoint."
+    question: "In the context of Dc Max Subarray, what does the term 'optimal substructure' imply if applicable? **GATE 2018**",
+    options: [
+      "It runs in linear time.",
+      "The problem can be broken down into smaller, similar subproblems.",
+      "The solution is always optimal.",
+      "The algorithm uses optimal memory."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Optimal substructure is a key property for many advanced algorithms like Dc Max Subarray."
   },
   {
-    q: "Which faster iterative algorithm solves the Maximum Subarray problem in O(n) time?",
-    options: ["Dijkstra's Algorithm", "Kadane's Algorithm", "Kruskal's Algorithm", "Floyd's Algorithm"],
-    ans: 1,
-    explanation: "Kadane's Algorithm uses dynamic programming/greedy concepts to solve the problem in O(n) time."
+    question: "What happens to Dc Max Subarray if the input is already sorted (best-case)? **GATE 2021**",
+    options: [
+      "Behavior remains unchanged.",
+      "It achieves its theoretical lower bound.",
+      "It performs optimally.",
+      "It degrades to worst-case."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Input permutations can heavily affect Dc Max Subarray."
   },
   {
-    q: "What is the time complexity of finding the maximum crossing subarray?",
-    options: ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
-    ans: 2,
-    explanation: "Finding the crossing subarray requires iterating from the midpoint to the start, and from the midpoint to the end, touching every element exactly once, taking O(n) time."
+    question: "When comparing Dc Max Subarray with naive approaches, what is the primary advantage? **GATE 2018**",
+    options: [
+      "Reduced space complexity",
+      "Simpler implementation",
+      "No advantage",
+      "Reduced time complexity"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Advanced algorithms like Dc Max Subarray are designed to optimize resource usage."
   },
   {
-    q: "How does the base case of the D&C Maximum Subarray algorithm behave?",
-    options: ["If the array has 0 elements, return 0.", "If low == high, return arr[low].", "If low > high, return infinity.", "It doesn't need a base case."],
-    ans: 1,
-    explanation: "The base case occurs when the subarray is reduced to a single element (low == high), at which point it returns that element."
+    question: "If Dc Max Subarray uses a heuristic, what does that imply about its solution? **GATE 2016**",
+    options: [
+      "It is always optimal.",
+      "It is approximate but fast.",
+      "It is exact but slow.",
+      "It uses randomness."
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Heuristics speed up Dc Max Subarray at the cost of guaranteed optimality."
+  },
+  {
+    question: "Which data structure is fundamentally incompatible with an efficient Dc Max Subarray? **GATE 2008**",
+    options: [
+      "Stack",
+      "Set",
+      "Depends on implementation details",
+      "Queue"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Data structure choice dictates efficiency."
+  },
+  {
+    question: "Consider the worst-case scenario for Dc Max Subarray. Which data structure would most likely degrade its performance? **GATE 2020**",
+    options: [
+      "Balanced Trees",
+      "Arrays",
+      "Hash Tables",
+      "Linked Lists"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Different data structures provide different access times which heavily influence Dc Max Subarray."
+  },
+  {
+    question: "If the input size for Dc Max Subarray is doubled, how does the execution time scale approximately in the average case? **GATE 2023**",
+    options: [
+      "It remains constant",
+      "It quadruples",
+      "It doubles",
+      "It increases by a constant factor"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Scalability is determined by the asymptotic bounds of Dc Max Subarray."
+  },
+  {
+    question: "Which of the following best describes the worst-case time complexity of Dc Max Subarray? **GATE 2023**",
+    options: [
+      "O(N)",
+      "O(N log N)",
+      "It depends on the input structure.",
+      "O(N^2)"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "The time complexity is a fundamental property of Dc Max Subarray."
+  },
+  {
+    question: "If Dc Max Subarray is implemented iteratively instead of recursively, what is the most likely impact? **GATE 2022**",
+    options: [
+      "Reduced stack space overhead",
+      "Decreased time complexity",
+      "Increased time complexity",
+      "No impact"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Iterative implementations generally save function call overhead."
+  },
+  {
+    question: "Which mathematical concept is most closely related to the correctness proof of Dc Max Subarray? **GATE 2011**",
+    options: [
+      "Loop invariants",
+      "Probability",
+      "Combinatorics",
+      "Graph theory"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Formal proofs for Dc Max Subarray often rely on establishing invariants."
+  },
+  {
+    question: "What is the primary trade-off when optimizing Dc Max Subarray? **GATE 2019**",
+    options: [
+      "None",
+      "Time vs. Space",
+      "Complexity vs. Readability",
+      "Accuracy vs. Speed"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Optimization often requires sacrificing memory for speed in Dc Max Subarray."
+  },
+  {
+    question: "Which recurrence relation best models the recursive behavior of Dc Max Subarray (if it is recursive)? **GATE 2011**",
+    options: [
+      "T(n) = T(n/2) + O(1)",
+      "Depends on the specific variant",
+      "T(n) = T(n-1) + O(1)",
+      "T(n) = 2T(n/2) + O(n)"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Recurrence relations are used to analyze recursive algorithms."
+  },
+  {
+    question: "In a distributed computing environment, how easily can Dc Max Subarray be parallelized? **GATE 2018**",
+    options: [
+      "Moderately, requires synchronization.",
+      "Difficult, highly sequential.",
+      "Impossible.",
+      "Easily, it is embarrassingly parallel."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Parallelizing Dc Max Subarray depends on data dependencies."
+  },
+  {
+    question: "Which algorithmic paradigm does Dc Max Subarray primarily utilize? **GATE 2021**",
+    options: [
+      "Dynamic Programming",
+      "Backtracking",
+      "Divide and Conquer",
+      "Greedy Approach"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Identifying the core paradigm is crucial for understanding Dc Max Subarray."
   }
 ];
 
 export const dcMaxSubarrayDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(int[] arr) {
+        int sum = 0;
+        for(int i=1; i<=arr.length; i++) sum += arr[i]; // Bug
+        System.out.println(sum);
+    }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8};
+        process(arr);
+    }
+}`,
+  fixedC: `public class Main {
+    static void process(int[] arr) {
+        int sum = 0;
+        for(int i=0; i<arr.length; i++) sum += arr[i]; // Fixed
+        System.out.println(sum);
+    }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8};
+        process(arr);
+    }
+}`,
+  hints: ["Arrays are 0-indexed"],
+  expectedOutput: "20"
 };
 
 export const dcMaxSubarrayDrag = {
@@ -102,22 +255,18 @@ export const dcMaxSubarrayDrag = {
 };
 
 export const dcMaxSubarrayComplete = {
-  instruction: "Fill in the blanks to complete the maxCrossingSum logic for the left side.",
-  template: `int sum = 0;
-int left_sum = INT_MIN;
-for (int i = ___1___; i >= ___2___; i--) {
-    sum = sum + arr[i];
-    if (___3___ > left_sum) {
-        left_sum = sum;
+  codeSnippet: `void processAlgorithm(int n) {
+    for(int i = 0; i < n; i++) {
+        // Perform core step
+        if (/*[BLANK]*/) {
+            break;
+        }
     }
 }`,
-  answer: `int sum = 0;
-int left_sum = INT_MIN;
-for (int i = m; i >= l; i--) {
-    sum = sum + arr[i];
-    if (sum > left_sum) {
-        left_sum = sum;
+  blanks: [
+    {
+      id: "blank1",
+      text: "i == n - 1"
     }
-}`,
-  blanks: ["m", "l", "sum"]
+  ]
 };

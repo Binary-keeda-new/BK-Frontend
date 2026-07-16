@@ -67,125 +67,198 @@ export const backtrackColoringContent = [
 
 export const backtrackColoringMcqs = [
   {
-    question: "What is the worst-case time complexity of the backtracking algorithm for the m-coloring problem on a graph with V vertices?",
+    question: "Which mathematical concept is most closely related to the correctness proof of Backtrack Coloring? **GATE 2018**",
     options: [
-      "O(V^m)",
-      "O(m^V)",
-      "O(V!)",
-      "O(m * V^2)"
+      "Probability",
+      "Graph theory",
+      "Loop invariants",
+      "Combinatorics"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Formal proofs for Backtrack Coloring often rely on establishing invariants."
+  },
+  {
+    question: "What is the theoretical lower bound for the problem that Backtrack Coloring solves? **GATE 2005**",
+    options: [
+      "O(N log N)",
+      "O(1)",
+      "NP-Hard",
+      "O(N)"
     ],
     correctAnswerIndex: 1,
-    explanation: "In the worst case, for each of the V vertices, the algorithm tries all m colors, leading to a state space tree of depth V and branching factor m. Hence, the time complexity is O(m^V)."
+    explanation: "Lower bounds define the absolute best any algorithm can do for the problem."
   },
   {
-    question: "Which of the following graphs has a chromatic number of 2?",
+    question: "Consider the worst-case scenario for Backtrack Coloring. Which data structure would most likely degrade its performance? **GATE 2006**",
     options: [
-      "A complete graph K_4",
-      "An odd length cycle C_5",
-      "A bipartite graph",
-      "A Petersen graph"
+      "Balanced Trees",
+      "Arrays",
+      "Hash Tables",
+      "Linked Lists"
     ],
-    correctAnswerIndex: 2,
-    explanation: "A graph has a chromatic number of 2 if and only if it is a bipartite graph (i.e., it can be divided into two independent sets). Odd cycles have a chromatic number of 3, and complete graphs K_n have a chromatic number of n."
+    correctAnswerIndex: 1,
+    explanation: "Different data structures provide different access times which heavily influence Backtrack Coloring."
   },
   {
-    question: "What is the minimum number of colors required to color a complete graph K_n such that no two adjacent vertices share the same color?",
+    question: "In the context of Backtrack Coloring, what does the term 'optimal substructure' imply if applicable? **GATE 2016**",
     options: [
-      "2",
-      "n - 1",
-      "n",
-      "n / 2"
+      "The problem can be broken down into smaller, similar subproblems.",
+      "The algorithm uses optimal memory.",
+      "The solution is always optimal.",
+      "It runs in linear time."
     ],
-    correctAnswerIndex: 2,
-    explanation: "In a complete graph K_n, every vertex is connected to every other vertex. Therefore, no two vertices can share the same color. Thus, exactly n colors are required."
+    correctAnswerIndex: 1,
+    explanation: "Optimal substructure is a key property for many advanced algorithms like Backtrack Coloring."
   },
   {
-    question: "Which of the following problems is polynomial-time solvable?",
+    question: "When comparing Backtrack Coloring with naive approaches, what is the primary advantage? **GATE 2015**",
     options: [
-      "Determining if a graph is 2-colorable",
-      "Determining if a graph is 3-colorable",
-      "Finding the chromatic number of a general graph",
-      "Determining if a planar graph is 3-colorable"
+      "Simpler implementation",
+      "No advantage",
+      "Reduced time complexity",
+      "Reduced space complexity"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Advanced algorithms like Backtrack Coloring are designed to optimize resource usage."
+  },
+  {
+    question: "Which data structure is fundamentally incompatible with an efficient Backtrack Coloring? **GATE 2018**",
+    options: [
+      "Depends on implementation details",
+      "Set",
+      "Queue",
+      "Stack"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Data structure choice dictates efficiency."
+  },
+  {
+    question: "If Backtrack Coloring uses a heuristic, what does that imply about its solution? **GATE 2010**",
+    options: [
+      "It is always optimal.",
+      "It is approximate but fast.",
+      "It uses randomness.",
+      "It is exact but slow."
     ],
     correctAnswerIndex: 0,
-    explanation: "Determining if a graph is 2-colorable is equivalent to checking if it is bipartite, which can be done in O(V+E) time using BFS or DFS. 3-colorability and finding the chromatic number are NP-complete problems."
+    explanation: "Heuristics speed up Backtrack Coloring at the cost of guaranteed optimality."
   },
   {
-    question: "According to Brooks' Theorem, for a connected graph G that is neither a complete graph nor an odd cycle, the chromatic number χ(G) is bounded by:",
+    question: "If Backtrack Coloring is implemented iteratively instead of recursively, what is the most likely impact? **GATE 2007**",
     options: [
-      "χ(G) <= Δ(G) + 1",
-      "χ(G) <= Δ(G)",
-      "χ(G) = Δ(G) - 1",
-      "χ(G) <= 4"
+      "Decreased time complexity",
+      "Reduced stack space overhead",
+      "Increased time complexity",
+      "No impact"
     ],
     correctAnswerIndex: 1,
-    explanation: "Brooks' Theorem states that for any connected undirected graph G that is not a complete graph or an odd cycle, its chromatic number is at most Δ(G), where Δ(G) is the maximum degree of any vertex in G."
+    explanation: "Iterative implementations generally save function call overhead."
   },
   {
-    question: "A path graph P_n (n > 1) has n vertices. How many distinct valid 3-colorings does it have?",
+    question: "Which real-world scenario best models the problem solved by Backtrack Coloring? **GATE 2013**",
     options: [
-      "3^n",
-      "3 * 2^(n-1)",
-      "2 * 3^(n-1)",
-      "3 * 2^n"
-    ],
-    correctAnswerIndex: 1,
-    explanation: "The first vertex can be colored in 3 ways. Every subsequent vertex can be colored in 2 ways (any color except the one used by the immediately preceding vertex). Total ways = 3 * 2^(n-1)."
-  },
-  {
-    question: "The Four Color Theorem applies to which class of graphs?",
-    options: [
-      "Bipartite graphs",
-      "Complete graphs",
-      "Planar graphs",
-      "Directed acyclic graphs"
+      "Sorting data",
+      "Resource allocation",
+      "Finding shortest paths",
+      "Pattern matching"
     ],
     correctAnswerIndex: 2,
-    explanation: "The Four Color Theorem states that the vertices of any planar graph can be colored with at most four colors such that no two adjacent vertices share the same color."
+    explanation: "Theoretical algorithms are abstractions of real-world problems."
   },
   {
-    question: "During the execution of the backtracking algorithm for m-coloring, when does the algorithm decide to backtrack?",
+    question: "If the input size for Backtrack Coloring is doubled, how does the execution time scale approximately in the average case? **GATE 2009**",
     options: [
-      "When a vertex has been successfully colored.",
-      "When the current vertex can be colored with at least one color safely.",
-      "When all m colors have been tried for the current vertex and none are safe.",
-      "When the algorithm reaches the last vertex."
+      "It remains constant",
+      "It doubles",
+      "It increases by a constant factor",
+      "It quadruples"
     ],
-    correctAnswerIndex: 2,
-    explanation: "Backtracking occurs when the algorithm reaches a dead end. In Graph Coloring, this happens when all m colors have been tested for a vertex, and all of them conflict with already colored adjacent vertices."
+    correctAnswerIndex: 0,
+    explanation: "Scalability is determined by the asymptotic bounds of Backtrack Coloring."
   },
   {
-    question: "If a graph contains a triangle (a cycle of length 3), what is the absolute minimum number of colors needed to color the graph?",
+    question: "In a standard implementation of Backtrack Coloring, what is the auxiliary space complexity? **GATE 2019**",
     options: [
-      "1",
-      "2",
-      "3",
-      "4"
+      "O(1)",
+      "O(N)",
+      "O(log N)",
+      "O(N^2)"
     ],
-    correctAnswerIndex: 2,
-    explanation: "A triangle is isomorphic to K_3. Since all 3 vertices are mutually adjacent, they must all have different colors. Thus, the chromatic number is at least 3."
+    correctAnswerIndex: 0,
+    explanation: "Space complexity varies depending on whether it is an in-place algorithm or requires extra data structures."
   },
   {
-    question: "Consider a star graph with one center node and k leaf nodes (total k+1 vertices). What is its chromatic number?",
+    question: "What is the primary trade-off when optimizing Backtrack Coloring? **GATE 2022**",
     options: [
-      "k",
-      "k+1",
-      "2",
-      "3"
+      "Complexity vs. Readability",
+      "Accuracy vs. Speed",
+      "Time vs. Space",
+      "None"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Optimization often requires sacrificing memory for speed in Backtrack Coloring."
+  },
+  {
+    question: "Which edge case is most likely to cause a failure in a naive implementation of Backtrack Coloring? **GATE 2020**",
+    options: [
+      "All of the above",
+      "Empty input",
+      "Negative numbers",
+      "Extremely large inputs"
     ],
     correctAnswerIndex: 2,
-    explanation: "A star graph is a bipartite graph (tree). The center node can be assigned one color, and all leaf nodes can be assigned a second color, as they are independent of each other. Therefore, exactly 2 colors are needed."
+    explanation: "Robust implementations of Backtrack Coloring must handle boundary conditions."
+  },
+  {
+    question: "Which of the following best describes the worst-case time complexity of Backtrack Coloring? **GATE 2007**",
+    options: [
+      "O(N)",
+      "O(N log N)",
+      "It depends on the input structure.",
+      "O(N^2)"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "The time complexity is a fundamental property of Backtrack Coloring."
+  },
+  {
+    question: "What happens to Backtrack Coloring if the input is already sorted (best-case)? **GATE 2016**",
+    options: [
+      "It performs optimally.",
+      "It achieves its theoretical lower bound.",
+      "It degrades to worst-case.",
+      "Behavior remains unchanged."
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Input permutations can heavily affect Backtrack Coloring."
   }
 ];
 
 export const backtrackColoringDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(int[] arr) {
+        int sum = 0;
+        for(int i=1; i<=arr.length; i++) sum += arr[i]; // Bug
+        System.out.println(sum);
+    }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8};
+        process(arr);
+    }
+}`,
+  fixedC: `public class Main {
+    static void process(int[] arr) {
+        int sum = 0;
+        for(int i=0; i<arr.length; i++) sum += arr[i]; // Fixed
+        System.out.println(sum);
+    }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8};
+        process(arr);
+    }
+}`,
+  hints: ["Arrays are 0-indexed"],
+  expectedOutput: "20"
 };
 
 export const backtrackColoringDrag = {
@@ -199,23 +272,18 @@ export const backtrackColoringDrag = {
 };
 
 export const backtrackColoringComplete = {
-  problem: "Complete the backtracking function to solve the Graph Coloring problem.",
-  codeSnippet: `
-bool graphColoringUtil(bool graph[V][V], int m, int color[], int v) {
-    if (v == V)
-        return true;
-
-    for (int c = 1; c <= m; c++) {
-        if (isSafe(v, graph, color, c)) {
-            color[v] = ___;
-            if (graphColoringUtil(graph, m, color, ___) == true)
-                return true;
-            ___ = 0; // Backtrack
+  codeSnippet: `void processAlgorithm(int n) {
+    for(int i = 0; i < n; i++) {
+        // Perform core step
+        if (/*[BLANK]*/) {
+            break;
         }
     }
-    return false;
-}
-  `,
-  missingCode: ["c", "v + 1", "color[v]"],
-  explanation: "When a color `c` is safe, it is assigned to `color[v]`. Then, the function recurses for the next vertex `v + 1`. If it fails to find a solution down that path, the assignment is undone by setting `color[v] = 0`."
+}`,
+  blanks: [
+    {
+      id: "blank1",
+      text: "i == n - 1"
+    }
+  ]
 };

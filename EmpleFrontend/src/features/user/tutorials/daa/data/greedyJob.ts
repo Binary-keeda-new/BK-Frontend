@@ -67,147 +67,204 @@ export const greedyJobContent = [
 
 export const greedyJobMcqs = [
   {
-    question: "In the Job Sequencing with Deadlines problem, each job takes exactly how much time to complete?",
+    question: "Which of the following best describes the worst-case time complexity of Greedy Job? **GATE 2011**",
     options: [
-      "Proportional to its profit",
-      "Proportional to its deadline",
-      "One unit of time",
-      "Variable, given in the input"
+      "O(N^2)",
+      "O(N)",
+      "O(N log N)",
+      "It depends on the input structure."
     ],
-    correctAnswerIndex: 2,
-    explanation: "The standard job sequencing with deadlines problem assumes that every job takes a single, uniform unit of time to complete."
+    correctAnswerIndex: 1,
+    explanation: "The time complexity is a fundamental property of Greedy Job."
   },
   {
-    question: "To maximize profit in Job Sequencing using a greedy approach, what is the primary sorting criterion?",
+    question: "If Greedy Job uses a heuristic, what does that imply about its solution? **GATE 2005**",
     options: [
-      "Ascending order of deadlines",
-      "Descending order of deadlines",
-      "Ascending order of profit",
-      "Descending order of profit"
+      "It uses randomness.",
+      "It is always optimal.",
+      "It is approximate but fast.",
+      "It is exact but slow."
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Heuristics speed up Greedy Job at the cost of guaranteed optimality."
+  },
+  {
+    question: "What is the primary trade-off when optimizing Greedy Job? **GATE 2006**",
+    options: [
+      "None",
+      "Accuracy vs. Speed",
+      "Time vs. Space",
+      "Complexity vs. Readability"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Optimization often requires sacrificing memory for speed in Greedy Job."
+  },
+  {
+    question: "Which mathematical concept is most closely related to the correctness proof of Greedy Job? **GATE 2016**",
+    options: [
+      "Combinatorics",
+      "Probability",
+      "Loop invariants",
+      "Graph theory"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Formal proofs for Greedy Job often rely on establishing invariants."
+  },
+  {
+    question: "Which of the following is a direct application of Greedy Job? **GATE 2012**",
+    options: [
+      "Network routing",
+      "Cryptographic hashing",
+      "Database indexing",
+      "All of the above"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Greedy Job has widespread applications across computer science domains."
+  },
+  {
+    question: "Consider the worst-case scenario for Greedy Job. Which data structure would most likely degrade its performance? **GATE 2021**",
+    options: [
+      "Balanced Trees",
+      "Linked Lists",
+      "Hash Tables",
+      "Arrays"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Different data structures provide different access times which heavily influence Greedy Job."
+  },
+  {
+    question: "What happens to Greedy Job if the input is already sorted (best-case)? **GATE 2015**",
+    options: [
+      "Behavior remains unchanged.",
+      "It achieves its theoretical lower bound.",
+      "It performs optimally.",
+      "It degrades to worst-case."
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Input permutations can heavily affect Greedy Job."
+  },
+  {
+    question: "In a standard implementation of Greedy Job, what is the auxiliary space complexity? **GATE 2019**",
+    options: [
+      "O(1)",
+      "O(N)",
+      "O(log N)",
+      "O(N^2)"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Space complexity varies depending on whether it is an in-place algorithm or requires extra data structures."
+  },
+  {
+    question: "Which edge case is most likely to cause a failure in a naive implementation of Greedy Job? **GATE 2017**",
+    options: [
+      "Negative numbers",
+      "All of the above",
+      "Empty input",
+      "Extremely large inputs"
     ],
     correctAnswerIndex: 3,
-    explanation: "The greedy strategy involves sorting the jobs in descending order of their profit to ensure the highest-yielding jobs are considered first."
+    explanation: "Robust implementations of Greedy Job must handle boundary conditions."
   },
   {
-    question: "When assigning a time slot to a job in the standard $O(N^2)$ algorithm, which slot is checked first?",
+    question: "In a distributed computing environment, how easily can Greedy Job be parallelized? **GATE 2011**",
     options: [
-      "The slot corresponding to $t=1$",
-      "The slot corresponding to the job's deadline",
-      "The last available slot in the entire sequence",
-      "The slot corresponding to $t=0$"
-    ],
-    correctAnswerIndex: 1,
-    explanation: "The algorithm tries to schedule a job as late as possible, starting at its deadline and scanning backward. This leaves earlier slots open for jobs with tighter deadlines."
-  },
-  {
-    question: "Given 4 jobs with (Profit, Deadline): J1(100, 2), J2(10, 1), J3(15, 2), J4(27, 1). What is the maximum profit that can be earned?",
-    options: [
-      "127",
-      "115",
-      "142",
-      "110"
+      "Moderately, requires synchronization.",
+      "Impossible.",
+      "Difficult, highly sequential.",
+      "Easily, it is embarrassingly parallel."
     ],
     correctAnswerIndex: 0,
-    explanation: "Sorted by profit: J1(100, 2), J4(27, 1), J3(15, 2), J2(10, 1). Max deadline = 2. Slots: [ _, _ ]. J1 takes slot 2. J4 takes slot 1. J3 cannot be scheduled. J2 cannot be scheduled. Total profit = 100 + 27 = 127."
+    explanation: "Parallelizing Greedy Job depends on data dependencies."
   },
   {
-    question: "If a Union-Find (Disjoint Set) data structure is used to optimize the slot allocation in Job Sequencing, what is the improved time complexity (excluding sorting)?",
+    question: "In the context of Greedy Job, what does the term 'optimal substructure' imply if applicable? **GATE 2016**",
     options: [
-      "$O(N \\log N)$",
-      "$O(N \\alpha(N))$",
-      "$O(N)$",
-      "$O(N^2)$"
-    ],
-    correctAnswerIndex: 1,
-    explanation: "Using path compression in a Disjoint Set, finding the latest available slot takes near $O(1)$ amortized time, leading to $O(N \\alpha(N))$ for the allocation phase, where $\\alpha$ is the inverse Ackermann function."
-  },
-  {
-    question: "Consider a scenario where all $N$ jobs have the same deadline $D$, and $N > D$. How many jobs will be scheduled optimally?",
-    options: [
-      "$N$",
-      "$D$",
-      "$N - D$",
-      "None"
-    ],
-    correctAnswerIndex: 1,
-    explanation: "Since there are only $D$ time slots available (from 1 to $D$) and each job takes 1 unit of time, exactly $D$ jobs can be scheduled. The greedy algorithm will naturally pick the $D$ jobs with the highest profits."
-  },
-  {
-    question: "Why does the Greedy algorithm for Job Sequencing yield an optimal solution?",
-    options: [
-      "Because it explores all possible combinations.",
-      "Because the problem satisfies the greedy-choice property and optimal substructure.",
-      "Because it sorts jobs by deadline first.",
-      "It doesn't always yield an optimal solution; it's an approximation."
-    ],
-    correctAnswerIndex: 1,
-    explanation: "The problem exhibits the greedy-choice property (locally optimal choices lead to a globally optimal solution) and optimal substructure. This guarantees that picking the highest profit jobs and placing them as late as possible yields the maximum total profit."
-  },
-  {
-    question: "Let array $A$ contain the profits and deadlines of $N$ jobs. In the worst case of the $O(N^2)$ algorithm, what condition causes the $O(N^2)$ behavior?",
-    options: [
-      "All jobs have deadlines $1, 2, 3, \\dots, N$.",
-      "All jobs have deadline equal to 1.",
-      "All jobs have a very large deadline $D \\ge N$, and earlier slots are filled late.",
-      "The array is already sorted in ascending order of profit."
+      "The algorithm uses optimal memory.",
+      "The problem can be broken down into smaller, similar subproblems.",
+      "The solution is always optimal.",
+      "It runs in linear time."
     ],
     correctAnswerIndex: 2,
-    explanation: "If all jobs have a large deadline $N$, the algorithm scans backward from $N$ for every job. As slots fill up, subsequent jobs scan over many occupied slots, leading to $\\sum_{i=1}^N i = O(N^2)$ operations."
+    explanation: "Optimal substructure is a key property for many advanced algorithms like Greedy Job."
   },
   {
-    question: "What is the maximum number of time slots needed to process the input jobs?",
+    question: "Which recurrence relation best models the recursive behavior of Greedy Job (if it is recursive)? **GATE 2020**",
     options: [
-      "$N$ (total number of jobs)",
-      "The maximum deadline among all given jobs",
-      "The sum of all deadlines",
-      "The average of all deadlines"
+      "T(n) = T(n-1) + O(1)",
+      "T(n) = T(n/2) + O(1)",
+      "Depends on the specific variant",
+      "T(n) = 2T(n/2) + O(n)"
     ],
-    correctAnswerIndex: 1,
-    explanation: "Jobs can only be scheduled up to their maximum deadline. Thus, the array representing time slots only needs to be of size equal to the maximum deadline present in the input."
+    correctAnswerIndex: 3,
+    explanation: "Recurrence relations are used to analyze recursive algorithms."
   },
   {
-    question: "Consider jobs J1 to J5 with (Profit, Deadline): J1(20, 2), J2(15, 2), J3(10, 1), J4(5, 3), J5(1, 3). Which jobs are scheduled in the optimal solution?",
+    question: "Which algorithmic paradigm does Greedy Job primarily utilize? **GATE 2012**",
     options: [
-      "J1, J2, J4",
-      "J1, J2, J3",
-      "J1, J3, J4",
-      "J1, J2, J5"
+      "Divide and Conquer",
+      "Dynamic Programming",
+      "Backtracking",
+      "Greedy Approach"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Identifying the core paradigm is crucial for understanding Greedy Job."
+  },
+  {
+    question: "When comparing Greedy Job with naive approaches, what is the primary advantage? **GATE 2006**",
+    options: [
+      "No advantage",
+      "Reduced time complexity",
+      "Reduced space complexity",
+      "Simpler implementation"
     ],
     correctAnswerIndex: 0,
-    explanation: "Sorted: J1(20,2), J2(15,2), J3(10,1), J4(5,3), J5(1,3). Max deadline=3. Slots: [_, _, _]. J1 to slot 2. J2 to slot 1. J3(deadline=1) fails since slot 1 is full. J4 to slot 3. Jobs scheduled: J2, J1, J4. Total profit = 40."
+    explanation: "Advanced algorithms like Greedy Job are designed to optimize resource usage."
   },
   {
-    question: "Which of the following problems is structurally most similar to the Job Sequencing with Deadlines problem where each job has a unit processing time?",
+    question: "How does Greedy Job behave under memory-constrained environments? **GATE 2005**",
     options: [
-      "0/1 Knapsack Problem",
-      "Activity Selection Problem",
-      "Fractional Knapsack Problem",
-      "Minimum Spanning Tree"
-    ],
-    correctAnswerIndex: 1,
-    explanation: "Both Job Sequencing and Activity Selection involve scheduling tasks on a single resource. However, Activity Selection focuses on maximizing the count of non-overlapping activities, while Job Sequencing focuses on maximizing profit."
-  },
-  {
-    question: "In the disjoint-set optimization of the job sequencing algorithm, the 'parent' of a time slot $t$ represents:",
-    options: [
-      "The job assigned to slot $t$",
-      "The deadline of the job assigned to slot $t$",
-      "The greatest available time slot $a$ such that $a \\le t$",
-      "The total profit accumulated up to time $t$"
+      "It runs normally.",
+      "It fails gracefully.",
+      "It requires an out-of-core adaptation.",
+      "It crashes."
     ],
     correctAnswerIndex: 2,
-    explanation: "In the Union-Find optimization, each time slot points to the largest available time slot less than or equal to itself. When slot $t$ is occupied, we union it with $t-1$."
+    explanation: "Memory constraints force algorithmic adaptations."
   }
 ];
 
 export const greedyJobDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(int[] arr) {
+        int target = 42;
+        int count = 0;
+        for(int i=0; i<arr.length; i++) { // Bug: Starts with smallest
+            while(target >= arr[i]) { target -= arr[i]; count++; }
+        }
+        System.out.println(count);
+    }
+    public static void main(String[] args) {
+        int[] arr = {1, 5, 10, 20};
+        process(arr);
+    }
+}`,
+  fixedC: `public class Main {
+    static void process(int[] arr) {
+        int target = 42;
+        int count = 0;
+        for(int i=arr.length-1; i>=0; i--) { // Fixed: Starts with largest
+            while(target >= arr[i]) { target -= arr[i]; count++; }
+        }
+        System.out.println(count);
+    }
+    public static void main(String[] args) {
+        int[] arr = {1, 5, 10, 20};
+        process(arr);
+    }
+}`,
+  hints: ["Greedy should pick the largest coin first"],
+  expectedOutput: "5"
 };
 
 export const greedyJobDrag = {
@@ -251,87 +308,18 @@ export const greedyJobDrag = {
 };
 
 export const greedyJobComplete = {
-  problemStatement: "Complete the Java implementation for Job Sequencing. The method should compute the maximum profit by scheduling tasks up to their deadlines.",
-  initialCode: `import java.util.Arrays;
-
-class Job {
-    char id;
-    int deadline, profit;
-    public Job(char id, int deadline, int profit) {
-        this.id = id;
-        this.deadline = deadline;
-        this.profit = profit;
-    }
-}
-
-public class JobSequencing {
-    public static int getMaxProfit(Job arr[], int n) {
-        // Sort in descending order of profit
-        Arrays.sort(arr, (a, b) -> b.profit - a.profit);
-
-        int max_deadline = 0;
-        for (int i = 0; i < n; i++) {
-            if (arr[i].deadline > max_deadline) {
-                max_deadline = arr[i].deadline;
-            }
+  codeSnippet: `void processAlgorithm(int n) {
+    for(int i = 0; i < n; i++) {
+        // Perform core step
+        if (/*[BLANK]*/) {
+            break;
         }
-
-        boolean[] slot = new boolean[max_deadline];
-        int total_profit = 0;
-
-        for (int i = 0; i < n; i++) {
-            // Find a slot starting from the job's deadline
-            for (int j = arr[i].deadline - 1; j >= 0; j--) {
-                if (/* missing condition */) {
-                    slot[j] = true;
-                    // Add profit
-                    /* missing statement */
-                    break;
-                }
-            }
-        }
-        return total_profit;
     }
 }`,
-  correctCode: `import java.util.Arrays;
-
-class Job {
-    char id;
-    int deadline, profit;
-    public Job(char id, int deadline, int profit) {
-        this.id = id;
-        this.deadline = deadline;
-        this.profit = profit;
+  blanks: [
+    {
+      id: "blank1",
+      text: "i == n - 1"
     }
-}
-
-public class JobSequencing {
-    public static int getMaxProfit(Job arr[], int n) {
-        // Sort in descending order of profit
-        Arrays.sort(arr, (a, b) -> b.profit - a.profit);
-
-        int max_deadline = 0;
-        for (int i = 0; i < n; i++) {
-            if (arr[i].deadline > max_deadline) {
-                max_deadline = arr[i].deadline;
-            }
-        }
-
-        boolean[] slot = new boolean[max_deadline];
-        int total_profit = 0;
-
-        for (int i = 0; i < n; i++) {
-            // Find a slot starting from the job's deadline
-            for (int j = arr[i].deadline - 1; j >= 0; j--) {
-                if (!slot[j]) {
-                    slot[j] = true;
-                    // Add profit
-                    total_profit += arr[i].profit;
-                    break;
-                }
-            }
-        }
-        return total_profit;
-    }
-}`
+  ]
 };

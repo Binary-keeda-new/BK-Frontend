@@ -292,7 +292,7 @@ export default function QuizForm({
                     >
                       <option value="">Select subcategory</option>
                       {form.category &&
-                        QUIZ_CATEGORIES[form.category].map((sub) => (
+                        Object.keys(QUIZ_CATEGORIES[form.category as keyof typeof QUIZ_CATEGORIES]).map((sub) => (
                           <option key={sub} value={sub}>
                             {sub}
                           </option>

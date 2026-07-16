@@ -265,4 +265,17 @@ export const chapter13_MCQ = [
   }
 ];
 
-export const chapter13_COMPLETE_EXERCISES = [];
+export const chapter13_COMPLETE_EXERCISES = [
+  {
+    template: `import java.util.ArrayList;
+public class Main {
+    public static void main(String[] args) {
+        ArrayList<String> list = new ArrayList<>();
+        list.___("Apple");
+    }
+}`,
+    blanks: [
+      "add"
+    ]
+  }
+];

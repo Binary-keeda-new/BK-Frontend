@@ -105,4 +105,13 @@ export const chapter20_MCQ = [
     }
 ];
 
-export const chapter20_COMPLETE_EXERCISES = [];
+export const chapter20_COMPLETE_EXERCISES = [
+  {
+    template: `___ Level {
+    LOW, MEDIUM, HIGH
+}`,
+    blanks: [
+      "enum"
+    ]
+  }
+];

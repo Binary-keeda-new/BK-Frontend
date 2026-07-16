@@ -104,4 +104,16 @@ export const chapter25_MCQ = [
 
 export const chapter25_DEBUG = undefined;
 export const chapter25_DRAG_DROP = undefined;
-export const chapter25_COMPLETE_EXERCISES = [];
+export const chapter25_COMPLETE_EXERCISES = [
+  {
+    template: `public class Main {
+    public static void main(String[] args) {
+        // Type inference in Java 10+
+        ___ text = "Hello Modern Java";
+    }
+}`,
+    blanks: [
+      "var"
+    ]
+  }
+];

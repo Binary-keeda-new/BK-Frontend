@@ -8,6 +8,15 @@ const nextConfig: NextConfig = {
 
   images: {
     domains: ['upload.wikimedia.org'],
+    localPatterns: [
+      {
+        pathname: '/logo-final.png',
+        // search intentionally omitted — allows any query string (?t=...)
+      },
+      {
+        pathname: '/logo-isolated.png',
+      },
+    ],
   },
 
   turbopack: {

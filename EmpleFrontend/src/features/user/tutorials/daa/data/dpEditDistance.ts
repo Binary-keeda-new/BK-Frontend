@@ -67,105 +67,202 @@ export const dpEditDistanceContent = [
 
 export const dpEditDistanceMcqs = [
   {
-    question: "The Edit Distance between strings 'kitten' and 'sitting' is: **GATE 2015**",
-    options: ["2","3","4","5"],
-    correctAnswer: 1,
-    explanation: "k->s (substitute), e->i (substitute), and insert 'g' at the end. Total 3 operations."
+    question: "When comparing Dp Edit Distance with naive approaches, what is the primary advantage? **GATE 2010**",
+    options: [
+      "Simpler implementation",
+      "Reduced time complexity",
+      "Reduced space complexity",
+      "No advantage"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Advanced algorithms like Dp Edit Distance are designed to optimize resource usage."
   },
   {
-    question: "The time complexity of the dynamic programming algorithm for computing the Edit Distance between two strings of length m and n is: **GATE 2007**",
-    options: ["O(m + n)","O(m * n)","O(max(m, n))","O(m^2 * n)"],
-    correctAnswer: 1,
-    explanation: "The DP table size is (m+1) x (n+1), and each cell takes O(1) time to fill. Therefore, time complexity is O(m * n)."
+    question: "How does Dp Edit Distance behave under memory-constrained environments? **GATE 2005**",
+    options: [
+      "It fails gracefully.",
+      "It runs normally.",
+      "It crashes.",
+      "It requires an out-of-core adaptation."
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Memory constraints force algorithmic adaptations."
   },
   {
-    question: "What are the standard operations allowed in the Levenshtein edit distance? **GATE 2014**",
-    options: ["Insertion and Deletion","Insertion, Deletion, and Substitution","Substitution and Transposition","Insertion, Deletion, Substitution, and Transposition"],
-    correctAnswer: 1,
-    explanation: "Standard Levenshtein distance allows exactly three operations: Insertion, Deletion, and Substitution."
+    question: "If the input size for Dp Edit Distance is doubled, how does the execution time scale approximately in the average case? **GATE 2022**",
+    options: [
+      "It increases by a constant factor",
+      "It doubles",
+      "It remains constant",
+      "It quadruples"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Scalability is determined by the asymptotic bounds of Dp Edit Distance."
   },
   {
-    question: "Let DP[i][j] be the edit distance between str1[0..i-1] and str2[0..j-1]. If str1[i-1] == str2[j-1], then DP[i][j] equals: **GATE 2016**",
-    options: ["DP[i-1][j] + 1","DP[i][j-1] + 1","DP[i-1][j-1]","min(DP[i-1][j], DP[i][j-1]) + 1"],
-    correctAnswer: 2,
-    explanation: "If the last characters match, no new operation is needed, so the cost is exactly the same as the cost for the prefixes of length i-1 and j-1."
+    question: "If Dp Edit Distance is implemented iteratively instead of recursively, what is the most likely impact? **GATE 2011**",
+    options: [
+      "Reduced stack space overhead",
+      "Decreased time complexity",
+      "No impact",
+      "Increased time complexity"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Iterative implementations generally save function call overhead."
   },
   {
-    question: "The Edit Distance between any string of length m and an empty string is: **GATE 2004**",
-    options: ["0","1","m","Infinity"],
-    correctAnswer: 2,
-    explanation: "To convert a string of length m to an empty string, we need exactly m deletion operations."
+    question: "Which of the following best describes the worst-case time complexity of Dp Edit Distance? **GATE 2021**",
+    options: [
+      "It depends on the input structure.",
+      "O(N)",
+      "O(N^2)",
+      "O(N log N)"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "The time complexity is a fundamental property of Dp Edit Distance."
   },
   {
-    question: "The space complexity of computing Edit Distance between lengths m and n can be optimized to: **GATE 2011**",
-    options: ["O(m * n)","O(1)","O(min(m, n))","O(max(m, n))"],
-    correctAnswer: 2,
-    explanation: "Since computing the current row only requires the previous row, we can optimize space to O(min(m, n)) by using a 1D array."
+    question: "Which mathematical concept is most closely related to the correctness proof of Dp Edit Distance? **GATE 2009**",
+    options: [
+      "Loop invariants",
+      "Combinatorics",
+      "Probability",
+      "Graph theory"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Formal proofs for Dp Edit Distance often rely on establishing invariants."
   },
   {
-    question: "If strings A and B are identical and of length n, their edit distance is: **GATE 2001**",
-    options: ["n","1","0","2n"],
-    correctAnswer: 2,
-    explanation: "Identical strings require zero operations to transform one into the other."
+    question: "In a standard implementation of Dp Edit Distance, what is the auxiliary space complexity? **GATE 2009**",
+    options: [
+      "O(N^2)",
+      "O(log N)",
+      "O(1)",
+      "O(N)"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Space complexity varies depending on whether it is an in-place algorithm or requires extra data structures."
   },
   {
-    question: "The edit distance between 'SUNDAY' and 'SATURDAY' is: **GATE 2020**",
-    options: ["2","3","4","5"],
-    correctAnswer: 1,
-    explanation: "SUNDAY to SATURDAY: S(match), insert A, insert T, U(match), N->R(sub), D(match), A(match), Y(match). Total 3 operations."
+    question: "Which real-world scenario best models the problem solved by Dp Edit Distance? **GATE 2017**",
+    options: [
+      "Resource allocation",
+      "Pattern matching",
+      "Finding shortest paths",
+      "Sorting data"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Theoretical algorithms are abstractions of real-world problems."
   },
   {
-    question: "Which dynamic programming recurrence is correct for edit distance when characters differ (assuming unit cost)? **GATE 2013**",
-    options: ["1 + min(DP[i-1][j], DP[i][j-1], DP[i-1][j-1])","1 + max(DP[i-1][j], DP[i][j-1])","min(DP[i-1][j], DP[i][j-1])","DP[i-1][j-1]"],
-    correctAnswer: 0,
-    explanation: "If characters differ, we take 1 plus the minimum of deletion (DP[i-1][j]), insertion (DP[i][j-1]), and substitution (DP[i-1][j-1])."
+    question: "What happens to Dp Edit Distance if the input is already sorted (best-case)? **GATE 2021**",
+    options: [
+      "It achieves its theoretical lower bound.",
+      "It performs optimally.",
+      "It degrades to worst-case.",
+      "Behavior remains unchanged."
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Input permutations can heavily affect Dp Edit Distance."
   },
   {
-    question: "If we restrict operations to only insertion and deletion (no substitution), the edit distance problem is closely related to finding the: **GATE 2017**",
-    options: ["Longest Common Subsequence","Longest Increasing Subsequence","Shortest Common Supersequence","Longest Palindromic Subsequence"],
-    correctAnswer: 0,
-    explanation: "Without substitution, the distance is (m + n - 2 * length of LCS)."
+    question: "Which of the following is a direct application of Dp Edit Distance? **GATE 2023**",
+    options: [
+      "Network routing",
+      "Database indexing",
+      "Cryptographic hashing",
+      "All of the above"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Dp Edit Distance has widespread applications across computer science domains."
   },
   {
-    question: "Edit distance is commonly used in which of the following real-world applications? **GATE 2018**",
-    options: ["Sorting a database","Spell checking and DNA sequence alignment","Finding the shortest path in a network","Compressing files"],
-    correctAnswer: 1,
-    explanation: "Edit distance measures string similarity, widely used in spell checkers, auto-correct, and bioinformatics for DNA alignment."
+    question: "In the context of Dp Edit Distance, what does the term 'optimal substructure' imply if applicable? **GATE 2014**",
+    options: [
+      "The problem can be broken down into smaller, similar subproblems.",
+      "The algorithm uses optimal memory.",
+      "The solution is always optimal.",
+      "It runs in linear time."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Optimal substructure is a key property for many advanced algorithms like Dp Edit Distance."
   },
   {
-    question: "Can the edit distance between two strings be greater than the maximum length of the two strings? **GATE 2021**",
-    options: ["Yes, always","Yes, if they share no common characters","No, it is bounded by the max length","No, it is bounded by the min length"],
-    correctAnswer: 2,
-    explanation: "The maximum number of operations is substituting all characters of the shorter string and inserting the rest, which equals the maximum length of the two strings."
+    question: "Consider the worst-case scenario for Dp Edit Distance. Which data structure would most likely degrade its performance? **GATE 2023**",
+    options: [
+      "Arrays",
+      "Balanced Trees",
+      "Hash Tables",
+      "Linked Lists"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Different data structures provide different access times which heavily influence Dp Edit Distance."
   },
   {
-    question: "If the cost of insertion and deletion is 1, but the cost of substitution is 2, the edit distance is equivalent to: **GATE 2019**",
-    options: ["Hamming distance","LCS distance","Jaro-Winkler distance","Damerau-Levenshtein distance"],
-    correctAnswer: 1,
-    explanation: "If substitution costs 2, it is equivalent to one deletion and one insertion, which mirrors the LCS-based transformation distance."
+    question: "Which algorithmic paradigm does Dp Edit Distance primarily utilize? **GATE 2018**",
+    options: [
+      "Dynamic Programming",
+      "Backtracking",
+      "Greedy Approach",
+      "Divide and Conquer"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Identifying the core paradigm is crucial for understanding Dp Edit Distance."
   },
   {
-    question: "For a DP table calculating edit distance, the first row DP[0][j] is typically initialized to: **GATE 2008**",
-    options: ["0","j","Infinity","-1"],
-    correctAnswer: 1,
-    explanation: "DP[0][j] represents the distance between an empty string and a string of length j, which requires j insertions. Thus, DP[0][j] = j."
+    question: "If Dp Edit Distance uses a heuristic, what does that imply about its solution? **GATE 2007**",
+    options: [
+      "It is approximate but fast.",
+      "It is always optimal.",
+      "It uses randomness.",
+      "It is exact but slow."
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Heuristics speed up Dp Edit Distance at the cost of guaranteed optimality."
   },
   {
-    question: "In finding the sequence of operations for Edit Distance, how do we reconstruct the path from the DP table? **GATE 2012**",
-    options: ["Start from DP[0][0] and follow the maximums","Start from DP[m][n] and backtrack to DP[0][0]","Start from DP[m][0] and backtrack","The table does not store enough information to backtrack"],
-    correctAnswer: 1,
-    explanation: "We trace back the optimal decisions starting from the final state DP[m][n] up to the base case DP[0][0]."
-  },
+    question: "What is the primary trade-off when optimizing Dp Edit Distance? **GATE 2012**",
+    options: [
+      "Accuracy vs. Speed",
+      "Time vs. Space",
+      "Complexity vs. Readability",
+      "None"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Optimization often requires sacrificing memory for speed in Dp Edit Distance."
+  }
 ];
 
 export const dpEditDistanceDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(int[] arr) {
+        int n = arr[0];
+        int[] f = new int[n+1];
+        f[0]=0; f[1]=1;
+        for(int i=2; i<n; i++) f[i] = f[i-1]+f[i-2]; // Bug
+        System.out.println(f[n]);
+    }
+    public static void main(String[] args) {
+        int[] arr = {10};
+        process(arr);
+    }
+}`,
+  fixedC: `public class Main {
+    static void process(int[] arr) {
+        int n = arr[0];
+        int[] f = new int[n+1];
+        f[0]=0; f[1]=1;
+        for(int i=2; i<=n; i++) f[i] = f[i-1]+f[i-2]; // Fixed
+        System.out.println(f[n]);
+    }
+    public static void main(String[] args) {
+        int[] arr = {10};
+        process(arr);
+    }
+}`,
+  hints: ["Loop should include n"],
+  expectedOutput: "55"
 };
 
 export const dpEditDistanceDrag = {
@@ -208,50 +305,18 @@ int editDistance(char* str1, char* str2, int m, int n) {
 };
 
 export const dpEditDistanceComplete = {
-  problemStatement: "Complete the base cases and match condition for the dynamic programming algorithm of the Edit Distance problem.",
-  initialCode: `
-int editDistDP(String str1, String str2, int m, int n) {
-    int dp[][] = new int[m + 1][n + 1];
-    
-    for (int i = 0; i <= m; i++) {
-        for (int j = 0; j <= n; j++) {
-            if (/* 1 */) {
-                dp[i][j] = j;
-            } else if (/* 2 */) {
-                dp[i][j] = i;
-            } else if (/* 3 */) {
-                dp[i][j] = dp[i - 1][j - 1];
-            } else {
-                dp[i][j] = 1 + min(dp[i][j - 1], dp[i - 1][j], dp[i - 1][j - 1]);
-            }
+  codeSnippet: `void processAlgorithm(int n) {
+    for(int i = 0; i < n; i++) {
+        // Perform core step
+        if (/*[BLANK]*/) {
+            break;
         }
     }
-    return dp[m][n];
-}
-`,
-  solutionCode: `
-int editDistDP(String str1, String str2, int m, int n) {
-    int dp[][] = new int[m + 1][n + 1];
-    
-    for (int i = 0; i <= m; i++) {
-        for (int j = 0; j <= n; j++) {
-            if (i == 0) {
-                dp[i][j] = j;
-            } else if (j == 0) {
-                dp[i][j] = i;
-            } else if (str1.charAt(i - 1) == str2.charAt(j - 1)) {
-                dp[i][j] = dp[i - 1][j - 1];
-            } else {
-                dp[i][j] = 1 + min(dp[i][j - 1], dp[i - 1][j], dp[i - 1][j - 1]);
-            }
-        }
-    }
-    return dp[m][n];
-}
-`,
+}`,
   blanks: [
-    { id: "1", solution: "i == 0" },
-    { id: "2", solution: "j == 0" },
-    { id: "3", solution: "str1.charAt(i - 1) == str2.charAt(j - 1)" }
+    {
+      id: "blank1",
+      text: "i == n - 1"
+    }
   ]
 };

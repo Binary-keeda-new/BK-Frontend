@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { QUIZ_CATEGORIES } from "@/shared/constants/quizCategories";
+import { FolderTree, Cpu, Database, Network, Bot, Code2, Rocket, ShieldCheck, Package, TableProperties, Leaf, Terminal, Settings2, Calculator, BrainCircuit, Landmark, BookCopy, Compass, BookOpen } from "lucide-react";
 
 function formatTitleFromSlug(slug: string) {
   return slug
@@ -18,10 +19,9 @@ function slugify(value: string) {
 function mapRouteCategoryToDbCategory(categorySlug: string) {
   const mapping: Record<string, string> = {
     "core-cs": "Core CS",
-    aptitude: "Aptitude",
-    "it-concepts": "IT Concepts",
-    upsc: "UPSC Mapping",
-    constitution: "Constitution",
+    "aptitude": "Aptitude",
+    "it-skills": "IT Skills",
+    "govt-exams": "Govt Exams",
   };
 
   return mapping[categorySlug] || formatTitleFromSlug(categorySlug);
@@ -30,30 +30,30 @@ function mapRouteCategoryToDbCategory(categorySlug: string) {
 function getTopicDescription(category: string, topic: string) {
   const descriptions: Record<string, Record<string, string>> = {
     "Core CS": {
-      "Data Structures": "Arrays, Linked Lists, Trees, Graphs, Stacks, Queues and more",
-      Algorithms: "Sorting, Searching, Dynamic Programming, Greedy, Divide & Conquer",
-      OS: "Processes, Threads, Memory Management, Scheduling, Deadlocks",
-      Networks: "OSI Model, TCP/IP, DNS, HTTP, Routing and Network Security",
+      "DSA": "Arrays, Linked Lists, Trees, Graphs, Stacks, Queues and more",
+      "OS": "Processes, Threads, Memory Management, Scheduling, Deadlocks",
+      "DBMS": "Relational and non-relational databases, queries, storage and design",
+      "CN": "OSI Model, TCP/IP, DNS, HTTP, Routing and Network Security",
     },
-    Aptitude: {
-      Quantitative: "Arithmetic, percentages, ratio, averages, profit and loss",
-      "Logical Reasoning": "Patterns, series, puzzles, deductions and logic-based questions",
-      Verbal: "Grammar, vocabulary, reading comprehension and sentence correction",
+    "IT Skills": {
+      "AIML": "Artificial Intelligence and Machine Learning fundamentals",
+      "Development": "Frontend, Backend, and Full-Stack web development concepts",
+      "DevOps": "CI/CD, automation, containers, deployment pipelines and tooling",
+      "Cybersecurity": "Cybersecurity basics, authentication, encryption and safe practices",
+      "OOP": "Object-Oriented Programming concepts like inheritance, polymorphism, encapsulation",
+      "SQL": "SQL queries, joins, indexing, and relational database management",
+      "MongoDB": "NoSQL concepts, documents, collections, aggregation framework",
+      "Linux": "Linux commands, file system, permissions, shell scripting",
+      "System Design": "Scalability, microservices, load balancing, caching architectures",
     },
-    "IT Concepts": {
-      Cloud: "Cloud computing basics, deployment models, services and architecture",
-      DevOps: "CI/CD, automation, containers, deployment pipelines and tooling",
-      Databases: "Relational and non-relational databases, queries, storage and design",
-      Security: "Cybersecurity basics, authentication, encryption and safe practices",
+    "Aptitude": {
+      "Quantitative": "Arithmetic, percentages, ratio, averages, profit and loss",
+      "Logical Aptitude": "Patterns, series, puzzles, deductions and logic-based questions",
     },
-    "UPSC Mapping": {
-      "Technology mapped to UPSC syllabus":
-        "Technology topics aligned with UPSC syllabus and current-affairs relevance",
-    },
-    Constitution: {
-      "Indian Constitution":
-        "Preamble, fundamental rights, duties, DPSP and constitutional structure",
-      Polity: "Parliament, executive, judiciary, federalism, governance and institutions",
+    "Govt Exams": {
+      "UPSC CSE": "UPSC Civil Services Examination (GS & CSAT)",
+      "UPPSC": "Uttar Pradesh Public Service Commission (GS & CSAT)",
+      "BPSC": "Bihar Public Service Commission (GS & CSAT)",
     },
   };
 
@@ -61,34 +61,36 @@ function getTopicDescription(category: string, topic: string) {
 }
 
 function getTopicIcon(category: string, topic: string) {
-  const icons: Record<string, Record<string, string>> = {
+  const icons: Record<string, Record<string, React.ReactNode>> = {
     "Core CS": {
-      "Data Structures": "🗂️",
-      Algorithms: "⚙️",
-      OS: "🖥️",
-      Networks: "🌐",
+      "DSA": <FolderTree className="h-8 w-8 text-blue-500" />,
+      "OS": <Cpu className="h-8 w-8 text-indigo-500" />,
+      "DBMS": <Database className="h-8 w-8 text-cyan-500" />,
+      "CN": <Network className="h-8 w-8 text-sky-500" />,
     },
-    Aptitude: {
-      Quantitative: "📐",
-      "Logical Reasoning": "🧩",
-      Verbal: "📝",
+    "IT Skills": {
+      "AIML": <Bot className="h-8 w-8 text-purple-500" />,
+      "Development": <Code2 className="h-8 w-8 text-fuchsia-500" />,
+      "DevOps": <Rocket className="h-8 w-8 text-violet-500" />,
+      "Cybersecurity": <ShieldCheck className="h-8 w-8 text-emerald-500" />,
+      "OOP": <Package className="h-8 w-8 text-pink-500" />,
+      "SQL": <TableProperties className="h-8 w-8 text-amber-500" />,
+      "MongoDB": <Leaf className="h-8 w-8 text-green-500" />,
+      "Linux": <Terminal className="h-8 w-8 text-zinc-400" />,
+      "System Design": <Settings2 className="h-8 w-8 text-slate-400" />,
     },
-    "IT Concepts": {
-      Cloud: "☁️",
-      DevOps: "🚀",
-      Databases: "🗄️",
-      Security: "🔐",
+    "Aptitude": {
+      "Quantitative": <Calculator className="h-8 w-8 text-lime-500" />,
+      "Logical Aptitude": <BrainCircuit className="h-8 w-8 text-yellow-500" />,
     },
-    "UPSC Mapping": {
-      "Technology mapped to UPSC syllabus": "🧭",
-    },
-    Constitution: {
-      "Indian Constitution": "📜",
-      Polity: "🏛️",
+    "Govt Exams": {
+      "UPSC CSE": <Landmark className="h-8 w-8 text-rose-500" />,
+      "UPPSC": <BookCopy className="h-8 w-8 text-orange-500" />,
+      "BPSC": <Compass className="h-8 w-8 text-red-500" />,
     },
   };
 
-  return icons[category]?.[topic] || "📘";
+  return icons[category]?.[topic] || <BookOpen className="h-8 w-8 text-gray-500" />;
 }
 
 export default function QuizCategoryPage() {
@@ -96,9 +98,9 @@ export default function QuizCategoryPage() {
   const categorySlug = (params?.category as string) ?? "core-cs";
   const dbCategory = mapRouteCategoryToDbCategory(categorySlug);
 
-  const topics: string[] = [
-  ...(QUIZ_CATEGORIES[dbCategory as keyof typeof QUIZ_CATEGORIES] ?? []),
-];
+  const topics: string[] = Object.keys(
+    QUIZ_CATEGORIES[dbCategory as keyof typeof QUIZ_CATEGORIES] || {}
+  );
 
   return (
     <div className="p-6">

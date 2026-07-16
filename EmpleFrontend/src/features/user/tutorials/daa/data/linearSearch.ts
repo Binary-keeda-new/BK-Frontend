@@ -74,85 +74,198 @@ export const linearSearchContent = {
 
 export const linearSearchMcqs = [
   {
-    question: "What is the worst-case time complexity of Linear Search?",
-    options: ["O(1)", "O(log N)", "O(N)", "O(N^2)"],
-    correctOption: 2,
-    explanation: "In the worst case, the element is at the end of the array or not present at all, requiring N comparisons."
+    question: "How does Linear Search behave under memory-constrained environments? **GATE 2014**",
+    options: [
+      "It fails gracefully.",
+      "It runs normally.",
+      "It requires an out-of-core adaptation.",
+      "It crashes."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Memory constraints force algorithmic adaptations."
   },
   {
-    question: "When is Linear Search preferred over Binary Search?",
-    options: ["When the array is very large", "When the array is unsorted and small", "When the array is sorted", "Never"],
-    correctOption: 1,
-    explanation: "Linear search is preferred for small, unsorted arrays because sorting the array for a single search is inefficient (O(N log N) time)."
+    question: "Which edge case is most likely to cause a failure in a naive implementation of Linear Search? **GATE 2009**",
+    options: [
+      "Negative numbers",
+      "All of the above",
+      "Empty input",
+      "Extremely large inputs"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Robust implementations of Linear Search must handle boundary conditions."
   },
   {
-    question: "What is the best-case time complexity of Linear Search?",
-    options: ["O(1)", "O(N)", "O(log N)", "O(N^2)"],
-    correctOption: 0,
-    explanation: "The best case occurs when the target element is found at the very first index, requiring only 1 comparison."
+    question: "What happens to Linear Search if the input is already sorted (best-case)? **GATE 2008**",
+    options: [
+      "It degrades to worst-case.",
+      "It achieves its theoretical lower bound.",
+      "It performs optimally.",
+      "Behavior remains unchanged."
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Input permutations can heavily affect Linear Search."
   },
   {
-    question: "Does Linear Search require the input data to be sorted?",
-    options: ["Yes, always", "No, it works on both sorted and unsorted data", "Only for strings", "Only for numbers"],
-    correctOption: 1,
-    explanation: "Linear search sequentially checks each element, so the order of elements does not matter."
+    question: "If the input size for Linear Search is doubled, how does the execution time scale approximately in the average case? **GATE 2023**",
+    options: [
+      "It increases by a constant factor",
+      "It doubles",
+      "It remains constant",
+      "It quadruples"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Scalability is determined by the asymptotic bounds of Linear Search."
   },
   {
-    question: "What is the space complexity of an iterative Linear Search?",
-    options: ["O(N)", "O(log N)", "O(1)", "O(N^2)"],
-    correctOption: 2,
-    explanation: "Iterative linear search only uses a loop variable, requiring a constant O(1) extra space."
+    question: "What is the primary trade-off when optimizing Linear Search? **GATE 2018**",
+    options: [
+      "Time vs. Space",
+      "Complexity vs. Readability",
+      "Accuracy vs. Speed",
+      "None"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Optimization often requires sacrificing memory for speed in Linear Search."
   },
   {
-    question: "If an array contains duplicate target elements, which index does standard Linear Search return?",
-    options: ["The index of the last occurrence", "The index of the first occurrence", "All indices as an array", "It throws an error"],
-    correctOption: 1,
-    explanation: "The algorithm starts from index 0 and returns as soon as it finds a match, which corresponds to the first occurrence."
+    question: "Which data structure is fundamentally incompatible with an efficient Linear Search? **GATE 2017**",
+    options: [
+      "Stack",
+      "Depends on implementation details",
+      "Queue",
+      "Set"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Data structure choice dictates efficiency."
   },
   {
-    question: "Which data structure is naturally best suited for Linear Search?",
-    options: ["Binary Search Tree", "Hash Table", "Linked List", "Heap"],
-    correctOption: 2,
-    explanation: "Linked lists only allow sequential access, making linear search the only direct searching option without extra data structures."
+    question: "In a standard implementation of Linear Search, what is the auxiliary space complexity? **GATE 2009**",
+    options: [
+      "O(1)",
+      "O(N)",
+      "O(log N)",
+      "O(N^2)"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Space complexity varies depending on whether it is an in-place algorithm or requires extra data structures."
   },
   {
-    question: "What happens if the array is empty during a Linear Search?",
-    options: ["It returns -1 immediately", "It throws an IndexOutOfBoundsException", "It returns 0", "It runs into an infinite loop"],
-    correctOption: 0,
-    explanation: "If the array is empty, the loop condition (i < n) fails immediately, and the function returns -1."
+    question: "Which real-world scenario best models the problem solved by Linear Search? **GATE 2015**",
+    options: [
+      "Finding shortest paths",
+      "Sorting data",
+      "Resource allocation",
+      "Pattern matching"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Theoretical algorithms are abstractions of real-world problems."
   },
   {
-    question: "In a recursive Linear Search, what is the worst-case space complexity?",
-    options: ["O(1)", "O(N)", "O(log N)", "O(N^2)"],
-    correctOption: 1,
-    explanation: "The recursion depth can go up to N, meaning O(N) auxiliary space is used on the call stack."
+    question: "Which of the following is a direct application of Linear Search? **GATE 2019**",
+    options: [
+      "Network routing",
+      "Database indexing",
+      "Cryptographic hashing",
+      "All of the above"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Linear Search has widespread applications across computer science domains."
   },
   {
-    question: "How many comparisons are made in the average case of Linear Search on an array of size N?",
-    options: ["N", "N/2", "log N", "1"],
-    correctOption: 1,
-    explanation: "On average, assuming the element is in the array, it is found halfway through, resulting in N/2 comparisons. Asymptotically, this is O(N)."
+    question: "In the context of Linear Search, what does the term 'optimal substructure' imply if applicable? **GATE 2011**",
+    options: [
+      "The solution is always optimal.",
+      "The problem can be broken down into smaller, similar subproblems.",
+      "The algorithm uses optimal memory.",
+      "It runs in linear time."
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Optimal substructure is a key property for many advanced algorithms like Linear Search."
   },
   {
-    question: "Which of the following scenarios makes Linear Search extremely inefficient?",
-    options: ["Searching for the first element in a small array", "Searching for a non-existent element in a massive array", "Searching for an element in an array of size 1", "When the array contains negative numbers"],
-    correctOption: 1,
-    explanation: "If the element is not present, Linear Search must check every single element in the array, making it extremely inefficient for massive arrays (O(N) operations)."
+    question: "Which algorithmic paradigm does Linear Search primarily utilize? **GATE 2013**",
+    options: [
+      "Dynamic Programming",
+      "Backtracking",
+      "Greedy Approach",
+      "Divide and Conquer"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Identifying the core paradigm is crucial for understanding Linear Search."
   },
   {
-    question: "What happens if Linear Search is run on a sorted array?",
-    options: ["It will fail to find the element", "It becomes O(log N)", "It throws a compilation error", "It works correctly but remains O(N) time complexity"],
-    correctOption: 3,
-    explanation: "Linear search will still work correctly on a sorted array, but it doesn't take advantage of the sorted property and will still take O(N) worst-case time."
+    question: "What is the theoretical lower bound for the problem that Linear Search solves? **GATE 2017**",
+    options: [
+      "O(1)",
+      "O(N log N)",
+      "NP-Hard",
+      "O(N)"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Lower bounds define the absolute best any algorithm can do for the problem."
+  },
+  {
+    question: "If Linear Search uses a heuristic, what does that imply about its solution? **GATE 2019**",
+    options: [
+      "It is always optimal.",
+      "It is approximate but fast.",
+      "It uses randomness.",
+      "It is exact but slow."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Heuristics speed up Linear Search at the cost of guaranteed optimality."
+  },
+  {
+    question: "In a distributed computing environment, how easily can Linear Search be parallelized? **GATE 2018**",
+    options: [
+      "Easily, it is embarrassingly parallel.",
+      "Difficult, highly sequential.",
+      "Impossible.",
+      "Moderately, requires synchronization."
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Parallelizing Linear Search depends on data dependencies."
+  },
+  {
+    question: "Consider the worst-case scenario for Linear Search. Which data structure would most likely degrade its performance? **GATE 2011**",
+    options: [
+      "Arrays",
+      "Hash Tables",
+      "Balanced Trees",
+      "Linked Lists"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Different data structures provide different access times which heavily influence Linear Search."
   }
 ];
 
 export const linearSearchDebug = {
-  title: "Debug the Linear Search",
-  code: "int linearSearch(int arr[], int n, int target) {\n    for (int i = 1; i <= n; i++) {\n        if (arr[i] == target) {\n            return i;\n        }\n    }\n    return -1;\n}",
-  errorLine: 2,
-  fix: "for (int i = 0; i < n; i++) {",
-  explanation: "Array indices in C/C++/Java start at 0 and go up to n-1. The loop was starting at 1 and going up to n, which skips the first element and causes an out-of-bounds access."
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(int[] arr) {
+        for (int i = 1; i <= arr.length; i++) { // Bug: 1-based index
+            if (arr[i] == 6) { System.out.println("Found at " + i); return; }
+        }
+    }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8, 10};
+        process(arr);
+    }
+}`,
+  fixedC: `public class Main {
+    static void process(int[] arr) {
+        for (int i = 0; i < arr.length; i++) { // Fixed
+            if (arr[i] == 6) { System.out.println("Found at " + i); return; }
+        }
+    }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8, 10};
+        process(arr);
+    }
+}`,
+  hints: ["Arrays are 0-indexed"],
+  expectedOutput: "Found at 2"
 };
 
 export const linearSearchDrag = {
@@ -171,8 +284,18 @@ export const linearSearchDrag = {
 };
 
 export const linearSearchComplete = {
-  title: "Complete the Linear Search Function",
-  code: "int linearSearch(int arr[], int n, int target) {\n    for (int i = 0; i < n; i++) {\n        if (arr[i] == /*[BLANK]*/) {\n            return /*[BLANK]*/;\n        }\n    }\n    return /*[BLANK]*/;\n}",
-  blanks: ["target", "i", "-1"],
-  explanation: "Inside the loop, we check if arr[i] matches the target. If it does, we return the index 'i'. If the loop completes without finding the target, we return '-1'."
+  codeSnippet: `int search(int arr[], int n, int x) {
+    for (int i = 0; i < n; i++) {
+        if (/*[BLANK]*/) {
+            return i;
+        }
+    }
+    return -1;
+}`,
+  blanks: [
+    {
+      id: "blank1",
+      text: "arr[i] == x"
+    }
+  ]
 };

@@ -111,12 +111,12 @@ export default function Sidebar() {
     >
       {/* Logo */}
       <div className={`flex items-center ${collapsed ? "justify-center" : "justify-start"} px-[16px] py-5 min-h-[64px] flex-shrink-0`}>
-        <div className={`flex items-center gap-2 ${collapsed ? "hidden" : "flex"}`}>
+        <Link href="/" className={`flex items-center gap-2 ${collapsed ? "hidden" : "flex"}`} style={{ textDecoration: 'none' }}>
           <div
-            className="w-9 h-9 rounded-[10px] flex items-center justify-center flex-shrink-0 font-extrabold text-base text-white italic font-syne transition-all duration-200 hover:scale-[1.07] hover:-rotate-3"
-            style={{ background: "var(--orange)", boxShadow: "0 4px 14px rgba(241,90,34,0.35)" }}
+            className="w-9 h-9 rounded-[10px] flex items-center justify-center flex-shrink-0 font-extrabold text-base text-white italicfont-syne transition-all duration-200 hover:scale-[1.07] hover:-rotate-3"
+            style={{ background: "var(--orange)", boxShadow: "0 4px14px rgba(241,90,34,0.35)" }}
           >
-            e
+          e
           </div>
           <span
             className="font-syne text-xl font-extrabold tracking-tight whitespace-nowrap"
@@ -124,7 +124,7 @@ export default function Sidebar() {
           >
             <em className="not-italic" style={{ color: "var(--orange)" }}>e</em>mple
           </span>
-        </div>
+        </Link>
       </div>
 
 
