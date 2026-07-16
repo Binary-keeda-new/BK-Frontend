@@ -10,8 +10,10 @@ export interface HealthStats {
   todaySteps: number;
   /** User's daily step goal (from mobile app settings) */
   stepGoal: number;
-  /** Sum of coins earned from daily step activity this month */
+  /** Sum of health coins earned in the current calendar month */
   monthlyCoins: number;
+  /** Lifetime health coins — the running total stored in User.coins */
+  lifetimeCoins: number;
 }
 
 export interface FinanceSummary {
@@ -19,8 +21,10 @@ export interface FinanceSummary {
   monthlyBudget: number;
   /** Total spending this month (from backend) */
   monthlySpending: number;
-  /** Monthly coins earned (direct value from backend) */
+  /** Finance coins earned in the current calendar month */
   monthlyCoins: number;
+  /** Lifetime finance coins — all-time sum of BudgetReward records */
+  lifetimeCoins: number;
 }
 
 export interface HealthFinanceState {
