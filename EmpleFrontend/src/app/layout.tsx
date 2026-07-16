@@ -41,13 +41,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <AppAuthProvider>
             <NotificationProvider>
               <WalletProvider>
-                <ThemeProvider>{children}</ThemeProvider>
+                <ThemeProvider>
+                  {children}
+                  <HelpChatWidget />
+                </ThemeProvider>
               </WalletProvider>
             </NotificationProvider>
-            <ThemeProvider>
-              {children}
-              <HelpChatWidget />
-            </ThemeProvider>
           </AppAuthProvider>
         </AuthProvider>
       </body>
