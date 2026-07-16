@@ -44,9 +44,9 @@ const CONFIG: Record<EventType, {
 
 interface Props {
   type: EventType
-  onPreview: (id: string) => void
-  onEdit: (event: Event) => void
-  onAddNew: () => void
+  onPreview?: (id: string) => void
+  onEdit?: (event: Event) => void
+  onAddNew?: () => void
 }
 
 export default function EventListPage({ type, onPreview, onEdit, onAddNew }: Props) {
@@ -91,12 +91,14 @@ export default function EventListPage({ type, onPreview, onEdit, onAddNew }: Pro
           </div>
           <p className="text-white/40 text-sm">Manage all {config.label.toLowerCase()} visible to users.</p>
         </div>
+        {onAddNew && (
         <button
-          onClick={onAddNew}
+          onClick={() => onAddNew()}
           className="flex items-center gap-2 rounded-2xl bg-[rgb(241,90,34)] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[rgb(241,90,34)]/85"
         >
           <Plus size={16} /> Add Event
         </button>
+      )}
       </div>
 
       {loading ? (
@@ -133,10 +135,10 @@ export default function EventListPage({ type, onPreview, onEdit, onAddNew }: Pro
               </div>
 
               <div className="flex items-center gap-2 flex-shrink-0">
-                <button onClick={() => onPreview(event._id)} className="rounded-xl bg-[rgb(10,11,14)] p-2 text-white/50 ring-1 ring-white/10 transition hover:text-white" title="Preview">
+                <button onClick={() => onPreview?.(event._id)} className="rounded-xl bg-[rgb(10,11,14)] p-2 text-white/50 ring-1 ring-white/10 transition hover:text-white" title="Preview">
                   <Eye size={14} />
                 </button>
-                <button onClick={() => onEdit(event)} className="rounded-xl bg-[rgb(10,11,14)] p-2 text-white/50 ring-1 ring-white/10 transition hover:text-white" title="Edit">
+                <button onClick={() => onEdit?.(event)} className="rounded-xl bg-[rgb(10,11,14)] p-2 text-white/50 ring-1 ring-white/10 transition hover:text-white" title="Edit">
                   <Pencil size={14} />
                 </button>
                 <button onClick={() => handleDelete(event._id)} className="rounded-xl bg-[rgb(10,11,14)] p-2 text-red-400/50 ring-1 ring-white/10 transition hover:text-red-400" title="Delete">
