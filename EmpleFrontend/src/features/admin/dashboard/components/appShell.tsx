@@ -37,6 +37,11 @@ export default function AppShell({
   const searchParams = useSearchParams();
 
   const { user, loading, isAdmin } = useAppAuth();
+  console.log({
+  loading,
+  user,
+  isAdmin,
+  });
 
   const sectionFromUrl =
     (searchParams.get('section') as AdminSection) || initialSection;
@@ -58,7 +63,7 @@ const [selectedReviewAttemptId, setSelectedReviewAttemptId] = useState<string | 
   const [testListRefreshKey, setTestListRefreshKey] = useState(0);
   const [selectedTestId, setSelectedTestId] = useState<string | null>(null);
   const [selectedProblemId, setSelectedProblemId] = useState<string | null>(null);
-  const [eventsSubPage, setEventsSubPage] = useState<'hackathon' | 'techfest' | 'our-hackathon' | null>(null);
+  const [eventsSubPage, setEventsSubPage] = useState<'hackathon' | 'techfest' | 'our-hackathon' | 'research-conference' | null>(null);
 
 
   useEffect(() => {
