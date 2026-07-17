@@ -222,7 +222,8 @@ export default function Topbar() {
 
   const handleLogout = async () => {
     await sdk.logout();
-    router.push("/landing");
+    localStorage.clear();
+    router.push("/auth/login");
   };
 
   const handleProfile = () => {
