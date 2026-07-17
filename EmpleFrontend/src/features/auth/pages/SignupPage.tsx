@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useDescope } from '@descope/nextjs-sdk/client'
@@ -36,6 +36,13 @@ export default function SignupPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
+  // University autocomplete state
+  const [universities, setUniversities] = useState<string[]>([])
+  const [showDropdown, setShowDropdown] = useState(false)
+  const [fetchingUni, setFetchingUni] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
+  const debounceRef = useRef<NodeJS.Timeout | null>(null)
+
   const router = useRouter()
   const sdk = useDescope()
 
@@ -44,6 +51,61 @@ export default function SignupPage() {
   const update = useCallback((field: string, value: string) => {
     setForm((f) => ({ ...f, [field]: value }))
   }, [])
+
+  // Fetch universities when college field changes
+  useEffect(() => {
+    if (form.college.length < 2) {
+      setUniversities([])
+      setShowDropdown(false)
+      return
+    }
+
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+
+    debounceRef.current = setTimeout(async () => {
+      setFetchingUni(true)
+      try {
+        let res
+        try {
+          // Try https first (for production)
+          res = await fetch(
+            `https://universities.hipolabs.com/search?name=${encodeURIComponent(form.college)}&country=India`
+          )
+        } catch {
+          // Fallback to http (for localhost)
+          res = await fetch(
+            `http://universities.hipolabs.com/search?name=${encodeURIComponent(form.college)}&country=India`
+          )
+        }
+        const data = await res.json()
+        const names = data.map((u: any) => u.name).slice(0, 8)
+        setUniversities(names)
+        setShowDropdown(names.length > 0)
+      } catch {
+        setUniversities([])
+        setShowDropdown(false)
+      } finally {
+        setFetchingUni(false)
+      }
+    }, 400)
+  }, [form.college])
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setShowDropdown(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  const handleSelectUniversity = (name: string) => {
+    setForm((f) => ({ ...f, college: name }))
+    setShowDropdown(false)
+    setUniversities([])
+  }
 
   const handleSocialLogin = async (provider: 'google' | 'github' | 'microsoft') => {
     try {
@@ -102,7 +164,8 @@ export default function SignupPage() {
         console.error('Error details:', JSON.stringify(resp?.error))
         const errorCode = resp.error?.errorCode
         if (errorCode === 'E062107') {
-          setError('An account with this email already exists. Please sign in instead.')
+          setError('You already have an account! Redirecting to login....')
+          setTimeout(() => router.replace('/auth/login'), 2000)
         } else {
           setError(`Signup failed: ${resp.error?.errorMessage || 'Please try again.'}`)
         }
@@ -128,7 +191,11 @@ export default function SignupPage() {
       if (!syncRes.ok) {
         const syncText = await syncRes.text()
         console.error('Sync failed:', syncRes.status, syncText)
-        // Continue anyway — try to send verification email
+      } else {
+        const syncData = await syncRes.json()
+        if (syncData.isNewUser) {
+          sessionStorage.setItem('show_signup_bonus', 'true')
+        }
       }
 
       // Step 3: Send verification email via Zoho
@@ -144,7 +211,6 @@ export default function SignupPage() {
       if (!verifyRes.ok) {
         const verifyData = await verifyRes.json()
         console.error('Verification email error:', verifyData)
-        // Account created but email failed — still go to check email page
       }
 
       // Step 4: Redirect to check email page
@@ -217,11 +283,73 @@ export default function SignupPage() {
               </div>
             </div>
 
-            <div className="auth-field">
+            {/* College with autocomplete */}
+            <div className="auth-field" style={{ position: 'relative' }} ref={dropdownRef}>
               <label className="auth-label">College / University</label>
-              <div className="auth-input-wrap">
-                <input className="auth-input" type="text" placeholder="" value={form.college} onChange={(e) => update('college', e.target.value)} />
+              <div className="auth-input-wrap" style={{ position: 'relative' }}>
+                <input
+                  className="auth-input"
+                  type="text"
+                  placeholder="Search your college..."
+                  value={form.college}
+                  onChange={(e) => update('college', e.target.value)}
+                  onFocus={() => universities.length > 0 && setShowDropdown(true)}
+                  autoComplete="off"
+                />
+                {fetchingUni && (
+                  <div style={{
+                    position: 'absolute', right: 12, top: '50%',
+                    transform: 'translateY(-50%)',
+                    width: 16, height: 16,
+                    border: '2px solid #2a2a2a',
+                    borderTop: '2px solid #6366f1',
+                    borderRadius: '50%',
+                    animation: 'spin 0.8s linear infinite',
+                  }} />
+                )}
               </div>
+
+              {showDropdown && universities.length > 0 && (
+                <div style={{
+                  position: 'absolute',
+                  top: '100%',
+                  left: 0,
+                  right: 0,
+                  zIndex: 100,
+                  background: '#1a1a1a',
+                  border: '1px solid #2a2a2a',
+                  borderRadius: 8,
+                  marginTop: 4,
+                  maxHeight: 220,
+                  overflowY: 'auto',
+                  boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
+                }}>
+                  {universities.map((uni, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={() => handleSelectUniversity(uni)}
+                      style={{
+                        display: 'block',
+                        width: '100%',
+                        textAlign: 'left',
+                        padding: '10px 14px',
+                        background: 'transparent',
+                        border: 'none',
+                        color: '#e5e7eb',
+                        fontSize: 14,
+                        cursor: 'pointer',
+                        borderBottom: i < universities.length - 1 ? '1px solid #2a2a2a' : 'none',
+                      }}
+                      onMouseEnter={(e) => (e.currentTarget.style.background = '#2a2a2a')}
+                      onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
+                    >
+                      {uni}
+                    </button>
+                  ))}
+                </div>
+              )}
+              <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
             </div>
 
             <div className="auth-field">

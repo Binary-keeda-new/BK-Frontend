@@ -66,7 +66,7 @@ export default function ImportQuestionsModal({
 
       const question = lines[0];
 
-      const optionLines = lines.filter((line) => /^[A-Z]\.\s+/.test(line));
+      const optionLines = lines.filter((line) => /^[A-Z][\.\)]\s+/.test(line));
       const answerLine = lines.find((line) =>
         /^ANSWER\s*:/i.test(line)
       );
@@ -74,7 +74,7 @@ export default function ImportQuestionsModal({
       if (!question || !optionLines.length || !answerLine) continue;
 
       const options = optionLines.map((line) =>
-        line.replace(/^[A-Z]\.\s+/, "").trim()
+        line.replace(/^[A-Z][\.\)]\s+/, "").trim()
       );
 
       const correctKeys = answerLine
@@ -86,22 +86,38 @@ export default function ImportQuestionsModal({
       const correctOptions = correctKeys
         .map((key) => {
           const match = optionLines.find((line) =>
-            line.toUpperCase().startsWith(`${key}.`)
+            line.toUpperCase().startsWith(`${key}.`) || line.toUpperCase().startsWith(`${key})`)
           );
-          return match?.replace(/^[A-Z]\.\s+/, "").trim();
+          return match?.replace(/^[A-Z][\.\)]\s+/, "").trim();
         })
         .filter((value): value is string => Boolean(value));
 
       if (!correctOptions.length) continue;
 
+      const positiveLine = lines.find((line) =>
+  /^POSITIVE\s*:/i.test(line)
+);
+
+const negativeLine = lines.find((line) =>
+  /^NEGATIVE\s*:/i.test(line)
+);
+
+const positiveMarks = positiveLine
+  ? Number(positiveLine.replace(/^POSITIVE\s*:/i, "").trim())
+  : 4;
+
+const negativeMarks = negativeLine
+  ? Number(negativeLine.replace(/^NEGATIVE\s*:/i, "").trim())
+  : 1;
+
       questions.push({
-        question,
-        options,
-        correctOptions,
-        questionType: correctOptions.length > 1 ? "MSQ" : "MCQ",
-        positiveMarks: 4,
-        negativeMarks: 1,
-      });
+  question,
+  options,
+  correctOptions,
+  questionType: correctOptions.length > 1 ? "MSQ" : "MCQ",
+  positiveMarks: Number.isFinite(positiveMarks) ? positiveMarks : 4,
+  negativeMarks: Number.isFinite(negativeMarks) ? negativeMarks : 1,
+});
     }
 
     return questions;
@@ -456,10 +472,12 @@ export default function ImportQuestionsModal({
           {importTab === "aiken" && (
             <div>
               <p className="mb-3 text-xs leading-[1.7]" style={{ color: t.subText }}>
-                Format: question text →{" "}
-                <code className="text-[var(--clr-accent)]">A. option</code> lines →{" "}
-                <code className="text-[var(--clr-accent)]">ANSWER: B</code>
-              </p>
+  Format: question text →{" "}
+  <code className="text-[var(--clr-accent)]">A. option</code> lines →{" "}
+  <code className="text-[var(--clr-accent)]">ANSWER: B</code> (optional{" "}
+  <code className="text-[var(--clr-accent)]">POSITIVE: 4</code>,{" "}
+  <code className="text-[var(--clr-accent)]">NEGATIVE: 1</code>)
+</p>
 
               <textarea
                 rows={6}

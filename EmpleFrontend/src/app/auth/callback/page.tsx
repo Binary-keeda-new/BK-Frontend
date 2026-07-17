@@ -12,13 +12,6 @@ export default function CallbackPage() {
         const params = new URLSearchParams(window.location.search)
         const code = params.get('code')
 
-        // If came from signup page, redirect to login
-        const fromSignup = params.get('from') === 'signup'
-        if (fromSignup) {
-          window.location.replace('/auth/login')
-          return
-        }
-
         if (!code) {
           window.location.replace('/auth/login?error=missing_code')
           return
@@ -53,6 +46,11 @@ export default function CallbackPage() {
         if (!syncRes.ok) {
           window.location.replace('/auth/login?error=sync_failed')
           return
+        }
+
+        const syncData = await syncRes.json()
+        if (syncData.isNewUser) {
+          sessionStorage.setItem('show_signup_bonus', 'true')
         }
 
         const meRes = await fetch(

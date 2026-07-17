@@ -19,6 +19,8 @@ import QuizForm from '../../quiz/pages/QuizForm';
 import CodingProblemsPage from '@/features/admin/coding-problems/pages/codingProblemsPage';
 import CodingProblemEditorPage from '@/features/admin/coding-problems/pages/codingProblemEditorPage';
 import AdminEventsPage from '@/features/admin/Events/components/AdminEventsPage';
+import AdminNotificationsPage from '@/features/admin/notifications/pages/AdminNotificationsPage';
+import AdminRequestsPage from '@/features/admin/requests/pages/AdminRequestsPage';
 import QuizReportPage from '@/features/admin/quiz/pages/QuizReportPage';
 import AdminQuizReview from '../../quiz/pages/adminQuizReview';
 
@@ -36,6 +38,11 @@ export default function AppShell({
   const searchParams = useSearchParams();
 
   const { user, loading, isAdmin } = useAppAuth();
+  console.log({
+  loading,
+  user,
+  isAdmin,
+  });
 
   const sectionFromUrl =
     (searchParams.get('section') as AdminSection) || initialSection;
@@ -57,7 +64,7 @@ const [selectedReviewAttemptId, setSelectedReviewAttemptId] = useState<string | 
   const [testListRefreshKey, setTestListRefreshKey] = useState(0);
   const [selectedTestId, setSelectedTestId] = useState<string | null>(null);
   const [selectedProblemId, setSelectedProblemId] = useState<string | null>(null);
-  const [eventsSubPage, setEventsSubPage] = useState<'hackathon' | 'techfest' | 'our-hackathon' | null>(null);
+  const [eventsSubPage, setEventsSubPage] = useState<'hackathon' | 'techfest' | 'our-hackathon' | 'research-conference' | null>(null);
 
 
   useEffect(() => {
@@ -306,6 +313,12 @@ const openAttemptReview = (attemptId: string) => {
 
       case 'sessions':
         return <AdminSessionsPage />;
+
+      case 'notifications':
+        return <AdminNotificationsPage />;
+
+      case 'requests':
+        return <AdminRequestsPage />;  
 
       case 'practice':
         return (

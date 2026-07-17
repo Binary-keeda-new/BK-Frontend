@@ -1,5 +1,6 @@
 "use client";
-import React from "react";
+
+import { ReactNode } from "react";
 
 type Level = "Beginner" | "Intermediate" | "Advanced";
 
@@ -19,7 +20,7 @@ const brandStyles: Record<string, { bg: string }> = {
   CUDA: { bg: "bg-gradient-to-br from-[#76B900] to-[#1a1a2e]" },
 };
 
-const LogoComponents: Record<string, React.ReactNode> = {
+const LogoComponents: Record<string, ReactNode> = {
   AWS: (
     <svg viewBox="0 0 150 90" className="w-28 h-16" fill="none">
       <text x="10" y="55" fontSize="42" fontWeight="bold" fill="white" fontFamily="Arial">aws</text>

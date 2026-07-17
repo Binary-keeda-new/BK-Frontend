@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useSession } from "@descope/nextjs-sdk/client";
 import { Lock } from "lucide-react";
 import LoginGate from "@/shared/components/access/LoginGate";
@@ -19,6 +20,10 @@ const NAV_ITEMS = [
   {
     label: "Resources", tip: "Resources", href: "/resources",
     icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>,
+  },
+  {
+    label: "Tutorials", tip: "Tutorials", href: "/user/tutorials",
+    icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>,
   },
   {
     label: "Jobs", tip: "Jobs", href: "/jobs",
@@ -44,6 +49,10 @@ const NAV_ITEMS = [
   {
     label: "Sessions", tip: "Sessions", href: "/user/sessions",
     icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>,
+  },
+  {
+    label: "Transactions", tip: "Transactions", href: "/user/wallet/transactions",
+    icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>,
   },
 ];
 
@@ -98,27 +107,60 @@ export default function Sidebar() {
   return (
     <aside
       className={`
-        relative z-20 flex flex-col flex-shrink-0 overflow-hidden
+        relative z-20 flex flex-col flex-shrink-0
         transition-all duration-300 ease-in-out
         ${collapsed ? "w-[66px]" : "w-[215px]"}
       `}
       style={{ background: "var(--surface)", borderRight: "1px solid var(--border)" }}
     >
       {/* Logo */}
-      <div className="flex items-center gap-2 px-[18px] py-5 min-h-[64px] flex-shrink-0">
-        <div
-          className="w-9 h-9 rounded-[10px] flex items-center justify-center flex-shrink-0 font-extrabold text-base text-white italic font-syne transition-all duration-200 hover:scale-[1.07] hover:-rotate-3"
-          style={{ background: "var(--orange)", boxShadow: "0 4px 14px rgba(241,90,34,0.35)" }}
-        >
+      <div className={`flex items-center ${collapsed ? "justify-center" : "justify-start"} px-[16px] py-5 min-h-[64px] flex-shrink-0`}>
+        <Link href="/" className={`flex items-center gap-2 ${collapsed ? "hidden" : "flex"}`} style={{ textDecoration: 'none' }}>
+          <div
+            className="w-9 h-9 rounded-[10px] flex items-center justify-center flex-shrink-0 font-extrabold text-base text-white italicfont-syne transition-all duration-200 hover:scale-[1.07] hover:-rotate-3"
+            style={{ background: "var(--orange)", boxShadow: "0 4px14px rgba(241,90,34,0.35)" }}
+          >
           e
-        </div>
-        <span
-          className={`font-syne text-xl font-extrabold tracking-tight whitespace-nowrap ${collapsed ? "hidden" : "block"}`}
-          style={{ color: "var(--text)" }}
-        >
-          <em className="not-italic" style={{ color: "var(--orange)" }}>e</em>mple
-        </span>
+          </div>
+          <span
+            className="font-syne text-xl font-extrabold tracking-tight whitespace-nowrap"
+            style={{ color: "var(--text)" }}
+          >
+            <em className="not-italic" style={{ color: "var(--orange)" }}>e</em>mple
+          </span>
+        </Link>
       </div>
+
+
+      {/* Collapsed */}
+     <button
+      onClick={() => setCollapsed(!collapsed)}
+      className="
+        absolute
+        top-[85px]
+        -right-3.5
+        w-7
+        h-7
+        z-[9999]
+        rounded-full
+        bg-[var(--surface)]
+        border border-[var(--border)]
+        text-[var(--muted2)]
+        hover:text-white
+        flex
+        items-center
+        justify-center
+        shadow-md
+        transition-all
+      "
+    >
+        {collapsed ? (
+         <ChevronRight size={16} strokeWidth={2.5} />
+         ) : (
+         <ChevronLeft size={16} strokeWidth={2.5} />
+        )}
+    </button>
+
 
       {/* Nav items */}
       <nav className="flex-1 px-[10px] py-1 overflow-y-auto overflow-x-hidden">
@@ -126,7 +168,10 @@ export default function Sidebar() {
           let isActive = pathname === item.href;
           if (item.label === "Resources" && pathname.startsWith("/resources")) isActive = true;
           if (item.label === "Jobs" && pathname.startsWith("/jobs")) isActive = true;
-          const isPremium = !["Resources", "Jobs", "Tech Shop", "Events", "Counselling"].includes(item.label);
+          if (item.label === "Tutorials" && pathname.startsWith("/user/tutorials")) isActive = true;
+          if (item.label === "Sessions" && pathname.startsWith("/user/sessions")) isActive = true;
+          if (item.label === "Transactions" && pathname.startsWith("/user/wallet/transactions")) isActive = true;
+          const isPremium = !["Resources", "Jobs", "Tech Shop", "Events", "Counselling", "Tutorials", "Transactions"].includes(item.label);
           return (
             <Link href={item.href} key={item.label} style={{ textDecoration: "none" }} onClick={(e) => handleItemClick(e, isPremium)}>
               <div
@@ -146,28 +191,7 @@ export default function Sidebar() {
         })}
       </nav>
 
-      {/* Bottom section */}
-      <div className="flex-shrink-0 px-[10px] py-2" style={{ borderTop: "1px solid var(--border)" }}>
-        {/* Collapse toggle */}
-        <button
-          onClick={() => setCollapsed(!collapsed)}
-          className={`${itemBase} w-full mt-[2px]`}
-          style={{ background: "transparent", color: "var(--muted2)", border: "none" }}
-          onMouseEnter={e => onHover(e, false, true)}
-          onMouseLeave={e => onHover(e, false, false)}
-        >
-          <div className={iconClass}>
-            <svg
-              width="13" height="13" viewBox="0 0 12 12" fill="none"
-              stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"
-              style={{ transform: collapsed ? "scaleX(-1)" : "scaleX(1)", transition: "transform 380ms cubic-bezier(0.4,0,0.2,1)" }}
-            >
-              <polyline points="8,2 4,6 8,10"/>
-            </svg>
-          </div>
-          <span className={`flex-1 ${collapsed ? "hidden" : "block"} text-left`}>Collapse</span>
-        </button>
-      </div>
+      {/* The bottom section with Collapse is removed as requested */}
 
       {showLoginModal && (
         <div style={{

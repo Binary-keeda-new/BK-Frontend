@@ -33,7 +33,7 @@ export default function VerifyEmailPage() {
         if (res.ok && data.success) {
           setStatus('success')
           setTimeout(() => {
-            router.replace('/auth/login')
+            router.replace('/user/dashboard')
           }, 2000)
         } else {
           setError(data.message || 'Verification failed. The link may have expired.')

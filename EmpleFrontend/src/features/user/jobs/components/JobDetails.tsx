@@ -422,7 +422,7 @@ export default function JobDetails({ job, onApply, onBack }: JobDetailsProps) {
               {(() => {
                 if (!job.description) return null;
                 const lines = job.description.split('\n');
-                const elements = [];
+                const elements: React.ReactNode[] = [];
                 let listType: 'ul' | 'ol' | null = null;
                 let items: string[] = [];
                 

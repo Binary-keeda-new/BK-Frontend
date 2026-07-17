@@ -134,6 +134,61 @@ export default function QuizQuestionForm({
   </div>
 </div>
 
+      <div className="mb-6">
+        <QuizEditFieldLabel color={t.labelColor}>Metadata</QuizEditFieldLabel>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {[
+            { label: 'Topic *', key: 'topic' },
+            { label: 'SubTopic', key: 'subTopic' },
+            { label: 'Exam', key: 'exam' },
+          ].map(({ label, key }) => (
+            <div key={key}>
+              <label
+                className="mb-1 block text-[11px] font-semibold"
+                style={{ color: t.labelColor }}
+              >
+                {label}
+              </label>
+              <input
+                type="text"
+                value={(question as any)[key] || ''}
+                onChange={(e) => updateQ(question.id, { [key]: e.target.value })}
+                className="qph w-full rounded-[10px] border px-3 py-2 outline-none transition-all focus:border-[var(--clr-accent)] focus:shadow-[0_0_0_3px_rgba(241,90,34,0.12)] text-sm"
+                style={{
+                  background: t.inputBg,
+                  borderColor: t.inputBorder,
+                  color: t.inputText,
+                }}
+              />
+            </div>
+          ))}
+
+          <div>
+            <label
+              className="mb-1 block text-[11px] font-semibold"
+              style={{ color: t.labelColor }}
+            >
+              Year
+            </label>
+            <input
+              type="number"
+              value={question.year || ''}
+              onChange={(e) =>
+                updateQ(question.id, {
+                  year: e.target.value ? Number(e.target.value) : null,
+                })
+              }
+              className="qph w-full rounded-[10px] border px-3 py-2 outline-none transition-all focus:border-[var(--clr-accent)] focus:shadow-[0_0_0_3px_rgba(241,90,34,0.12)] text-sm"
+              style={{
+                background: t.inputBg,
+                borderColor: t.inputBorder,
+                color: t.inputText,
+              }}
+            />
+          </div>
+        </div>
+      </div>
+
       {question.type !== "NAT" && (
         <div className="mb-6">
           <div className="mb-3 flex items-center justify-between">

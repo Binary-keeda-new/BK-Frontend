@@ -14,7 +14,13 @@ type BackendQuizQuestion = {
   negativeMarks: number;
   imageUrl?: string | null;
   solution?: string | null;
-solutionMedia?: string | null;
+  solutionMedia?: string | null;
+  category: string;
+  subcategory: string;
+  topic: string;
+  subTopic?: string;
+  exam?: string;
+  year?: number | null;
 };
 
 type BackendQuizResponse = {
@@ -61,7 +67,13 @@ export type ImportedQuestionInput = {
   negativeMarks?: number;
   imageUrl?: string | null;
   solution?: string | null;
-solutionMedia?: string | null;
+  solutionMedia?: string | null;
+  category?: string;
+  subcategory?: string;
+  topic?: string;
+  subTopic?: string;
+  exam?: string;
+  year?: number | null;
 };
 
 const mapBackendQuestionToEditor = (q: BackendQuizQuestion): Question => {
@@ -88,6 +100,14 @@ solutionMedia: q.solutionMedia || '',
     positiveMarks: q.positiveMarks ?? 4,
     negativeMarks: q.negativeMarks ?? 1,
     imageUrl: q.imageUrl || '',
+    solution: q.solution || '',
+    solutionMedia: q.solutionMedia || '',
+    category: q.category || '',
+    subcategory: q.subcategory || '',
+    topic: q.topic || '',
+    subTopic: q.subTopic || '',
+    exam: q.exam || '',
+    year: q.year ?? null,
     isPersisted: true,
   };
 };
@@ -108,6 +128,14 @@ const createImportedQuestion = (q: ImportedQuestionInput): Question => {
       positiveMarks: q.positiveMarks ?? 4,
       negativeMarks: q.negativeMarks ?? 1,
       imageUrl: q.imageUrl || '',
+      solution: q.solution || '',
+      solutionMedia: q.solutionMedia || '',
+      category: q.category || '',
+      subcategory: q.subcategory || '',
+      topic: q.topic || '',
+      subTopic: q.subTopic || '',
+      exam: q.exam || '',
+      year: q.year ?? null,
       isPersisted: false,
     };
   }
@@ -140,6 +168,14 @@ const createImportedQuestion = (q: ImportedQuestionInput): Question => {
     positiveMarks: q.positiveMarks ?? 4,
     negativeMarks: q.negativeMarks ?? 1,
     imageUrl: q.imageUrl || '',
+    solution: q.solution || '',
+    solutionMedia: q.solutionMedia || '',
+    category: q.category || '',
+    subcategory: q.subcategory || '',
+    topic: q.topic || '',
+    subTopic: q.subTopic || '',
+    exam: q.exam || '',
+    year: q.year ?? null,
     isPersisted: false,
   };
 };
@@ -156,7 +192,13 @@ const mapEditorQuestionToPayload = (quizId: string, q: Question) => {
       negativeMarks: Number(q.negativeMarks || 0),
       imageUrl: q.imageUrl?.trim() || null,
       solution: q.solution?.trim() || null,
-solutionMedia: q.solutionMedia?.trim() || null,
+      solutionMedia: q.solutionMedia?.trim() || null,
+      category: q.category?.trim() || '',
+      subcategory: q.subcategory?.trim() || '',
+      topic: q.topic?.trim() || '',
+      subTopic: q.subTopic?.trim() || '',
+      exam: q.exam?.trim() || '',
+      year: q.year ?? null,
     };
   }
 
@@ -177,7 +219,13 @@ solutionMedia: q.solutionMedia?.trim() || null,
     negativeMarks: Number(q.negativeMarks || 0),
     imageUrl: q.imageUrl?.trim() || null,
     solution: q.solution?.trim() || null,
-solutionMedia: q.solutionMedia?.trim() || null,
+    solutionMedia: q.solutionMedia?.trim() || null,
+    category: q.category?.trim() || '',
+    subcategory: q.subcategory?.trim() || '',
+    topic: q.topic?.trim() || '',
+    subTopic: q.subTopic?.trim() || '',
+    exam: q.exam?.trim() || '',
+    year: q.year ?? null,
   };
 };
 
@@ -200,6 +248,10 @@ export function useQuizEditor(quizId: string) {
 
   const isQuestionValidForSave = useCallback((q: Question) => {
     if (!q.question?.trim()) return false;
+    
+    if (!q.category?.trim()) return false;
+    if (!q.subcategory?.trim()) return false;
+    if (!q.topic?.trim()) return false;
 
     if (q.type === 'NAT') {
       return !!q.natAnswer?.trim();

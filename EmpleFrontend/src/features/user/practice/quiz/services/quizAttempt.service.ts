@@ -77,8 +77,8 @@ export async function saveQuizAnswer(
 export async function submitQuizAttempt(
   attemptId: string,
   payload: SubmitAttemptPayload
-): Promise<QuizAttemptResponse> {
-  return request<QuizAttemptResponse>(
+): Promise<QuizAttemptResultResponse> {
+  return request<QuizAttemptResultResponse>(
     `/api/v1/quiz-attempts/${attemptId}/submit`,
     {
       method: "POST",
