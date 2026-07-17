@@ -72,6 +72,12 @@ export default function CallbackPage() {
         const meData = await meRes.json()
         const role = meData?.user?.role
 
+        // Set default 3 day session for OAuth users
+        const expiry = Date.now() + 3 * 24 * 60 * 60 * 1000
+        localStorage.setItem('token', token)
+        localStorage.setItem('role', role || 'user')
+        localStorage.setItem('sessionExpiry', expiry.toString())
+
         if (role === 'admin') {
           window.location.replace('/dashboard')
         } else {

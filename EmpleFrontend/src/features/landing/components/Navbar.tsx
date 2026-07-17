@@ -16,6 +16,7 @@ export default function Navbar() {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [role, setRole] = useState('user')
 
   const hamburgerRef = useRef<HTMLButtonElement>(null)
   const drawerRef = useRef<HTMLDivElement>(null)
@@ -29,11 +30,13 @@ export default function Navbar() {
   useEffect(() => {
     const token = localStorage.getItem('token')
     const expiry = localStorage.getItem('sessionExpiry')
+    const savedRole = localStorage.getItem('role')
 
     if (token) {
       // If no expiry set, consider logged in (existing sessions)
       if (!expiry || Date.now() < parseInt(expiry)) {
         setIsLoggedIn(true)
+        setRole(savedRole || 'user')
       } else {
         // Session expired
         setIsLoggedIn(false)
@@ -112,8 +115,7 @@ export default function Navbar() {
             {/* ACTIONS */}
             <div className="nav-actions">
               {isLoggedIn ? (
-                <Link className="btn-cta" href="/user/dashboard">Dashboard</Link>
-              ) : (
+                <Link className="btn-cta" href={role === 'admin' ? '/dashboard' : '/user/dashboard'}>Dashboard</Link>) : (
                 <>
                   <Link className="btn-outline" href="/auth/login">Login</Link>
                   <Link className="btn-cta" href="/auth/signup">Sign Up</Link>
@@ -160,7 +162,7 @@ export default function Navbar() {
 
         <div className="drawer-actions">
           {isLoggedIn ? (
-            <Link className="btn-cta" href="/user/dashboard" onClick={closeDrawer}>
+            <Link className="btn-cta" href={role === 'admin' ? '/dashboard' : '/user/dashboard'} onClick={closeDrawer}>
               Dashboard
             </Link>
           ) : (
