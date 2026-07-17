@@ -95,7 +95,7 @@ export default function ATSHomePage() {
         <p style={{ fontSize: '14px', color: 'var(--muted)', lineHeight: 1.6 }}>
           {mode === 'standard' 
             ? 'Fast keyword matching with skill scores, experience alignment, and detailed skill breakdown.' 
-            : 'Deep Gemini-powered evaluation with writing quality, semantic matching, and actionable recommendations.'}
+            : 'Deep AI-powered evaluation with writing quality, semantic matching, and actionable recommendations.'}
         </p>
       </div>
 
