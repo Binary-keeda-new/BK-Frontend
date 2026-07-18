@@ -218,7 +218,6 @@ const SectionCard: React.FC<SectionCardProps> = ({
           )}
 
           {/* Content */}
-          <div className="roadmap-content" style={{ marginBottom: 24 }} dangerouslySetInnerHTML={{ __html: section.content }} />
           <div
             className="roadmap-content"
             style={{ marginBottom: 24 }}
