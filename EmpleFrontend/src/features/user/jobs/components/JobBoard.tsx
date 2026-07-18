@@ -1,5 +1,7 @@
 'use client';
 
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+
 import React, { useState, useEffect, useMemo } from 'react';
 import { Job, FilterType } from '../types/jobs.types';
 import { fetchJobs} from '../services/jobs.service';
@@ -365,16 +367,53 @@ export default function JobBoard({ initialJobId }: { initialJobId?: string }) {
     }
   };
 
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
   // Existing type filter
-  const [filter, setFilter]         = useState<FilterType>('all');
+  const [filter, setFilter]         = useState<FilterType>(() => (searchParams?.get('filter') as FilterType) || 'all');
   // New dropdown filters
-  const [locFilter, setLocFilter]   = useState('all');
-  const [typeFilter, setTypeFilter] = useState('all');
-  const [sort, setSort]             = useState<'newest' | 'oldest'>('newest');
+  const [locFilter, setLocFilter]   = useState(() => searchParams?.get('loc') || 'all');
+  const [typeFilter, setTypeFilter] = useState(() => searchParams?.get('type') || 'all');
+  const [sort, setSort]             = useState<'newest' | 'oldest'>(() => (searchParams?.get('sort') as 'newest' | 'oldest') || 'newest');
+  
+  // Government updates filter
+  const [govFilters, setGovFilters] = useState<string[]>(() => {
+    const gov = searchParams?.get('gov');
+    return gov ? gov.split(',') : [];
+  });
+
+  // URL Synchronization
+  useEffect(() => {
+    if (!pathname || pathname !== '/jobs') return;
+    const params = new URLSearchParams();
+    if (filter !== 'all') params.set('filter', filter);
+    if (locFilter !== 'all') params.set('loc', locFilter);
+    if (typeFilter !== 'all') params.set('type', typeFilter);
+    if (sort !== 'newest') params.set('sort', sort);
+    if (govFilters.length > 0) params.set('gov', govFilters.join(','));
+    
+    const query = params.toString();
+    const newUrl = query ? `${pathname}?${query}` : pathname;
+    
+    // Prevent history clutter by only replacing if actually changed
+    if (`${pathname}?${searchParams.toString()}` !== newUrl && `${pathname}?` !== newUrl) {
+      router.replace(newUrl, { scroll: false });
+    }
+  }, [filter, locFilter, typeFilter, sort, govFilters, pathname, router, searchParams]);
+
   // Filters panel toggle
   const [filtersOpen, setFiltersOpen] = useState(false);
   // View mode: jobs board or interview experiences
   const [viewMode, setViewMode] = useState<'jobs' | 'interviews'>('jobs');
+
+  const handleFilterChange = (f: FilterType) => {
+    setFilter(f);
+    if (f !== 'government') {
+      setGovFilters([]);
+    }
+  };
 
   
     useEffect(() => {
@@ -421,12 +460,30 @@ export default function JobBoard({ initialJobId }: { initialJobId?: string }) {
     if (typeFilter !== 'all') list = list.filter(j =>
       ((j as any).typeLabel ?? (j.type === 'government' ? 'Govt / PSU' : 'Full-time')) === typeFilter
     );
+    
+    if (filter === 'government' && govFilters.length > 0) {
+      list = list.filter(j => {
+        if (j.type !== 'government') return false;
+        
+        return govFilters.some(gFilter => {
+          const links = j.links || [];
+          if (gFilter === 'notification') return links.some(l => l.label.toLowerCase().includes('notification'));
+          if (gFilter === 'apply') return Boolean(j.applyLink) || links.some(l => l.label.toLowerCase().includes('apply'));
+          if (gFilter === 'admit_card') return links.some(l => l.label.toLowerCase().includes('admit card'));
+          if (gFilter === 'answer_key') return links.some(l => l.label.toLowerCase().includes('answer key'));
+          if (gFilter === 'result') return links.some(l => l.label.toLowerCase().includes('result'));
+          if (gFilter === 'merit_list') return links.some(l => l.label.toLowerCase().includes('merit list'));
+          return false;
+        });
+      });
+    }
+
     list.sort((a, b) => {
       const diff = postedAtToMs(b.postedAt) - postedAtToMs(a.postedAt);
       return sort === 'newest' ? diff : -diff;
     });
     return list;
-  }, [jobs, filter, locFilter, typeFilter, sort]);
+  }, [jobs, filter, locFilter, typeFilter, sort, govFilters]);
 
   const privateJobs = useMemo(() => filtered.filter(j => j.type === 'private'), [filtered]);
   const govJobs     = useMemo(() => filtered.filter(j => j.type === 'government'), [filtered]);
@@ -481,7 +538,7 @@ export default function JobBoard({ initialJobId }: { initialJobId?: string }) {
           {(['all', 'private', 'government'] as FilterType[]).map(f => (
             <button
               key={f}
-              onClick={() => setFilter(f)}
+              onClick={() => handleFilterChange(f)}
               style={{
                 padding: '7px 14px',
                 borderRadius: 8,
@@ -556,10 +613,9 @@ export default function JobBoard({ initialJobId }: { initialJobId?: string }) {
         <div
           style={{
             display: 'flex',
-            gap: 10,
-            alignItems: 'center',
-            flexWrap: 'wrap',
-            padding: '12px 16px',
+            flexDirection: 'column',
+            gap: 16,
+            padding: '16px',
             background: 'var(--surface)',
             border: '1px solid var(--border)',
             borderTop: 'none',
@@ -567,21 +623,114 @@ export default function JobBoard({ initialJobId }: { initialJobId?: string }) {
             marginBottom: 28,
           }}
         >
-          <select value={locFilter} onChange={e => setLocFilter(e.target.value)} style={dropdownStyle}>
-            <option value="all">📍 Location</option>
-            {locationOptions.map(l => <option key={l} value={l}>{l}</option>)}
-          </select>
-          <select value={typeFilter} onChange={e => setTypeFilter(e.target.value)} style={dropdownStyle}>
-            <option value="all">💼 Type</option>
-            {typeOptions.map(t => <option key={t} value={t}>{t}</option>)}
-          </select>
-          <select value={sort} onChange={e => setSort(e.target.value as 'newest' | 'oldest')} style={dropdownStyle}>
-            <option value="newest">🕐 Newest</option>
-            <option value="oldest">🕐 Oldest</option>
-          </select>
-          <span style={{ marginLeft: 'auto', fontSize: 13, color: 'var(--muted)', fontWeight: 500 }}>
-            {filtered.length} listings
-          </span>
+          <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
+            <select value={locFilter} onChange={e => setLocFilter(e.target.value)} style={dropdownStyle}>
+              <option value="all">📍 Location</option>
+              {locationOptions.map(l => <option key={l} value={l}>{l}</option>)}
+            </select>
+            <select value={typeFilter} onChange={e => setTypeFilter(e.target.value)} style={dropdownStyle}>
+              <option value="all">💼 Type</option>
+              {typeOptions.map(t => <option key={t} value={t}>{t}</option>)}
+            </select>
+            <select value={sort} onChange={e => setSort(e.target.value as 'newest' | 'oldest')} style={dropdownStyle}>
+              <option value="newest">🕐 Newest</option>
+              <option value="oldest">🕐 Oldest</option>
+            </select>
+            
+            <div style={{ marginLeft: 'auto', display: 'flex', gap: 12, alignItems: 'center' }}>
+              {(locFilter !== 'all' || typeFilter !== 'all' || sort !== 'newest' || filter !== 'all' || govFilters.length > 0) && (
+                <button 
+                  onClick={() => {
+                    setFilter('all');
+                    setLocFilter('all');
+                    setTypeFilter('all');
+                    setSort('newest');
+                    setGovFilters([]);
+                  }}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: 'var(--orange)',
+                    fontSize: 13,
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    padding: 0
+                  }}
+                >
+                  Clear Filters
+                </button>
+              )}
+              <span style={{ fontSize: 13, color: 'var(--muted)', fontWeight: 500 }}>
+                {filtered.length} listings
+              </span>
+            </div>
+          </div>
+
+          {(filter === 'government') && (
+            <div style={{ 
+              marginTop: 4, 
+              paddingTop: 16, 
+              borderTop: '1px solid var(--border)',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 12
+            }}>
+              <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: 'var(--text)', letterSpacing: '0.02em', textTransform: 'uppercase' }}>
+                Government Updates
+              </p>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
+                {[
+                  { id: 'notification', label: 'Notification Released' },
+                  { id: 'apply', label: 'Apply Online' },
+                  { id: 'admit_card', label: 'Admit Card Released' },
+                  { id: 'answer_key', label: 'Answer Key Released' },
+                  { id: 'result', label: 'Result Declared' },
+                  { id: 'merit_list', label: 'Merit List Released' },
+                ].map(opt => {
+                  const active = govFilters.includes(opt.id);
+                  return (
+                    <button
+                      key={opt.id}
+                      onClick={() => setGovFilters(prev => active ? prev.filter(f => f !== opt.id) : [...prev, opt.id])}
+                      style={{
+                        padding: '8px 14px',
+                        borderRadius: 20,
+                        border: `1px solid ${active ? 'var(--orange)' : 'var(--border)'}`,
+                        background: active ? 'var(--orange-dim)' : 'var(--surface2)',
+                        color: active ? 'var(--orange)' : 'var(--muted)',
+                        fontSize: 12,
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                        transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 6
+                      }}
+                      onMouseEnter={e => {
+                        if (!active) {
+                          (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(241,90,34,0.4)';
+                          (e.currentTarget as HTMLButtonElement).style.color = 'var(--text)';
+                        }
+                      }}
+                      onMouseLeave={e => {
+                        if (!active) {
+                          (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--border)';
+                          (e.currentTarget as HTMLButtonElement).style.color = 'var(--muted)';
+                        }
+                      }}
+                    >
+                      {active && (
+                        <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                          <path d="M2 5l2 2 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      )}
+                      {opt.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       )}
 
