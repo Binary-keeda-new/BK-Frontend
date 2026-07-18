@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import JobBoard from '@/features/user/jobs/components/JobBoard';
+import { Suspense } from 'react';
 
 export const metadata: Metadata = {
   title: 'Jobs | Emple',
@@ -10,5 +11,9 @@ export const metadata: Metadata = {
 };
 
 export default function JobsPage() {
-  return <JobBoard />;
+  return (
+    <Suspense fallback={<div style={{ padding: '60px', textAlign: 'center' }}>Loading jobs...</div>}>
+      <JobBoard />
+    </Suspense>
+  );
 }
