@@ -698,13 +698,6 @@ export const daysOfCodeRoadmap = {
       weeks: 16, 
       totalPoints: 1200, 
       sections: sections 
-    },
-    '4 months': { 
-      label: '4 Months (120 Days)', 
-      tagline: '120 Days of consistency and coding practice', 
-      weeks: 16, 
-      totalPoints: 1200, 
-      sections: sections 
     }
   }
 };

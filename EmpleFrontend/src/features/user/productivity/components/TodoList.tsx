@@ -3,7 +3,8 @@
 import { RotateCcw } from "lucide-react";
 import React, { Dispatch, SetStateAction , useState, useEffect, useRef,} from "react";
 import { Trash2 } from "lucide-react";
-
+import { useWallet } from "@/providers/WalletProvider";
+import { useNotification } from "@/providers/NotificationProvider";
 type Task = {
   id: number;
   text: string;
@@ -30,6 +31,9 @@ export default function TodoList({
   tasks,
   setTasks,
 }: TodoListProps) {
+  const { config, refreshWallet } = useWallet();
+  const { notifyReward } = useNotification();
+  const todoReward = config?.TODO?.COMPLETION_REWARD || 5;
 
 
 const [deletedTasks, setDeletedTasks] = useState<Task[]>([]);
@@ -178,7 +182,7 @@ useEffect(() => {
   >
 
   {/* Header */}
-    <div className="flex items-center justify-between mb-5">
+    <div className="flex items-center justify-between mb-2">
       <h2 className="text-white text-xl font-bold">
         Task List
       </h2>
@@ -201,6 +205,12 @@ useEffect(() => {
         >
         <RotateCcw size={22} />
         </button>
+    </div>
+    
+    <div className="mb-4">
+      <div className="inline-flex items-center gap-1.5 px-2 py-1 bg-green-500/10 border border-green-500/20 text-green-400 rounded-md text-xs font-medium">
+        <span>🪙</span> Earn {todoReward} Coins on completing 3 daily todos
+      </div>
     </div>
 
     {/* Add Task Button */}
@@ -383,8 +393,8 @@ useEffect(() => {
         d.getDate()
         ).padStart(2, "0")}`;
 
-        updated[index].done =
-        !updated[index].done;
+        const isNowDone = !updated[index].done;
+        updated[index].done = isNowDone;
 
         updated[index].history = {
         ...updated[index].history,
@@ -392,6 +402,18 @@ useEffect(() => {
         };
 
         setTasks(updated);
+        
+        if (isNowDone) {
+          const completedCount = updated.filter(t => t.done && t.text.trim() !== "").length;
+          if (completedCount >= 3) {
+            const rewardKey = `todo_reward_${today}`;
+            if (!localStorage.getItem(rewardKey)) {
+              notifyReward("Todo Milestone", "3 tasks completed!", todoReward);
+              refreshWallet();
+              localStorage.setItem(rewardKey, 'true');
+            }
+          }
+        }
         }}
         className="
           w-5

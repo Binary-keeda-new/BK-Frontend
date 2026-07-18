@@ -104,4 +104,17 @@ export const chapter24_MCQ = [
 
 export const chapter24_DEBUG = undefined;
 export const chapter24_DRAG_DROP = undefined;
-export const chapter24_COMPLETE_EXERCISES = [];
+export const chapter24_COMPLETE_EXERCISES = [
+  {
+    template: `import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+public class Main {
+    public static void main(String[] args) {
+        ExecutorService pool = Executors.___(5);
+    }
+}`,
+    blanks: [
+      "newFixedThreadPool"
+    ]
+  }
+];

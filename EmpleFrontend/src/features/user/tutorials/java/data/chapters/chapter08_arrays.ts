@@ -180,4 +180,16 @@ export const chapter08_MCQ = [
   }
 ];
 
-export const chapter08_COMPLETE_EXERCISES = [];
+export const chapter08_COMPLETE_EXERCISES = [
+  {
+    template: `public class Main {
+    public static void main(String[] args) {
+        int[] arr = ___ int[5];
+        arr[0] = 10;
+    }
+}`,
+    blanks: [
+      "new"
+    ]
+  }
+];

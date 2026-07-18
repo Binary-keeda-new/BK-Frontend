@@ -67,15 +67,14 @@ export default function QuizzesContent({
   const [categoryFilter, setCategoryFilter] = useState('');
 
   const [toasts, setToasts] = useState<
-    { id: number; message: string; type: 'success' | 'error' }[]
+    { id: string; message: string; type: 'success' | 'error' }[]
   >([]);
-  const toastId = useRef(0);
 
   const addToast = (
     message: string,
     type: 'success' | 'error' = 'success'
   ) => {
-    const id = ++toastId.current;
+    const id = crypto.randomUUID();
     setToasts((prev) => [...prev, { id, message, type }]);
 
     setTimeout(() => {

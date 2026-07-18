@@ -479,23 +479,13 @@ const rawDays = [
         "url": "https://www.youtube.com/embed/videoseries?list=PLDzeHZWIZsTpukecmA2p5rhHM14bl2dHU"
       },
       {
-        "type": "text",
-        "title": "DBMS Lec: DBMS",
-        "url": null
-      },
-      {
         "type": "video",
         "title": "MCQ Practice",
         "url": "https://www.indiabix.com/online-test/aptitude-test/"
       },
       {
-        "type": "text",
-        "title": "DBMS Interview Questions:",
-        "url": null
-      },
-      {
         "type": "video",
-        "title": "Video Link",
+        "title": "DBMS Interview Questions",
         "url": "https://www.geeksforgeeks.org/commonly-asked-dbms-interview-questions/"
       }
     ]
@@ -514,6 +504,16 @@ const rawDays = [
         "type": "iframe",
         "title": "DBMS Playlist",
         "url": "https://www.youtube.com/embed/videoseries?list=PLDzeHZWIZsTpukecmA2p5rhHM14bl2dHU"
+      },
+      {
+        "type": "video",
+        "title": "MCQ Practice",
+        "url": "https://www.indiabix.com/online-test/aptitude-test/"
+      },
+      {
+        "type": "video",
+        "title": "DBMS Interview Questions",
+        "url": "https://www.geeksforgeeks.org/commonly-asked-dbms-interview-questions/"
       }
     ]
   },
@@ -531,6 +531,16 @@ const rawDays = [
         "type": "iframe",
         "title": "DBMS Playlist",
         "url": "https://www.youtube.com/embed/videoseries?list=PLDzeHZWIZsTpukecmA2p5rhHM14bl2dHU"
+      },
+      {
+        "type": "video",
+        "title": "MCQ Practice",
+        "url": "https://www.indiabix.com/online-test/aptitude-test/"
+      },
+      {
+        "type": "video",
+        "title": "DBMS Interview Questions",
+        "url": "https://www.geeksforgeeks.org/commonly-asked-dbms-interview-questions/"
       }
     ]
   },
@@ -548,6 +558,16 @@ const rawDays = [
         "type": "iframe",
         "title": "DBMS Playlist",
         "url": "https://www.youtube.com/embed/videoseries?list=PLDzeHZWIZsTpukecmA2p5rhHM14bl2dHU"
+      },
+      {
+        "type": "video",
+        "title": "MCQ Practice",
+        "url": "https://www.indiabix.com/online-test/aptitude-test/"
+      },
+      {
+        "type": "video",
+        "title": "DBMS Interview Questions",
+        "url": "https://www.geeksforgeeks.org/commonly-asked-dbms-interview-questions/"
       }
     ]
   },
@@ -565,6 +585,16 @@ const rawDays = [
         "type": "iframe",
         "title": "DBMS Playlist",
         "url": "https://www.youtube.com/embed/videoseries?list=PLDzeHZWIZsTpukecmA2p5rhHM14bl2dHU"
+      },
+      {
+        "type": "video",
+        "title": "MCQ Practice",
+        "url": "https://www.indiabix.com/online-test/aptitude-test/"
+      },
+      {
+        "type": "video",
+        "title": "DBMS Interview Questions",
+        "url": "https://www.geeksforgeeks.org/commonly-asked-dbms-interview-questions/"
       }
     ]
   },
@@ -582,6 +612,16 @@ const rawDays = [
         "type": "iframe",
         "title": "DBMS Playlist",
         "url": "https://www.youtube.com/embed/videoseries?list=PLDzeHZWIZsTpukecmA2p5rhHM14bl2dHU"
+      },
+      {
+        "type": "video",
+        "title": "MCQ Practice",
+        "url": "https://www.indiabix.com/online-test/aptitude-test/"
+      },
+      {
+        "type": "video",
+        "title": "DBMS Interview Questions",
+        "url": "https://www.geeksforgeeks.org/commonly-asked-dbms-interview-questions/"
       }
     ]
   },
@@ -599,6 +639,16 @@ const rawDays = [
         "type": "iframe",
         "title": "DBMS Playlist",
         "url": "https://www.youtube.com/embed/videoseries?list=PLDzeHZWIZsTpukecmA2p5rhHM14bl2dHU"
+      },
+      {
+        "type": "video",
+        "title": "MCQ Practice",
+        "url": "https://www.indiabix.com/online-test/aptitude-test/"
+      },
+      {
+        "type": "video",
+        "title": "DBMS Interview Questions",
+        "url": "https://www.geeksforgeeks.org/commonly-asked-dbms-interview-questions/"
       }
     ]
   },
@@ -616,6 +666,16 @@ const rawDays = [
         "type": "iframe",
         "title": "DBMS Playlist",
         "url": "https://www.youtube.com/embed/videoseries?list=PLDzeHZWIZsTpukecmA2p5rhHM14bl2dHU"
+      },
+      {
+        "type": "video",
+        "title": "MCQ Practice",
+        "url": "https://www.indiabix.com/online-test/aptitude-test/"
+      },
+      {
+        "type": "video",
+        "title": "DBMS Interview Questions",
+        "url": "https://www.geeksforgeeks.org/commonly-asked-dbms-interview-questions/"
       }
     ]
   },
@@ -633,6 +693,16 @@ const rawDays = [
         "type": "iframe",
         "title": "DBMS Playlist",
         "url": "https://www.youtube.com/embed/videoseries?list=PLDzeHZWIZsTpukecmA2p5rhHM14bl2dHU"
+      },
+      {
+        "type": "video",
+        "title": "MCQ Practice",
+        "url": "https://www.indiabix.com/online-test/aptitude-test/"
+      },
+      {
+        "type": "video",
+        "title": "DBMS Interview Questions",
+        "url": "https://www.geeksforgeeks.org/commonly-asked-dbms-interview-questions/"
       }
     ]
   },
@@ -650,6 +720,16 @@ const rawDays = [
         "type": "iframe",
         "title": "DBMS Playlist",
         "url": "https://www.youtube.com/embed/videoseries?list=PLDzeHZWIZsTpukecmA2p5rhHM14bl2dHU"
+      },
+      {
+        "type": "video",
+        "title": "MCQ Practice",
+        "url": "https://www.indiabix.com/online-test/aptitude-test/"
+      },
+      {
+        "type": "video",
+        "title": "DBMS Interview Questions",
+        "url": "https://www.geeksforgeeks.org/commonly-asked-dbms-interview-questions/"
       }
     ]
   },
@@ -667,6 +747,16 @@ const rawDays = [
         "type": "iframe",
         "title": "DBMS Playlist",
         "url": "https://www.youtube.com/embed/videoseries?list=PLDzeHZWIZsTpukecmA2p5rhHM14bl2dHU"
+      },
+      {
+        "type": "video",
+        "title": "MCQ Practice",
+        "url": "https://www.indiabix.com/online-test/aptitude-test/"
+      },
+      {
+        "type": "video",
+        "title": "DBMS Interview Questions",
+        "url": "https://www.geeksforgeeks.org/commonly-asked-dbms-interview-questions/"
       }
     ]
   },
@@ -684,6 +774,16 @@ const rawDays = [
         "type": "iframe",
         "title": "DBMS Playlist",
         "url": "https://www.youtube.com/embed/videoseries?list=PLDzeHZWIZsTpukecmA2p5rhHM14bl2dHU"
+      },
+      {
+        "type": "video",
+        "title": "MCQ Practice",
+        "url": "https://www.indiabix.com/online-test/aptitude-test/"
+      },
+      {
+        "type": "video",
+        "title": "DBMS Interview Questions",
+        "url": "https://www.geeksforgeeks.org/commonly-asked-dbms-interview-questions/"
       }
     ]
   },
@@ -701,6 +801,16 @@ const rawDays = [
         "type": "iframe",
         "title": "DBMS Playlist",
         "url": "https://www.youtube.com/embed/videoseries?list=PLDzeHZWIZsTpukecmA2p5rhHM14bl2dHU"
+      },
+      {
+        "type": "video",
+        "title": "MCQ Practice",
+        "url": "https://www.indiabix.com/online-test/aptitude-test/"
+      },
+      {
+        "type": "video",
+        "title": "DBMS Interview Questions",
+        "url": "https://www.geeksforgeeks.org/commonly-asked-dbms-interview-questions/"
       }
     ]
   },
@@ -718,6 +828,16 @@ const rawDays = [
         "type": "iframe",
         "title": "DBMS Playlist",
         "url": "https://www.youtube.com/embed/videoseries?list=PLDzeHZWIZsTpukecmA2p5rhHM14bl2dHU"
+      },
+      {
+        "type": "video",
+        "title": "MCQ Practice",
+        "url": "https://www.indiabix.com/online-test/aptitude-test/"
+      },
+      {
+        "type": "video",
+        "title": "DBMS Interview Questions",
+        "url": "https://www.geeksforgeeks.org/commonly-asked-dbms-interview-questions/"
       }
     ]
   },
@@ -732,9 +852,9 @@ const rawDays = [
     ],
     "resources": [
       {
-        "type": "text",
+        "type": "iframe",
         "title": "OS Lec: OS",
-        "url": null
+        "url": "https://www.youtube.com/embed/xw_OuOhjauw"
       },
       {
         "type": "video",
@@ -742,13 +862,8 @@ const rawDays = [
         "url": "https://www.indiabix.com/online-test/aptitude-test/"
       },
       {
-        "type": "text",
-        "title": "OS Interview Questions:",
-        "url": null
-      },
-      {
         "type": "video",
-        "title": "Video Link",
+        "title": "OS Interview Questions",
         "url": "https://www.geeksforgeeks.org/operating-systems-interview-questions/"
       }
     ]
@@ -762,7 +877,23 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "OS Lec: OS",
+        "url": "https://www.youtube.com/embed/xw_OuOhjauw"
+      },
+      {
+        "type": "video",
+        "title": "MCQ Practice",
+        "url": "https://www.indiabix.com/online-test/aptitude-test/"
+      },
+      {
+        "type": "video",
+        "title": "OS Interview Questions",
+        "url": "https://www.geeksforgeeks.org/operating-systems-interview-questions/"
+      }
+    ]
   },
   {
     "day": 44,
@@ -773,7 +904,23 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "OS Lec: OS",
+        "url": "https://www.youtube.com/embed/xw_OuOhjauw"
+      },
+      {
+        "type": "video",
+        "title": "MCQ Practice",
+        "url": "https://www.indiabix.com/online-test/aptitude-test/"
+      },
+      {
+        "type": "video",
+        "title": "OS Interview Questions",
+        "url": "https://www.geeksforgeeks.org/operating-systems-interview-questions/"
+      }
+    ]
   },
   {
     "day": 45,
@@ -784,7 +931,23 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "OS Lec: OS",
+        "url": "https://www.youtube.com/embed/xw_OuOhjauw"
+      },
+      {
+        "type": "video",
+        "title": "MCQ Practice",
+        "url": "https://www.indiabix.com/online-test/aptitude-test/"
+      },
+      {
+        "type": "video",
+        "title": "OS Interview Questions",
+        "url": "https://www.geeksforgeeks.org/operating-systems-interview-questions/"
+      }
+    ]
   },
   {
     "day": 46,
@@ -795,7 +958,23 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "OS Lec: OS",
+        "url": "https://www.youtube.com/embed/xw_OuOhjauw"
+      },
+      {
+        "type": "video",
+        "title": "MCQ Practice",
+        "url": "https://www.indiabix.com/online-test/aptitude-test/"
+      },
+      {
+        "type": "video",
+        "title": "OS Interview Questions",
+        "url": "https://www.geeksforgeeks.org/operating-systems-interview-questions/"
+      }
+    ]
   },
   {
     "day": 47,
@@ -806,7 +985,23 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "OS Lec: OS",
+        "url": "https://www.youtube.com/embed/xw_OuOhjauw"
+      },
+      {
+        "type": "video",
+        "title": "MCQ Practice",
+        "url": "https://www.indiabix.com/online-test/aptitude-test/"
+      },
+      {
+        "type": "video",
+        "title": "OS Interview Questions",
+        "url": "https://www.geeksforgeeks.org/operating-systems-interview-questions/"
+      }
+    ]
   },
   {
     "day": 48,
@@ -817,7 +1012,23 @@ const rawDays = [
         "topic": "Aptitude Practice"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "OS Lec: OS",
+        "url": "https://www.youtube.com/embed/xw_OuOhjauw"
+      },
+      {
+        "type": "video",
+        "title": "MCQ Practice",
+        "url": "https://www.indiabix.com/online-test/aptitude-test/"
+      },
+      {
+        "type": "video",
+        "title": "OS Interview Questions",
+        "url": "https://www.geeksforgeeks.org/operating-systems-interview-questions/"
+      }
+    ]
   },
   {
     "day": 49,
@@ -830,9 +1041,9 @@ const rawDays = [
     ],
     "resources": [
       {
-        "type": "text",
-        "title": "CN Lec: CN",
-        "url": null
+        "type": "iframe",
+        "title": "CN Lec",
+        "url": "https://www.youtube.com/embed/q3Z3Qa1UNBA"
       },
       {
         "type": "video",
@@ -840,13 +1051,8 @@ const rawDays = [
         "url": "https://www.indiabix.com/online-test/aptitude-test/"
       },
       {
-        "type": "text",
-        "title": "CN Interview Questions:",
-        "url": null
-      },
-      {
         "type": "video",
-        "title": "Video Link",
+        "title": "CN Interview Questions",
         "url": "https://www.interviewbit.com/networking-interview-questions/"
       }
     ]
@@ -860,7 +1066,23 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "CN Lec",
+        "url": "https://www.youtube.com/embed/q3Z3Qa1UNBA"
+      },
+      {
+        "type": "video",
+        "title": "MCQ Practice",
+        "url": "https://www.indiabix.com/online-test/aptitude-test/"
+      },
+      {
+        "type": "video",
+        "title": "CN Interview Questions",
+        "url": "https://www.interviewbit.com/networking-interview-questions/"
+      }
+    ]
   },
   {
     "day": 51,
@@ -871,7 +1093,23 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "CN Lec",
+        "url": "https://www.youtube.com/embed/q3Z3Qa1UNBA"
+      },
+      {
+        "type": "video",
+        "title": "MCQ Practice",
+        "url": "https://www.indiabix.com/online-test/aptitude-test/"
+      },
+      {
+        "type": "video",
+        "title": "CN Interview Questions",
+        "url": "https://www.interviewbit.com/networking-interview-questions/"
+      }
+    ]
   },
   {
     "day": 52,
@@ -882,7 +1120,23 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "CN Lec",
+        "url": "https://www.youtube.com/embed/q3Z3Qa1UNBA"
+      },
+      {
+        "type": "video",
+        "title": "MCQ Practice",
+        "url": "https://www.indiabix.com/online-test/aptitude-test/"
+      },
+      {
+        "type": "video",
+        "title": "CN Interview Questions",
+        "url": "https://www.interviewbit.com/networking-interview-questions/"
+      }
+    ]
   },
   {
     "day": 53,
@@ -893,7 +1147,23 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "CN Lec",
+        "url": "https://www.youtube.com/embed/q3Z3Qa1UNBA"
+      },
+      {
+        "type": "video",
+        "title": "MCQ Practice",
+        "url": "https://www.indiabix.com/online-test/aptitude-test/"
+      },
+      {
+        "type": "video",
+        "title": "CN Interview Questions",
+        "url": "https://www.interviewbit.com/networking-interview-questions/"
+      }
+    ]
   },
   {
     "day": 54,
@@ -904,7 +1174,23 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "CN Lec",
+        "url": "https://www.youtube.com/embed/q3Z3Qa1UNBA"
+      },
+      {
+        "type": "video",
+        "title": "MCQ Practice",
+        "url": "https://www.indiabix.com/online-test/aptitude-test/"
+      },
+      {
+        "type": "video",
+        "title": "CN Interview Questions",
+        "url": "https://www.interviewbit.com/networking-interview-questions/"
+      }
+    ]
   },
   {
     "day": 55,
@@ -915,7 +1201,23 @@ const rawDays = [
         "topic": "Aptitude Practice"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "CN Lec",
+        "url": "https://www.youtube.com/embed/q3Z3Qa1UNBA"
+      },
+      {
+        "type": "video",
+        "title": "MCQ Practice",
+        "url": "https://www.indiabix.com/online-test/aptitude-test/"
+      },
+      {
+        "type": "video",
+        "title": "CN Interview Questions",
+        "url": "https://www.interviewbit.com/networking-interview-questions/"
+      }
+    ]
   },
   {
     "day": 56,
@@ -928,44 +1230,9 @@ const rawDays = [
     ],
     "resources": [
       {
-        "type": "video",
+        "type": "iframe",
         "title": "Agile",
-        "url": "https://youtu.be/WjwEh15M5Rw?feature=shared"
-      },
-      {
-        "type": "video",
-        "title": "SQL",
-        "url": "https://youtu.be/hlGoQC332VM?feature=shared"
-      },
-      {
-        "type": "video",
-        "title": "PowerBI",
-        "url": "https://youtu.be/6cV3OwFrOkk?feature=shared"
-      },
-      {
-        "type": "video",
-        "title": "Linux",
-        "url": "https://youtu.be/_tCY-c-sPZc?feature=shared"
-      },
-      {
-        "type": "video",
-        "title": "Git",
-        "url": "https://youtu.be/Ez8F0nW6S-w?feature=shared"
-      },
-      {
-        "type": "video",
-        "title": "Numpy",
-        "url": "https://youtu.be/Rbh1rieb3zc?feature=shared"
-      },
-      {
-        "type": "video",
-        "title": "Pandas",
-        "url": "https://youtu.be/RhEjmHeDNoA?feature=shared"
-      },
-      {
-        "type": "video",
-        "title": "DBMS MCQ",
-        "url": "https://www.interviewbit.com/dbms-mcq/"
+        "url": "https://www.youtube.com/embed/WjwEh15M5Rw"
       }
     ]
   },
@@ -978,7 +1245,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Agile",
+        "url": "https://www.youtube.com/embed/WjwEh15M5Rw"
+      }
+    ]
   },
   {
     "day": 58,
@@ -989,7 +1262,13 @@ const rawDays = [
         "topic": "SQL"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "SQL",
+        "url": "https://www.youtube.com/embed/hlGoQC332VM"
+      }
+    ]
   },
   {
     "day": 59,
@@ -1000,7 +1279,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "SQL",
+        "url": "https://www.youtube.com/embed/hlGoQC332VM"
+      }
+    ]
   },
   {
     "day": 60,
@@ -1011,7 +1296,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "SQL",
+        "url": "https://www.youtube.com/embed/hlGoQC332VM"
+      }
+    ]
   },
   {
     "day": 61,
@@ -1022,7 +1313,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "SQL",
+        "url": "https://www.youtube.com/embed/hlGoQC332VM"
+      }
+    ]
   },
   {
     "day": 62,
@@ -1037,7 +1334,13 @@ const rawDays = [
         "topic": "OS Revision"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "SQL",
+        "url": "https://www.youtube.com/embed/hlGoQC332VM"
+      }
+    ]
   },
   {
     "day": 63,
@@ -1048,7 +1351,13 @@ const rawDays = [
         "topic": "Power BI"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "PowerBI",
+        "url": "https://www.youtube.com/embed/6cV3OwFrOkk"
+      }
+    ]
   },
   {
     "day": 64,
@@ -1059,7 +1368,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "PowerBI",
+        "url": "https://www.youtube.com/embed/6cV3OwFrOkk"
+      }
+    ]
   },
   {
     "day": 65,
@@ -1070,7 +1385,18 @@ const rawDays = [
         "topic": "Linux and Git"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Linux",
+        "url": "https://www.youtube.com/embed/_tCY-c-sPZc"
+      },
+      {
+        "type": "iframe",
+        "title": "Git",
+        "url": "https://www.youtube.com/embed/Ez8F0nW6S-w"
+      }
+    ]
   },
   {
     "day": 66,
@@ -1081,7 +1407,18 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Linux",
+        "url": "https://www.youtube.com/embed/_tCY-c-sPZc"
+      },
+      {
+        "type": "iframe",
+        "title": "Git",
+        "url": "https://www.youtube.com/embed/Ez8F0nW6S-w"
+      }
+    ]
   },
   {
     "day": 67,
@@ -1092,7 +1429,18 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Linux",
+        "url": "https://www.youtube.com/embed/_tCY-c-sPZc"
+      },
+      {
+        "type": "iframe",
+        "title": "Git",
+        "url": "https://www.youtube.com/embed/Ez8F0nW6S-w"
+      }
+    ]
   },
   {
     "day": 68,
@@ -1103,7 +1451,13 @@ const rawDays = [
         "topic": "Numpy"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Numpy",
+        "url": "https://www.youtube.com/embed/Rbh1rieb3zc"
+      }
+    ]
   },
   {
     "day": 69,
@@ -1122,7 +1476,18 @@ const rawDays = [
         "topic": "Pandas"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Pandas",
+        "url": "https://www.youtube.com/embed/RhEjmHeDNoA"
+      },
+      {
+        "type": "video",
+        "title": "DBMS MCQ",
+        "url": "https://www.interviewbit.com/dbms-mcq/"
+      }
+    ]
   },
   {
     "day": 70,
@@ -1135,29 +1500,9 @@ const rawDays = [
     ],
     "resources": [
       {
-        "type": "video",
+        "type": "iframe",
         "title": "C++ Tutorial",
-        "url": "https://youtu.be/FpfHmAkRVK4?feature=shared"
-      },
-      {
-        "type": "video",
-        "title": "C++ STL",
-        "url": "https://youtu.be/RRVYpIET_RU?feature=shared"
-      },
-      {
-        "type": "video",
-        "title": "Python Basics",
-        "url": "https://youtu.be/vLqTf2b6GZw?feature=shared"
-      },
-      {
-        "type": "video",
-        "title": "CN MCQ",
-        "url": "https://www.interviewbit.com/computer-network-mcq/"
-      },
-      {
-        "type": "video",
-        "title": "Oops in C++",
-        "url": "https://www.youtube.com/watch?v=mlIUKyZIUUU"
+        "url": "https://www.youtube.com/embed/FpfHmAkRVK4"
       }
     ]
   },
@@ -1170,7 +1515,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "C++ Tutorial",
+        "url": "https://www.youtube.com/embed/FpfHmAkRVK4"
+      }
+    ]
   },
   {
     "day": 72,
@@ -1181,7 +1532,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "C++ Tutorial",
+        "url": "https://www.youtube.com/embed/FpfHmAkRVK4"
+      }
+    ]
   },
   {
     "day": 73,
@@ -1192,7 +1549,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "C++ Tutorial",
+        "url": "https://www.youtube.com/embed/FpfHmAkRVK4"
+      }
+    ]
   },
   {
     "day": 74,
@@ -1203,7 +1566,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "C++ Tutorial",
+        "url": "https://www.youtube.com/embed/FpfHmAkRVK4"
+      }
+    ]
   },
   {
     "day": 75,
@@ -1214,7 +1583,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "C++ Tutorial",
+        "url": "https://www.youtube.com/embed/FpfHmAkRVK4"
+      }
+    ]
   },
   {
     "day": 76,
@@ -1233,7 +1608,18 @@ const rawDays = [
         "topic": "Tools Revision"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "C++ Tutorial",
+        "url": "https://www.youtube.com/embed/FpfHmAkRVK4"
+      },
+      {
+        "type": "video",
+        "title": "CN MCQ",
+        "url": "https://www.interviewbit.com/computer-network-mcq/"
+      }
+    ]
   },
   {
     "day": 77,
@@ -1244,7 +1630,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "C++ Tutorial",
+        "url": "https://www.youtube.com/embed/FpfHmAkRVK4"
+      }
+    ]
   },
   {
     "day": 78,
@@ -1255,7 +1647,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "C++ Tutorial",
+        "url": "https://www.youtube.com/embed/FpfHmAkRVK4"
+      }
+    ]
   },
   {
     "day": 79,
@@ -1266,7 +1664,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "C++ Tutorial",
+        "url": "https://www.youtube.com/embed/FpfHmAkRVK4"
+      }
+    ]
   },
   {
     "day": 80,
@@ -1277,7 +1681,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "C++ Tutorial",
+        "url": "https://www.youtube.com/embed/FpfHmAkRVK4"
+      }
+    ]
   },
   {
     "day": 81,
@@ -1288,7 +1698,13 @@ const rawDays = [
         "topic": "Python Basics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Python Basics",
+        "url": "https://www.youtube.com/embed/vLqTf2b6GZw"
+      }
+    ]
   },
   {
     "day": 82,
@@ -1299,7 +1715,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Python Basics",
+        "url": "https://www.youtube.com/embed/vLqTf2b6GZw"
+      }
+    ]
   },
   {
     "day": 83,
@@ -1314,7 +1736,13 @@ const rawDays = [
         "topic": "OS Revision"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Python Basics",
+        "url": "https://www.youtube.com/embed/vLqTf2b6GZw"
+      }
+    ]
   },
   {
     "day": 84,
@@ -1325,7 +1753,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Python Basics",
+        "url": "https://www.youtube.com/embed/vLqTf2b6GZw"
+      }
+    ]
   },
   {
     "day": 85,
@@ -1336,7 +1770,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Python Basics",
+        "url": "https://www.youtube.com/embed/vLqTf2b6GZw"
+      }
+    ]
   },
   {
     "day": 86,
@@ -1347,7 +1787,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Python Basics",
+        "url": "https://www.youtube.com/embed/vLqTf2b6GZw"
+      }
+    ]
   },
   {
     "day": 87,
@@ -1358,7 +1804,13 @@ const rawDays = [
         "topic": "Oops in C++"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Oops in C++",
+        "url": "https://www.youtube.com/embed/mlIUKyZIUUU"
+      }
+    ]
   },
   {
     "day": 88,
@@ -1369,7 +1821,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Oops in C++",
+        "url": "https://www.youtube.com/embed/mlIUKyZIUUU"
+      }
+    ]
   },
   {
     "day": 89,
@@ -1380,7 +1838,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Oops in C++",
+        "url": "https://www.youtube.com/embed/mlIUKyZIUUU"
+      }
+    ]
   },
   {
     "day": 90,
@@ -1395,7 +1859,13 @@ const rawDays = [
         "topic": "DBMS Revision and MCQ"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Oops in C++",
+        "url": "https://www.youtube.com/embed/mlIUKyZIUUU"
+      }
+    ]
   },
   {
     "day": 91,
@@ -1406,7 +1876,13 @@ const rawDays = [
         "topic": "C++ STL"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "C++ STL",
+        "url": "https://www.youtube.com/embed/RRVYpIET_RU"
+      }
+    ]
   },
   {
     "day": 92,
@@ -1417,7 +1893,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "C++ STL",
+        "url": "https://www.youtube.com/embed/RRVYpIET_RU"
+      }
+    ]
   },
   {
     "day": 93,
@@ -1428,7 +1910,13 @@ const rawDays = [
         "topic": "Rest and revision of previous topics"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "C++ STL",
+        "url": "https://www.youtube.com/embed/RRVYpIET_RU"
+      }
+    ]
   },
   {
     "day": 94,
@@ -1441,14 +1929,9 @@ const rawDays = [
     ],
     "resources": [
       {
-        "type": "video",
+        "type": "iframe",
         "title": "HTML",
-        "url": "https://youtu.be/HcOc7P5BMi4?feature=shared"
-      },
-      {
-        "type": "text",
-        "title": "DSA Questions Link:",
-        "url": null
+        "url": "https://www.youtube.com/embed/HcOc7P5BMi4"
       }
     ]
   },
@@ -1461,7 +1944,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "HTML",
+        "url": "https://www.youtube.com/embed/HcOc7P5BMi4"
+      }
+    ]
   },
   {
     "day": 96,
@@ -1472,7 +1961,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "HTML",
+        "url": "https://www.youtube.com/embed/HcOc7P5BMi4"
+      }
+    ]
   },
   {
     "day": 97,
@@ -1491,7 +1986,13 @@ const rawDays = [
         "topic": "HTML"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "HTML",
+        "url": "https://www.youtube.com/embed/HcOc7P5BMi4"
+      }
+    ]
   },
   {
     "day": 98,
@@ -1504,9 +2005,9 @@ const rawDays = [
     ],
     "resources": [
       {
-        "type": "video",
+        "type": "iframe",
         "title": "CSS",
-        "url": "https://youtu.be/ESnrn1kAD4E?feature=shared"
+        "url": "https://www.youtube.com/embed/ESnrn1kAD4E"
       }
     ]
   },
@@ -1519,7 +2020,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "CSS",
+        "url": "https://www.youtube.com/embed/ESnrn1kAD4E"
+      }
+    ]
   },
   {
     "day": 100,
@@ -1530,7 +2037,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "CSS",
+        "url": "https://www.youtube.com/embed/ESnrn1kAD4E"
+      }
+    ]
   },
   {
     "day": 101,
@@ -1541,7 +2054,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "CSS",
+        "url": "https://www.youtube.com/embed/ESnrn1kAD4E"
+      }
+    ]
   },
   {
     "day": 102,
@@ -1552,7 +2071,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "CSS",
+        "url": "https://www.youtube.com/embed/ESnrn1kAD4E"
+      }
+    ]
   },
   {
     "day": 103,
@@ -1563,7 +2088,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "CSS",
+        "url": "https://www.youtube.com/embed/ESnrn1kAD4E"
+      }
+    ]
   },
   {
     "day": 104,
@@ -1586,7 +2117,13 @@ const rawDays = [
         "topic": "CSS"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "CSS",
+        "url": "https://www.youtube.com/embed/ESnrn1kAD4E"
+      }
+    ]
   },
   {
     "day": 105,
@@ -1599,9 +2136,9 @@ const rawDays = [
     ],
     "resources": [
       {
-        "type": "video",
+        "type": "iframe",
         "title": "CSS",
-        "url": "https://youtu.be/ESnrn1kAD4E?feature=shared"
+        "url": "https://www.youtube.com/embed/ESnrn1kAD4E"
       }
     ]
   },
@@ -1614,7 +2151,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "CSS",
+        "url": "https://www.youtube.com/embed/ESnrn1kAD4E"
+      }
+    ]
   },
   {
     "day": 107,
@@ -1625,7 +2168,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "CSS",
+        "url": "https://www.youtube.com/embed/ESnrn1kAD4E"
+      }
+    ]
   },
   {
     "day": 108,
@@ -1636,7 +2185,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "CSS",
+        "url": "https://www.youtube.com/embed/ESnrn1kAD4E"
+      }
+    ]
   },
   {
     "day": 109,
@@ -1647,7 +2202,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "CSS",
+        "url": "https://www.youtube.com/embed/ESnrn1kAD4E"
+      }
+    ]
   },
   {
     "day": 110,
@@ -1658,7 +2219,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "CSS",
+        "url": "https://www.youtube.com/embed/ESnrn1kAD4E"
+      }
+    ]
   },
   {
     "day": 111,
@@ -1681,7 +2248,13 @@ const rawDays = [
         "topic": "CSS"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "CSS",
+        "url": "https://www.youtube.com/embed/ESnrn1kAD4E"
+      }
+    ]
   },
   {
     "day": 112,
@@ -1694,9 +2267,9 @@ const rawDays = [
     ],
     "resources": [
       {
-        "type": "video",
+        "type": "iframe",
         "title": "CSS",
-        "url": "https://youtu.be/ESnrn1kAD4E?feature=shared"
+        "url": "https://www.youtube.com/embed/ESnrn1kAD4E"
       }
     ]
   },
@@ -1709,7 +2282,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "CSS",
+        "url": "https://www.youtube.com/embed/ESnrn1kAD4E"
+      }
+    ]
   },
   {
     "day": 114,
@@ -1720,7 +2299,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "CSS",
+        "url": "https://www.youtube.com/embed/ESnrn1kAD4E"
+      }
+    ]
   },
   {
     "day": 115,
@@ -1731,7 +2316,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "CSS",
+        "url": "https://www.youtube.com/embed/ESnrn1kAD4E"
+      }
+    ]
   },
   {
     "day": 116,
@@ -1742,7 +2333,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "CSS",
+        "url": "https://www.youtube.com/embed/ESnrn1kAD4E"
+      }
+    ]
   },
   {
     "day": 117,
@@ -1753,7 +2350,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "CSS",
+        "url": "https://www.youtube.com/embed/ESnrn1kAD4E"
+      }
+    ]
   },
   {
     "day": 118,
@@ -1776,7 +2379,13 @@ const rawDays = [
         "topic": "CSS"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "CSS",
+        "url": "https://www.youtube.com/embed/ESnrn1kAD4E"
+      }
+    ]
   },
   {
     "day": 119,
@@ -1789,9 +2398,9 @@ const rawDays = [
     ],
     "resources": [
       {
-        "type": "video",
+        "type": "iframe",
         "title": "CSS",
-        "url": "https://youtu.be/ESnrn1kAD4E?feature=shared"
+        "url": "https://www.youtube.com/embed/ESnrn1kAD4E"
       }
     ]
   },
@@ -1804,7 +2413,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "CSS",
+        "url": "https://www.youtube.com/embed/ESnrn1kAD4E"
+      }
+    ]
   },
   {
     "day": 121,
@@ -1815,7 +2430,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "CSS",
+        "url": "https://www.youtube.com/embed/ESnrn1kAD4E"
+      }
+    ]
   },
   {
     "day": 122,
@@ -1826,7 +2447,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "CSS",
+        "url": "https://www.youtube.com/embed/ESnrn1kAD4E"
+      }
+    ]
   },
   {
     "day": 123,
@@ -1837,7 +2464,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "CSS",
+        "url": "https://www.youtube.com/embed/ESnrn1kAD4E"
+      }
+    ]
   },
   {
     "day": 124,
@@ -1848,7 +2481,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "CSS",
+        "url": "https://www.youtube.com/embed/ESnrn1kAD4E"
+      }
+    ]
   },
   {
     "day": 125,
@@ -1867,7 +2506,13 @@ const rawDays = [
         "topic": "CSS"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "CSS",
+        "url": "https://www.youtube.com/embed/ESnrn1kAD4E"
+      }
+    ]
   },
   {
     "day": 126,
@@ -1880,9 +2525,9 @@ const rawDays = [
     ],
     "resources": [
       {
-        "type": "video",
+        "type": "iframe",
         "title": "JS",
-        "url": "https://youtu.be/rfObCuGLSek?feature=shared"
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
       }
     ]
   },
@@ -1895,7 +2540,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 128,
@@ -1906,7 +2557,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 129,
@@ -1917,7 +2574,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 130,
@@ -1928,7 +2591,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 131,
@@ -1939,7 +2608,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 132,
@@ -1962,7 +2637,13 @@ const rawDays = [
         "topic": "JS"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 133,
@@ -1975,9 +2656,9 @@ const rawDays = [
     ],
     "resources": [
       {
-        "type": "video",
+        "type": "iframe",
         "title": "JS",
-        "url": "https://youtu.be/rfObCuGLSek?feature=shared"
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
       }
     ]
   },
@@ -1990,7 +2671,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 135,
@@ -2001,7 +2688,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 136,
@@ -2012,7 +2705,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 137,
@@ -2023,7 +2722,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 138,
@@ -2034,7 +2739,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 139,
@@ -2053,7 +2764,13 @@ const rawDays = [
         "topic": "JS"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 140,
@@ -2066,9 +2783,9 @@ const rawDays = [
     ],
     "resources": [
       {
-        "type": "video",
+        "type": "iframe",
         "title": "JS",
-        "url": "https://youtu.be/rfObCuGLSek?feature=shared"
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
       }
     ]
   },
@@ -2081,7 +2798,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 142,
@@ -2092,7 +2815,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 143,
@@ -2103,7 +2832,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 144,
@@ -2114,7 +2849,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 145,
@@ -2125,7 +2866,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 146,
@@ -2152,7 +2899,13 @@ const rawDays = [
         "topic": "JS"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 147,
@@ -2165,9 +2918,9 @@ const rawDays = [
     ],
     "resources": [
       {
-        "type": "video",
+        "type": "iframe",
         "title": "JS",
-        "url": "https://youtu.be/rfObCuGLSek?feature=shared"
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
       }
     ]
   },
@@ -2180,7 +2933,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 149,
@@ -2191,7 +2950,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 150,
@@ -2202,7 +2967,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 151,
@@ -2213,7 +2984,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 152,
@@ -2224,7 +3001,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 153,
@@ -2243,7 +3026,13 @@ const rawDays = [
         "topic": "JS"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 154,
@@ -2256,9 +3045,9 @@ const rawDays = [
     ],
     "resources": [
       {
-        "type": "video",
+        "type": "iframe",
         "title": "JS",
-        "url": "https://youtu.be/rfObCuGLSek?feature=shared"
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
       }
     ]
   },
@@ -2271,7 +3060,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 156,
@@ -2282,7 +3077,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 157,
@@ -2293,7 +3094,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 158,
@@ -2304,7 +3111,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 159,
@@ -2315,7 +3128,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 160,
@@ -2334,7 +3153,13 @@ const rawDays = [
         "topic": "JS"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 161,
@@ -2347,9 +3172,9 @@ const rawDays = [
     ],
     "resources": [
       {
-        "type": "video",
+        "type": "iframe",
         "title": "JS",
-        "url": "https://youtu.be/rfObCuGLSek?feature=shared"
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
       }
     ]
   },
@@ -2362,7 +3187,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 163,
@@ -2373,7 +3204,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 164,
@@ -2384,7 +3221,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 165,
@@ -2395,7 +3238,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 166,
@@ -2406,7 +3255,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 167,
@@ -2429,7 +3284,13 @@ const rawDays = [
         "topic": "JS"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 168,
@@ -2440,7 +3301,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 169,
@@ -2451,7 +3318,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 170,
@@ -2462,7 +3335,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 171,
@@ -2473,7 +3352,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 172,
@@ -2484,7 +3369,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 173,
@@ -2495,7 +3386,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 174,
@@ -2516,9 +3413,9 @@ const rawDays = [
     ],
     "resources": [
       {
-        "type": "video",
+        "type": "iframe",
         "title": "JS",
-        "url": "https://youtu.be/rfObCuGLSek?feature=shared"
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
       }
     ]
   },
@@ -2531,7 +3428,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 176,
@@ -2542,7 +3445,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 177,
@@ -2553,7 +3462,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 178,
@@ -2564,7 +3479,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 179,
@@ -2575,7 +3496,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 180,
@@ -2586,7 +3513,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 181,
@@ -2611,9 +3544,9 @@ const rawDays = [
     ],
     "resources": [
       {
-        "type": "video",
+        "type": "iframe",
         "title": "JS",
-        "url": "https://youtu.be/rfObCuGLSek?feature=shared"
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
       }
     ]
   },
@@ -2626,7 +3559,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 183,
@@ -2637,7 +3576,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 184,
@@ -2648,7 +3593,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 185,
@@ -2659,7 +3610,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 186,
@@ -2670,7 +3627,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 187,
@@ -2681,7 +3644,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "JS",
+        "url": "https://www.youtube.com/embed/rfObCuGLSek"
+      }
+    ]
   },
   {
     "day": 188,
@@ -2702,9 +3671,9 @@ const rawDays = [
     ],
     "resources": [
       {
-        "type": "video",
+        "type": "iframe",
         "title": "Angular",
-        "url": "https://youtu.be/JWhRMyyF7nc?feature=shared"
+        "url": "https://www.youtube.com/embed/JWhRMyyF7nc"
       }
     ]
   },
@@ -2717,7 +3686,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Angular",
+        "url": "https://www.youtube.com/embed/JWhRMyyF7nc"
+      }
+    ]
   },
   {
     "day": 190,
@@ -2728,7 +3703,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Angular",
+        "url": "https://www.youtube.com/embed/JWhRMyyF7nc"
+      }
+    ]
   },
   {
     "day": 191,
@@ -2739,7 +3720,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Angular",
+        "url": "https://www.youtube.com/embed/JWhRMyyF7nc"
+      }
+    ]
   },
   {
     "day": 192,
@@ -2750,7 +3737,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Angular",
+        "url": "https://www.youtube.com/embed/JWhRMyyF7nc"
+      }
+    ]
   },
   {
     "day": 193,
@@ -2761,7 +3754,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Angular",
+        "url": "https://www.youtube.com/embed/JWhRMyyF7nc"
+      }
+    ]
   },
   {
     "day": 194,
@@ -2772,7 +3771,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Angular",
+        "url": "https://www.youtube.com/embed/JWhRMyyF7nc"
+      }
+    ]
   },
   {
     "day": 195,
@@ -2797,9 +3802,9 @@ const rawDays = [
     ],
     "resources": [
       {
-        "type": "video",
+        "type": "iframe",
         "title": "Angular",
-        "url": "https://youtu.be/JWhRMyyF7nc?feature=shared"
+        "url": "https://www.youtube.com/embed/JWhRMyyF7nc"
       }
     ]
   },
@@ -2812,7 +3817,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Angular",
+        "url": "https://www.youtube.com/embed/JWhRMyyF7nc"
+      }
+    ]
   },
   {
     "day": 197,
@@ -2823,7 +3834,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Angular",
+        "url": "https://www.youtube.com/embed/JWhRMyyF7nc"
+      }
+    ]
   },
   {
     "day": 198,
@@ -2834,7 +3851,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Angular",
+        "url": "https://www.youtube.com/embed/JWhRMyyF7nc"
+      }
+    ]
   },
   {
     "day": 199,
@@ -2845,7 +3868,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Angular",
+        "url": "https://www.youtube.com/embed/JWhRMyyF7nc"
+      }
+    ]
   },
   {
     "day": 200,
@@ -2856,7 +3885,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Angular",
+        "url": "https://www.youtube.com/embed/JWhRMyyF7nc"
+      }
+    ]
   },
   {
     "day": 201,
@@ -2867,7 +3902,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Angular",
+        "url": "https://www.youtube.com/embed/JWhRMyyF7nc"
+      }
+    ]
   },
   {
     "day": 202,
@@ -2888,9 +3929,9 @@ const rawDays = [
     ],
     "resources": [
       {
-        "type": "video",
+        "type": "iframe",
         "title": "Angular",
-        "url": "https://youtu.be/JWhRMyyF7nc?feature=shared"
+        "url": "https://www.youtube.com/embed/JWhRMyyF7nc"
       }
     ]
   },
@@ -2903,7 +3944,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Angular",
+        "url": "https://www.youtube.com/embed/JWhRMyyF7nc"
+      }
+    ]
   },
   {
     "day": 204,
@@ -2914,7 +3961,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Angular",
+        "url": "https://www.youtube.com/embed/JWhRMyyF7nc"
+      }
+    ]
   },
   {
     "day": 205,
@@ -2925,7 +3978,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Angular",
+        "url": "https://www.youtube.com/embed/JWhRMyyF7nc"
+      }
+    ]
   },
   {
     "day": 206,
@@ -2936,7 +3995,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Angular",
+        "url": "https://www.youtube.com/embed/JWhRMyyF7nc"
+      }
+    ]
   },
   {
     "day": 207,
@@ -2947,7 +4012,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Angular",
+        "url": "https://www.youtube.com/embed/JWhRMyyF7nc"
+      }
+    ]
   },
   {
     "day": 208,
@@ -2958,7 +4029,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Angular",
+        "url": "https://www.youtube.com/embed/JWhRMyyF7nc"
+      }
+    ]
   },
   {
     "day": 209,
@@ -2983,9 +4060,9 @@ const rawDays = [
     ],
     "resources": [
       {
-        "type": "video",
+        "type": "iframe",
         "title": "Angular",
-        "url": "https://youtu.be/JWhRMyyF7nc?feature=shared"
+        "url": "https://www.youtube.com/embed/JWhRMyyF7nc"
       }
     ]
   },
@@ -2998,7 +4075,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Angular",
+        "url": "https://www.youtube.com/embed/JWhRMyyF7nc"
+      }
+    ]
   },
   {
     "day": 211,
@@ -3009,7 +4092,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Angular",
+        "url": "https://www.youtube.com/embed/JWhRMyyF7nc"
+      }
+    ]
   },
   {
     "day": 212,
@@ -3020,7 +4109,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Angular",
+        "url": "https://www.youtube.com/embed/JWhRMyyF7nc"
+      }
+    ]
   },
   {
     "day": 213,
@@ -3031,7 +4126,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Angular",
+        "url": "https://www.youtube.com/embed/JWhRMyyF7nc"
+      }
+    ]
   },
   {
     "day": 214,
@@ -3042,7 +4143,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Angular",
+        "url": "https://www.youtube.com/embed/JWhRMyyF7nc"
+      }
+    ]
   },
   {
     "day": 215,
@@ -3053,7 +4160,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Angular",
+        "url": "https://www.youtube.com/embed/JWhRMyyF7nc"
+      }
+    ]
   },
   {
     "day": 216,
@@ -3078,9 +4191,9 @@ const rawDays = [
     ],
     "resources": [
       {
-        "type": "video",
+        "type": "iframe",
         "title": "Angular",
-        "url": "https://youtu.be/JWhRMyyF7nc?feature=shared"
+        "url": "https://www.youtube.com/embed/JWhRMyyF7nc"
       }
     ]
   },
@@ -3093,7 +4206,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Angular",
+        "url": "https://www.youtube.com/embed/JWhRMyyF7nc"
+      }
+    ]
   },
   {
     "day": 218,
@@ -3104,7 +4223,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Angular",
+        "url": "https://www.youtube.com/embed/JWhRMyyF7nc"
+      }
+    ]
   },
   {
     "day": 219,
@@ -3115,7 +4240,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Angular",
+        "url": "https://www.youtube.com/embed/JWhRMyyF7nc"
+      }
+    ]
   },
   {
     "day": 220,
@@ -3126,7 +4257,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Angular",
+        "url": "https://www.youtube.com/embed/JWhRMyyF7nc"
+      }
+    ]
   },
   {
     "day": 221,
@@ -3137,7 +4274,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Angular",
+        "url": "https://www.youtube.com/embed/JWhRMyyF7nc"
+      }
+    ]
   },
   {
     "day": 222,
@@ -3148,7 +4291,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "Angular",
+        "url": "https://www.youtube.com/embed/JWhRMyyF7nc"
+      }
+    ]
   },
   {
     "day": 223,
@@ -3169,9 +4318,9 @@ const rawDays = [
     ],
     "resources": [
       {
-        "type": "video",
+        "type": "iframe",
         "title": "MongoDB",
-        "url": "https://youtu.be/J6mDkcqU_ZE?feature=shared"
+        "url": "https://www.youtube.com/embed/J6mDkcqU_ZE"
       }
     ]
   },
@@ -3184,7 +4333,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "MongoDB",
+        "url": "https://www.youtube.com/embed/J6mDkcqU_ZE"
+      }
+    ]
   },
   {
     "day": 225,
@@ -3195,7 +4350,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "MongoDB",
+        "url": "https://www.youtube.com/embed/J6mDkcqU_ZE"
+      }
+    ]
   },
   {
     "day": 226,
@@ -3206,7 +4367,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "MongoDB",
+        "url": "https://www.youtube.com/embed/J6mDkcqU_ZE"
+      }
+    ]
   },
   {
     "day": 227,
@@ -3217,7 +4384,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "MongoDB",
+        "url": "https://www.youtube.com/embed/J6mDkcqU_ZE"
+      }
+    ]
   },
   {
     "day": 228,
@@ -3228,7 +4401,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "MongoDB",
+        "url": "https://www.youtube.com/embed/J6mDkcqU_ZE"
+      }
+    ]
   },
   {
     "day": 229,
@@ -3239,7 +4418,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "MongoDB",
+        "url": "https://www.youtube.com/embed/J6mDkcqU_ZE"
+      }
+    ]
   },
   {
     "day": 230,
@@ -3264,9 +4449,9 @@ const rawDays = [
     ],
     "resources": [
       {
-        "type": "video",
+        "type": "iframe",
         "title": "NodeJS",
-        "url": "https://youtu.be/7fjOw8ApZ1I?feature=shared"
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
       }
     ]
   },
@@ -3279,7 +4464,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 232,
@@ -3290,7 +4481,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 233,
@@ -3301,7 +4498,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 234,
@@ -3312,7 +4515,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 235,
@@ -3323,7 +4532,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 236,
@@ -3334,7 +4549,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 237,
@@ -3359,9 +4580,9 @@ const rawDays = [
     ],
     "resources": [
       {
-        "type": "video",
+        "type": "iframe",
         "title": "NodeJS",
-        "url": "https://youtu.be/7fjOw8ApZ1I?feature=shared"
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
       }
     ]
   },
@@ -3374,7 +4595,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 239,
@@ -3385,7 +4612,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 240,
@@ -3396,7 +4629,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 241,
@@ -3407,7 +4646,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 242,
@@ -3418,7 +4663,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 243,
@@ -3429,7 +4680,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 244,
@@ -3450,9 +4707,9 @@ const rawDays = [
     ],
     "resources": [
       {
-        "type": "video",
+        "type": "iframe",
         "title": "NodeJS",
-        "url": "https://youtu.be/7fjOw8ApZ1I?feature=shared"
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
       }
     ]
   },
@@ -3465,7 +4722,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 246,
@@ -3476,7 +4739,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 247,
@@ -3487,7 +4756,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 248,
@@ -3498,7 +4773,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 249,
@@ -3509,7 +4790,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 250,
@@ -3520,7 +4807,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 251,
@@ -3545,9 +4838,9 @@ const rawDays = [
     ],
     "resources": [
       {
-        "type": "video",
+        "type": "iframe",
         "title": "NodeJS",
-        "url": "https://youtu.be/7fjOw8ApZ1I?feature=shared"
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
       }
     ]
   },
@@ -3560,7 +4853,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 253,
@@ -3571,7 +4870,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 254,
@@ -3582,7 +4887,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 255,
@@ -3593,7 +4904,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 256,
@@ -3604,7 +4921,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 257,
@@ -3615,7 +4938,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 258,
@@ -3640,9 +4969,9 @@ const rawDays = [
     ],
     "resources": [
       {
-        "type": "video",
+        "type": "iframe",
         "title": "NodeJS",
-        "url": "https://youtu.be/7fjOw8ApZ1I?feature=shared"
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
       }
     ]
   },
@@ -3655,7 +4984,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 260,
@@ -3666,7 +5001,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 261,
@@ -3677,7 +5018,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 262,
@@ -3688,7 +5035,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 263,
@@ -3699,7 +5052,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 264,
@@ -3710,7 +5069,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 265,
@@ -3735,9 +5100,9 @@ const rawDays = [
     ],
     "resources": [
       {
-        "type": "video",
+        "type": "iframe",
         "title": "NodeJS",
-        "url": "https://youtu.be/7fjOw8ApZ1I?feature=shared"
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
       }
     ]
   },
@@ -3750,7 +5115,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 267,
@@ -3761,7 +5132,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 268,
@@ -3772,7 +5149,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 269,
@@ -3783,7 +5166,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 270,
@@ -3794,7 +5183,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 271,
@@ -3805,7 +5200,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 272,
@@ -3826,9 +5227,9 @@ const rawDays = [
     ],
     "resources": [
       {
-        "type": "video",
+        "type": "iframe",
         "title": "NodeJS",
-        "url": "https://youtu.be/7fjOw8ApZ1I?feature=shared"
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
       }
     ]
   },
@@ -3841,7 +5242,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 274,
@@ -3852,7 +5259,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 275,
@@ -3863,7 +5276,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 276,
@@ -3874,7 +5293,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 277,
@@ -3885,7 +5310,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 278,
@@ -3896,7 +5327,13 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      }
+    ]
   },
   {
     "day": 279,
@@ -3921,9 +5358,9 @@ const rawDays = [
     ],
     "resources": [
       {
-        "type": "video",
+        "type": "iframe",
         "title": "NodeJS",
-        "url": "https://youtu.be/7fjOw8ApZ1I?feature=shared"
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
       },
       {
         "type": "video",
@@ -3941,7 +5378,18 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      },
+      {
+        "type": "video",
+        "title": "Puzzles",
+        "url": "https://www.geeksforgeeks.org/top-20-puzzles-commonly-asked-during-sde-interviews/"
+      }
+    ]
   },
   {
     "day": 281,
@@ -3952,7 +5400,18 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      },
+      {
+        "type": "video",
+        "title": "Puzzles",
+        "url": "https://www.geeksforgeeks.org/top-20-puzzles-commonly-asked-during-sde-interviews/"
+      }
+    ]
   },
   {
     "day": 282,
@@ -3963,7 +5422,18 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      },
+      {
+        "type": "video",
+        "title": "Puzzles",
+        "url": "https://www.geeksforgeeks.org/top-20-puzzles-commonly-asked-during-sde-interviews/"
+      }
+    ]
   },
   {
     "day": 283,
@@ -3974,7 +5444,18 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      },
+      {
+        "type": "video",
+        "title": "Puzzles",
+        "url": "https://www.geeksforgeeks.org/top-20-puzzles-commonly-asked-during-sde-interviews/"
+      }
+    ]
   },
   {
     "day": 284,
@@ -3985,7 +5466,18 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      },
+      {
+        "type": "video",
+        "title": "Puzzles",
+        "url": "https://www.geeksforgeeks.org/top-20-puzzles-commonly-asked-during-sde-interviews/"
+      }
+    ]
   },
   {
     "day": 285,
@@ -3996,14 +5488,25 @@ const rawDays = [
         "topic": "DSA"
       }
     ],
-    "resources": []
+    "resources": [
+      {
+        "type": "iframe",
+        "title": "NodeJS",
+        "url": "https://www.youtube.com/embed/7fjOw8ApZ1I"
+      },
+      {
+        "type": "video",
+        "title": "Puzzles",
+        "url": "https://www.geeksforgeeks.org/top-20-puzzles-commonly-asked-during-sde-interviews/"
+      }
+    ]
   },
   {
     "day": 286,
     "dayOfWeek": "Sunday",
     "targets": [
       {
-        "category": "Aptitude",
+        "category": "Revision",
         "topic": "Revise Everything"
       }
     ],
@@ -4014,8 +5517,8 @@ const rawDays = [
     "dayOfWeek": "Monday",
     "targets": [
       {
-        "category": "Rest/Revision",
-        "topic": "Rest and revision of previous topics"
+        "category": "Revision",
+        "topic": "Revise Everything"
       }
     ],
     "resources": []
@@ -4025,8 +5528,8 @@ const rawDays = [
     "dayOfWeek": "Tuesday",
     "targets": [
       {
-        "category": "Rest/Revision",
-        "topic": "Rest and revision of previous topics"
+        "category": "Revision",
+        "topic": "Revise Everything"
       }
     ],
     "resources": []
@@ -4036,8 +5539,8 @@ const rawDays = [
     "dayOfWeek": "Wednesday",
     "targets": [
       {
-        "category": "Rest/Revision",
-        "topic": "Rest and revision of previous topics"
+        "category": "Revision",
+        "topic": "Revise Everything"
       }
     ],
     "resources": []
@@ -4047,8 +5550,8 @@ const rawDays = [
     "dayOfWeek": "Thursday",
     "targets": [
       {
-        "category": "Rest/Revision",
-        "topic": "Rest and revision of previous topics"
+        "category": "Revision",
+        "topic": "Revise Everything"
       }
     ],
     "resources": []
@@ -4058,8 +5561,8 @@ const rawDays = [
     "dayOfWeek": "Friday",
     "targets": [
       {
-        "category": "Rest/Revision",
-        "topic": "Rest and revision of previous topics"
+        "category": "Revision",
+        "topic": "Revise Everything"
       }
     ],
     "resources": []
@@ -4069,8 +5572,8 @@ const rawDays = [
     "dayOfWeek": "Saturday",
     "targets": [
       {
-        "category": "Rest/Revision",
-        "topic": "Rest and revision of previous topics"
+        "category": "Revision",
+        "topic": "Revise Everything"
       }
     ],
     "resources": []
@@ -4080,8 +5583,8 @@ const rawDays = [
     "dayOfWeek": "Sunday",
     "targets": [
       {
-        "category": "Rest/Revision",
-        "topic": "Rest and revision of previous topics"
+        "category": "Revision",
+        "topic": "Revise Everything"
       }
     ],
     "resources": []

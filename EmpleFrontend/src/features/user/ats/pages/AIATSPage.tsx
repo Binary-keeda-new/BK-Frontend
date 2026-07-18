@@ -9,7 +9,10 @@ import { analyzeAI } from '../services/ats.service';
 import ResumeUploader from '../components/ResumeUploader';
 import JobDescriptionInput from '../components/JobDescriptionInput';
 import AIATSResultView from '../components/AIATSResult';
-import LoadingSkeleton from '../components/LoadingSkeleton';
+import { useWallet } from "@/providers/WalletProvider";
+import InsufficientCoinsDialog from "@/features/wallet/components/InsufficientCoinsDialog";
+import { useNotification } from "@/providers/NotificationProvider";
+import AnalysisProgressModal from '../components/AnalysisProgressModal';
 import '../styles/ats.css';
 
 function dataURLtoFile(dataUrl: string, name: string, type: string): File {
@@ -29,16 +32,28 @@ export default function AIATSPage() {
   const [result, setResult] = useState<AIATSResultType | null>(null);
   const [error, setError] = useState('');
 
-  const runAnalysis = useCallback(async (resumeFile: File, jd: string, token?: string) => {
+  const { balance, config, refreshWallet } = useWallet();
+  const { notifyDeduction, notifyRefund } = useNotification();
+  const [showInsufficientDialog, setShowInsufficientDialog] = useState(false);
+  const cost = config?.ATS?.AI_COST || 10;
+
+  const runAnalysis = useCallback(async (resumeFile: File, jd: string, token?: string, providedKey?: string) => {
     setState('loading');
     setError('');
     setResult(null);
 
+    const idempotencyKey = providedKey || crypto.randomUUID();
+
+    notifyDeduction("AI ATS Scanner", "Analyzing resume...", cost);
+
     try {
-      const data = await analyzeAI(resumeFile, jd, token);
+      const data = await analyzeAI(resumeFile, jd, token, idempotencyKey);
+      refreshWallet();
       setResult(data);
       setState('success');
     } catch (err) {
+      notifyRefund("AI Service Unavailable", "Your coins have been restored.", cost);
+      refreshWallet();
       setError(err instanceof Error ? err.message : 'AI analysis failed. Please try again.');
       setState('error');
     }
@@ -63,9 +78,16 @@ export default function AIATSPage() {
   }, []);
 
   function handleAnalyze() {
+    if (state === 'loading') return;
     setError('');
     if (!file) { setError('Please upload your resume.'); return; }
     if (!jobDescription.trim()) { setError('Please paste a job description.'); return; }
+    
+    if (balance < cost) {
+      setShowInsufficientDialog(true);
+      return;
+    }
+    
     runAnalysis(file, jobDescription, sessionToken);
   }
 
@@ -73,11 +95,12 @@ export default function AIATSPage() {
     router.push('/user/ats');
   }
 
-  if (state === 'loading') return <LoadingSkeleton />;
   if (state === 'success' && result) return <AIATSResultView data={result} onBack={handleBack} />;
 
   return (
-    <div className="ats-page">
+    <div className="ats-page relative">
+      <AnalysisProgressModal isOpen={state === 'loading'} mode="ai" />
+      
       <button className="ats-page__back" onClick={handleBack}>← Back to ATS Home</button>
       
       <div className="ats-page__header">
@@ -95,12 +118,22 @@ export default function AIATSPage() {
       </div>
       
       <div style={{ maxWidth: 480, margin: '0 auto 80px' }}>
-        <button className="ats-analyze-btn" onClick={handleAnalyze} id="ats-ai-analyze" style={{ padding: '24px', fontSize: '20px', borderRadius: 16 }}>
+        <button type="button" className="ats-analyze-btn flex items-center justify-center gap-3" onClick={handleAnalyze} id="ats-ai-analyze" style={{ padding: '24px', fontSize: '20px', borderRadius: 16, width: '100%', background: 'linear-gradient(135deg, #f15a22, #6c63ff)' }}>
+          <div className="flex items-center gap-1.5 text-sm font-bold bg-white/20 px-3 py-1 rounded-lg mr-2">
+            🪙 {cost} Coins
+          </div>
           <Sparkles size={24} />
           Analyze with AI
         </button>
         {error && <div className="ats-error-banner" style={{ marginTop: 16 }}>{error}</div>}
       </div>
+
+      <InsufficientCoinsDialog
+        isOpen={showInsufficientDialog}
+        onClose={() => setShowInsufficientDialog(false)}
+        requiredCoins={cost}
+        onRetry={handleAnalyze}
+      />
 
       {/* Informational Cards */}
       <div style={{ borderTop: '1px solid var(--border)', paddingTop: '60px' }}>

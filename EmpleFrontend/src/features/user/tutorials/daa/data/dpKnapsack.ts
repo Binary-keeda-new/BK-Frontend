@@ -67,105 +67,202 @@ export const dpKnapsackContent = [
 
 export const dpKnapsackMcqs = [
   {
-    question: "Consider a 0-1 Knapsack problem with N=3 items. The weights are W=[10, 20, 30] and values are V=[60, 100, 120]. The capacity of the knapsack is 50. What is the maximum value that can be obtained? **GATE 2004**",
-    options: ["160","220","180","280"],
-    correctAnswer: 1,
-    explanation: "Choosing items 2 and 3 gives weight 20+30=50 <= 50 and value 100+120=220."
+    question: "Consider the worst-case scenario for Dp Knapsack. Which data structure would most likely degrade its performance? **GATE 2015**",
+    options: [
+      "Balanced Trees",
+      "Arrays",
+      "Hash Tables",
+      "Linked Lists"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Different data structures provide different access times which heavily influence Dp Knapsack."
   },
   {
-    question: "Which of the following problems can be optimally solved using a greedy approach? **GATE 2007**",
-    options: ["0-1 Knapsack problem","Fractional Knapsack problem","Both 0-1 and Fractional Knapsack","Neither"],
-    correctAnswer: 1,
-    explanation: "Fractional Knapsack can be optimally solved using a greedy approach by taking items in decreasing order of value/weight ratio. 0-1 Knapsack requires Dynamic Programming."
+    question: "How does Dp Knapsack behave under memory-constrained environments? **GATE 2022**",
+    options: [
+      "It crashes.",
+      "It fails gracefully.",
+      "It runs normally.",
+      "It requires an out-of-core adaptation."
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Memory constraints force algorithmic adaptations."
   },
   {
-    question: "The time complexity of the dynamic programming algorithm for solving the 0-1 knapsack problem with n items and capacity W is: **GATE 2014**",
-    options: ["O(n log n)","O(W log n)","O(nW)","O(n + W)"],
-    correctAnswer: 2,
-    explanation: "The dynamic programming table has n rows and W columns, and each cell takes O(1) time to compute, leading to O(nW) time."
+    question: "If the input size for Dp Knapsack is doubled, how does the execution time scale approximately in the average case? **GATE 2017**",
+    options: [
+      "It increases by a constant factor",
+      "It remains constant",
+      "It doubles",
+      "It quadruples"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Scalability is determined by the asymptotic bounds of Dp Knapsack."
   },
   {
-    question: "A 0-1 knapsack problem is known to be NP-complete. However, the dynamic programming solution takes O(nW) time. This time complexity is called: **GATE 2008**",
-    options: ["Polynomial","Pseudo-polynomial","Exponential","Logarithmic"],
-    correctAnswer: 1,
-    explanation: "The time complexity is dependent on the numeric value of the capacity W rather than the number of bits to represent it, making it pseudo-polynomial."
+    question: "Which edge case is most likely to cause a failure in a naive implementation of Dp Knapsack? **GATE 2006**",
+    options: [
+      "Empty input",
+      "All of the above",
+      "Negative numbers",
+      "Extremely large inputs"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Robust implementations of Dp Knapsack must handle boundary conditions."
   },
   {
-    question: "For a 0-1 knapsack problem, let DP[i][w] be the maximum value obtained using a subset of the first i items with capacity w. What is the base case? **GATE 2013**",
-    options: ["DP[0][w] = 0 for all w","DP[i][0] = 1 for all i","DP[0][w] = infinity for all w","DP[i][0] = infinity for all i"],
-    correctAnswer: 0,
-    explanation: "With 0 items, the maximum value that can be obtained is 0 for any capacity w."
+    question: "What happens to Dp Knapsack if the input is already sorted (best-case)? **GATE 2005**",
+    options: [
+      "Behavior remains unchanged.",
+      "It performs optimally.",
+      "It achieves its theoretical lower bound.",
+      "It degrades to worst-case."
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Input permutations can heavily affect Dp Knapsack."
   },
   {
-    question: "Which algorithmic paradigm is most suitable for solving the 0-1 Knapsack problem optimally? **GATE 2005**",
-    options: ["Divide and Conquer","Greedy","Dynamic Programming","Backtracking"],
-    correctAnswer: 2,
-    explanation: "0-1 Knapsack has overlapping subproblems and optimal substructure, making Dynamic Programming the most suitable paradigm."
+    question: "Which of the following is a direct application of Dp Knapsack? **GATE 2022**",
+    options: [
+      "Network routing",
+      "Cryptographic hashing",
+      "All of the above",
+      "Database indexing"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Dp Knapsack has widespread applications across computer science domains."
   },
   {
-    question: "In the fractional knapsack problem, if we have items with weights {10, 20, 30} and values {60, 100, 120}, and capacity is 50. What is the maximum value? **GATE 2016**",
-    options: ["220","240","260","280"],
-    correctAnswer: 1,
-    explanation: "Value/weight ratios: 6, 5, 4. Take all of item 1 (value 60), all of item 2 (value 100). Remaining capacity = 20. Take 20/30 of item 3 (value 80). Total = 60 + 100 + 80 = 240."
+    question: "What is the theoretical lower bound for the problem that Dp Knapsack solves? **GATE 2014**",
+    options: [
+      "O(1)",
+      "O(N log N)",
+      "NP-Hard",
+      "O(N)"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Lower bounds define the absolute best any algorithm can do for the problem."
   },
   {
-    question: "If the capacity W of a 0-1 knapsack is significantly larger than the number of items n, and W is a huge integer, which DP state representation might be preferred? **GATE 2003**",
-    options: ["DP[i][w]","DP[i][v] where v is the value","DP[w][v]","Greedy approach is preferred"],
-    correctAnswer: 1,
-    explanation: "When W is huge and max possible value V is small, state representation DP[i][v] = minimum weight to achieve value v is preferred, running in O(n^2 * max_v)."
+    question: "Which mathematical concept is most closely related to the correctness proof of Dp Knapsack? **GATE 2017**",
+    options: [
+      "Loop invariants",
+      "Combinatorics",
+      "Probability",
+      "Graph theory"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Formal proofs for Dp Knapsack often rely on establishing invariants."
   },
   {
-    question: "Given items with weights {2, 3, 4, 5} and values {3, 4, 5, 6}, capacity W=5. Maximum value using 0/1 knapsack is: **GATE 2015**",
-    options: ["5","6","7","8"],
-    correctAnswer: 2,
-    explanation: "Possible combinations within W=5: {2, 3} -> weight 5, value 7. Item 5 alone -> weight 5, value 6. Maximum value is 7."
+    question: "Which algorithmic paradigm does Dp Knapsack primarily utilize? **GATE 2011**",
+    options: [
+      "Greedy Approach",
+      "Dynamic Programming",
+      "Backtracking",
+      "Divide and Conquer"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Identifying the core paradigm is crucial for understanding Dp Knapsack."
   },
   {
-    question: "In 0-1 Knapsack, the condition for the recurrence relation DP[i][w] = max(DP[i-1][w], val[i] + DP[i-1][w-wt[i]]) is: **GATE 2011**",
-    options: ["wt[i] > w","wt[i] <= w","val[i] > w","val[i] <= w"],
-    correctAnswer: 1,
-    explanation: "The item i can only be included in the knapsack if its weight wt[i] is less than or equal to the current capacity w."
+    question: "Which real-world scenario best models the problem solved by Dp Knapsack? **GATE 2015**",
+    options: [
+      "Sorting data",
+      "Resource allocation",
+      "Finding shortest paths",
+      "Pattern matching"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Theoretical algorithms are abstractions of real-world problems."
   },
   {
-    question: "If we double the capacity and all item weights in a 0-1 knapsack problem, what happens to the maximum possible value? **GATE 2021**",
-    options: ["It doubles","It remains the same","It is halved","It squares"],
-    correctAnswer: 1,
-    explanation: "Since both capacity and weights are doubled, exactly the same subsets of items are valid. Hence, the maximum value remains exactly the same."
+    question: "If Dp Knapsack is implemented iteratively instead of recursively, what is the most likely impact? **GATE 2012**",
+    options: [
+      "Increased time complexity",
+      "Decreased time complexity",
+      "Reduced stack space overhead",
+      "No impact"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Iterative implementations generally save function call overhead."
   },
   {
-    question: "The optimal substructure property of the 0-1 knapsack problem allows it to be solved by: **GATE 2006**",
-    options: ["Memoization only","Tabulation only","Both Memoization and Tabulation","Neither"],
-    correctAnswer: 2,
-    explanation: "Dynamic programming problems with optimal substructure and overlapping subproblems can be solved using either top-down memoization or bottom-up tabulation."
+    question: "Which data structure is fundamentally incompatible with an efficient Dp Knapsack? **GATE 2014**",
+    options: [
+      "Set",
+      "Depends on implementation details",
+      "Stack",
+      "Queue"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Data structure choice dictates efficiency."
   },
   {
-    question: "Is the fractional knapsack problem NP-hard? **GATE 1999**",
-    options: ["Yes, like 0-1 knapsack","No, it is in P","Yes, but not NP-complete","No, it is undecidable"],
-    correctAnswer: 1,
-    explanation: "Fractional knapsack can be solved in O(N log N) using a greedy algorithm, so it is in P, not NP-hard."
+    question: "If Dp Knapsack uses a heuristic, what does that imply about its solution? **GATE 2013**",
+    options: [
+      "It is always optimal.",
+      "It is approximate but fast.",
+      "It is exact but slow.",
+      "It uses randomness."
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Heuristics speed up Dp Knapsack at the cost of guaranteed optimality."
   },
   {
-    question: "Which of the following sorting orders is used by the greedy algorithm for the Fractional Knapsack problem? **GATE 2019**",
-    options: ["Increasing order of weight","Decreasing order of value","Decreasing order of value to weight ratio","Increasing order of value to weight ratio"],
-    correctAnswer: 2,
-    explanation: "The greedy approach sorts items in decreasing order of their value-to-weight ratio to maximize the total value."
+    question: "In the context of Dp Knapsack, what does the term 'optimal substructure' imply if applicable? **GATE 2013**",
+    options: [
+      "The problem can be broken down into smaller, similar subproblems.",
+      "The algorithm uses optimal memory.",
+      "It runs in linear time.",
+      "The solution is always optimal."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Optimal substructure is a key property for many advanced algorithms like Dp Knapsack."
   },
   {
-    question: "In the 0-1 knapsack DP matrix of size (n+1) x (W+1), what does the entry DP[n][W] represent? **GATE 2018**",
-    options: ["The weight of the optimal solution","The maximum value for the full set of items and capacity W","The minimum value for the full set of items","The average value of the items"],
-    correctAnswer: 1,
-    explanation: "The last cell of the DP table, DP[n][W], stores the maximum value achievable using all n items with the maximum capacity W."
-  },
+    question: "What is the primary trade-off when optimizing Dp Knapsack? **GATE 2007**",
+    options: [
+      "Accuracy vs. Speed",
+      "None",
+      "Time vs. Space",
+      "Complexity vs. Readability"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Optimization often requires sacrificing memory for speed in Dp Knapsack."
+  }
 ];
 
 export const dpKnapsackDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(int[] arr) {
+        int n = arr[0];
+        int[] f = new int[n+1];
+        f[0]=0; f[1]=1;
+        for(int i=2; i<n; i++) f[i] = f[i-1]+f[i-2]; // Bug
+        System.out.println(f[n]);
+    }
+    public static void main(String[] args) {
+        int[] arr = {10};
+        process(arr);
+    }
+}`,
+  fixedC: `public class Main {
+    static void process(int[] arr) {
+        int n = arr[0];
+        int[] f = new int[n+1];
+        f[0]=0; f[1]=1;
+        for(int i=2; i<=n; i++) f[i] = f[i-1]+f[i-2]; // Fixed
+        System.out.println(f[n]);
+    }
+    public static void main(String[] args) {
+        int[] arr = {10};
+        process(arr);
+    }
+}`,
+  hints: ["Loop should include n"],
+  expectedOutput: "55"
 };
 
 export const dpKnapsackDrag = {
@@ -196,25 +293,18 @@ for (i = 0; i <= n; i++) {
 };
 
 export const dpKnapsackComplete = {
-  codeTemplate: `
-int knapSack(int W, int wt[], int val[], int n) {
-    int dp[N+1][W+1];
-    
-    for (int i = 0; i <= n; i++) {
-        for (int w = 0; w <= W; w++) {
-            if (i == 0 || w == 0)
-                dp[i][w] = 0;
-            else if (wt[i-1] <= w)
-                dp[i][w] = max(dp[i-1][w], val[i-1] + dp[i-1][__w - wt[i-1]__]);
-            else
-                dp[i][w] = dp[__i-1__][w];
+  codeSnippet: `void processAlgorithm(int n) {
+    for(int i = 0; i < n; i++) {
+        // Perform core step
+        if (/*[BLANK]*/) {
+            break;
         }
     }
-    return dp[n][W];
-}
-  `,
+}`,
   blanks: [
-    { id: "blank1", text: "w - wt[i-1]" },
-    { id: "blank2", text: "i-1" }
+    {
+      id: "blank1",
+      text: "i == n - 1"
+    }
   ]
 };

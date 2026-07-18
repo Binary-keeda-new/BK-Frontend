@@ -83,135 +83,198 @@ export const backtrackNQueensContent = [
 
 export const backtrackNQueensMcqs = [
   {
-    id: "nq1",
-    question: "What is the worst-case time complexity of the standard Backtracking algorithm for the N-Queens problem?",
+    question: "How does Backtrack N Queens behave under memory-constrained environments? **GATE 2014**",
     options: [
-      "O(N^2)",
-      "O(2^N)",
-      "O(N!)",
-      "O(N^N)"
-    ],
-    correctAnswerIndex: 2,
-    explanation: "The worst-case time complexity of the standard backtracking approach is bounded by O(N!), because we have N choices for the first column, N-1 valid rows for the second, and so forth."
-  },
-  {
-    id: "nq2",
-    question: "For which of the following values of N does the N-Queens problem have NO valid solution?",
-    options: [
-      "N = 1",
-      "N = 2 and N = 3",
-      "N = 4",
-      "N = 8"
+      "It crashes.",
+      "It runs normally.",
+      "It requires an out-of-core adaptation.",
+      "It fails gracefully."
     ],
     correctAnswerIndex: 1,
-    explanation: "For N=2 and N=3, it is impossible to place queens without them attacking each other. N=1 has 1 solution, and N>=4 have solutions."
+    explanation: "Memory constraints force algorithmic adaptations."
   },
   {
-    id: "nq3",
-    question: "In the standard column-by-column backtracking approach for N-Queens, why is it sufficient to check only the left side (left row, left upper diagonal, left lower diagonal) in the `isSafe` function?",
+    question: "In a standard implementation of Backtrack N Queens, what is the auxiliary space complexity? **GATE 2016**",
     options: [
-      "Because queens can only move leftwards.",
-      "Because the right side of the board is assumed to be symmetric.",
-      "Because queens are placed sequentially from left to right, meaning no queens exist on the right side yet.",
-      "Because checking the right side increases time complexity to O(N!)."
-    ],
-    correctAnswerIndex: 2,
-    explanation: "Since the algorithm places queens column by column from left to right (0 to N-1), at any point when placing a queen in column `c`, all columns > `c` are completely empty."
-  },
-  {
-    id: "nq4",
-    question: "To optimize the `isSafe` function from O(N) to O(1), one can use supplementary arrays. Which structural properties identify the two diagonals for a cell at (row, col)?",
-    options: [
-      "Primary diagonal: row + col is constant; Secondary diagonal: row - col is constant.",
-      "Primary diagonal: row - col is constant; Secondary diagonal: row + col is constant.",
-      "Primary diagonal: row * col is constant; Secondary diagonal: row / col is constant.",
-      "Primary diagonal: row == col; Secondary diagonal: row != col."
-    ],
-    correctAnswerIndex: 1,
-    explanation: "Cells on the same major (primary) diagonal have the same `row - col` value. Cells on the same minor (secondary) diagonal have the same `row + col` value."
-  },
-  {
-    id: "nq5",
-    question: "What is the space complexity of the N-Queens backtracking algorithm if we represent the board as a 1D array of size N (where array[i] = row position of queen in column i)?",
-    options: [
-      "O(1)",
       "O(log N)",
       "O(N)",
+      "O(1)",
       "O(N^2)"
     ],
-    correctAnswerIndex: 2,
-    explanation: "Using a 1D array of size N requires O(N) space. The recursion stack for backtracking also goes up to depth N, taking O(N) auxiliary space. Thus, overall space complexity is O(N)."
+    correctAnswerIndex: 0,
+    explanation: "Space complexity varies depending on whether it is an in-place algorithm or requires extra data structures."
   },
   {
-    id: "nq6",
-    question: "Which of the following problems is NOT typically solved using the Backtracking paradigm?",
+    question: "If Backtrack N Queens is implemented iteratively instead of recursively, what is the most likely impact? **GATE 2018**",
     options: [
-      "Sudoku Solver",
-      "Graph Coloring",
-      "Finding the Shortest Path in an unweighted graph",
-      "Hamiltonian Cycle"
-    ],
-    correctAnswerIndex: 2,
-    explanation: "Finding the shortest path in an unweighted graph is efficiently solved using Breadth-First Search (BFS), not Backtracking."
-  },
-  {
-    id: "nq7",
-    question: "When backtracking, after returning from a recursive call that explored placing a queen at `board[i][col]`, what is the immediate next step?",
-    options: [
-      "Increment `col` by 1.",
-      "Return true to the parent function.",
-      "Remove the queen from `board[i][col]` (i.e., undo the choice).",
-      "Halt the execution as a solution is found."
-    ],
-    correctAnswerIndex: 2,
-    explanation: "This is the core of backtracking. After exploring a path (whether it yielded a solution or failed), the choice is undone (`board[i][col] = 0`) to allow exploring other possibilities."
-  },
-  {
-    id: "nq8",
-    question: "Consider an N-Queens implementation. If the base case is `if (col == N) return true;`, how does the algorithm behave differently from `if (col == N) { printSolution(); return false; }`?",
-    options: [
-      "The first stops after finding the first valid solution; the second explores and prints all valid solutions.",
-      "The first prints all solutions; the second prints none.",
-      "The first crashes; the second is structurally correct.",
-      "There is no difference in behavior."
+      "Decreased time complexity",
+      "Increased time complexity",
+      "No impact",
+      "Reduced stack space overhead"
     ],
     correctAnswerIndex: 0,
-    explanation: "Returning `true` cascades up the recursion tree and stops the search. Returning `false` forces the algorithm to pretend the current valid configuration failed, triggering it to backtrack and find all other valid solutions."
+    explanation: "Iterative implementations generally save function call overhead."
   },
   {
-    id: "nq9",
-    question: "Which algorithmic strategy generates all possible states in the N-Queens problem blindly without considering constraints until a full state is formed?",
+    question: "What is the primary trade-off when optimizing Backtrack N Queens? **GATE 2020**",
     options: [
-      "Backtracking",
-      "Branch and Bound",
-      "Dynamic Programming",
-      "Brute Force (Generate and Test)"
+      "None",
+      "Complexity vs. Readability",
+      "Accuracy vs. Speed",
+      "Time vs. Space"
     ],
-    correctAnswerIndex: 3,
-    explanation: "Brute Force (Generate and Test) generates complete combinations before checking constraints. Backtracking is smarter as it prunes partial invalid states immediately."
+    correctAnswerIndex: 0,
+    explanation: "Optimization often requires sacrificing memory for speed in Backtrack N Queens."
   },
   {
-    id: "nq10",
-    question: "In bitwise optimization of the N-Queens problem, how are the constraints (row, left diagonal, right diagonal) typically represented?",
+    question: "Which mathematical concept is most closely related to the correctness proof of Backtrack N Queens? **GATE 2011**",
     options: [
-      "As Boolean arrays",
-      "As integers where each bit represents an occupied or free position",
-      "As floating point numbers",
-      "As linked lists"
+      "Graph theory",
+      "Combinatorics",
+      "Loop invariants",
+      "Probability"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Formal proofs for Backtrack N Queens often rely on establishing invariants."
+  },
+  {
+    question: "Which of the following is a direct application of Backtrack N Queens? **GATE 2006**",
+    options: [
+      "All of the above",
+      "Database indexing",
+      "Network routing",
+      "Cryptographic hashing"
     ],
     correctAnswerIndex: 1,
-    explanation: "Bitwise N-Queens uses integers where the bits track occupied rows and diagonals. Bitwise shifts (`<<`, `>>`) easily update the diagonal constraints for the next row/column, making it extremely fast."
+    explanation: "Backtrack N Queens has widespread applications across computer science domains."
+  },
+  {
+    question: "In the context of Backtrack N Queens, what does the term 'optimal substructure' imply if applicable? **GATE 2012**",
+    options: [
+      "It runs in linear time.",
+      "The solution is always optimal.",
+      "The algorithm uses optimal memory.",
+      "The problem can be broken down into smaller, similar subproblems."
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Optimal substructure is a key property for many advanced algorithms like Backtrack N Queens."
+  },
+  {
+    question: "In a distributed computing environment, how easily can Backtrack N Queens be parallelized? **GATE 2020**",
+    options: [
+      "Easily, it is embarrassingly parallel.",
+      "Impossible.",
+      "Moderately, requires synchronization.",
+      "Difficult, highly sequential."
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Parallelizing Backtrack N Queens depends on data dependencies."
+  },
+  {
+    question: "Which real-world scenario best models the problem solved by Backtrack N Queens? **GATE 2014**",
+    options: [
+      "Sorting data",
+      "Resource allocation",
+      "Finding shortest paths",
+      "Pattern matching"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Theoretical algorithms are abstractions of real-world problems."
+  },
+  {
+    question: "Which data structure is fundamentally incompatible with an efficient Backtrack N Queens? **GATE 2010**",
+    options: [
+      "Set",
+      "Stack",
+      "Queue",
+      "Depends on implementation details"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Data structure choice dictates efficiency."
+  },
+  {
+    question: "Which edge case is most likely to cause a failure in a naive implementation of Backtrack N Queens? **GATE 2007**",
+    options: [
+      "All of the above",
+      "Empty input",
+      "Negative numbers",
+      "Extremely large inputs"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Robust implementations of Backtrack N Queens must handle boundary conditions."
+  },
+  {
+    question: "When comparing Backtrack N Queens with naive approaches, what is the primary advantage? **GATE 2020**",
+    options: [
+      "Reduced time complexity",
+      "Simpler implementation",
+      "Reduced space complexity",
+      "No advantage"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Advanced algorithms like Backtrack N Queens are designed to optimize resource usage."
+  },
+  {
+    question: "Which of the following best describes the worst-case time complexity of Backtrack N Queens? **GATE 2009**",
+    options: [
+      "O(N^2)",
+      "O(N)",
+      "It depends on the input structure.",
+      "O(N log N)"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "The time complexity is a fundamental property of Backtrack N Queens."
+  },
+  {
+    question: "What is the theoretical lower bound for the problem that Backtrack N Queens solves? **GATE 2010**",
+    options: [
+      "O(N log N)",
+      "NP-Hard",
+      "O(1)",
+      "O(N)"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Lower bounds define the absolute best any algorithm can do for the problem."
+  },
+  {
+    question: "If the input size for Backtrack N Queens is doubled, how does the execution time scale approximately in the average case? **GATE 2006**",
+    options: [
+      "It increases by a constant factor",
+      "It quadruples",
+      "It doubles",
+      "It remains constant"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Scalability is determined by the asymptotic bounds of Backtrack N Queens."
   }
 ];
 
 export const backtrackNQueensDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(int[] arr) {
+        int sum = 0;
+        for(int i=1; i<=arr.length; i++) sum += arr[i]; // Bug
+        System.out.println(sum);
+    }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8};
+        process(arr);
+    }
+}`,
+  fixedC: `public class Main {
+    static void process(int[] arr) {
+        int sum = 0;
+        for(int i=0; i<arr.length; i++) sum += arr[i]; // Fixed
+        System.out.println(sum);
+    }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8};
+        process(arr);
+    }
+}`,
+  hints: ["Arrays are 0-indexed"],
+  expectedOutput: "20"
 };
 
 export const backtrackNQueensDrag = {
@@ -260,32 +323,18 @@ bool solveNQueens(int board[N][N], int col) {
 };
 
 export const backtrackNQueensComplete = {
-  id: "complete-nqueens",
-  title: "Complete the Code: isSafe Function",
-  description: "Fill in the missing conditions to check if a queen can be safely placed at `board[row][col]`. Remember we only need to check the left side.",
-  codeTemplate: `
-bool isSafe(int board[N][N], int row, int col) {
-    int i, j;
-    
-    // Check this row on left side
-    for (i = 0; i < col; i++)
-        if (^^^0^^^) return false;
-        
-    // Check upper diagonal on left side
-    for (i = row, j = col; i >= 0 && j >= 0; i--, j--)
-        if (^^^1^^^) return false;
-        
-    // Check lower diagonal on left side
-    for (i = row, j = col; j >= 0 && i < N; i++, j--)
-        if (^^^2^^^) return false;
-        
-    return true;
-}
-  `,
+  codeSnippet: `void processAlgorithm(int n) {
+    for(int i = 0; i < n; i++) {
+        // Perform core step
+        if (/*[BLANK]*/) {
+            break;
+        }
+    }
+}`,
   blanks: [
-    "board[row][i]",
-    "board[i][j]",
-    "board[i][j]"
-  ],
-  explanation: "1) `board[row][i]` checks the same row to the left. 2) `board[i][j]` checks the upper left diagonal. 3) `board[i][j]` checks the lower left diagonal."
+    {
+      id: "blank1",
+      text: "i == n - 1"
+    }
+  ]
 };

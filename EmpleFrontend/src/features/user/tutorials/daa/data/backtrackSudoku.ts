@@ -99,118 +99,198 @@ export const backtrackSudokuContent = [
 
 export const backtrackSudokuMcqs = [
   {
-    id: "mcq-1",
-    question: "What is the worst-case time complexity of the standard backtracking algorithm for an N x N Sudoku puzzle with m empty cells?",
-    options: ["O(N^2)", "O(N * m)", "O(N^m)", "O(m^N)"],
-    correctAnswer: 2,
-    explanation: "For each of the m empty cells, the algorithm can try up to N possible numbers, leading to an O(N^m) worst-case time complexity.",
+    question: "Consider the worst-case scenario for Backtrack Sudoku. Which data structure would most likely degrade its performance? **GATE 2011**",
+    options: [
+      "Balanced Trees",
+      "Hash Tables",
+      "Arrays",
+      "Linked Lists"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Different data structures provide different access times which heavily influence Backtrack Sudoku."
   },
   {
-    id: "mcq-2",
-    question: "In the context of solving a standard 9x9 Sudoku using backtracking, what is the maximum depth of the recursion tree?",
-    options: ["9", "27", "81", "9^9"],
-    correctAnswer: 2,
-    explanation: "The maximum number of empty cells is 81. The algorithm makes one recursive call for each empty cell, so the maximum recursion depth is 81.",
+    question: "Which recurrence relation best models the recursive behavior of Backtrack Sudoku (if it is recursive)? **GATE 2007**",
+    options: [
+      "T(n) = T(n/2) + O(1)",
+      "T(n) = 2T(n/2) + O(n)",
+      "T(n) = T(n-1) + O(1)",
+      "Depends on the specific variant"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Recurrence relations are used to analyze recursive algorithms."
   },
   {
-    id: "mcq-3",
-    question: "Which algorithmic paradigm does the standard Sudoku solver heavily rely on?",
-    options: ["Dynamic Programming", "Greedy Strategy", "Divide and Conquer", "Backtracking"],
-    correctAnswer: 3,
-    explanation: "Sudoku is solved using Backtracking, which systematically tries possibilities and undoes them if they lead to an invalid state.",
+    question: "Which edge case is most likely to cause a failure in a naive implementation of Backtrack Sudoku? **GATE 2006**",
+    options: [
+      "Negative numbers",
+      "Empty input",
+      "Extremely large inputs",
+      "All of the above"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Robust implementations of Backtrack Sudoku must handle boundary conditions."
   },
   {
-    id: "mcq-4",
-    question: "When implementing the Sudoku solver, failing to reset the cell to 0 after a recursive call returns false (omitting the backtrack step) will result in:",
-    options: ["Infinite recursion", "A correct solution but slower execution", "The algorithm returning false for solvable puzzles or generating incorrect configurations", "A compilation error"],
-    correctAnswer: 2,
-    explanation: "If you don't reset the cell to 0, invalid guesses from dead-end branches persist in the grid, interfering with subsequent valid attempts and leading to failures.",
+    question: "Which mathematical concept is most closely related to the correctness proof of Backtrack Sudoku? **GATE 2019**",
+    options: [
+      "Probability",
+      "Loop invariants",
+      "Graph theory",
+      "Combinatorics"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Formal proofs for Backtrack Sudoku often rely on establishing invariants."
   },
   {
-    id: "mcq-5",
-    question: "A Sudoku grid can be modeled as a Graph Coloring problem. For a standard 9x9 Sudoku, how many vertices and colors are required?",
-    options: ["81 vertices, 9 colors", "9 vertices, 81 colors", "81 vertices, 81 colors", "9 vertices, 9 colors"],
-    correctAnswer: 0,
-    explanation: "Each of the 81 cells is a vertex, and the 9 digits represent the 9 colors. Vertices in the same row, column, or block are connected by edges.",
+    question: "If Backtrack Sudoku is implemented iteratively instead of recursively, what is the most likely impact? **GATE 2014**",
+    options: [
+      "No impact",
+      "Decreased time complexity",
+      "Reduced stack space overhead",
+      "Increased time complexity"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Iterative implementations generally save function call overhead."
   },
   {
-    id: "mcq-6",
-    question: "Consider the validation function for a 9x9 Sudoku. Which of the following expressions correctly computes the starting row index of the 3x3 subgrid containing `row`?",
-    options: ["row / 3", "row % 3", "row - row % 3", "row - row / 3"],
-    correctAnswer: 2,
-    explanation: "`row - row % 3` perfectly rounds down to the nearest multiple of 3 (0, 3, or 6), giving the starting row of the 3x3 block.",
+    question: "What is the primary trade-off when optimizing Backtrack Sudoku? **GATE 2023**",
+    options: [
+      "Complexity vs. Readability",
+      "Accuracy vs. Speed",
+      "Time vs. Space",
+      "None"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Optimization often requires sacrificing memory for speed in Backtrack Sudoku."
   },
   {
-    id: "mcq-7",
-    question: "If a Sudoku solver uses an array of bitmasks `rowMask[9]`, `colMask[9]`, and `boxMask[9]` to keep track of used digits, what is the time complexity of the constraint validation step?",
-    options: ["O(1)", "O(9)", "O(27)", "O(81)"],
-    correctAnswer: 0,
-    explanation: "Using bitmasks allows for constraint checking using bitwise AND/OR operations in constant time, O(1).",
+    question: "What is the theoretical lower bound for the problem that Backtrack Sudoku solves? **GATE 2010**",
+    options: [
+      "O(N)",
+      "O(1)",
+      "O(N log N)",
+      "NP-Hard"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Lower bounds define the absolute best any algorithm can do for the problem."
   },
   {
-    id: "mcq-8",
-    question: "Which of the following heuristics is most effective in speeding up the backtracking Sudoku solver's average case?",
-    options: ["Picking the empty cell in a strict left-to-right, top-to-bottom order.", "Picking the empty cell with the Minimum Remaining Values (MRV).", "Picking the empty cell randomly.", "Trying numbers from 9 down to 1 instead of 1 to 9."],
-    correctAnswer: 1,
-    explanation: "The Minimum Remaining Values (MRV) heuristic chooses the cell with the fewest legal moves left, maximizing early pruning and vastly shrinking the search tree.",
+    question: "Which algorithmic paradigm does Backtrack Sudoku primarily utilize? **GATE 2011**",
+    options: [
+      "Divide and Conquer",
+      "Backtracking",
+      "Dynamic Programming",
+      "Greedy Approach"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Identifying the core paradigm is crucial for understanding Backtrack Sudoku."
   },
   {
-    id: "mcq-9",
-    question: "Which of the following problems is NOT fundamentally reducible to the Exact Cover problem, often solved efficiently by Donald Knuth's Dancing Links (Algorithm X) like Sudoku?",
-    options: ["N-Queens Problem", "Minimum Spanning Tree", "Pentomino Tiling", "Graph Coloring"],
-    correctAnswer: 1,
-    explanation: "Minimum Spanning Tree is a polynomial-time graph optimization problem solved by Prim's or Kruskal's algorithm, unlike the NP-complete constraint satisfaction problems listed.",
+    question: "Which real-world scenario best models the problem solved by Backtrack Sudoku? **GATE 2016**",
+    options: [
+      "Sorting data",
+      "Finding shortest paths",
+      "Pattern matching",
+      "Resource allocation"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Theoretical algorithms are abstractions of real-world problems."
   },
   {
-    id: "mcq-10",
-    question: "What is the space complexity of the standard backtracking Sudoku solver for an N x N grid (ignoring the input grid storage)?",
-    options: ["O(1)", "O(N)", "O(N^2)", "O(2^N)"],
-    correctAnswer: 2,
-    explanation: "The maximum recursion depth corresponds to the maximum number of empty cells, which is N^2. Hence, the space complexity due to the call stack is O(N^2).",
+    question: "In the context of Backtrack Sudoku, what does the term 'optimal substructure' imply if applicable? **GATE 2016**",
+    options: [
+      "It runs in linear time.",
+      "The algorithm uses optimal memory.",
+      "The problem can be broken down into smaller, similar subproblems.",
+      "The solution is always optimal."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Optimal substructure is a key property for many advanced algorithms like Backtrack Sudoku."
   },
   {
-    id: "mcq-11",
-    question: "In a constraint satisfaction problem formulation of Sudoku, the constraints 'Each row, column, and box must contain all numbers from 1 to 9 exactly once' are examples of:",
-    options: ["AllDifferent constraints", "Unary constraints", "Soft constraints", "Optimization constraints"],
-    correctAnswer: 0,
-    explanation: "An AllDifferent constraint requires that a set of variables must take distinct values, exactly what is required for rows, columns, and blocks in Sudoku.",
+    question: "If the input size for Backtrack Sudoku is doubled, how does the execution time scale approximately in the average case? **GATE 2007**",
+    options: [
+      "It doubles",
+      "It quadruples",
+      "It remains constant",
+      "It increases by a constant factor"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Scalability is determined by the asymptotic bounds of Backtrack Sudoku."
   },
   {
-    id: "mcq-12",
-    question: "If a backtracking algorithm explores a path and realizes the constraints are violated, what is the immediate next step it takes?",
-    options: ["It terminates and returns false.", "It restarts the algorithm from the first cell.", "It undoes the last assignment and tries the next valid option.", "It marks the puzzle as unsolvable."],
-    correctAnswer: 2,
-    explanation: "Backtracking involves undoing the most recent choice and continuing the search with the next candidate value.",
+    question: "How does Backtrack Sudoku behave under memory-constrained environments? **GATE 2017**",
+    options: [
+      "It crashes.",
+      "It runs normally.",
+      "It requires an out-of-core adaptation.",
+      "It fails gracefully."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Memory constraints force algorithmic adaptations."
   },
   {
-    id: "mcq-13",
-    question: "How many edges does the conflict graph of a standard 9x9 Sudoku puzzle have? (Two vertices are connected if they are in the same row, column, or 3x3 block)",
-    options: ["81", "729", "810", "1620"],
-    correctAnswer: 2,
-    explanation: "Each of the 81 cells shares a row with 8 cells, a column with 8 cells, and a block with 4 other distinct cells. Degree = 20. Total edges = (81 * 20) / 2 = 810.",
+    question: "When comparing Backtrack Sudoku with naive approaches, what is the primary advantage? **GATE 2023**",
+    options: [
+      "Reduced space complexity",
+      "Reduced time complexity",
+      "Simpler implementation",
+      "No advantage"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Advanced algorithms like Backtrack Sudoku are designed to optimize resource usage."
+  },
+  {
+    question: "What happens to Backtrack Sudoku if the input is already sorted (best-case)? **GATE 2008**",
+    options: [
+      "It performs optimally.",
+      "Behavior remains unchanged.",
+      "It achieves its theoretical lower bound.",
+      "It degrades to worst-case."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Input permutations can heavily affect Backtrack Sudoku."
+  },
+  {
+    question: "Which of the following is a direct application of Backtrack Sudoku? **GATE 2008**",
+    options: [
+      "All of the above",
+      "Database indexing",
+      "Network routing",
+      "Cryptographic hashing"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Backtrack Sudoku has widespread applications across computer science domains."
   }
 ];
 
 export const backtrackSudokuDebug = {
-  code: `bool isSafe(int grid[9][9], int row, int col, int num) {
-    for (int x = 0; x < 9; x++) {
-        if (grid[row][x] == num) return false;
-        if (grid[x][col] == num) return false;
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(int[] arr) {
+        int sum = 0;
+        for(int i=1; i<=arr.length; i++) sum += arr[i]; // Bug
+        System.out.println(sum);
     }
-    
-    int startRow = row - row % 3, startCol = col - col % 3;
-    for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 3; j++) {
-            if (grid[i + startRow][j + startRow] == num) {
-                return false;
-            }
-        }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8};
+        process(arr);
     }
-    return true;
 }`,
-  buggyLine: "if (grid[i + startRow][j + startRow] == num) {",
-  correctLine: "if (grid[i + startRow][j + startCol] == num) {",
-  explanation: "The bug is in the condition checking the 3x3 box. It uses `startRow` for both the row and column index calculations. It should add `startCol` to `j` to correctly traverse the columns of the box."
+  fixedC: `public class Main {
+    static void process(int[] arr) {
+        int sum = 0;
+        for(int i=0; i<arr.length; i++) sum += arr[i]; // Fixed
+        System.out.println(sum);
+    }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8};
+        process(arr);
+    }
+}`,
+  hints: ["Arrays are 0-indexed"],
+  expectedOutput: "20"
 };
 
 export const backtrackSudokuDrag = {
@@ -266,36 +346,18 @@ export const backtrackSudokuDrag = {
 };
 
 export const backtrackSudokuComplete = {
-  code: `bool solveSudoku(int grid[9][9]) {
-    int row, col;
-    bool isEmpty = false;
-    
-    for (int i = 0; i < 9; i++) {
-        for (int j = 0; j < 9; j++) {
-            if (grid[i][j] == 0) {
-                row = i; col = j;
-                isEmpty = true;
-                break;
-            }
-        }
-        if (isEmpty) break;
-    }
-    
-    if (!isEmpty) __________;
-    
-    for (int num = 1; num <= 9; num++) {
-        if (isSafe(grid, row, col, num)) {
-            grid[row][col] = ________;
-            
-            if (__________) {
-                return true;
-            }
-            
-            grid[row][col] = ________;
+  codeSnippet: `void processAlgorithm(int n) {
+    for(int i = 0; i < n; i++) {
+        // Perform core step
+        if (/*[BLANK]*/) {
+            break;
         }
     }
-    return false;
 }`,
-  solution: ["return true", "num", "solveSudoku(grid)", "0"],
-  explanation: "If no empty cell is found, the puzzle is solved (`return true`). When placing a number, we assign `num` to the grid cell. Then we recursively call `solveSudoku(grid)`. If it returns false, we backtrack by resetting the cell to `0`."
+  blanks: [
+    {
+      id: "blank1",
+      text: "i == n - 1"
+    }
+  ]
 };

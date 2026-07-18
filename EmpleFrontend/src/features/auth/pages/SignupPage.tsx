@@ -25,18 +25,10 @@ function getPasswordStrength(pwd: string): { level: number; label: string; color
 export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirm, setShowConfirm] = useState(false)
-  const [form, setForm] = useState({
-    name: '',
-    email: '',
-    college: '',
-    password: '',
-    confirm: '',
-  })
+  const [form, setForm] = useState({ name: '', email: '', college: '', password: '', confirm: '' })
   const [agreed, setAgreed] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-
-  // University autocomplete state
   const [universities, setUniversities] = useState<string[]>([])
   const [showDropdown, setShowDropdown] = useState(false)
   const [fetchingUni, setFetchingUni] = useState(false)
@@ -45,32 +37,30 @@ export default function SignupPage() {
 
   const router = useRouter()
   const sdk = useDescope()
-
   const strength = getPasswordStrength(form.password)
 
   const update = useCallback((field: string, value: string) => {
     setForm((f) => ({ ...f, [field]: value }))
   }, [])
 
-  // Fetch universities when college field changes
   useEffect(() => {
     if (form.college.length < 2) {
       setUniversities([])
       setShowDropdown(false)
       return
     }
-
-    // Debounce — wait 400ms after user stops typing
     if (debounceRef.current) clearTimeout(debounceRef.current)
-
     debounceRef.current = setTimeout(async () => {
       setFetchingUni(true)
       try {
-        const res = await fetch(
-          `http://universities.hipolabs.com/search?name=${encodeURIComponent(form.college)}&country=India`
-        )
+        let res
+        try {
+          res = await fetch(`https://universities.hipolabs.com/search?name=${encodeURIComponent(form.college)}&country=India`)
+        } catch {
+          res = await fetch(`http://universities.hipolabs.com/search?name=${encodeURIComponent(form.college)}&country=India`)
+        }
         const data = await res.json()
-        const names = data.map((u: any) => u.name).slice(0, 8) // max 8 results
+        const names = data.map((u: any) => u.name).slice(0, 8)
         setUniversities(names)
         setShowDropdown(names.length > 0)
       } catch {
@@ -82,7 +72,6 @@ export default function SignupPage() {
     }, 400)
   }, [form.college])
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
@@ -103,14 +92,11 @@ export default function SignupPage() {
     try {
       const redirectUrl = `${window.location.origin}/auth/callback?from=signup`
       const result = await sdk.oauth.start(provider, redirectUrl)
-
       if (result.ok && result.data?.url) {
         window.location.href = result.data.url
         return
       } else {
-        setError(
-          `Failed to start ${provider} login: ${result.error?.errorMessage || 'Not configured in Descope'}`
-        )
+        setError(`Failed to start ${provider} login: ${result.error?.errorMessage || 'Not configured in Descope'}`)
       }
     } catch (err) {
       console.error('Social signup error:', err)
@@ -126,17 +112,14 @@ export default function SignupPage() {
       setError('Please fill in all required fields.')
       return
     }
-
     if (form.password !== form.confirm) {
       setError("Passwords don't match.")
       return
     }
-
     if (!agreed) {
       setError('Please accept the Terms of Service to continue.')
       return
     }
-
     if (strength.level < 2) {
       setError('Please choose a stronger password.')
       return
@@ -145,7 +128,7 @@ export default function SignupPage() {
     setLoading(true)
 
     try {
-      // Step 1: Sign up with password in Descope
+      // Step 1: Sign up with Descope
       const resp = await sdk.password.signUp(form.email, form.password, {
         name: form.name,
         email: form.email,
@@ -153,10 +136,10 @@ export default function SignupPage() {
 
       if (!resp?.ok) {
         console.error('Descope Error:', resp)
-        console.error('Error details:', JSON.stringify(resp?.error))
         const errorCode = resp.error?.errorCode
         if (errorCode === 'E062107') {
-          setError('An account with this email already exists. Please sign in instead.')
+          setError('You already have an account! Redirecting to login...')
+          setTimeout(() => router.replace('/auth/login'), 2000)
         } else {
           setError(`Signup failed: ${resp.error?.errorMessage || 'Please try again.'}`)
         }
@@ -164,13 +147,12 @@ export default function SignupPage() {
       }
 
       const token = resp.data?.sessionJwt
-
       if (!token) {
         setError('No session token received.')
         return
       }
 
-      // Step 2: Sync user to MongoDB first
+      // Step 2: Sync user to MongoDB
       const syncRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/sync`, {
         method: 'POST',
         headers: {
@@ -182,9 +164,20 @@ export default function SignupPage() {
       if (!syncRes.ok) {
         const syncText = await syncRes.text()
         console.error('Sync failed:', syncRes.status, syncText)
+      } else {
+        const syncData = await syncRes.json()
+        if (syncData.isNewUser) {
+          sessionStorage.setItem('show_signup_bonus', 'true')
+        }
       }
 
-      // Step 3: Send verification email via Zoho
+      // Step 3: Set 3 day session
+      const expiry = Date.now() + 3 * 24 * 60 * 60 * 1000
+      localStorage.setItem('token', token)
+      localStorage.setItem('role', 'user')
+      localStorage.setItem('sessionExpiry', expiry.toString())
+
+      // Step 4: Send verification email
       const verifyRes = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/send-verification`,
         {
@@ -199,7 +192,7 @@ export default function SignupPage() {
         console.error('Verification email error:', verifyData)
       }
 
-      // Step 4: Redirect to check email page
+      // Step 5: Redirect to check email page
       router.replace(`/auth/check-email?email=${encodeURIComponent(form.email)}`)
     } catch (err) {
       console.error('Signup error:', err)
@@ -214,9 +207,7 @@ export default function SignupPage() {
       <div className="auth-card-wrap" style={{ maxWidth: 600 }}>
         <div className="auth-card">
           <div className="auth-header">
-            <h1 className="auth-title">
-              Join <em>Emple</em>
-            </h1>
+            <h1 className="auth-title">Join <em>Emple</em></h1>
             <p className="auth-subtitle">Your AI-powered placement journey starts here</p>
           </div>
 
@@ -235,13 +226,11 @@ export default function SignupPage() {
                 <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
               </svg>
             </button>
-
             <button className="auth-social-icon-btn github" onClick={() => handleSocialLogin('github')} title="Sign up with GitHub" type="button">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
               </svg>
             </button>
-
             <button className="auth-social-icon-btn microsoft" onClick={() => handleSocialLogin('microsoft')} title="Sign up with Microsoft" type="button">
               <svg width="20" height="20" viewBox="0 0 24 24">
                 <path fill="#f25022" d="M1 1h10v10H1z" />
@@ -269,10 +258,9 @@ export default function SignupPage() {
               </div>
             </div>
 
-            {/* College with autocomplete */}
             <div className="auth-field" style={{ position: 'relative' }} ref={dropdownRef}>
               <label className="auth-label">College / University</label>
-              <div className="auth-input-wrap">
+              <div className="auth-input-wrap" style={{ position: 'relative' }}>
                 <input
                   className="auth-input"
                   type="text"
@@ -294,37 +282,22 @@ export default function SignupPage() {
                   }} />
                 )}
               </div>
-
               {showDropdown && universities.length > 0 && (
                 <div style={{
-                  position: 'absolute',
-                  top: '100%',
-                  left: 0,
-                  right: 0,
-                  zIndex: 100,
-                  background: '#1a1a1a',
-                  border: '1px solid #2a2a2a',
-                  borderRadius: 8,
-                  marginTop: 4,
-                  maxHeight: 220,
-                  overflowY: 'auto',
+                  position: 'absolute', top: '100%', left: 0, right: 0,
+                  zIndex: 100, background: '#1a1a1a',
+                  border: '1px solid #2a2a2a', borderRadius: 8, marginTop: 4,
+                  maxHeight: 220, overflowY: 'auto',
                   boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
                 }}>
                   {universities.map((uni, i) => (
                     <button
-                      key={i}
-                      type="button"
+                      key={i} type="button"
                       onClick={() => handleSelectUniversity(uni)}
                       style={{
-                        display: 'block',
-                        width: '100%',
-                        textAlign: 'left',
-                        padding: '10px 14px',
-                        background: 'transparent',
-                        border: 'none',
-                        color: '#e5e7eb',
-                        fontSize: 14,
-                        cursor: 'pointer',
+                        display: 'block', width: '100%', textAlign: 'left',
+                        padding: '10px 14px', background: 'transparent',
+                        border: 'none', color: '#e5e7eb', fontSize: 14, cursor: 'pointer',
                         borderBottom: i < universities.length - 1 ? '1px solid #2a2a2a' : 'none',
                       }}
                       onMouseEnter={(e) => (e.currentTarget.style.background = '#2a2a2a')}
@@ -393,8 +366,8 @@ export default function SignupPage() {
             <label className="auth-check-wrap">
               <input type="checkbox" className="auth-check" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} />
               <span className="auth-check-label">
-                I agree to the <Link href="/company/terms-and-conditions" className="auth-link">Terms of Service</Link> and{' '}
-                <Link href="/company/privacy-policy" className="auth-link">Privacy Policy</Link>
+                I agree to the <Link href="/terms" className="auth-link">Terms of Service</Link> and{' '}
+                <Link href="/privacy-policy" className="auth-link">Privacy Policy</Link>
               </span>
             </label>
 
@@ -408,12 +381,9 @@ export default function SignupPage() {
                   </svg>
                   Creating your account…
                 </>
-              ) : (
-                <>Create My Free Account</>
-              )}
+              ) : <>Create My Free Account</>}
             </button>
           </form>
-
           <p className="auth-terms">By signing up, you get access to our free plan - no credit card required.</p>
           <p className="auth-redirect">
             Already have an account?{' '}

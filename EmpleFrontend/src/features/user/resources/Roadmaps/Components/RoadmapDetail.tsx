@@ -5,6 +5,8 @@ import { getRoadmapById } from '../data/index';
 import QuizModal from './QuizModal';
 import SectionCard from './SectionCard';
 import { Search, ChevronLeft, ChevronRight, Filter } from 'lucide-react';
+import { useWallet } from "@/providers/WalletProvider";
+import { useNotification } from "@/providers/NotificationProvider";
 
 const categoryColors: Record<string, { bg: string; text: string }> = {
   "Aptitude": { bg: "rgba(249, 115, 22, 0.15)", text: "#f97316" },
@@ -62,6 +64,10 @@ const RoadmapDetail: React.FC<RoadmapDetailProps> = ({ roadmapId, onBack }) => {
     brand: 'var(--orange)',
     progressBg: 'var(--surface2)',
   };
+
+  const { notifyReward } = useNotification();
+  const { config, refreshWallet } = useWallet();
+  const rewardCoins = config?.ROADMAP?.COMPLETION_REWARD || 50;
 
   const [duration, setDuration] = useState<string>('6 months');
   const roadmap = getRoadmapById(roadmapId, duration);
@@ -146,6 +152,19 @@ const RoadmapDetail: React.FC<RoadmapDetailProps> = ({ roadmapId, onBack }) => {
     }
     setIsLoaded(true);
   }, [roadmapId]);
+
+  useEffect(() => {
+    if (!roadmap || !isLoaded) return;
+    const totalSections = roadmap.totalSections || 1;
+    if (completedSections.size === totalSections && totalSections > 0) {
+      const rewardKey = `roadmap_rewarded_${roadmapId}`;
+      if (!localStorage.getItem(rewardKey)) {
+        notifyReward("Roadmap Completed", "Awesome job!", rewardCoins);
+        refreshWallet();
+        localStorage.setItem(rewardKey, 'true');
+      }
+    }
+  }, [completedSections.size, roadmap, isLoaded, roadmapId, notifyReward, refreshWallet, rewardCoins]);
 
   // Save detailed progress on change
   useEffect(() => {

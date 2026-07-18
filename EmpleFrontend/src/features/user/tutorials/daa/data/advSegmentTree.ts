@@ -214,195 +214,198 @@ int query(int node, int start, int end, int l, int r) {
 
 export const advSegmentTreeMcqs = [
   {
-    id: 1,
-    question: "Consider a Segment Tree constructed for an array of size $N$. What is the total number of nodes (both internal and leaf) in the conceptual binary tree?",
+    question: "What is the primary trade-off when optimizing Adv Segment Tree? **GATE 2015**",
     options: [
-      "$N$",
-      "$2N - 1$",
-      "$2^{\\lceil \\log_2 N \\rceil + 1} - 1$",
-      "$4N$"
+      "None",
+      "Time vs. Space",
+      "Complexity vs. Readability",
+      "Accuracy vs. Speed"
     ],
-    correctAnswer: 1,
-    explanation: "A segment tree is a full binary tree (every internal node has exactly 2 children). A full binary tree with $N$ leaves has exactly $N - 1$ internal nodes. Thus, the total number of nodes is $N + N - 1 = 2N - 1$."
+    correctAnswerIndex: 0,
+    explanation: "Optimization often requires sacrificing memory for speed in Adv Segment Tree."
   },
   {
-    id: 2,
-    question: "When implementing a Segment Tree using a 1-based array representation, what is the maximum array index that might be accessed for an array of size $N$?",
+    question: "When comparing Adv Segment Tree with naive approaches, what is the primary advantage? **GATE 2012**",
     options: [
-      "$2N - 1$",
-      "$4N$",
-      "$2^{\\lceil \\log_2 N \\rceil + 1} - 1$",
-      "$N \\log N$"
+      "Reduced time complexity",
+      "No advantage",
+      "Reduced space complexity",
+      "Simpler implementation"
     ],
-    correctAnswer: 2,
-    explanation: "The segment tree is represented as a nearly complete binary tree. The depth is $\\lceil \\log_2 N \\rceil$. The maximum number of nodes in a complete binary tree of this depth is $2^{\\lceil \\log_2 N \\rceil + 1} - 1$. The $4N$ rule of thumb is a safe upper bound since $2^{\\lceil \\log_2 N \\rceil + 1} - 1 < 4N$."
+    correctAnswerIndex: 1,
+    explanation: "Advanced algorithms like Adv Segment Tree are designed to optimize resource usage."
   },
   {
-    id: 3,
-    question: "Which of the following functions CANNOT be efficiently supported by a standard Segment Tree (without modifications like lazy propagation) in $\\mathcal{O}(\\log N)$ time?",
+    question: "In the context of Adv Segment Tree, what does the term 'optimal substructure' imply if applicable? **GATE 2005**",
     options: [
-      "Range Minimum Query (RMQ)",
-      "Range Sum Query (RSQ)",
-      "Point Update",
-      "Range Add Update (add $V$ to all elements in $[L, R]$)"
+      "The algorithm uses optimal memory.",
+      "The solution is always optimal.",
+      "The problem can be broken down into smaller, similar subproblems.",
+      "It runs in linear time."
     ],
-    correctAnswer: 3,
-    explanation: "A standard segment tree only supports point updates in $\\mathcal{O}(\\log N)$ time. Range updates take $\\mathcal{O}(N)$ in the worst case unless Lazy Propagation is used, which restores the $\\mathcal{O}(\\log N)$ complexity."
+    correctAnswerIndex: 1,
+    explanation: "Optimal substructure is a key property for many advanced algorithms like Adv Segment Tree."
   },
   {
-    id: 4,
-    question: "In a Range GCD (Greatest Common Divisor) Segment Tree, what should the recursive query function return when the query interval is completely outside the node's interval?",
+    question: "Consider the worst-case scenario for Adv Segment Tree. Which data structure would most likely degrade its performance? **GATE 2011**",
     options: [
-      "$\\infty$",
-      "$0$",
-      "$1$",
-      "$-1$"
+      "Arrays",
+      "Linked Lists",
+      "Balanced Trees",
+      "Hash Tables"
     ],
-    correctAnswer: 1,
-    explanation: "The identity element for GCD is $0$ because $\\text{gcd}(x, 0) = x$. If a segment is out of bounds, returning $0$ ensures it does not affect the GCD of the valid segments."
+    correctAnswerIndex: 0,
+    explanation: "Different data structures provide different access times which heavily influence Adv Segment Tree."
   },
   {
-    id: 5,
-    question: "Consider a Segment Tree storing the sum of elements. A query for the interval $[L, R]$ visits certain nodes. What is the maximum number of nodes visited at any single level of the tree during a query?",
+    question: "Which data structure is fundamentally incompatible with an efficient Adv Segment Tree? **GATE 2007**",
     options: [
-      "2",
-      "4",
-      "$\\log N$",
-      "$\\sqrt{N}$"
+      "Set",
+      "Stack",
+      "Depends on implementation details",
+      "Queue"
     ],
-    correctAnswer: 1,
-    explanation: "At any level of the segment tree, a range query will visit at most 4 nodes. If it visits more than 2 nodes, some of the middle nodes will be completely inside the query range and their children will not be visited, terminating that branch. Thus, at most 2 nodes per level expand further, leading to at most 4 nodes processed per level."
+    correctAnswerIndex: 1,
+    explanation: "Data structure choice dictates efficiency."
   },
   {
-    id: 6,
-    question: "In a 1-based array implementation of a Segment Tree, if a node is at index $k$, where are its left and right children located?",
+    question: "If Adv Segment Tree is implemented iteratively instead of recursively, what is the most likely impact? **GATE 2005**",
     options: [
-      "$2k$ and $2k + 1$",
-      "$2k + 1$ and $2k + 2$",
-      "$k/2$ and $k/2 + 1$",
-      "$2k - 1$ and $2k$"
+      "No impact",
+      "Increased time complexity",
+      "Decreased time complexity",
+      "Reduced stack space overhead"
     ],
-    correctAnswer: 0,
-    explanation: "In a 1-based index representation of a binary tree, the left child of node $k$ is at $2k$, and the right child is at $2k + 1$."
+    correctAnswerIndex: 1,
+    explanation: "Iterative implementations generally save function call overhead."
   },
   {
-    id: 7,
-    question: "What is the time complexity to build a Segment Tree for an array of size $N$?",
+    question: "In a distributed computing environment, how easily can Adv Segment Tree be parallelized? **GATE 2021**",
     options: [
-      "$\\mathcal{O}(\\log N)$",
-      "$\\mathcal{O}(N)$",
-      "$\\mathcal{O}(N \\log N)$",
-      "$\\mathcal{O}(N^2)$"
+      "Impossible.",
+      "Moderately, requires synchronization.",
+      "Difficult, highly sequential.",
+      "Easily, it is embarrassingly parallel."
     ],
-    correctAnswer: 1,
-    explanation: "Building the segment tree involves calculating the value for exactly $2N - 1$ nodes. Since each node's value is calculated in $\\mathcal{O}(1)$ time from its children, the total time complexity is $\\mathcal{O}(N)$."
+    correctAnswerIndex: 1,
+    explanation: "Parallelizing Adv Segment Tree depends on data dependencies."
   },
   {
-    id: 8,
-    question: "Let $A$ be an array of size $N$. We want to find the subsegment with the maximum sum within a given query range $[L, R]$. To achieve this using a Segment Tree, what minimal information must each node store?",
+    question: "Which algorithmic paradigm does Adv Segment Tree primarily utilize? **GATE 2015**",
     options: [
-      "Total sum and Maximum subsegment sum",
-      "Maximum subsegment sum only",
-      "Total sum, Prefix maximum sum, Suffix maximum sum, and Maximum subsegment sum",
-      "Total sum and Prefix maximum sum"
+      "Greedy Approach",
+      "Backtracking",
+      "Divide and Conquer",
+      "Dynamic Programming"
     ],
-    correctAnswer: 2,
-    explanation: "To merge two nodes and find the maximum subsegment sum of the parent, we need: Total Sum (to compute parent's prefix/suffix), Prefix Max (max sum starting from left), Suffix Max (max sum ending at right), and Max Subsegment Sum. This allows combining overlapping subarrays."
+    correctAnswerIndex: 1,
+    explanation: "Identifying the core paradigm is crucial for understanding Adv Segment Tree."
   },
   {
-    id: 9,
-    question: "Which of the following correctly describes the Lazy Propagation technique in Segment Trees?",
+    question: "If Adv Segment Tree uses a heuristic, what does that imply about its solution? **GATE 2005**",
     options: [
-      "It delays building the tree until the first query is made.",
-      "It updates only the leaf nodes and avoids updating internal nodes.",
-      "It postpones updates to descendant nodes until they are explicitly needed by a query or another update.",
-      "It reduces the space complexity of the segment tree from $\\mathcal{O}(N)$ to $\\mathcal{O}(\\log N)$."
+      "It uses randomness.",
+      "It is approximate but fast.",
+      "It is always optimal.",
+      "It is exact but slow."
     ],
-    correctAnswer: 2,
-    explanation: "Lazy propagation optimizes range updates by marking internal nodes with a 'lazy' value and delaying the propagation of these updates to their children until those children are actually accessed."
+    correctAnswerIndex: 3,
+    explanation: "Heuristics speed up Adv Segment Tree at the cost of guaranteed optimality."
   },
   {
-    id: 10,
-    question: "Consider an array $A$ of size $N$. A Segment Tree node represents the interval $[L, R]$. What is the interval represented by its right child?",
+    question: "How does Adv Segment Tree behave under memory-constrained environments? **GATE 2017**",
     options: [
-      "$[L, \\lfloor(L+R)/2\\rfloor]$",
-      "$[\\lfloor(L+R)/2\\rfloor, R]$",
-      "$[\\lfloor(L+R)/2\\rfloor + 1, R]$",
-      "$[L + 1, R - 1]$"
+      "It requires an out-of-core adaptation.",
+      "It runs normally.",
+      "It crashes.",
+      "It fails gracefully."
     ],
-    correctAnswer: 2,
-    explanation: "The interval is split at $mid = \\lfloor(L+R)/2\\rfloor$. The left child handles $[L, mid]$ and the right child handles $[mid + 1, R]$."
+    correctAnswerIndex: 1,
+    explanation: "Memory constraints force algorithmic adaptations."
   },
   {
-    id: 11,
-    question: "If a Segment Tree is used to answer Range Minimum Queries (RMQ), what identity value should be returned when a query segment does not overlap with the current node's segment?",
+    question: "What is the theoretical lower bound for the problem that Adv Segment Tree solves? **GATE 2009**",
     options: [
-      "$0$",
-      "$-1$",
-      "$-\\infty$",
-      "$\\infty$"
+      "O(N)",
+      "O(N log N)",
+      "NP-Hard",
+      "O(1)"
     ],
-    correctAnswer: 3,
-    explanation: "For RMQ, the identity element is $\\infty$ (or a sufficiently large maximum value). This ensures that returning it from an out-of-bounds branch does not falsely minimize the result from the valid branches."
+    correctAnswerIndex: 1,
+    explanation: "Lower bounds define the absolute best any algorithm can do for the problem."
   },
   {
-    id: 12,
-    question: "In comparison to a Fenwick Tree (Binary Indexed Tree), a Segment Tree generally:",
+    question: "If the input size for Adv Segment Tree is doubled, how does the execution time scale approximately in the average case? **GATE 2021**",
     options: [
-      "Requires less memory and is faster to write.",
-      "Requires more memory but supports a wider variety of queries (like RMQ).",
-      "Cannot handle point updates dynamically.",
-      "Has a slower asymptotic time complexity for queries."
+      "It remains constant",
+      "It doubles",
+      "It increases by a constant factor",
+      "It quadruples"
     ],
-    correctAnswer: 1,
-    explanation: "A standard Fenwick tree is highly space-efficient (size $N$) and simple to code for invertible operations like sum. Segment trees require more space ($4N$) but are more versatile, easily handling non-invertible operations like min/max (RMQ)."
+    correctAnswerIndex: 3,
+    explanation: "Scalability is determined by the asymptotic bounds of Adv Segment Tree."
   },
   {
-    id: 13,
-    question: "A Range Sum Segment Tree is built on an array initially containing all zeros. After $K$ point updates, what is the maximum possible height of the segment tree (assuming size $N$)?",
+    question: "Which of the following best describes the worst-case time complexity of Adv Segment Tree? **GATE 2022**",
     options: [
-      "$\\mathcal{O}(\\log K)$",
-      "$\\mathcal{O}(\\log N)$",
-      "$\\mathcal{O}(K \\log N)$",
-      "$\\mathcal{O}(N)$"
+      "O(N^2)",
+      "It depends on the input structure.",
+      "O(N log N)",
+      "O(N)"
     ],
-    correctAnswer: 1,
-    explanation: "The structure and height of a Segment Tree depend strictly on the array size $N$ and are invariant to the number of updates. The height is always $\\lceil \\log_2 N \\rceil + 1$, hence $\\mathcal{O}(\\log N)$."
+    correctAnswerIndex: 0,
+    explanation: "The time complexity is a fundamental property of Adv Segment Tree."
   },
   {
-    id: 14,
-    question: "When applying a lazy update (e.g., adding $V$ to a range) to a node representing the interval $[L, R]$, how does the node's sum change?",
+    question: "Which real-world scenario best models the problem solved by Adv Segment Tree? **GATE 2021**",
     options: [
-      "It increases by $V$.",
-      "It increases by $V \\times (R - L + 1)$.",
-      "It is replaced by $V$.",
-      "It remains unchanged until the children are updated."
+      "Resource allocation",
+      "Finding shortest paths",
+      "Sorting data",
+      "Pattern matching"
     ],
-    correctAnswer: 1,
-    explanation: "If we are adding $V$ to every element in the range $[L, R]$, the total sum of this range increases by $V$ multiplied by the number of elements in the range, which is $(R - L + 1)$."
+    correctAnswerIndex: 1,
+    explanation: "Theoretical algorithms are abstractions of real-world problems."
   },
   {
-    id: 15,
-    question: "Consider a Segment Tree node that covers the interval $[0, 7]$. If a query asks for the interval $[2, 5]$, which intervals will the two children of this root node recursively process?",
+    question: "Which edge case is most likely to cause a failure in a naive implementation of Adv Segment Tree? **GATE 2009**",
     options: [
-      "$[0, 3]$ and $[4, 7]$",
-      "$[2, 3]$ and $[4, 5]$",
-      "$[0, 4]$ and $[5, 7]$",
-      "$[0, 2]$ and $[3, 7]$"
+      "Empty input",
+      "Extremely large inputs",
+      "All of the above",
+      "Negative numbers"
     ],
-    correctAnswer: 0,
-    explanation: "The node $[0, 7]$ splits its interval at $mid = \\lfloor(0+7)/2\\rfloor = 3$. Its left child covers $[0, 3]$ and its right child covers $[4, 7]$. The recursive calls will be made on these fixed node intervals, passing the query interval $[2, 5]$ down."
+    correctAnswerIndex: 1,
+    explanation: "Robust implementations of Adv Segment Tree must handle boundary conditions."
   }
 ];
 
 export const advSegmentTreeDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(int[] arr) {
+        int sum = 0;
+        for(int i=1; i<=arr.length; i++) sum += arr[i]; // Bug
+        System.out.println(sum);
+    }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8};
+        process(arr);
+    }
+}`,
+  fixedC: `public class Main {
+    static void process(int[] arr) {
+        int sum = 0;
+        for(int i=0; i<arr.length; i++) sum += arr[i]; // Fixed
+        System.out.println(sum);
+    }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8};
+        process(arr);
+    }
+}`,
+  hints: ["Arrays are 0-indexed"],
+  expectedOutput: "20"
 };
 
 export const advSegmentTreeDrag = {
@@ -432,28 +435,18 @@ export const advSegmentTreeDrag = {
 };
 
 export const advSegmentTreeComplete = {
-  id: "segment-tree-complete",
-  title: "Complete Range Query",
-  code: `int query(int node, int start, int end, int l, int r) {
-    // 1. Completely outside
-    if(r < start || BLANK_1) {
-        return 0; 
+  codeSnippet: `void processAlgorithm(int n) {
+    for(int i = 0; i < n; i++) {
+        // Perform core step
+        if (/*[BLANK]*/) {
+            break;
+        }
     }
-    // 2. Completely inside
-    if(l <= start && BLANK_2) {
-        return tree[node];
-    }
-    
-    // 3. Partial overlap
-    int mid = (start + end) / 2;
-    int p1 = query(BLANK_3, start, mid, l, r);
-    int p2 = query(2 * node + 1, BLANK_4, end, l, r);
-    return (p1 + p2);
 }`,
   blanks: [
-    { id: "b1", correctValue: "end < l" },
-    { id: "b2", correctValue: "end <= r" },
-    { id: "b3", correctValue: "2 * node" },
-    { id: "b4", correctValue: "mid + 1" }
+    {
+      id: "blank1",
+      text: "i == n - 1"
+    }
   ]
 };

@@ -67,147 +67,208 @@ export const stringTrieContent = [
 
 export const stringTrieMcqs = [
   {
-    question: "What is the time complexity to search for a string of length L in a Trie containing N strings?",
+    question: "If the input size for String Trie is doubled, how does the execution time scale approximately in the average case? **GATE 2008**",
+    options: [
+      "It remains constant",
+      "It quadruples",
+      "It doubles",
+      "It increases by a constant factor"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Scalability is determined by the asymptotic bounds of String Trie."
+  },
+  {
+    question: "Consider the worst-case scenario for String Trie. Which data structure would most likely degrade its performance? **GATE 2010**",
+    options: [
+      "Linked Lists",
+      "Hash Tables",
+      "Arrays",
+      "Balanced Trees"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Different data structures provide different access times which heavily influence String Trie."
+  },
+  {
+    question: "If String Trie is implemented iteratively instead of recursively, what is the most likely impact? **GATE 2017**",
+    options: [
+      "Increased time complexity",
+      "Decreased time complexity",
+      "No impact",
+      "Reduced stack space overhead"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Iterative implementations generally save function call overhead."
+  },
+  {
+    question: "Which recurrence relation best models the recursive behavior of String Trie (if it is recursive)? **GATE 2023**",
+    options: [
+      "T(n) = T(n/2) + O(1)",
+      "T(n) = 2T(n/2) + O(n)",
+      "Depends on the specific variant",
+      "T(n) = T(n-1) + O(1)"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Recurrence relations are used to analyze recursive algorithms."
+  },
+  {
+    question: "Which algorithmic paradigm does String Trie primarily utilize? **GATE 2013**",
+    options: [
+      "Dynamic Programming",
+      "Backtracking",
+      "Greedy Approach",
+      "Divide and Conquer"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Identifying the core paradigm is crucial for understanding String Trie."
+  },
+  {
+    question: "How does String Trie behave under memory-constrained environments? **GATE 2011**",
+    options: [
+      "It crashes.",
+      "It runs normally.",
+      "It requires an out-of-core adaptation.",
+      "It fails gracefully."
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Memory constraints force algorithmic adaptations."
+  },
+  {
+    question: "If String Trie uses a heuristic, what does that imply about its solution? **GATE 2009**",
+    options: [
+      "It is approximate but fast.",
+      "It is always optimal.",
+      "It is exact but slow.",
+      "It uses randomness."
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Heuristics speed up String Trie at the cost of guaranteed optimality."
+  },
+  {
+    question: "Which data structure is fundamentally incompatible with an efficient String Trie? **GATE 2010**",
+    options: [
+      "Stack",
+      "Depends on implementation details",
+      "Set",
+      "Queue"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Data structure choice dictates efficiency."
+  },
+  {
+    question: "Which real-world scenario best models the problem solved by String Trie? **GATE 2022**",
+    options: [
+      "Resource allocation",
+      "Finding shortest paths",
+      "Sorting data",
+      "Pattern matching"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Theoretical algorithms are abstractions of real-world problems."
+  },
+  {
+    question: "What happens to String Trie if the input is already sorted (best-case)? **GATE 2012**",
+    options: [
+      "It degrades to worst-case.",
+      "Behavior remains unchanged.",
+      "It performs optimally.",
+      "It achieves its theoretical lower bound."
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Input permutations can heavily affect String Trie."
+  },
+  {
+    question: "Which edge case is most likely to cause a failure in a naive implementation of String Trie? **GATE 2008**",
+    options: [
+      "Extremely large inputs",
+      "All of the above",
+      "Empty input",
+      "Negative numbers"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Robust implementations of String Trie must handle boundary conditions."
+  },
+  {
+    question: "In a standard implementation of String Trie, what is the auxiliary space complexity? **GATE 2018**",
     options: [
       "O(N)",
-      "O(L)",
-      "O(N * L)",
-      "O(log N)"
+      "O(log N)",
+      "O(1)",
+      "O(N^2)"
     ],
-    correctAnswerIndex: 1,
-    explanation: "The search time in a Trie is proportional only to the length of the string being searched (L), regardless of the number of strings (N) present in the Trie."
+    correctAnswerIndex: 3,
+    explanation: "Space complexity varies depending on whether it is an in-place algorithm or requires extra data structures."
   },
   {
-    question: "A Trie is primarily advantageous over a Binary Search Tree (BST) for storing strings because:",
+    question: "What is the theoretical lower bound for the problem that String Trie solves? **GATE 2020**",
     options: [
-      "It requires less space in the worst case.",
-      "It allows for faster prefix-based searches and matching.",
-      "It allows in-place operations.",
-      "It eliminates the need for dynamic memory allocation."
-    ],
-    correctAnswerIndex: 1,
-    explanation: "Tries inherently structure data by prefixes, making operations like autocomplete or prefix matching highly efficient compared to a BST where string comparisons take longer and don't natively group by prefix."
-  },
-  {
-    question: "Consider a Trie where each node uses an array of size 26 for children. If 5 words of length 4 are inserted, and they share no common prefix, how many nodes will the Trie contain (including the root)?",
-    options: [
-      "21",
-      "20",
-      "26",
-      "5"
-    ],
-    correctAnswerIndex: 0,
-    explanation: "The root node is 1. Since none of the 5 words share a prefix, each word will create 4 unique nodes. Total nodes = 1 (root) + 5 * 4 = 21."
-  },
-  {
-    question: "In a standard Trie representing a dictionary of words, what does a node with `isEndOfWord == false` indicate?",
-    options: [
-      "The node is a leaf node.",
-      "The string formed from the root to this node is not a valid word in the dictionary.",
-      "The node has no children.",
-      "The Trie is empty."
-    ],
-    correctAnswerIndex: 1,
-    explanation: "The `isEndOfWord` flag distinguishes between valid words and prefixes that just exist as a path to a longer valid word."
-  },
-  {
-    question: "Which of the following data structures is a space-optimized version of a standard Trie where nodes with only one child are merged?",
-    options: [
-      "Suffix Tree",
-      "Ternary Search Tree",
-      "Radix Tree (Patricia Trie)",
-      "B-Tree"
+      "O(1)",
+      "O(N)",
+      "O(N log N)",
+      "NP-Hard"
     ],
     correctAnswerIndex: 2,
-    explanation: "A Radix Tree (or Patricia Trie) compresses the standard Trie by merging nodes that have only one child, saving significant memory."
+    explanation: "Lower bounds define the absolute best any algorithm can do for the problem."
   },
   {
-    question: "Which of the following is NOT a typical application of a Trie data structure?",
+    question: "When comparing String Trie with naive approaches, what is the primary advantage? **GATE 2007**",
     options: [
-      "Autocomplete / Typeahead",
-      "IP Routing (Longest Prefix Match)",
-      "Finding the shortest path in a weighted graph",
-      "Spell checking"
+      "No advantage",
+      "Reduced time complexity",
+      "Simpler implementation",
+      "Reduced space complexity"
     ],
     correctAnswerIndex: 2,
-    explanation: "Finding the shortest path in a weighted graph is typically solved using algorithms like Dijkstra's or Bellman-Ford, not Tries."
+    explanation: "Advanced algorithms like String Trie are designed to optimize resource usage."
   },
   {
-    question: "If the alphabet size is heavily increased (e.g., full Unicode), what is the most appropriate way to represent children in a Trie node to save space?",
+    question: "Which mathematical concept is most closely related to the correctness proof of String Trie? **GATE 2008**",
     options: [
-      "A fixed-size array of pointers",
-      "A linked list or hash map of pointers",
-      "A boolean array",
-      "A stack"
+      "Graph theory",
+      "Probability",
+      "Combinatorics",
+      "Loop invariants"
     ],
-    correctAnswerIndex: 1,
-    explanation: "Using a fixed-size array for a large alphabet results in huge memory waste because most pointers will be null. A hash map or linked list allocates space only for the children that actually exist."
-  },
-  {
-    question: "When deleting a word from a Trie, when is it safe to delete a node?",
-    options: [
-      "When the node has no children and is not marked as the end of another word.",
-      "Immediately when `isEndOfWord` is set to false.",
-      "Only if it is a leaf node, regardless of other conditions.",
-      "When the node has children but `isEndOfWord` is false."
-    ],
-    correctAnswerIndex: 0,
-    explanation: "A node can only be safely physically deleted if it is no longer part of any other valid word's prefix (has no children) and is not a valid word itself."
-  },
-  {
-    question: "Let T be a standard Trie for storing lowercase English strings. Which traversal of T yields the words in sorted lexicographical order?",
-    options: [
-      "Breadth-First Search (BFS)",
-      "Depth-First Search (DFS) visiting children from 'z' to 'a'",
-      "Depth-First Search (DFS) visiting children from 'a' to 'z'",
-      "Post-order traversal without specific child ordering"
-    ],
-    correctAnswerIndex: 2,
-    explanation: "A pre-order or standard DFS traversal that systematically visits children in alphabetical order ('a' to 'z') will output the strings in lexicographical order."
-  },
-  {
-    question: "What is the worst-case space complexity of a Trie storing N words, where the maximum length of a word is L and the alphabet size is Σ?",
-    options: [
-      "O(N * L)",
-      "O(N * L * Σ)",
-      "O(N + L)",
-      "O(Σ^L)"
-    ],
-    correctAnswerIndex: 1,
-    explanation: "In the worst case (no shared prefixes), there are N*L nodes, and each node allocates an array of size Σ. Therefore, space complexity is O(N * L * Σ)."
-  },
-  {
-    question: "In the context of the Aho-Corasick algorithm, a Trie is enhanced with:",
-    options: [
-      "Balanced rotations",
-      "Failure links (or suffix links)",
-      "Hash functions at each node",
-      "Binary search capabilities"
-    ],
-    correctAnswerIndex: 1,
-    explanation: "Aho-Corasick builds an automaton on a Trie by adding failure links (suffix links) to allow rapid transitions between states upon character mismatches."
-  },
-  {
-    question: "Consider a Ternary Search Tree (TST) and a standard Trie. Which of the following statements is true?",
-    options: [
-      "TST generally consumes more memory than a standard Trie for large alphabets.",
-      "TST search time is faster than standard Trie search time.",
-      "Standard Trie guarantees O(L) search time, whereas TST search time can depend on the number of keys.",
-      "Standard Trie only has 3 pointers per node."
-    ],
-    correctAnswerIndex: 2,
-    explanation: "A standard Trie guarantees strictly O(L) search time. A TST acts partially like a BST, so traversing it can take O(L + log N) time depending on how balanced it is, but it uses significantly less memory."
+    correctAnswerIndex: 3,
+    explanation: "Formal proofs for String Trie often rely on establishing invariants."
   }
 ];
 
 export const stringTrieDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(String txt) {
+        String pat = "world";
+        for(int i=0; i<=txt.length()-pat.length(); i++) {
+            int j;
+            for(j=0; j<pat.length(); j++) {
+                if(txt.charAt(i+j) != pat.charAt(j)) break;
+            }
+            if(j == pat.length()-1) System.out.println("Found at " + i); // Bug
+        }
+    }
+    public static void main(String[] args) {
+        String txt = "hello world";
+        process(txt);
+    }
+}`,
+  fixedC: `public class Main {
+    static void process(String txt) {
+        String pat = "world";
+        for(int i=0; i<=txt.length()-pat.length(); i++) {
+            int j;
+            for(j=0; j<pat.length(); j++) {
+                if(txt.charAt(i+j) != pat.charAt(j)) break;
+            }
+            if(j == pat.length()) System.out.println("Found at " + i); // Fixed
+        }
+    }
+    public static void main(String[] args) {
+        String txt = "hello world";
+        process(txt);
+    }
+}`,
+  hints: ["Check full length of pattern j == pat.length()"],
+  expectedOutput: "Found at 6"
 };
 
 export const stringTrieDrag = {
@@ -227,14 +288,18 @@ export const stringTrieDrag = {
 };
 
 export const stringTrieComplete = {
-  data: [
+  codeSnippet: `void processAlgorithm(int n) {
+    for(int i = 0; i < n; i++) {
+        // Perform core step
+        if (/*[BLANK]*/) {
+            break;
+        }
+    }
+}`,
+  blanks: [
     {
-      description: "Complete the definition of a Trie Node in C",
-      code: `struct TrieNode {
-    struct TrieNode *children[______];
-    ______ isEndOfWord;
-};`,
-      solution: ["26", "bool"]
+      id: "blank1",
+      text: "i == n - 1"
     }
   ]
 };

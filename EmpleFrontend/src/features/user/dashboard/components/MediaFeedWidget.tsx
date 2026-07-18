@@ -1,5 +1,6 @@
 "use client";
 
+import { LOGO_URL } from '@/shared/constants/assets'
 import { Bell, ChevronDown, ExternalLink, Link as LinkIcon, Briefcase, GraduationCap } from "lucide-react";
 
 export default function MediaFeedWidget() {
@@ -22,7 +23,7 @@ export default function MediaFeedWidget() {
             {/* Logo & Bell */}
             <div className="flex justify-between items-start -mt-8 mb-2">
               <div className="w-16 h-16 bg-white border-2 border-[#1b1f23] rounded flex items-center justify-center p-1 shrink-0 z-10">
-                <img src="/logo-final.png" alt="Emple" className="w-full h-full object-contain" />
+                <img src={LOGO_URL} alt="Emple" className="w-full h-full object-contain" />
               </div>
               <div className="mt-10 text-gray-300 hover:text-white cursor-pointer transition-colors">
                 <Bell size={20} className="fill-current" />
@@ -49,7 +50,7 @@ export default function MediaFeedWidget() {
         <div className="rounded-xl overflow-hidden border border-[#4a2a22] bg-[#2d120d] flex flex-col p-4">
           <div className="flex items-center gap-4 mb-4">
             <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center p-1.5 shrink-0">
-              <img src="/logo-final.png" alt="Emple Learning" className="w-full h-full object-contain" />
+              <img src={LOGO_URL} alt="Emple Learning" className="w-full h-full object-contain" />
             </div>
             <div className="flex-1">
               <h3 className="text-[22px] font-bold text-white leading-tight mb-0.5">Emple Learning</h3>
@@ -83,7 +84,7 @@ export default function MediaFeedWidget() {
           {/* Top Info */}
           <div className="flex items-center gap-6 mb-4">
             <div className="w-20 h-20 bg-[#121212] rounded-full flex items-center justify-center shrink-0 border border-white/10 relative">
-               <img src="/logo-final.png" alt="Emple Learning" className="w-[60%] h-[60%] object-contain scale-[1.2]" />
+               <img src={LOGO_URL} alt="Emple Learning" className="w-[60%] h-[60%] object-contain scale-[1.2]" />
             </div>
             <div className="flex-1">
               <h3 className="text-[16px] font-medium text-white mb-3">Emple Learning</h3>

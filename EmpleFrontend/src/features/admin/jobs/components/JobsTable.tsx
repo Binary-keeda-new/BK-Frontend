@@ -7,7 +7,7 @@ import JobFormModal from './JobFormModal'
 import DeleteConfirmationModal from '@/features/admin/question-bank/components/DeleteConfirmation'
 import ToastContainer from '@/features/admin/question-bank/components/ToastContainer'
 
-type Toast = { id: number; message: string; type: 'success' | 'error' }
+type Toast = { id: string; message: string; type: 'success' | 'error' }
 
 export default function JobsTable() {
   const [jobs, setJobs] = useState<Job[]>([])
@@ -19,7 +19,7 @@ export default function JobsTable() {
   const [toasts, setToasts] = useState<Toast[]>([])
 
   const addToast = (message: string, type: 'success' | 'error') => {
-    const id = Date.now()
+    const id = crypto.randomUUID()
     setToasts((prev) => [...prev, { id, message, type }])
     setTimeout(() => {
       setToasts((prev) => prev.filter((t) => t.id !== id))

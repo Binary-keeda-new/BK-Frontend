@@ -265,4 +265,19 @@ export const chapter12_MCQ = [
   }
 ];
 
-export const chapter12_COMPLETE_EXERCISES = [];
+export const chapter12_COMPLETE_EXERCISES = [
+  {
+    template: `public class Main {
+    public static void main(String[] args) {
+        ___ {
+            int x = 10 / 0;
+        } catch(ArithmeticException e) {
+            System.out.println("Error");
+        }
+    }
+}`,
+    blanks: [
+      "try"
+    ]
+  }
+];

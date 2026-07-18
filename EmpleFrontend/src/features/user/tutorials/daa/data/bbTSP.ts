@@ -67,169 +67,198 @@ export const bbTSPContent = [
 
 export const bbTSPMcqs = [
   {
-    "question": "In the Branch and Bound algorithm for solving the Travelling Salesman Problem (TSP), which of the following provides a valid lower bound on the cost of completing a partial tour?",
-    "options": [
-      "The sum of the minimum elements of all rows in the reduced cost matrix.",
-      "The cost of the Minimum Spanning Tree of the unvisited cities.",
-      "The sum of the costs of the edges in the partial tour plus the reduction cost of the modified matrix.",
-      "Both (B) and (C) can be used as valid lower bounding strategies."
+    question: "Which mathematical concept is most closely related to the correctness proof of Bb T S P? **GATE 2013**",
+    options: [
+      "Combinatorics",
+      "Graph theory",
+      "Loop invariants",
+      "Probability"
     ],
-    "correctAnswerIndex": 3,
-    "explanation": "Both matrix reduction (which gives the reduction cost) and finding the Minimum Spanning Tree (like in 1-tree bound) are valid lower bounding techniques for TSP in a branch-and-bound framework."
+    correctAnswerIndex: 0,
+    explanation: "Formal proofs for Bb T S P often rely on establishing invariants."
   },
   {
-    "question": "When generating a child node for moving from city $i$ to city $j$ in the state space tree for TSP, which entries in the cost matrix are set to infinity to prevent invalid tours?",
-    "options": [
-      "Row $i$ and Column $i$",
-      "Row $i$, Column $j$, and $C[j][0]$ (where 0 is the start city)",
-      "Row $j$, Column $i$, and $C[i][j]$",
-      "Only $C[i][j]$ and $C[j][i]$"
+    question: "Which real-world scenario best models the problem solved by Bb T S P? **GATE 2006**",
+    options: [
+      "Pattern matching",
+      "Resource allocation",
+      "Finding shortest paths",
+      "Sorting data"
     ],
-    "correctAnswerIndex": 1,
-    "explanation": "We set the entire row $i$ and column $j$ to infinity because we leave $i$ and enter $j$. We also set $C[j][0]$ to infinity to prevent returning to the start node prematurely."
+    correctAnswerIndex: 3,
+    explanation: "Theoretical algorithms are abstractions of real-world problems."
   },
   {
-    "question": "Consider a matrix reduction process. A row is reduced by subtracting its minimum element. If the original elements of a row were {$\\infty$, 10, 15, 20}, what will be the elements after row reduction?",
-    "options": [
-      "{$\\infty$, 0, 5, 10}",
-      "{$\\infty$, 10, 15, 20}",
-      "{0, 0, 5, 10}",
-      "{$\\infty$, -10, -5, 0}"
+    question: "Which recurrence relation best models the recursive behavior of Bb T S P (if it is recursive)? **GATE 2019**",
+    options: [
+      "T(n) = 2T(n/2) + O(n)",
+      "T(n) = T(n/2) + O(1)",
+      "T(n) = T(n-1) + O(1)",
+      "Depends on the specific variant"
     ],
-    "correctAnswerIndex": 0,
-    "explanation": "The minimum valid element is 10. Subtracting 10 from all elements (excluding $\\infty$) gives {$\\infty$, 0, 5, 10}."
+    correctAnswerIndex: 2,
+    explanation: "Recurrence relations are used to analyze recursive algorithms."
   },
   {
-    "question": "The time complexity of a purely Best-First Search Branch and Bound for TSP in the worst case is:",
-    "options": [
-      "O(N^2 2^N)",
-      "O(N!)",
-      "O(N^3)",
-      "O(2^N)"
+    question: "What is the primary trade-off when optimizing Bb T S P? **GATE 2023**",
+    options: [
+      "Accuracy vs. Speed",
+      "Time vs. Space",
+      "None",
+      "Complexity vs. Readability"
     ],
-    "correctAnswerIndex": 1,
-    "explanation": "In the worst case, the bounding function fails to prune any significant branches, causing the algorithm to generate all $(N-1)!$ possible permutations. Processing each node takes $O(N^2)$, leading to $O(N!)$ overall."
+    correctAnswerIndex: 2,
+    explanation: "Optimization often requires sacrificing memory for speed in Bb T S P."
   },
   {
-    "question": "What is the primary advantage of Branch and Bound over the Dynamic Programming (Held-Karp) approach for solving TSP?",
-    "options": [
-      "Branch and Bound has a better worst-case time complexity.",
-      "Branch and Bound always uses less memory than DP.",
-      "Branch and Bound can aggressively prune the search space, potentially solving practical instances much faster.",
-      "Branch and Bound is an approximation algorithm, thus extremely fast."
+    question: "If the input size for Bb T S P is doubled, how does the execution time scale approximately in the average case? **GATE 2007**",
+    options: [
+      "It remains constant",
+      "It increases by a constant factor",
+      "It quadruples",
+      "It doubles"
     ],
-    "correctAnswerIndex": 2,
-    "explanation": "DP strictly takes $O(N^2 2^N)$ time and $O(N 2^N)$ space. B&B, while having an $O(N!)$ worst-case time, can prune vast portions of the search space, making it faster on many practical inputs."
+    correctAnswerIndex: 0,
+    explanation: "Scalability is determined by the asymptotic bounds of Bb T S P."
   },
   {
-    "question": "During the Branch and Bound execution, a node is pruned if:",
-    "options": [
-      "Its lower bound is strictly less than the current upper bound (best found solution).",
-      "Its lower bound is greater than or equal to the current best complete tour cost.",
-      "It represents a partial tour of length $N/2$.",
-      "The matrix reduction cost is zero."
+    question: "Which algorithmic paradigm does Bb T S P primarily utilize? **GATE 2020**",
+    options: [
+      "Greedy Approach",
+      "Dynamic Programming",
+      "Divide and Conquer",
+      "Backtracking"
     ],
-    "correctAnswerIndex": 1,
-    "explanation": "A node is pruned if its lower bound is $\\ge$ the cost of the best complete tour found so far, as it cannot possibly lead to a strictly better solution."
+    correctAnswerIndex: 0,
+    explanation: "Identifying the core paradigm is crucial for understanding Bb T S P."
   },
   {
-    "question": "Let $C$ be an $N \\times N$ cost matrix. The total cost of matrix reduction is defined as:",
-    "options": [
-      "The sum of minimums subtracted during row reduction only.",
-      "The sum of minimums subtracted during column reduction only.",
-      "The sum of minimums subtracted during both row and subsequent column reductions.",
-      "The minimum value of the entire matrix multiplied by $N$."
+    question: "Which data structure is fundamentally incompatible with an efficient Bb T S P? **GATE 2009**",
+    options: [
+      "Set",
+      "Stack",
+      "Queue",
+      "Depends on implementation details"
     ],
-    "correctAnswerIndex": 2,
-    "explanation": "The total reduction cost is the sum of the values subtracted from rows and columns to ensure there is at least one zero in every row and every column."
+    correctAnswerIndex: 3,
+    explanation: "Data structure choice dictates efficiency."
   },
   {
-    "question": "For a TSP instance with 5 cities, how many child nodes will the root node (representing starting city 1) generate?",
-    "options": [
-      "5",
-      "4",
-      "120",
-      "24"
-    ],
-    "correctAnswerIndex": 1,
-    "explanation": "The root node branches to all unvisited cities. Since there are 5 cities in total and city 1 is already visited, it generates $5-1 = 4$ child nodes."
-  },
-  {
-    "question": "Which data structure is typically used to implement the 'Least Cost Branch and Bound' strategy for TSP?",
-    "options": [
-      "LIFO Stack",
-      "FIFO Queue",
-      "Min-Priority Queue",
-      "Hash Map"
-    ],
-    "correctAnswerIndex": 2,
-    "explanation": "Least Cost Branch and Bound always explores the node with the minimum lower bound next, which is efficiently implemented using a Min-Priority Queue."
-  },
-  {
-    "question": "What is the space complexity of solving TSP using Best-First Search Branch and Bound in the worst case?",
-    "options": [
-      "O(N)",
+    question: "Which of the following best describes the worst-case time complexity of Bb T S P? **GATE 2018**",
+    options: [
       "O(N^2)",
-      "O(N! / 2)",
-      "O(N^2 * (N!))"
+      "It depends on the input structure.",
+      "O(N log N)",
+      "O(N)"
     ],
-    "correctAnswerIndex": 3,
-    "explanation": "In the absolute worst case, the priority queue might store all generated nodes. There are $O(N!)$ nodes, and each node stores an $N \\times N$ reduced cost matrix, taking $O(N^2 * N!)$ space."
+    correctAnswerIndex: 1,
+    explanation: "The time complexity is a fundamental property of Bb T S P."
   },
   {
-    "question": "In the reduction matrix process, why do we need to ensure that every row and column has at least one zero?",
-    "options": [
-      "Because the optimal tour must only use edges with zero cost in the reduced matrix.",
-      "To maximize the reduction cost, which provides the tightest lower bound.",
-      "Because it simplifies the priority queue operations.",
-      "To convert the TSP into an Eulerian circuit problem."
+    question: "Which of the following is a direct application of Bb T S P? **GATE 2020**",
+    options: [
+      "Network routing",
+      "All of the above",
+      "Cryptographic hashing",
+      "Database indexing"
     ],
-    "correctAnswerIndex": 1,
-    "explanation": "Subtracting the maximum possible valid amounts from rows and columns maximizes the lower bound (reduction cost). This tighter bound leads to earlier and more frequent pruning."
+    correctAnswerIndex: 0,
+    explanation: "Bb T S P has widespread applications across computer science domains."
   },
   {
-    "question": "Suppose we branch from a partial tour 1 -> 2 -> 3 to a new city 4. Which of the following entries MUST be set to $\\infty$ in the child's matrix before reduction?",
-    "options": [
-      "Row 3, Column 4, and $C[4][1]$",
-      "Row 1, Column 4, and $C[3][4]$",
-      "Row 4, Column 3, and $C[1][4]$",
-      "Row 3, Column 4, and $C[2][1]$"
+    question: "In the context of Bb T S P, what does the term 'optimal substructure' imply if applicable? **GATE 2015**",
+    options: [
+      "The problem can be broken down into smaller, similar subproblems.",
+      "The algorithm uses optimal memory.",
+      "The solution is always optimal.",
+      "It runs in linear time."
     ],
-    "correctAnswerIndex": 0,
-    "explanation": "We are leaving city 3 and entering city 4, so Row 3 and Column 4 are set to $\\infty$. We also set $C[4][1] = \\infty$ to prevent returning to the starting city (1) prematurely."
+    correctAnswerIndex: 3,
+    explanation: "Optimal substructure is a key property for many advanced algorithms like Bb T S P."
   },
   {
-    "question": "Which statement accurately describes the stability of Branch and Bound for TSP?",
-    "options": [
-      "It is a stable algorithm.",
-      "It is an unstable algorithm.",
-      "Stability is not a defined property for Branch and Bound optimization algorithms.",
-      "It is stable only if the cost matrix is symmetric."
+    question: "What is the theoretical lower bound for the problem that Bb T S P solves? **GATE 2023**",
+    options: [
+      "O(N)",
+      "O(N log N)",
+      "NP-Hard",
+      "O(1)"
     ],
-    "correctAnswerIndex": 2,
-    "explanation": "Stability applies to sorting algorithms (preserving order of equal keys). TSP is an optimization problem, so stability is irrelevant."
+    correctAnswerIndex: 1,
+    explanation: "Lower bounds define the absolute best any algorithm can do for the problem."
   },
   {
-    "question": "If a TSP problem is strictly metric (satisfies triangle inequality), which alternative algorithm provides a guaranteed 1.5-approximation?",
-    "options": [
-      "Held-Karp Dynamic Programming",
-      "Christofides Algorithm",
-      "Nearest Neighbor Heuristic",
-      "Branch and Bound"
+    question: "If Bb T S P uses a heuristic, what does that imply about its solution? **GATE 2013**",
+    options: [
+      "It is approximate but fast.",
+      "It is exact but slow.",
+      "It is always optimal.",
+      "It uses randomness."
     ],
-    "correctAnswerIndex": 1,
-    "explanation": "Christofides algorithm provides a guaranteed 3/2 (or 1.5) approximation ratio for Metric TSP. B&B finds the exact optimal but without a polynomial time guarantee."
+    correctAnswerIndex: 3,
+    explanation: "Heuristics speed up Bb T S P at the cost of guaranteed optimality."
+  },
+  {
+    question: "What happens to Bb T S P if the input is already sorted (best-case)? **GATE 2009**",
+    options: [
+      "Behavior remains unchanged.",
+      "It performs optimally.",
+      "It degrades to worst-case.",
+      "It achieves its theoretical lower bound."
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Input permutations can heavily affect Bb T S P."
+  },
+  {
+    question: "In a distributed computing environment, how easily can Bb T S P be parallelized? **GATE 2005**",
+    options: [
+      "Impossible.",
+      "Easily, it is embarrassingly parallel.",
+      "Moderately, requires synchronization.",
+      "Difficult, highly sequential."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Parallelizing Bb T S P depends on data dependencies."
+  },
+  {
+    question: "Consider the worst-case scenario for Bb T S P. Which data structure would most likely degrade its performance? **GATE 2013**",
+    options: [
+      "Arrays",
+      "Hash Tables",
+      "Balanced Trees",
+      "Linked Lists"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Different data structures provide different access times which heavily influence Bb T S P."
   }
 ];
 
 export const bbTSPDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(int[] arr) {
+        int sum = 0;
+        for(int i=1; i<=arr.length; i++) sum += arr[i]; // Bug
+        System.out.println(sum);
+    }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8};
+        process(arr);
+    }
+}`,
+  fixedC: `public class Main {
+    static void process(int[] arr) {
+        int sum = 0;
+        for(int i=0; i<arr.length; i++) sum += arr[i]; // Fixed
+        System.out.println(sum);
+    }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8};
+        process(arr);
+    }
+}`,
+  hints: ["Arrays are 0-indexed"],
+  expectedOutput: "20"
 };
 
 export const bbTSPDrag = {
@@ -244,7 +273,18 @@ export const bbTSPDrag = {
 };
 
 export const bbTSPComplete = {
-  "title": "Pruning Logic in TSP Branch and Bound",
-  "code": "while (!pq.empty()) {\n    Node* min = pq.top();\n    pq.pop();\n    \n    // If current node's lower bound is strictly greater than or equal to the best cost so far, prune it.\n    if (min->bound _______ bestCost) {\n        continue;\n    }\n    \n    if (min->level == N - 1) {\n        // Calculate complete tour cost\n        int totalCost = min->bound; // Since returning edge is handled/reduced in bounds generally or specifically added.\n        if (totalCost < bestCost) {\n            bestCost = _________;\n        }\n        continue;\n    }\n    \n    for (int j = 0; j < N; j++) {\n        if (!visited(min->path, j)) {\n            // Generate child and push to pq if bound < bestCost\n        }\n    }\n}",
-  "solution": "while (!pq.empty()) {\n    Node* min = pq.top();\n    pq.pop();\n    \n    // If current node's lower bound is strictly greater than or equal to the best cost so far, prune it.\n    if (min->bound >= bestCost) {\n        continue;\n    }\n    \n    if (min->level == N - 1) {\n        // Calculate complete tour cost\n        int totalCost = min->bound; // Since returning edge is handled/reduced in bounds generally or specifically added.\n        if (totalCost < bestCost) {\n            bestCost = totalCost;\n        }\n        continue;\n    }\n    \n    for (int j = 0; j < N; j++) {\n        if (!visited(min->path, j)) {\n            // Generate child and push to pq if bound < bestCost\n        }\n    }\n}"
+  codeSnippet: `void processAlgorithm(int n) {
+    for(int i = 0; i < n; i++) {
+        // Perform core step
+        if (/*[BLANK]*/) {
+            break;
+        }
+    }
+}`,
+  blanks: [
+    {
+      id: "blank1",
+      text: "i == n - 1"
+    }
+  ]
 };

@@ -1,5 +1,5 @@
 "use client";
-
+import { LOGO_URL } from '@/shared/constants/assets'
 import { useState, useRef, useEffect } from "react";
 import {
   Clapperboard,
@@ -16,6 +16,11 @@ import SlideDrawer from "@/shared/components/ui/SlideDrawer";
 import MediaFeedWidget from "@/features/user/dashboard/components/MediaFeedWidget";
 import AIAssistantWidget from "@/features/ai-assistant/components/AIAssistantWidget";
 import EmptyState from "@/shared/components/ui/EmptyState";
+import WalletBadge from "@/features/wallet/components/WalletBadge";
+import { useWallet } from "@/providers/WalletProvider";
+import { useNotification } from "@/providers/NotificationProvider";
+import { MessageCircleQuestion } from "lucide-react";
+import RequestFormDrawer from "@/features/user/requests/components/RequestFormDrawer";
 // import WalletBadge from "@/features/wallet/components/WalletBadge";
 
 type Task = {
@@ -178,17 +183,22 @@ export default function Topbar() {
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const todoRef = useRef<HTMLDivElement>(null);
-
+  const [requestOpen, setRequestOpen] = useState(false);
   const sdk = useDescope();
   const router = useRouter();
 
   const { session, isAuthenticated } = useSession() as any;
   const { user, isUserLoading } = useUser();
+  const { config, refreshWallet } = useWallet();
+  const { notifyReward } = useNotification();
+  
+  const todoReward = config?.TODO?.COMPLETION_REWARD || 5;
 
   const userEmail = user?.email || session?.user?.email || session?.token?.email;
   const fullName = user?.name || session?.user?.name || session?.token?.name;
   const displayName = fullName || userEmail || "User";
 
+  
   const initials = fullName
     ? fullName
         .split(" ")
@@ -212,7 +222,8 @@ export default function Topbar() {
 
   const handleLogout = async () => {
     await sdk.logout();
-    router.push("/landing");
+    localStorage.clear();
+    router.push("/auth/login");
   };
 
   const handleProfile = () => {
@@ -263,10 +274,10 @@ export default function Topbar() {
         {/* Logo */}
         <div
           className="flex items-center cursor-pointer transition-transform hover:scale-105"
-          onClick={() => router.push(isAuthenticated ? "/user/dashboard" : "/landing")}
+          onClick={() => router.push("/")}
         >
           <img
-            src="/logo-final.png"
+            src={LOGO_URL}
             alt="emple"
             className="h-[75px] w-auto object-contain"
           />
@@ -276,7 +287,7 @@ export default function Topbar() {
         <div className="flex items-center gap-1 sm:gap-3">
 
           {/* Coin Badge */}
-          {/* isAuthenticated && <WalletBadge /> */}
+          {isAuthenticated && <WalletBadge />}
 
           {/* Media button */}
           {isAuthenticated && (
@@ -332,6 +343,19 @@ export default function Topbar() {
               )}
             </button>
           )}
+
+
+          {/* Raise a Request button */}
+{isAuthenticated && (
+  <button
+    title="Raise a Request"
+    onClick={() => setRequestOpen(true)}
+    className="w-11 h-11 flex items-center justify-center rounded-full text-[var(--muted2)]
+      transition-all duration-300 hover:-translate-y-[2px] hover:bg-orange-500/10 hover:text-orange-500"
+  >
+    <MessageCircleQuestion size={20} />
+  </button>
+)}
 
           {/* Productivity Button */}
 <button
@@ -456,6 +480,8 @@ export default function Topbar() {
           onMarkAllRead={handleMarkAllRead}
         />
       </SlideDrawer>
+      {/* Request Drawer */}
+<RequestFormDrawer isOpen={requestOpen} onClose={() => setRequestOpen(false)} />
 
     </header>
   );

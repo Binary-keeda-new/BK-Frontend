@@ -5,6 +5,16 @@ export const fetchAllEvents = async () => {
   return res.data || []
 }
 
+export const fetchUpcomingEvents = async () => {
+  const res = await apiRequest('/api/v1/events?upcoming=true') as { data: any[] }
+  return res.data || []
+}
+
+export const fetchEventsByCategory = async (type: string) => {
+  const res = await apiRequest(`/api/v1/events?category=${type}`) as { data: any[] }
+  return res.data || []
+}
+
 export const fetchEventById = async (id: string) => {
   const res = await apiRequest(`/api/v1/events/${id}`) as { data: any }
   return res.data
