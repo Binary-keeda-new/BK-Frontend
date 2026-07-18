@@ -20,7 +20,10 @@ const FOLLOW_UP_TEXT =
 
 // Paths where the widget should stay hidden (landing page + auth flow)
 const HIDDEN_ON = (pathname: string) =>
-  pathname === "/" || pathname.startsWith("/auth");
+  pathname === "/" || 
+  pathname.startsWith("/auth") ||
+  pathname.startsWith("/dashboard") ||
+  pathname.startsWith("/admin");
 
 const HelpChatWidget: React.FC = () => {
   const router = useRouter();

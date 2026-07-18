@@ -32,6 +32,7 @@ export default function SignupPage() {
   const [universities, setUniversities] = useState<string[]>([])
   const [showDropdown, setShowDropdown] = useState(false)
   const [fetchingUni, setFetchingUni] = useState(false)
+  const [autoSignupMessage, setAutoSignupMessage] = useState('')
   const dropdownRef = useRef<HTMLDivElement>(null)
   const debounceRef = useRef<NodeJS.Timeout | null>(null)
 
@@ -43,35 +44,39 @@ export default function SignupPage() {
     setForm((f) => ({ ...f, [field]: value }))
   }, [])
 
+  // Auto-completes signup when arriving here from CallbackPage after a
+  // "login attempted with no existing account" redirect (OAuth flows only).
   useEffect(() => {
-    if (form.college.length < 2) {
+  const notice = sessionStorage.getItem('auth_notice')
+  if (notice) {
+    setAutoSignupMessage(notice)
+    sessionStorage.removeItem('auth_notice')
+  }
+}, [])
+useEffect(() => {
+  if (form.college.length < 2) {
+    setUniversities([])
+    setShowDropdown(false)
+    return
+  }
+  if (debounceRef.current) clearTimeout(debounceRef.current)
+  debounceRef.current = setTimeout(async () => {
+    setFetchingUni(true)
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/universities/search?name=${encodeURIComponent(form.college)}`
+      )
+      const data = await res.json()
+      setUniversities(data.universities || [])
+      setShowDropdown((data.universities || []).length > 0)
+    } catch {
       setUniversities([])
       setShowDropdown(false)
-      return
+    } finally {
+      setFetchingUni(false)
     }
-    if (debounceRef.current) clearTimeout(debounceRef.current)
-    debounceRef.current = setTimeout(async () => {
-      setFetchingUni(true)
-      try {
-        let res
-        try {
-          res = await fetch(`https://universities.hipolabs.com/search?name=${encodeURIComponent(form.college)}&country=India`)
-        } catch {
-          res = await fetch(`http://universities.hipolabs.com/search?name=${encodeURIComponent(form.college)}&country=India`)
-        }
-        const data = await res.json()
-        const names = data.map((u: any) => u.name).slice(0, 8)
-        setUniversities(names)
-        setShowDropdown(names.length > 0)
-      } catch {
-        setUniversities([])
-        setShowDropdown(false)
-      } finally {
-        setFetchingUni(false)
-      }
-    }, 400)
-  }, [form.college])
-
+  }, 400)
+}, [form.college])
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
@@ -90,8 +95,12 @@ export default function SignupPage() {
 
   const handleSocialLogin = async (provider: 'google' | 'github' | 'microsoft') => {
     try {
-      const redirectUrl = `${window.location.origin}/auth/callback?from=signup`
+      sessionStorage.setItem('oauth_intent', 'signup')
+      sessionStorage.setItem('oauth_provider', provider)
+
+      const redirectUrl = `${window.location.origin}/auth/callback`
       const result = await sdk.oauth.start(provider, redirectUrl)
+
       if (result.ok && result.data?.url) {
         window.location.href = result.data.url
         return
@@ -128,7 +137,6 @@ export default function SignupPage() {
     setLoading(true)
 
     try {
-      // Step 1: Sign up with Descope
       const resp = await sdk.password.signUp(form.email, form.password, {
         name: form.name,
         email: form.email,
@@ -152,13 +160,13 @@ export default function SignupPage() {
         return
       }
 
-      // Step 2: Sync user to MongoDB
       const syncRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/sync`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify({ intent: 'signup', provider: 'password' }),
       })
 
       if (!syncRes.ok) {
@@ -171,13 +179,11 @@ export default function SignupPage() {
         }
       }
 
-      // Step 3: Set 3 day session
       const expiry = Date.now() + 3 * 24 * 60 * 60 * 1000
       localStorage.setItem('token', token)
       localStorage.setItem('role', 'user')
       localStorage.setItem('sessionExpiry', expiry.toString())
 
-      // Step 4: Send verification email
       const verifyRes = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/send-verification`,
         {
@@ -192,7 +198,6 @@ export default function SignupPage() {
         console.error('Verification email error:', verifyData)
       }
 
-      // Step 5: Redirect to check email page
       router.replace(`/auth/check-email?email=${encodeURIComponent(form.email)}`)
     } catch (err) {
       console.error('Signup error:', err)
@@ -210,6 +215,12 @@ export default function SignupPage() {
             <h1 className="auth-title">Join <em>Emple</em></h1>
             <p className="auth-subtitle">Your AI-powered placement journey starts here</p>
           </div>
+
+          {autoSignupMessage && (
+            <div className="auth-alert" style={{ marginBottom: 20 }}>
+              <span>{autoSignupMessage}</span>
+            </div>
+          )}
 
           {error && (
             <div className="auth-alert error" style={{ marginBottom: 20 }}>
