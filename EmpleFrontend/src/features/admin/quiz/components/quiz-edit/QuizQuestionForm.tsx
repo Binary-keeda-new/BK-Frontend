@@ -28,6 +28,31 @@ export default function QuizQuestionForm({
     <>
       <div className="mb-6">
         <QuizEditFieldLabel color={t.labelColor}>
+          Question Type *
+        </QuizEditFieldLabel>
+        <div className="flex gap-4 mt-2">
+          {(["MCQ", "MSQ", "NAT"] as const).map((type) => (
+            <label
+              key={type}
+              className="flex items-center gap-2 cursor-pointer text-sm"
+              style={{ color: t.inputText }}
+            >
+              <input
+                type="radio"
+                name={`qtype-${question.id}`}
+                value={type}
+                checked={question.type === type}
+                onChange={() => updateQ(question.id, { type })}
+                className="accent-[var(--clr-accent)] cursor-pointer"
+              />
+              {type}
+            </label>
+          ))}
+        </div>
+      </div>
+
+      <div className="mb-6">
+        <QuizEditFieldLabel color={t.labelColor}>
           Question Text *
         </QuizEditFieldLabel>
 

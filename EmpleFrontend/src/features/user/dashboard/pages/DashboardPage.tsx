@@ -32,6 +32,7 @@ export default function DashboardPage() {
   const router = useRouter()
   const [user, setUser] = useState<User | null>(null)
   const [activity, setActivity] = useState<Activity | null>(null)
+  const [isSubmissionsExpanded, setIsSubmissionsExpanded] = useState(false)
   const { notifyReward } = useNotification()
   
   useEffect(() => {
@@ -100,7 +101,7 @@ export default function DashboardPage() {
     if (isAuthenticated) {
       fetchUser()
     }
-  }, [sessionToken, isAuthenticated, isSessionLoading, router])
+  }, [sessionToken, isAuthenticated, isSessionLoading, router, config?.LOGIN?.DAILY_REWARD, notifyReward, refreshWallet])
 
   if (isSessionLoading || !user || !activity) {
   return <div className="p-6">Loading dashboard...</div>
@@ -108,9 +109,6 @@ export default function DashboardPage() {
 
   const fullName = user.name?.trim() || ''
   const firstName = fullName ? fullName.split(' ')[0] : ''
-
-  const todayStr = new Date().toISOString().split('T')[0];
-  const alreadyClaimed = activity.lastVisitedDate === todayStr;
 
   return (
     <main className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-[22px_24px]">
@@ -127,25 +125,33 @@ export default function DashboardPage() {
       </div>
 
       <div
-        className="grid gap-[18px]
-        grid-cols-1
-        md:grid-cols-2
-        xl:grid-cols-[1fr_1fr_300px]"
+        className={
+          isSubmissionsExpanded
+            ? "block"
+            : "grid gap-[18px] grid-cols-1 md:grid-cols-2 xl:grid-cols-[1fr_1fr_300px]"
+        }
       >
-       <ActivityCalendar
-  activity={activity}
-  token={sessionToken}
-  baseurl={baseurl}
-  onActivityUpdate={setActivity}
-/>
-        <Leaderboard />
+        {!isSubmissionsExpanded && (
+          <>
+            <ActivityCalendar
+              activity={activity}
+              token={sessionToken}
+              baseurl={baseurl}
+              onActivityUpdate={setActivity}
+            />
+            <Leaderboard />
 
-        <div className="md:col-span-2 xl:col-span-1">
-          <HealthFinanceCard />
-        </div>
+            <div className="md:col-span-2 xl:col-span-1">
+              <HealthFinanceCard />
+            </div>
+          </>
+        )}
 
-        <div className="col-span-1 md:col-span-2 xl:col-span-3">
-          <SubmissionsPanel />
+        <div className={isSubmissionsExpanded ? "" : "col-span-1 md:col-span-2 xl:col-span-3"}>
+          <SubmissionsPanel
+            isExpanded={isSubmissionsExpanded}
+            onToggleExpand={() => setIsSubmissionsExpanded(!isSubmissionsExpanded)}
+          />
         </div>
       </div>
     </main>

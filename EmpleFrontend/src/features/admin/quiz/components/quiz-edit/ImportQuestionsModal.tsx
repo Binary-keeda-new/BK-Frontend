@@ -67,57 +67,69 @@ export default function ImportQuestionsModal({
       const question = lines[0];
 
       const optionLines = lines.filter((line) => /^[A-Z][\.\)]\s+/.test(line));
-      const answerLine = lines.find((line) =>
-        /^ANSWER\s*:/i.test(line)
-      );
+      const answerLine = lines.find((line) => /^ANSWER\s*:/i.test(line));
+      const typeLine = lines.find((line) => /^TYPE\s*:/i.test(line));
 
-      if (!question || !optionLines.length || !answerLine) continue;
+      if (!question || !answerLine) continue;
+
+      let parsedType: "MCQ" | "MSQ" | "NAT" | null = null;
+      if (typeLine) {
+        const t = typeLine.replace(/^TYPE\s*:/i, "").trim().toUpperCase();
+        if (t === "MSQ") parsedType = "MSQ";
+        else if (t === "NAT") parsedType = "NAT";
+        else if (t === "MCQ") parsedType = "MCQ";
+      }
+
+      if (parsedType !== "NAT" && !optionLines.length) continue;
 
       const options = optionLines.map((line) =>
         line.replace(/^[A-Z][\.\)]\s+/, "").trim()
       );
 
-      const correctKeys = answerLine
-        .replace(/^ANSWER\s*:/i, "")
-        .split(",")
-        .map((item) => item.trim().toUpperCase())
-        .filter(Boolean);
+      let correctOptions: string[] = [];
 
-      const correctOptions = correctKeys
-        .map((key) => {
-          const match = optionLines.find((line) =>
-            line.toUpperCase().startsWith(`${key}.`) || line.toUpperCase().startsWith(`${key})`)
-          );
-          return match?.replace(/^[A-Z][\.\)]\s+/, "").trim();
-        })
-        .filter((value): value is string => Boolean(value));
+      if (parsedType === "NAT") {
+        correctOptions = [answerLine.replace(/^ANSWER\s*:/i, "").trim()];
+      } else {
+        const correctKeys = answerLine
+          .replace(/^ANSWER\s*:/i, "")
+          .split(",")
+          .map((item) => item.trim().toUpperCase())
+          .filter(Boolean);
 
-      if (!correctOptions.length) continue;
+        correctOptions = correctKeys
+          .map((key) => {
+            const match = optionLines.find(
+              (line) =>
+                line.toUpperCase().startsWith(`${key}.`) ||
+                line.toUpperCase().startsWith(`${key})`)
+            );
+            return match?.replace(/^[A-Z][\.\)]\s+/, "").trim();
+          })
+          .filter((value): value is string => Boolean(value));
 
-      const positiveLine = lines.find((line) =>
-  /^POSITIVE\s*:/i.test(line)
-);
+        if (!correctOptions.length) continue;
+      }
 
-const negativeLine = lines.find((line) =>
-  /^NEGATIVE\s*:/i.test(line)
-);
+      const positiveLine = lines.find((line) => /^POSITIVE\s*:/i.test(line));
+      const negativeLine = lines.find((line) => /^NEGATIVE\s*:/i.test(line));
 
-const positiveMarks = positiveLine
-  ? Number(positiveLine.replace(/^POSITIVE\s*:/i, "").trim())
-  : 4;
+      const positiveMarks = positiveLine
+        ? Number(positiveLine.replace(/^POSITIVE\s*:/i, "").trim())
+        : 4;
 
-const negativeMarks = negativeLine
-  ? Number(negativeLine.replace(/^NEGATIVE\s*:/i, "").trim())
-  : 1;
+      const negativeMarks = negativeLine
+        ? Number(negativeLine.replace(/^NEGATIVE\s*:/i, "").trim())
+        : 1;
 
       questions.push({
-  question,
-  options,
-  correctOptions,
-  questionType: correctOptions.length > 1 ? "MSQ" : "MCQ",
-  positiveMarks: Number.isFinite(positiveMarks) ? positiveMarks : 4,
-  negativeMarks: Number.isFinite(negativeMarks) ? negativeMarks : 1,
-});
+        question,
+        options,
+        correctOptions,
+        questionType: parsedType || (correctOptions.length > 1 ? "MSQ" : "MCQ"),
+        positiveMarks: Number.isFinite(positiveMarks) ? positiveMarks : 4,
+        negativeMarks: Number.isFinite(negativeMarks) ? negativeMarks : 1,
+      });
     }
 
     return questions;
@@ -130,7 +142,7 @@ const negativeMarks = negativeLine
     return arr
       .map((item: any): ParsedQuestion | null => {
         const question = String(item.question ?? "").trim();
-        const rawType = String(item.questionType ?? "").trim().toUpperCase();
+        const rawType = String(item.type ?? item.questionType ?? "").trim().toUpperCase();
 
         const positiveMarks = Number(item.positiveMarks ?? 4);
         const negativeMarks = Number(item.negativeMarks ?? 1);
@@ -195,7 +207,7 @@ const negativeMarks = negativeLine
       if (!question) continue;
 
       const rawType = String(
-        row.questionType ?? row.QuestionType ?? ""
+        row.type ?? row.Type ?? row.questionType ?? row.QuestionType ?? ""
       )
         .trim()
         .toUpperCase();
@@ -393,6 +405,63 @@ const negativeMarks = negativeLine
     }
   };
 
+  const downloadSample = (type: "excel" | "json" | "aiken") => {
+    if (type === "aiken") {
+      const text = `TYPE: MCQ\nWhat is the capital of France?\nA. London\nB. Paris\nC. Berlin\nD. Madrid\nANSWER: B\nPOSITIVE: 4\nNEGATIVE: 1\n\nTYPE: MSQ\nWhich of the following are prime numbers?\nA. 2\nB. 4\nC. 5\nD. 9\nANSWER: A, C\nPOSITIVE: 4\nNEGATIVE: 1\n\nTYPE: NAT\nWhat is 5 + 7?\nANSWER: 12\nPOSITIVE: 4\nNEGATIVE: 1`;
+      const blob = new Blob([text], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "sample_questions.txt";
+      a.click();
+      URL.revokeObjectURL(url);
+    } else if (type === "json") {
+      const json = [
+        {
+          type: "MCQ",
+          question: "What is the capital of France?",
+          options: ["London", "Paris", "Berlin", "Madrid"],
+          answer: "Paris",
+          positiveMarks: 4,
+          negativeMarks: 1
+        },
+        {
+          type: "MSQ",
+          question: "Which of the following are prime numbers?",
+          options: ["2", "4", "5", "9"],
+          correctOptions: ["2", "5"],
+          positiveMarks: 4,
+          negativeMarks: 1
+        },
+        {
+          type: "NAT",
+          question: "What is 5 + 7?",
+          options: [],
+          answer: "12",
+          positiveMarks: 4,
+          negativeMarks: 1
+        }
+      ];
+      const blob = new Blob([JSON.stringify(json, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "sample_questions.json";
+      a.click();
+      URL.revokeObjectURL(url);
+    } else if (type === "excel") {
+      const data = [
+        { type: "MCQ", question: "What is the capital of France?", A: "London", B: "Paris", C: "Berlin", D: "Madrid", answer: "Paris", positiveMarks: 4, negativeMarks: 1 },
+        { type: "MSQ", question: "Which of the following are prime numbers?", A: "2", B: "4", C: "5", D: "9", answer: "2,5", positiveMarks: 4, negativeMarks: 1 },
+        { type: "NAT", question: "What is 5 + 7?", A: "", B: "", C: "", D: "", answer: "12", positiveMarks: 4, negativeMarks: 1 }
+      ];
+      const ws = XLSX.utils.json_to_sheet(data);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Questions");
+      XLSX.writeFile(wb, "sample_questions.xlsx");
+    }
+  };
+
   return (
     <div
       onClick={(e) => e.target === e.currentTarget && onClose()}
@@ -471,13 +540,22 @@ const negativeMarks = negativeLine
 
           {importTab === "aiken" && (
             <div>
-              <p className="mb-3 text-xs leading-[1.7]" style={{ color: t.subText }}>
-  Format: question text →{" "}
-  <code className="text-[var(--clr-accent)]">A. option</code> lines →{" "}
-  <code className="text-[var(--clr-accent)]">ANSWER: B</code> (optional{" "}
-  <code className="text-[var(--clr-accent)]">POSITIVE: 4</code>,{" "}
-  <code className="text-[var(--clr-accent)]">NEGATIVE: 1</code>)
-</p>
+              <div className="flex items-start justify-between mb-3">
+                <p className="text-xs leading-[1.7]" style={{ color: t.subText }}>
+                  Format: question text →{" "}
+                  <code className="text-[var(--clr-accent)]">A. option</code> lines →{" "}
+                  <code className="text-[var(--clr-accent)]">ANSWER: B</code> (optional{" "}
+                  <code className="text-[var(--clr-accent)]">POSITIVE: 4</code>,{" "}
+                  <code className="text-[var(--clr-accent)]">NEGATIVE: 1</code>)
+                </p>
+                <button
+                  type="button"
+                  onClick={() => downloadSample("aiken")}
+                  className="text-xs font-semibold text-[var(--clr-accent)] hover:underline whitespace-nowrap ml-2 flex-shrink-0 mt-1"
+                >
+                  Download Sample
+                </button>
+              </div>
 
               <textarea
                 rows={6}
@@ -564,8 +642,15 @@ const negativeMarks = negativeLine
                   Upload Excel / CSV
                 </div>
                 <div className="text-xs" style={{ color: t.subText }}>
-                  Columns: question, A, B, C, D, answer, positiveMarks, negativeMarks
+                  Columns: type, question, A, B, C, D, answer, positiveMarks, negativeMarks
                 </div>
+                <button
+                  type="button"
+                  onClick={() => downloadSample("excel")}
+                  className="mt-2 text-xs font-semibold text-[var(--clr-accent)] hover:underline"
+                >
+                  Download Sample File
+                </button>
               </div>
 
               <input
@@ -590,12 +675,21 @@ const negativeMarks = negativeLine
 
           {importTab === "json" && (
             <div>
-              <p className="mb-3 text-xs leading-[1.7]" style={{ color: t.subText }}>
-                Array of:{" "}
-                <code className="text-[var(--clr-accent)]">
-                  {"{ question, options[], answer, positiveMarks, negativeMarks }"}
-                </code>
-              </p>
+              <div className="flex items-start justify-between mb-3">
+                <p className="text-xs leading-[1.7]" style={{ color: t.subText }}>
+                  Array of:{" "}
+                  <code className="text-[var(--clr-accent)]">
+                    {"{ type, question, options[], answer, positiveMarks, negativeMarks }"}
+                  </code>
+                </p>
+                <button
+                  type="button"
+                  onClick={() => downloadSample("json")}
+                  className="text-xs font-semibold text-[var(--clr-accent)] hover:underline whitespace-nowrap ml-2 flex-shrink-0 mt-1"
+                >
+                  Download Sample
+                </button>
+              </div>
 
               <textarea
                 rows={6}
