@@ -131,7 +131,7 @@ export function EditorialMinimalist({ profile }: { profile: UserProfile }) {
                   <div key={category}>
                     <h3 className="text-sm uppercase tracking-widest font-bold mb-4 border-b border-black/10 pb-2 inline-block">{category.replace('_', ' ')}</h3>
                     <ul className="flex flex-col gap-2">
-                      {items.map(skill => (
+                      {items.map((skill: string) => (
                         <li key={skill} className="text-gray-700 text-lg">{skill}</li>
                       ))}
                     </ul>

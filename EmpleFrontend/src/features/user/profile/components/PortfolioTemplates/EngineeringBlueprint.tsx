@@ -170,7 +170,7 @@ export function EngineeringBlueprint({ profile }: { profile: UserProfile }) {
                       <div key={category}>
                         <h4 className="text-xs text-[#4a6b9c] uppercase mb-2">[{category.replace('_', ' ')}]</h4>
                         <div className="flex flex-wrap gap-2">
-                          {items.map(skill => (
+                          {items.map((skill: string) => (
                             <div key={skill} className="text-xs border border-[#1a365d] px-2 py-1 text-[#8ab4f8] bg-[#071324] flex items-center gap-2 group hover:border-[#8ab4f8] transition-colors cursor-default">
                               <span className="w-1 h-1 bg-[#4a6b9c] rounded-full group-hover:bg-[#8ab4f8]" />
                               {skill}
