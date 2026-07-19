@@ -7,6 +7,7 @@ import type { ATSMode } from '../types/ats.types';
 import AtsModeSwitcher from '../components/AtsModeSwitcher';
 import ResumeUploader from '../components/ResumeUploader';
 import JobDescriptionInput from '../components/JobDescriptionInput';
+import { useWallet } from "@/providers/WalletProvider";
 import '../styles/ats.css';
 
 export default function ATSHomePage() {
@@ -15,6 +16,11 @@ export default function ATSHomePage() {
   const [file, setFile] = useState<File | null>(null);
   const [jobDescription, setJobDescription] = useState('');
   const [error, setError] = useState('');
+
+  const { config } = useWallet();
+  const standardCost = config?.ATS?.STANDARD_COST || 5;
+  const aiCost = config?.ATS?.AI_COST || 10;
+  const scanCost = mode === 'ai' ? aiCost : standardCost;
 
   function handleAnalyze() {
     setError('');
@@ -89,7 +95,7 @@ export default function ATSHomePage() {
         <p style={{ fontSize: '14px', color: 'var(--muted)', lineHeight: 1.6 }}>
           {mode === 'standard' 
             ? 'Fast keyword matching with skill scores, experience alignment, and detailed skill breakdown.' 
-            : 'Deep Gemini-powered evaluation with writing quality, semantic matching, and actionable recommendations.'}
+            : 'Deep AI-powered evaluation with writing quality, semantic matching, and actionable recommendations.'}
         </p>
       </div>
 
@@ -102,8 +108,11 @@ export default function ATSHomePage() {
       </div>
 
       {/* Analyze Button */}
-      <div style={{ maxWidth: 480, margin: '0 auto 80px' }}>
-        <button className="ats-analyze-btn" onClick={handleAnalyze} id="ats-analyze-btn" style={{ padding: '24px', fontSize: '20px', borderRadius: 16 }}>
+      <div style={{ maxWidth: 480, margin: '0 auto 80px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '6px 14px', borderRadius: 50, background: 'rgba(241, 90, 34, 0.1)', color: 'var(--orange)', fontSize: 13, fontWeight: 700, marginBottom: 16, border: '1px solid rgba(241, 90, 34, 0.2)' }}>
+          <span>🪙</span> {scanCost} Coins per scan
+        </div>
+        <button type="button" className="ats-analyze-btn" onClick={handleAnalyze} id="ats-analyze-btn" style={{ padding: '24px', fontSize: '20px', borderRadius: 16, width: '100%' }}>
           {mode === 'ai' ? <Sparkles size={24} /> : <BarChart3 size={24} />}
           {mode === 'ai' ? 'Analyze with AI' : 'Scan Resume Now'}
         </button>

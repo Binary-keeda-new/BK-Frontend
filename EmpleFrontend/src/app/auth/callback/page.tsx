@@ -12,13 +12,6 @@ export default function CallbackPage() {
         const params = new URLSearchParams(window.location.search)
         const code = params.get('code')
 
-        // If came from signup page, redirect to login
-        const fromSignup = params.get('from') === 'signup'
-        if (fromSignup) {
-          window.location.replace('/auth/login')
-          return
-        }
-
         if (!code) {
           window.location.replace('/auth/login?error=missing_code')
           return
@@ -55,6 +48,11 @@ export default function CallbackPage() {
           return
         }
 
+        const syncData = await syncRes.json()
+        if (syncData.isNewUser) {
+          sessionStorage.setItem('show_signup_bonus', 'true')
+        }
+
         const meRes = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/me`,
           {
@@ -73,6 +71,12 @@ export default function CallbackPage() {
 
         const meData = await meRes.json()
         const role = meData?.user?.role
+
+        // Set default 3 day session for OAuth users
+        const expiry = Date.now() + 3 * 24 * 60 * 60 * 1000
+        localStorage.setItem('token', token)
+        localStorage.setItem('role', role || 'user')
+        localStorage.setItem('sessionExpiry', expiry.toString())
 
         if (role === 'admin') {
           window.location.replace('/dashboard')

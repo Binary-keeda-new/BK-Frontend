@@ -11,6 +11,8 @@ import { GeneratedRoadmap, PersonalizedRoadmapSummary } from '../types/roadmapAI
 import { deleteMyRoadmapAPI, fetchMyRoadmapsAPI } from '../services/roadmapAI.service';
 import { fetchLearnersCountAPI, fetchRoadmapRatingsAPI, fetchActivePathsCountAPI } from '../services/roadmapProgress.service';
 import { Route, Users, Star, Search, Clock, ListCollapse } from 'lucide-react';
+import { useWallet } from "@/providers/WalletProvider";
+import InsufficientCoinsDialog from "@/features/wallet/components/InsufficientCoinsDialog";
 
 interface Roadmap {
   id: string;
@@ -310,6 +312,18 @@ const RoadmapsListing: React.FC<RoadmapsListingProps> = ({ onView }) => {
   const [learnersCount, setLearnersCount] = useState<number>(0);
   const [globalRating, setGlobalRating] = useState<number>(0);
   const [roadmapRatings, setRoadmapRatings] = useState<Record<string, any>>({});
+
+  const { balance, config } = useWallet();
+  const [showInsufficientDialog, setShowInsufficientDialog] = useState(false);
+  const generateCost = config?.ROADMAP?.GENERATE_COST || 25;
+
+  const handleCreateClick = () => {
+    if (balance < generateCost) {
+      setShowInsufficientDialog(true);
+    } else {
+      openPanel();
+    }
+  };
   const [isPanelOpen, setIsPanelOpen] = useState<boolean>(false);
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
   const [personalizedRoadmaps, setPersonalizedRoadmaps] = useState<PersonalizedRoadmapSummary[]>([]);
@@ -422,7 +436,7 @@ const RoadmapsListing: React.FC<RoadmapsListingProps> = ({ onView }) => {
           <h1 style={{ fontFamily: "var(--font-syne, sans-serif)", fontSize: "28px", fontWeight: 800, color: "var(--text)", marginBottom: 0, letterSpacing: '-0.02em', lineHeight: 1.1 }}>
             <span style={{ color: t.brand }}>Roadmaps</span>
           </h1>
-          <CreateRoadmapButton onClick={openPanel} disabled={isPanelOpen} isLoading={isGenerating} />
+          <CreateRoadmapButton cost={generateCost} onClick={handleCreateClick} disabled={isPanelOpen} isLoading={isGenerating} />
         </div>
 
         {isGenerating ? (
@@ -509,6 +523,13 @@ const RoadmapsListing: React.FC<RoadmapsListingProps> = ({ onView }) => {
         onPreviewReady={handlePreviewReady}
         onFinalized={handleFinalized}
         onGeneratingChange={setIsGenerating}
+      />
+
+      <InsufficientCoinsDialog
+        isOpen={showInsufficientDialog}
+        onClose={() => setShowInsufficientDialog(false)}
+        requiredCoins={generateCost}
+        onRetry={openPanel}
       />
     </div>
   );

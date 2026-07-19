@@ -1,4 +1,4 @@
-export { ModernDeveloper } from './ModernDeveloper';
-export { CreativeDesigner } from './CreativeDesigner';
-export { AIResearch } from './AIResearch';
-export { StudentPortfolio } from './StudentPortfolio';
+export { EngineeringBlueprint } from './EngineeringBlueprint';
+export { GamifiedArcade } from './GamifiedArcade';
+export { EditorialMinimalist } from './EditorialMinimalist';
+export { RpgCharacterSheet } from './RpgCharacterSheet';

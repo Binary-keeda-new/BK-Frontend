@@ -7,21 +7,28 @@ const ADMIN_EVENT_CARDS = [
     title: 'Hackathons',
     description: 'Manage and post external hackathon events for students to discover.',
     badge: 'External',
-    route: '/events/hackathons',        // ← removed /admin
+    route: '/events/hackathons',
   },
   {
     id: 'techfest' as const,
     title: 'Techfest',
     description: 'Add and manage tech festival events including workshops and competitions.',
     badge: 'Festival',
-    route: '/events/techfest',          // ← removed /admin
+    route: '/events/techfest',
   },
   {
     id: 'our-hackathon' as const,
-    title: 'Our Hackathons',
-    description: 'Create and manage hackathons hosted directly on the Emple platform.',
-    badge: 'By Emple',
-    route: '/events/our-hackathons',    // ← removed /admin
+    title: 'Emple Events',
+    description: 'Create and manage events hosted directly on the Emple platform.',
+    badge: 'Emple Events',
+    route: '/events/our-hackathons',
+  },
+  {
+    id: 'research-conference' as const,
+    title: 'Research Conferences',
+    description: 'Manage research conferences for students and researchers.',
+    badge: 'Research',
+    route: '/events/research-conferences',
   },
 ]
 
@@ -34,7 +41,7 @@ export default function EventsSection() {
         <div className="flex-1 h-px bg-white/8" />
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         {ADMIN_EVENT_CARDS.map((card) => (
           <AdminEventCard key={card.id} card={card} />
         ))}

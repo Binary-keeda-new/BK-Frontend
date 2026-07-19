@@ -1,4 +1,4 @@
-import EventDetailPage from '@/features/user/Events/components/EventDetailPage'
+import EventDetailPage from '@/features/user/events/components/EventDetailPage'
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params

@@ -5,6 +5,8 @@ import { useRouter, useParams } from "next/navigation";
 import { QUIZ_CATEGORIES } from "@/shared/constants/quizCategories";
 import { getSessionToken } from "@descope/nextjs-sdk/client";
 import { Share2 } from "lucide-react";
+import { useWallet } from "@/providers/WalletProvider";
+import InsufficientCoinsDialog from "@/features/wallet/components/InsufficientCoinsDialog";
 
 type QuizItem = {
   _id: string;
@@ -67,10 +69,9 @@ function formatTitleFromSlug(slug: string) {
 function mapRouteCategoryToDbCategory(categorySlug: string) {
   const mapping: Record<string, string> = {
     "core-cs": "Core CS",
-    aptitude: "Aptitude",
-    "it-concepts": "IT Concepts",
-    upsc: "UPSC Mapping",
-    constitution: "Constitution",
+    "aptitude": "Aptitude",
+    "it-skills": "IT Skills",
+    "govt-exams": "Govt Exams",
   };
 
   return mapping[categorySlug] || formatTitleFromSlug(categorySlug);
@@ -78,7 +79,7 @@ function mapRouteCategoryToDbCategory(categorySlug: string) {
 
 function mapTopicSlugToDbSubcategory(categorySlug: string, topicSlug: string) {
   const dbCategory = mapRouteCategoryToDbCategory(categorySlug);
-  const options = QUIZ_CATEGORIES[dbCategory as keyof typeof QUIZ_CATEGORIES] || [];
+  const options = Object.keys(QUIZ_CATEGORIES[dbCategory as keyof typeof QUIZ_CATEGORIES] || {});
 
   return (
     options.find((item) => slugify(item) === topicSlug.toLowerCase()) ||
@@ -123,6 +124,12 @@ export default function QuizList() {
   const [attemptStatusMap, setAttemptStatusMap] = useState<
     Record<string, AttemptStatusItem>
   >({});
+  
+  const [showInsufficientDialog, setShowInsufficientDialog] = useState(false);
+
+  const { config, balance } = useWallet();
+  const quizCost = config?.QUIZ?.ATTEMPT_COST || 5;
+  const maxReward = config?.QUIZ?.MAX_REWARD || 10;
 
   useEffect(() => {
     const fetchQuizzes = async () => {
@@ -217,6 +224,11 @@ export default function QuizList() {
     const attemptState = getQuizAttemptState(quiz._id, attemptStatusMap);
 
     if (!attemptState) {
+      if (balance < quizCost) {
+        setSelectedQuiz(quiz);
+        setShowInsufficientDialog(true);
+        return;
+      }
       openModal(quiz);
       return;
     }
@@ -318,7 +330,17 @@ export default function QuizList() {
                     {formatDuration(quiz.duration)}
                   </p>
 
-                  <div className="col-[2] row-[1/3] flex justify-end self-center sm:col-auto sm:row-auto">
+                  <div className="col-[2] row-[1/3] flex flex-col sm:flex-row items-end sm:items-center justify-end gap-2 sm:gap-3 self-center sm:col-auto sm:row-auto">
+                    {actionLabel === "Attempt" && (
+                      <div className="flex flex-col items-end sm:items-center gap-1">
+                        <div className="flex items-center gap-1.5 text-[12px] font-medium text-orange-400 px-2 py-0.5 rounded-md border border-orange-500/20 bg-orange-500/10 whitespace-nowrap">
+                          🪙 Cost: {quizCost} Coins
+                        </div>
+                        <div className="flex items-center gap-1.5 text-[11px] font-medium text-green-400 px-2 py-0.5 rounded-md border border-green-500/20 bg-green-500/10 whitespace-nowrap">
+                          🟢 Earn up to {maxReward}
+                        </div>
+                      </div>
+                    )}
                     <button
                       onClick={() => handleQuizAction(quiz)}
                       className={`cursor-pointer whitespace-nowrap rounded-lg px-[18px] py-2 text-[13px] font-semibold ${actionButtonClass}`}
@@ -438,6 +460,17 @@ export default function QuizList() {
           </div>
         </div>
       )}
+      
+      <InsufficientCoinsDialog
+        isOpen={showInsufficientDialog}
+        onClose={() => setShowInsufficientDialog(false)}
+        requiredCoins={quizCost}
+        onRetry={() => {
+          if (selectedQuiz) {
+            openModal(selectedQuiz);
+          }
+        }}
+      />
     </>
   );
 }

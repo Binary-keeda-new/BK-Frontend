@@ -3,10 +3,12 @@
 import { useEffect, useState } from 'react'
 import { useSession } from '@descope/nextjs-sdk/client'
 import { useRouter } from 'next/navigation'
+import { useWallet } from '@/providers/WalletProvider'
 import ActivityCalendar from '@/features/user/dashboard/components/ActivityCalendar'
 import Leaderboard from '@/features/user/dashboard/components/Leaderboard'
-import PromoCard from '@/features/user/dashboard/components/PromoCard'
+import HealthFinanceCard from '@/features/user/dashboard/components/HealthFinanceCard'
 import SubmissionsPanel from '@/features/user/dashboard/components/SubmissionsPanel'
+import { useNotification } from '@/providers/NotificationProvider'
 
 type User = {
   name?: string
@@ -26,9 +28,11 @@ type Activity = {
 
 export default function DashboardPage() {
   const { sessionToken, isAuthenticated, isSessionLoading } = useSession()
+  const { config, refreshWallet } = useWallet()
   const router = useRouter()
   const [user, setUser] = useState<User | null>(null)
   const [activity, setActivity] = useState<Activity | null>(null)
+  const { notifyReward } = useNotification()
   
   useEffect(() => {
 
@@ -76,6 +80,16 @@ export default function DashboardPage() {
         if (activityRes.ok) {
           const activityData = JSON.parse(activityText)
           setActivity(activityData.data)
+          
+          const todayStr = new Date().toISOString().split('T')[0];
+          if (activityData.data.lastVisitedDate === todayStr) {
+            const shownKey = `daily_reward_shown_${todayStr}`;
+            if (!sessionStorage.getItem(shownKey)) {
+              notifyReward("Daily Login Reward", "Welcome back!", config?.LOGIN?.DAILY_REWARD || 1);
+              sessionStorage.setItem(shownKey, 'true');
+              refreshWallet();
+            }
+          }
         }
       } catch (error) {
         console.error('Error fetching /me ->', error)
@@ -95,19 +109,22 @@ export default function DashboardPage() {
   const fullName = user.name?.trim() || ''
   const firstName = fullName ? fullName.split(' ')[0] : ''
 
-
+  const todayStr = new Date().toISOString().split('T')[0];
+  const alreadyClaimed = activity.lastVisitedDate === todayStr;
 
   return (
     <main className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-[22px_24px]">
-      <h2 className="text-white text-lg font-medium drop-shadow-[0_0_8px_rgba(255,255,255,0.5)] mb-4">
-        Welcome back{firstName ? `, ` : ''}
-        {firstName && (
-          <span className="underline decoration-orange-500 underline-offset-4">
-            {firstName}
-          </span>
-        )}
-        {' '}👋
-      </h2>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-4">
+        <h2 className="text-white text-lg font-medium drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]">
+          Welcome back{firstName ? `, ` : ''}
+          {firstName && (
+            <span className="underline decoration-orange-500 underline-offset-4">
+              {firstName}
+            </span>
+          )}
+          {' '}👋
+        </h2>
+      </div>
 
       <div
         className="grid gap-[18px]
@@ -124,7 +141,7 @@ export default function DashboardPage() {
         <Leaderboard />
 
         <div className="md:col-span-2 xl:col-span-1">
-          <PromoCard />
+          <HealthFinanceCard />
         </div>
 
         <div className="col-span-1 md:col-span-2 xl:col-span-3">
