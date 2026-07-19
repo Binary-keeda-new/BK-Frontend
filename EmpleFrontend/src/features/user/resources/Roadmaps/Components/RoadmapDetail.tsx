@@ -4,10 +4,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import { getRoadmapById } from '../data/index';
 import QuizModal from './QuizModal';
 import SectionCard from './SectionCard';
-<<<<<<< HEAD
 import { Search, ChevronLeft, ChevronRight, Filter, Star } from 'lucide-react';
 import { useSession } from '@descope/nextjs-sdk/client';
 import { recordRoadmapActivityAPI, submitRoadmapRatingAPI } from '../services/roadmapProgress.service';
+import { useWallet } from "@/providers/WalletProvider";
+import { useNotification } from "@/providers/NotificationProvider";
 
 const WeeklyRatingModal = ({ title, weekNumber, onClose, onSubmit }: { title: string; weekNumber: number; onClose: () => void; onSubmit: (rating: number) => void }) => {
   const [rating, setRating] = useState(0);
@@ -100,11 +101,6 @@ const WeeklyRatingModal = ({ title, weekNumber, onClose, onSubmit }: { title: st
     </div>
   );
 };
-=======
-import { Search, ChevronLeft, ChevronRight, Filter } from 'lucide-react';
-import { useWallet } from "@/providers/WalletProvider";
-import { useNotification } from "@/providers/NotificationProvider";
->>>>>>> f63c2a6aec81de77972f3418b2c3cf3011800cae
 
 const categoryColors: Record<string, { bg: string; text: string }> = {
   "Aptitude": { bg: "rgba(249, 115, 22, 0.15)", text: "#f97316" },
