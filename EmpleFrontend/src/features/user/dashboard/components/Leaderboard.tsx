@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession } from "@descope/nextjs-sdk/client";
+import { useSession, useUser } from "@descope/nextjs-sdk/client";
 import { useEffect, useState } from "react";
 import { apiRequest } from "@/shared/utils/api";
 import { Trophy, Crown, Medal, User, Info } from "lucide-react";
@@ -15,6 +15,7 @@ type Leader = {
 
 export default function Leaderboard() {
   const { session } = useSession() as any;
+  const { user } = useUser() as any;
   
   const [leaders, setLeaders] = useState<Leader[]>([]);
   const [currentUserData, setCurrentUserData] = useState<Leader | null>(null);
@@ -38,7 +39,12 @@ export default function Leaderboard() {
     fetchLeaderboard();
   }, []);
 
-  const userName = session?.token?.name || session?.token?.email?.split('@')[0] || currentUserData?.name || "User";
+  const safeSessionName = user?.name && user.name !== 'Unknown User' ? user.name : null;
+  const safeEmailName = user?.email?.split('@')[0];
+  const safeApiName = currentUserData?.name && currentUserData.name !== 'Unknown User' ? currentUserData.name : null;
+  
+  const userName = safeSessionName || safeEmailName || safeApiName || "User";
+  
   const initials = userName
     .split(" ")
     .map((n: string) => n[0])
@@ -151,7 +157,7 @@ export default function Leaderboard() {
                       {leader.name !== 'Unknown User' 
                         ? leader.name.split(' ')[0] 
                         : leader.descopeId === session?.token?.sub 
-                          ? session?.token?.email?.split('@')[0] || 'Unknown' 
+                          ? user?.email?.split('@')[0] || 'Unknown' 
                           : leader.email?.split('@')[0] || 'Unknown'
                       }
                     </div>
@@ -212,7 +218,9 @@ export default function Leaderboard() {
               <div className="min-w-0 flex-1">
                 <div className="flex items-center justify-between">
                   <div className="truncate text-sm font-semibold text-[var(--text)]">
-                    {currentUserData?.name || userName}
+                    {currentUserData?.name && currentUserData.name !== 'Unknown User' 
+                      ? currentUserData.name 
+                      : userName}
                   </div>
                   <div className="shrink-0 text-right">
                     <div className="text-sm font-extrabold text-[#ff9a5c]">
