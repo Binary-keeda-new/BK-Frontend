@@ -33,19 +33,18 @@ export default function QuizForm({
   })
 
   const [toasts, setToasts] = useState<{
-    id: number
+    id: string
     message: string
     type: 'success' | 'error'
   }[]>([])
 
-  const toastId = useRef(0)
   const [loading, setLoading] = useState(false)
 
   const addToast = (
     message: string,
     type: 'success' | 'error' = 'success'
   ) => {
-    const id = ++toastId.current
+    const id = crypto.randomUUID()
     setToasts((prev) => [...prev, { id, message, type }])
 
     setTimeout(() => {

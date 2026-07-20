@@ -28,9 +28,7 @@ export default function WalletSummary() {
           ) : (
             balance
           )}
-          {status === "locked" && (
-            <Lock size={16} className="text-red-400 ml-2" title="Wallet is Locked" />
-          )}
+          {status === "locked" && <span title="Wallet is Locked"><Lock size={16} className="text-red-400 ml-2" /></span>}
         </div>
         <div className="absolute right-0 bottom-0 w-24 h-24 bg-yellow-500/5 rounded-tl-[100%] pointer-events-none" />
       </div>

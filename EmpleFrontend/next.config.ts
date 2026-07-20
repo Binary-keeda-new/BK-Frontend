@@ -7,7 +7,12 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
 
   images: {
-    domains: ['upload.wikimedia.org'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'upload.wikimedia.org',
+      }
+    ],
     localPatterns: [
       {
         pathname: '/logo-final.png',

@@ -42,11 +42,10 @@ export default function QuizEdit({ quizId, onClose }: QuizEditProps) {
   const jsonFileRef = useRef<HTMLInputElement>(null);
 
   const [toasts, setToasts] = useState<
-    { id: number; message: string; type: "success" | "error" }[]
+    { id: string; message: string; type: "success" | "error" }[]
   >([]);
-  const toastId = useRef(0);
 
-  const removeToast = (id: number) => {
+  const removeToast = (id: string) => {
   setToasts((prev) => prev.filter((t) => t.id !== id))
 }
 
@@ -56,7 +55,7 @@ export default function QuizEdit({ quizId, onClose }: QuizEditProps) {
     message: string,
     type: "success" | "error" = "success"
   ) => {
-    const id = ++toastId.current;
+    const id = crypto.randomUUID();
     setToasts((prev) => [...prev, { id, message, type }]);
 
     setTimeout(() => {

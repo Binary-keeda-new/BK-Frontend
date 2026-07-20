@@ -197,7 +197,7 @@ export function GamifiedArcade({ profile }: { profile: UserProfile }) {
                       <div key={category}>
                         <h3 className="text-xs text-[#F20587] uppercase mb-3 border-b-2 border-[#3D087B] pb-1">{category.replace('_', ' ')}</h3>
                         <div className="flex flex-wrap gap-2">
-                          {items.map(skill => (
+                          {items.map((skill: string) => (
                             <span key={skill} className="text-xs px-2 py-1 bg-[#3D087B] text-white rounded cursor-default hover:bg-[#F4D160] hover:text-[#11052C] transition-colors font-bold shadow-[0_2px_0_#22044d]">
                               {skill}
                             </span>
