@@ -70,6 +70,14 @@ export default function ImportQuestionsModal({
       const answerLine = lines.find((line) => /^ANSWER\s*:/i.test(line));
       const positiveLine = lines.find((line) => /^POSITIVE\s*:/i.test(line));
       const negativeLine = lines.find((line) => /^NEGATIVE\s*:/i.test(line));
+      
+      const categoryLine = lines.find((line) => /^CATEGORY\s*:/i.test(line));
+      const subcategoryLine = lines.find((line) => /^SUBCATEGORY\s*:/i.test(line));
+      const topicLine = lines.find((line) => /^TOPIC\s*:/i.test(line));
+      const subtopicLine = lines.find((line) => /^SUBTOPIC\s*:/i.test(line));
+      const examLine = lines.find((line) => /^EXAM\s*:/i.test(line));
+      const yearLine = lines.find((line) => /^YEAR\s*:/i.test(line));
+
       const optionLines = lines.filter((line) => /^[A-Z][\.\)]\s+/.test(line));
 
       // The question text is the first line that is NOT a TYPE, ANSWER, POSITIVE, NEGATIVE, or OPTION line.
@@ -79,6 +87,12 @@ export default function ImportQuestionsModal({
           !/^ANSWER\s*:/i.test(line) &&
           !/^POSITIVE\s*:/i.test(line) &&
           !/^NEGATIVE\s*:/i.test(line) &&
+          !/^CATEGORY\s*:/i.test(line) &&
+          !/^SUBCATEGORY\s*:/i.test(line) &&
+          !/^TOPIC\s*:/i.test(line) &&
+          !/^SUBTOPIC\s*:/i.test(line) &&
+          !/^EXAM\s*:/i.test(line) &&
+          !/^YEAR\s*:/i.test(line) &&
           !/^[A-Z][\.\)]\s+/.test(line)
       );
 
@@ -131,6 +145,13 @@ export default function ImportQuestionsModal({
         ? Number(negativeLine.replace(/^NEGATIVE\s*:/i, "").trim())
         : 1;
 
+      const category = categoryLine ? categoryLine.replace(/^CATEGORY\s*:/i, "").trim() : undefined;
+      const subcategory = subcategoryLine ? subcategoryLine.replace(/^SUBCATEGORY\s*:/i, "").trim() : undefined;
+      const topic = topicLine ? topicLine.replace(/^TOPIC\s*:/i, "").trim() : undefined;
+      const subTopic = subtopicLine ? subtopicLine.replace(/^SUBTOPIC\s*:/i, "").trim() : undefined;
+      const exam = examLine ? examLine.replace(/^EXAM\s*:/i, "").trim() : undefined;
+      const year = yearLine ? parseInt(yearLine.replace(/^YEAR\s*:/i, "").trim(), 10) || null : undefined;
+
       questions.push({
         question,
         options,
@@ -138,6 +159,12 @@ export default function ImportQuestionsModal({
         questionType: parsedType || (correctOptions.length > 1 ? "MSQ" : "MCQ"),
         positiveMarks: Number.isFinite(positiveMarks) ? positiveMarks : 4,
         negativeMarks: Number.isFinite(negativeMarks) ? negativeMarks : 1,
+        category,
+        subcategory,
+        topic,
+        subTopic,
+        exam,
+        year,
       });
     }
 
@@ -416,7 +443,7 @@ export default function ImportQuestionsModal({
 
   const downloadSample = (type: "excel" | "json" | "aiken") => {
     if (type === "aiken") {
-      const text = `TYPE: MCQ\nWhat is the capital of France?\nA. London\nB. Paris\nC. Berlin\nD. Madrid\nANSWER: B\nPOSITIVE: 4\nNEGATIVE: 1\n\nTYPE: MSQ\nWhich of the following are prime numbers?\nA. 2\nB. 4\nC. 5\nD. 9\nANSWER: A, C\nPOSITIVE: 4\nNEGATIVE: 1\n\nTYPE: NAT\nWhat is 5 + 7?\nANSWER: 12\nPOSITIVE: 4\nNEGATIVE: 1`;
+      const text = `CATEGORY: Core CS\nSUBCATEGORY: Data Structures\nTOPIC: Array\nSUBTOPIC: Searching\nEXAM: GATE\nYEAR: 2024\nTYPE: MCQ\nWhat is the capital of France?\nA. London\nB. Paris\nC. Berlin\nD. Madrid\nANSWER: B\nPOSITIVE: 4\nNEGATIVE: 1\n\nTYPE: MSQ\nWhich of the following are prime numbers?\nA. 2\nB. 4\nC. 5\nD. 9\nANSWER: A, C\nPOSITIVE: 4\nNEGATIVE: 1\n\nTYPE: NAT\nWhat is 5 + 7?\nANSWER: 12\nPOSITIVE: 4\nNEGATIVE: 1`;
       const blob = new Blob([text], { type: "text/plain" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");

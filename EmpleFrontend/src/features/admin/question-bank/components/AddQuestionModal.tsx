@@ -47,7 +47,7 @@ export default function AddQuestionModal({
 
   const downloadSample = (type: "excel" | "json" | "aiken") => {
     if (type === "aiken") {
-      const text = `TYPE: MCQ\nWhat is the capital of France?\nA. London\nB. Paris\nC. Berlin\nD. Madrid\nANSWER: B\nPOSITIVE: 4\nNEGATIVE: 1\n\nTYPE: MSQ\nWhich of the following are prime numbers?\nA. 2\nB. 4\nC. 5\nD. 9\nANSWER: A, C\nPOSITIVE: 4\nNEGATIVE: 1\n\nTYPE: NAT\nWhat is 5 + 7?\nANSWER: 12\nPOSITIVE: 4\nNEGATIVE: 1`;
+      const text = `CATEGORY: Core CS\nSUBCATEGORY: Data Structures\nTOPIC: Array\nSUBTOPIC: Searching\nEXAM: GATE\nYEAR: 2024\nTYPE: MCQ\nWhat is the capital of France?\nA. London\nB. Paris\nC. Berlin\nD. Madrid\nANSWER: B\nPOSITIVE: 4\nNEGATIVE: 1\n\nTYPE: MSQ\nWhich of the following are prime numbers?\nA. 2\nB. 4\nC. 5\nD. 9\nANSWER: A, C\nPOSITIVE: 4\nNEGATIVE: 1\n\nTYPE: NAT\nWhat is 5 + 7?\nANSWER: 12\nPOSITIVE: 4\nNEGATIVE: 1`;
       const blob = new Blob([text], { type: "text/plain" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");

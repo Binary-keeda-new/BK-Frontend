@@ -93,6 +93,14 @@ function parseAiken(text: string): NewQuestion[] {
     const answerLine = lines.find((line) => /^ANSWER\s*:/i.test(line))
     const positiveLine = lines.find((line) => /^POSITIVE\s*:/i.test(line))
     const negativeLine = lines.find((line) => /^NEGATIVE\s*:/i.test(line))
+    
+    const categoryLine = lines.find((line) => /^CATEGORY\s*:/i.test(line))
+    const subcategoryLine = lines.find((line) => /^SUBCATEGORY\s*:/i.test(line))
+    const topicLine = lines.find((line) => /^TOPIC\s*:/i.test(line))
+    const subtopicLine = lines.find((line) => /^SUBTOPIC\s*:/i.test(line))
+    const examLine = lines.find((line) => /^EXAM\s*:/i.test(line))
+    const yearLine = lines.find((line) => /^YEAR\s*:/i.test(line))
+
     const optionLines = lines.filter((line) => /^[A-Z][\.\)]\s+/.test(line))
 
     const questionText = lines.find(
@@ -101,6 +109,12 @@ function parseAiken(text: string): NewQuestion[] {
         !/^ANSWER\s*:/i.test(line) &&
         !/^POSITIVE\s*:/i.test(line) &&
         !/^NEGATIVE\s*:/i.test(line) &&
+        !/^CATEGORY\s*:/i.test(line) &&
+        !/^SUBCATEGORY\s*:/i.test(line) &&
+        !/^TOPIC\s*:/i.test(line) &&
+        !/^SUBTOPIC\s*:/i.test(line) &&
+        !/^EXAM\s*:/i.test(line) &&
+        !/^YEAR\s*:/i.test(line) &&
         !/^[A-Z][\.\)]\s+/.test(line)
     )
 
@@ -153,6 +167,13 @@ function parseAiken(text: string): NewQuestion[] {
       ? Number(negativeLine.replace(/^NEGATIVE\s*:/i, "").trim())
       : 1
 
+    const category = categoryLine ? categoryLine.replace(/^CATEGORY\s*:/i, "").trim() : ''
+    const subcategory = subcategoryLine ? subcategoryLine.replace(/^SUBCATEGORY\s*:/i, "").trim() : ''
+    const topic = topicLine ? topicLine.replace(/^TOPIC\s*:/i, "").trim() : ''
+    const subTopic = subtopicLine ? subtopicLine.replace(/^SUBTOPIC\s*:/i, "").trim() : ''
+    const exam = examLine ? examLine.replace(/^EXAM\s*:/i, "").trim() : ''
+    const year = yearLine ? parseInt(yearLine.replace(/^YEAR\s*:/i, "").trim(), 10) || null : null
+
     questions.push({
       question: questionText,
       options,
@@ -163,12 +184,12 @@ function parseAiken(text: string): NewQuestion[] {
       imageUrl: null,
       solution: '',
       solutionMedia: '',
-      category: '',
-      subcategory: '',
-      topic: '',
-      subTopic: '',
-      exam: '',
-      year: null,
+      category,
+      subcategory,
+      topic,
+      subTopic,
+      exam,
+      year,
     })
   }
 
