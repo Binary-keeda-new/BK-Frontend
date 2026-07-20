@@ -90,10 +90,11 @@ export default function ResetPasswordPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
+    setPasswordError('')
 
     const validationError = validatePassword(newPassword)
     if (validationError) {
-      setError(validationError)
+      setPasswordError(validationError)
       return
     }
 
@@ -118,8 +119,16 @@ export default function ResetPasswordPage() {
 
       setSuccess(true)
       setTimeout(() => router.push('/auth/login'), 2000)
-    } catch {
-      setError('Something went wrong. Please try again.')
+    } catch (err: any) {
+      if (err?.error?.errorCode === 'E062904') {
+        setPasswordError(err.error.errorMessage)
+      } else if (err?.error?.errorMessage) {
+        setError(err.error.errorMessage)
+      } else if (err?.message) {
+        setError(err.message)
+      } else {
+        setError('Something went wrong. Please try again.')
+      }
     } finally {
       setLoading(false)
     }
@@ -245,6 +254,11 @@ export default function ResetPasswordPage() {
                       {showNew ? '🙈' : '👁️'}
                     </button>
                   </div>
+                  {passwordError && (
+                    <div style={{ fontSize: 'var(--text-xs)', color: '#ef4444', marginTop: 4 }}>
+                      ✗ {passwordError}
+                    </div>
+                  )}
                 </div>
 
                 <div className="auth-field">

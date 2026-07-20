@@ -1,24 +1,52 @@
 "use client";
 
 import { useSession } from "@descope/nextjs-sdk/client";
+import { useEffect, useState } from "react";
+import { apiRequest } from "@/shared/utils/api";
 
-const leaders = [
-  { rank: 2, name: "person 1", points: 31, height: 72 },
-  { rank: 1, name: "person 2", points: 42, height: 110 },
-  { rank: 3, name: "person 3", points: 24, height: 58 },
-];
+type Leader = {
+  rank: number | string;
+  name: string;
+  points: number;
+};
 
 export default function Leaderboard() {
   const { session } = useSession() as any;
+  
+  const [leaders, setLeaders] = useState<Leader[]>([]);
+  const [currentUserData, setCurrentUserData] = useState<Leader | null>(null);
 
-  const userName = session?.token?.name || session?.token?.email || "User";
+  useEffect(() => {
+    async function fetchLeaderboard() {
+      try {
+        const result = await apiRequest<any>('/api/v1/leaderboard', { method: 'GET' });
+        if (result?.success) {
+          setLeaders(result.data.leaderboard);
+          setCurrentUserData(result.data.currentUser);
+        }
+      } catch (error) {
+        console.error("Failed to fetch leaderboard", error);
+      }
+    }
+    fetchLeaderboard();
+  }, []);
 
+  const userName = session?.token?.name || session?.token?.email || currentUserData?.name || "User";
   const initials = userName
     .split(" ")
     .map((n: string) => n[0])
     .join("")
     .toUpperCase()
     .slice(0, 1);
+
+  // Podium logic: top 3, ordered as [Rank 2, Rank 1, Rank 3]
+  const top3 = leaders.slice(0, 3);
+  const maxPoints = top3[0]?.points || 1;
+  const podiumOrder = [
+    top3[1], // Rank 2
+    top3[0], // Rank 1
+    top3[2], // Rank 3
+  ].filter(Boolean);
 
   return (
     <div className="animated-border h-full">
@@ -53,45 +81,53 @@ export default function Leaderboard() {
 
         {/* Podium */}
         <div className="mb-4 flex min-h-[165px] items-end justify-center gap-4">
-          {leaders.map((leader) => {
-            const isFirst = leader.rank === 1;
+          {podiumOrder.length > 0 ? (
+            podiumOrder.map((leader) => {
+              const isFirst = leader.rank === 1;
+              // Stagger heights strictly by rank for a classic podium look
+              const height = leader.rank === 1 ? 110 : leader.rank === 2 ? 85 : 65;
 
-            return (
-              <div
-                key={leader.rank}
-                className="flex w-[70px] flex-col items-center justify-end"
-              >
+              return (
                 <div
-                  className={`mb-2 flex items-center justify-center rounded-full font-bold text-white ${
-                    isFirst
-                      ? "h-10 w-10 border border-orange-500/40 bg-gradient-to-br from-[#f15a22] to-[#ff9a5c] text-[15px] shadow-[0_0_18px_rgba(241,90,34,0.35)]"
-                      : "h-[34px] w-[34px] border border-[var(--border)] bg-white/10 text-[13px]"
-                  }`}
+                  key={leader.rank}
+                  className="flex w-[70px] flex-col items-center justify-end"
                 >
-                  {isFirst ? "👑" : `#${leader.rank}`}
-                </div>
+                  <div
+                    className={`mb-2 flex items-center justify-center rounded-full font-bold text-white ${
+                      isFirst
+                        ? "h-10 w-10 border border-orange-500/40 bg-gradient-to-br from-[#f15a22] to-[#ff9a5c] text-[15px] shadow-[0_0_18px_rgba(241,90,34,0.35)]"
+                        : "h-[34px] w-[34px] border border-[var(--border)] bg-white/10 text-[13px]"
+                    }`}
+                  >
+                    {isFirst ? "👑" : `#${leader.rank}`}
+                  </div>
 
-                <div className="w-full truncate text-center text-xs font-semibold text-[var(--text)]">
-                  {leader.name}
-                </div>
+                  <div className="w-full truncate text-center text-xs font-semibold text-[var(--text)]">
+                    {leader.name}
+                  </div>
 
-                <div className="mb-2 text-[10px] text-[#ff9a5c]">
-                  {leader.points} pts
-                </div>
+                  <div className="mb-2 text-[10px] text-[#ff9a5c]">
+                    {leader.points} pts
+                  </div>
 
-                <div
-                  className={`flex w-full items-end justify-center rounded-t-xl border pb-2 font-syne font-bold backdrop-blur-xl ${
-                    isFirst
-                      ? "border-orange-500/40 bg-gradient-to-b from-orange-500/35 to-orange-500/10 text-white shadow-[0_12px_28px_rgba(241,90,34,0.22)]"
-                      : "border-[var(--border)] bg-gradient-to-b from-white/10 to-white/5 text-[var(--muted)]"
-                  }`}
-                  style={{ height: `${leader.height}px` }}
-                >
-                  #{leader.rank}
+                  <div
+                    className={`flex w-full items-end justify-center rounded-t-xl border pb-2 font-syne font-bold backdrop-blur-xl transition-all duration-700 ease-out ${
+                      isFirst
+                        ? "border-orange-500/40 bg-gradient-to-b from-orange-500/35 to-orange-500/10 text-white shadow-[0_12px_28px_rgba(241,90,34,0.22)]"
+                        : "border-[var(--border)] bg-gradient-to-b from-white/10 to-white/5 text-[var(--muted)]"
+                    }`}
+                    style={{ height: `${height}px` }}
+                  >
+                    #{leader.rank}
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })
+          ) : (
+            <div className="flex h-full items-center justify-center text-xs text-white/30">
+              No data available yet
+            </div>
+          )}
         </div>
 
         {/* Your Rank */}
@@ -107,16 +143,16 @@ export default function Leaderboard() {
 
             <div className="min-w-0 flex-1">
               <div className="truncate text-sm font-semibold text-[var(--text)]">
-                {userName}
+                {currentUserData?.name || userName}
               </div>
 
               <div className="text-xs text-[var(--muted)]">
-                Rank calculating soon
+                {currentUserData ? `Rank #${currentUserData.rank}` : 'Rank calculating soon'}
               </div>
             </div>
 
             <div className="shrink-0 text-sm font-bold text-[#ff9a5c]">
-              0 pts
+              {currentUserData ? `${currentUserData.points} pts` : '0 pts'}
             </div>
           </div>
         </div>

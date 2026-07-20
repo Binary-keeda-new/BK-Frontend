@@ -73,7 +73,7 @@ export default function CallbackPage() {
 
         const syncData = await syncRes.json()
         if (syncData.isNewUser) {
-          sessionStorage.setItem('show_signup_bonus', 'true')
+          localStorage.setItem('show_signup_bonus', 'true')
         }
 
         const meRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/me`, {

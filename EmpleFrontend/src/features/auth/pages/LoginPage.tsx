@@ -108,11 +108,17 @@ if (!resp?.ok) {
 
       const syncData = JSON.parse(syncText)
       if (syncData.isNewUser) {
-        sessionStorage.setItem('show_signup_bonus', 'true')
+        localStorage.setItem('show_signup_bonus', 'true')
       }
       
       const user = syncData.data?.user || syncData.user
       const role = user?.role
+
+      // Block unverified users from logging in
+      if (!isEmailVerified) {
+        router.replace(`/auth/check-email?email=${encodeURIComponent(email)}`)
+        return
+      }
 
       localStorage.setItem('token', token)
       localStorage.setItem('role', role || 'user')

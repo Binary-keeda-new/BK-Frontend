@@ -29,6 +29,7 @@ export default function SignupPage() {
   const [agreed, setAgreed] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [passwordError, setPasswordError] = useState('')
   const [universities, setUniversities] = useState<string[]>([])
   const [showDropdown, setShowDropdown] = useState(false)
   const [fetchingUni, setFetchingUni] = useState(false)
@@ -47,36 +48,38 @@ export default function SignupPage() {
   // Auto-completes signup when arriving here from CallbackPage after a
   // "login attempted with no existing account" redirect (OAuth flows only).
   useEffect(() => {
-  const notice = sessionStorage.getItem('auth_notice')
-  if (notice) {
-    setAutoSignupMessage(notice)
-    sessionStorage.removeItem('auth_notice')
-  }
-}, [])
-useEffect(() => {
-  if (form.college.length < 2) {
-    setUniversities([])
-    setShowDropdown(false)
-    return
-  }
-  if (debounceRef.current) clearTimeout(debounceRef.current)
-  debounceRef.current = setTimeout(async () => {
-    setFetchingUni(true)
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/universities/search?name=${encodeURIComponent(form.college)}`
-      )
-      const data = await res.json()
-      setUniversities(data.universities || [])
-      setShowDropdown((data.universities || []).length > 0)
-    } catch {
+    const notice = sessionStorage.getItem('auth_notice')
+    if (notice) {
+      setAutoSignupMessage(notice)
+      sessionStorage.removeItem('auth_notice')
+    }
+  }, [])
+
+  useEffect(() => {
+    if (form.college.length < 2) {
       setUniversities([])
       setShowDropdown(false)
-    } finally {
-      setFetchingUni(false)
+      return
     }
-  }, 400)
-}, [form.college])
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+    debounceRef.current = setTimeout(async () => {
+      setFetchingUni(true)
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/universities/search?name=${encodeURIComponent(form.college)}`
+        )
+        const data = await res.json()
+        setUniversities(data.universities || [])
+        setShowDropdown((data.universities || []).length > 0)
+      } catch {
+        setUniversities([])
+        setShowDropdown(false)
+      } finally {
+        setFetchingUni(false)
+      }
+    }, 400)
+  }, [form.college])
+
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
@@ -116,6 +119,7 @@ useEffect(() => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
+    setPasswordError('')
 
     if (!form.name || !form.email || !form.password || !form.confirm) {
       setError('Please fill in all required fields.')
@@ -160,13 +164,14 @@ useEffect(() => {
         return
       }
 
+      // Step 2: Sync user to MongoDB as an unverified manual signup
       const syncRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/sync`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ intent: 'signup', provider: 'password' }),
+        body: JSON.stringify({ isManualSignup: true, intent: 'signup', provider: 'password' }),
       })
 
       if (!syncRes.ok) {
@@ -175,15 +180,11 @@ useEffect(() => {
       } else {
         const syncData = await syncRes.json()
         if (syncData.isNewUser) {
-          sessionStorage.setItem('show_signup_bonus', 'true')
+          localStorage.setItem('show_signup_bonus', 'true')
         }
       }
 
-      const expiry = Date.now() + 3 * 24 * 60 * 60 * 1000
-      localStorage.setItem('token', token)
-      localStorage.setItem('role', 'user')
-      localStorage.setItem('sessionExpiry', expiry.toString())
-
+      // Step 3: Send verification email
       const verifyRes = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/send-verification`,
         {
@@ -199,9 +200,22 @@ useEffect(() => {
       }
 
       router.replace(`/auth/check-email?email=${encodeURIComponent(form.email)}`)
-    } catch (err) {
+    } catch (err: any) {
       console.error('Signup error:', err)
-      setError('Something went wrong. Please try again.')
+      
+      // Handle Descope specific errors thrown as exceptions
+      if (err?.error?.errorCode === 'E062107') {
+        setError('You already have an account! Redirecting to login...')
+        setTimeout(() => router.replace('/auth/login'), 2000)
+      } else if (err?.error?.errorCode === 'E062904') {
+        setPasswordError(err.error.errorMessage)
+      } else if (err?.error?.errorMessage) {
+        setError(err.error.errorMessage)
+      } else if (err?.message) {
+        setError(err.message)
+      } else {
+        setError('Something went wrong. Please try again.')
+      }
     } finally {
       setLoading(false)
     }
@@ -330,7 +344,12 @@ useEffect(() => {
                   {showPassword ? <EyeOff size={18} strokeWidth={1.5} /> : <Eye size={18} strokeWidth={1.5} />}
                 </button>
               </div>
-              {form.password && (
+              {passwordError && (
+                <div style={{ fontSize: 'var(--text-xs)', color: '#ef4444', marginTop: 4 }}>
+                  ✗ {passwordError}
+                </div>
+              )}
+              {form.password && !passwordError && (
                 <div className="auth-strength">
                   <div className="auth-strength-bars">
                     {[1, 2, 3, 4].map((n) => (

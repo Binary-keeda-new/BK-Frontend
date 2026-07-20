@@ -43,7 +43,7 @@ type Toast = {
   type: 'success' | 'error'
 }
 
-const PAGE_SIZE = 5
+const PAGE_SIZE = 10
 
 export default function QuestionBankPage({
   onEditQuestionBank,
