@@ -115,7 +115,7 @@ if (!resp?.ok) {
       const role = user?.role
 
       // Block unverified users from logging in
-      if (!isEmailVerified) {
+      if (!user?.isEmailVerified) {
         router.replace(`/auth/check-email?email=${encodeURIComponent(email)}`)
         return
       }
