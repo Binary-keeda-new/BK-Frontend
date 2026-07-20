@@ -33,6 +33,7 @@ export default function SignupPage() {
   const [universities, setUniversities] = useState<string[]>([])
   const [showDropdown, setShowDropdown] = useState(false)
   const [fetchingUni, setFetchingUni] = useState(false)
+  const [autoSignupMessage, setAutoSignupMessage] = useState('')
   const dropdownRef = useRef<HTMLDivElement>(null)
   const debounceRef = useRef<NodeJS.Timeout | null>(null)
 
@@ -42,6 +43,16 @@ export default function SignupPage() {
 
   const update = useCallback((field: string, value: string) => {
     setForm((f) => ({ ...f, [field]: value }))
+  }, [])
+
+  // Auto-completes signup when arriving here from CallbackPage after a
+  // "login attempted with no existing account" redirect (OAuth flows only).
+  useEffect(() => {
+    const notice = sessionStorage.getItem('auth_notice')
+    if (notice) {
+      setAutoSignupMessage(notice)
+      sessionStorage.removeItem('auth_notice')
+    }
   }, [])
 
   useEffect(() => {
@@ -54,16 +65,12 @@ export default function SignupPage() {
     debounceRef.current = setTimeout(async () => {
       setFetchingUni(true)
       try {
-        let res
-        try {
-          res = await fetch(`https://universities.hipolabs.com/search?name=${encodeURIComponent(form.college)}&country=India`)
-        } catch {
-          res = await fetch(`http://universities.hipolabs.com/search?name=${encodeURIComponent(form.college)}&country=India`)
-        }
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/universities/search?name=${encodeURIComponent(form.college)}`
+        )
         const data = await res.json()
-        const names = data.map((u: any) => u.name).slice(0, 8)
-        setUniversities(names)
-        setShowDropdown(names.length > 0)
+        setUniversities(data.universities || [])
+        setShowDropdown((data.universities || []).length > 0)
       } catch {
         setUniversities([])
         setShowDropdown(false)
@@ -91,8 +98,12 @@ export default function SignupPage() {
 
   const handleSocialLogin = async (provider: 'google' | 'github' | 'microsoft') => {
     try {
-      const redirectUrl = `${window.location.origin}/auth/callback?from=signup`
+      sessionStorage.setItem('oauth_intent', 'signup')
+      sessionStorage.setItem('oauth_provider', provider)
+
+      const redirectUrl = `${window.location.origin}/auth/callback`
       const result = await sdk.oauth.start(provider, redirectUrl)
+
       if (result.ok && result.data?.url) {
         window.location.href = result.data.url
         return
@@ -130,7 +141,6 @@ export default function SignupPage() {
     setLoading(true)
 
     try {
-      // Step 1: Sign up with Descope
       const resp = await sdk.password.signUp(form.email, form.password, {
         name: form.name,
         email: form.email,
@@ -161,7 +171,7 @@ export default function SignupPage() {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ isManualSignup: true }),
+        body: JSON.stringify({ isManualSignup: true, intent: 'signup', provider: 'password' }),
       })
 
       if (!syncRes.ok) {
@@ -189,7 +199,6 @@ export default function SignupPage() {
         console.error('Verification email error:', verifyData)
       }
 
-      // Step 5: Redirect to check email page
       router.replace(`/auth/check-email?email=${encodeURIComponent(form.email)}`)
     } catch (err: any) {
       console.error('Signup error:', err)
@@ -220,6 +229,12 @@ export default function SignupPage() {
             <h1 className="auth-title">Join <em>Emple</em></h1>
             <p className="auth-subtitle">Your AI-powered placement journey starts here</p>
           </div>
+
+          {autoSignupMessage && (
+            <div className="auth-alert" style={{ marginBottom: 20 }}>
+              <span>{autoSignupMessage}</span>
+            </div>
+          )}
 
           {error && (
             <div className="auth-alert error" style={{ marginBottom: 20 }}>
