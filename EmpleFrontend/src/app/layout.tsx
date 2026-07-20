@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import "./landing/landing.css";
+import "katex/dist/katex.min.css";
 import { ThemeProvider } from "../providers/ThemeContext";
 import { AuthProvider } from "@descope/nextjs-sdk";
 import { AppAuthProvider } from "@/providers/AppAuthProvider";

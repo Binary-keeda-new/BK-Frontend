@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { CheckCircle2, Copy } from "lucide-react";
+import { InlineMath } from 'react-katex';
 
 interface BadgeProps {
   text: string;
@@ -35,6 +36,17 @@ export function CodeBlock({ code }: CodeBlockProps) {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const renderCode = (codeText: string) => {
+    const regex = /(\/\*[\s\S]*?\*\/|\/\/.*)/g;
+    const parts = codeText.split(regex);
+    return parts.map((part, i) => {
+      if (part.startsWith('//') || part.startsWith('/*')) {
+        return <span key={i} className="text-[#8a8a9a]">{part}</span>;
+      }
+      return <span key={i} className="text-[var(--orange)]">{part}</span>;
+    });
+  };
+
   return (
     <div 
       className="relative rounded-xl overflow-hidden border"
@@ -67,8 +79,8 @@ export function CodeBlock({ code }: CodeBlockProps) {
           )}
         </button>
       </div>
-      <pre className="p-4 overflow-x-auto text-[13px] font-mono text-indigo-300 leading-relaxed max-h-96">
-        <code>{code}</code>
+      <pre className="p-4 overflow-x-auto text-[13px] font-mono leading-relaxed max-h-96">
+        <code>{renderCode(code)}</code>
       </pre>
     </div>
   );
@@ -157,11 +169,8 @@ export function renderHighlightedText(text: string): React.ReactNode {
         if (part.startsWith("$") && part.endsWith("$") && part.length > 1) {
           const content = part.slice(1, -1);
           return (
-            <span 
-              key={i} 
-              className="font-serif italic text-white/90 text-[14px]"
-            >
-              {content}
+            <span key={i} className="text-white/90 text-[15px] inline-block mx-1">
+              <InlineMath math={content} />
             </span>
           );
         }
