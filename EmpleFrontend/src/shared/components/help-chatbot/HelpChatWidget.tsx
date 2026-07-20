@@ -18,13 +18,13 @@ const WELCOME_TEXT =
 const FOLLOW_UP_TEXT =
   "Hope this was useful! Let me know if you want to explore something else too.";
 
-// Paths where the widget should stay hidden (landing page + auth flow)
+// Paths where the widget should stay hidden (landing page, auth flow, team page)
 const HIDDEN_ON = (pathname: string) =>
-  pathname === "/" || 
+  pathname === "/" ||
   pathname.startsWith("/auth") ||
   pathname.startsWith("/dashboard") ||
-  pathname.startsWith("/admin");
-
+  pathname.startsWith("/admin") ||
+  pathname.startsWith("/team"); 
 const HelpChatWidget: React.FC = () => {
   const router = useRouter();
   const pathname = usePathname();
@@ -50,11 +50,19 @@ const HelpChatWidget: React.FC = () => {
     if (isOpen) setTimeout(() => inputRef.current?.focus(), 200);
   }, [isOpen]);
 
-  // Hide entirely on the landing page and auth pages (login/signup/callback).
+  // Hide entirely on the landing page, auth pages, and the team page.
   // Shows on every other route, including Dashboard and all modules.
   if (HIDDEN_ON(pathname)) {
     return null;
   }
+
+  // Closes the widget AND resets the conversation, so reopening always
+  // starts fresh instead of resuming the previous chat.
+  const handleClose = () => {
+    setIsOpen(false);
+    setEntries([]);
+    setInputVal("");
+  };
 
   const handleSend = () => {
     const query = inputVal.trim();
@@ -88,7 +96,7 @@ const HelpChatWidget: React.FC = () => {
 
   const handleNavigate = (route: SiteRoute) => {
     router.push(route.path);
-    setIsOpen(false);
+    handleClose();
   };
 
   return (
@@ -115,7 +123,7 @@ const HelpChatWidget: React.FC = () => {
 
       {/* ── Floating toggle button — bottom-right, always visible ── */}
       <button
-        onClick={() => setIsOpen((v) => !v)}
+        onClick={() => (isOpen ? handleClose() : setIsOpen(true))}
         onMouseEnter={(e) => {
           setIsHovering(true);
           e.currentTarget.style.transform = "scale(1.06)";
@@ -239,7 +247,7 @@ const HelpChatWidget: React.FC = () => {
               <div style={{ fontSize: 10.5, color: "var(--muted2)" }}>Your site guide</div>
             </div>
             <button
-              onClick={() => setIsOpen(false)}
+              onClick={handleClose}
               style={{
                 marginLeft: "auto",
                 background: "none",
