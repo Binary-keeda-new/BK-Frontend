@@ -14,7 +14,6 @@ import { useDescope, useSession, useUser } from "@descope/nextjs-sdk/client";
 import { useRouter } from "next/navigation";
 import SlideDrawer from "@/shared/components/ui/SlideDrawer";
 import MediaFeedWidget from "@/features/user/dashboard/components/MediaFeedWidget";
-import AIAssistantWidget from "@/features/ai-assistant/components/AIAssistantWidget";
 import EmptyState from "@/shared/components/ui/EmptyState";
 import WalletBadge from "@/features/wallet/components/WalletBadge";
 import { useWallet } from "@/providers/WalletProvider";
@@ -168,7 +167,6 @@ export default function Topbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [todoOpen, setTodoOpen] = useState(false);
   const [mediaOpen, setMediaOpen] = useState(false);
-  const [aiOpen, setAiOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
   const [tasks, setTasks] = useState<Task[]>([{ text: "", done: false }]);
   const [allNotifications, setAllNotifications] = useState<any[]>([]);
@@ -301,17 +299,7 @@ export default function Topbar() {
             </button>
           )}
 
-          {/* AI button */}
-          {isAuthenticated && (
-            <button
-              title="Emple AI"
-              onClick={() => setAiOpen(true)}
-              className="w-11 h-11 flex items-center justify-center rounded-full text-[var(--muted2)]
-                transition-all duration-300 hover:-translate-y-[2px] hover:bg-orange-500/10 hover:text-orange-500"
-            >
-              <Sparkles size={22} />
-            </button>
-          )}
+          {/* AI button removed */}
 
           {/* Bell button with unread badge */}
           {isAuthenticated && (
@@ -454,17 +442,7 @@ export default function Topbar() {
         </div>
       </SlideDrawer>
 
-      {/* AI Assistant Drawer */}
-      <SlideDrawer
-        isOpen={aiOpen}
-        onClose={() => setAiOpen(false)}
-        width="md"
-        hideHeader={true}
-      >
-        <div className="h-full">
-          <AIAssistantWidget onClose={() => setAiOpen(false)} />
-        </div>
-      </SlideDrawer>
+      {/* AI Assistant Drawer removed */}
 
       {/* Notifications Drawer */}
       <SlideDrawer
