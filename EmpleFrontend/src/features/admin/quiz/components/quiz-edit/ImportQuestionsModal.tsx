@@ -87,6 +87,9 @@ export default function ImportQuestionsModal({
           !/^ANSWER\s*:/i.test(line) &&
           !/^POSITIVE\s*:/i.test(line) &&
           !/^NEGATIVE\s*:/i.test(line) &&
+          !/^IMAGE\s*:/i.test(line) &&
+          !/^SOLUTION\s*:/i.test(line) &&
+          !/^SOLUTION_MEDIA\s*:/i.test(line) &&
           !/^CATEGORY\s*:/i.test(line) &&
           !/^SUBCATEGORY\s*:/i.test(line) &&
           !/^TOPIC\s*:/i.test(line) &&
