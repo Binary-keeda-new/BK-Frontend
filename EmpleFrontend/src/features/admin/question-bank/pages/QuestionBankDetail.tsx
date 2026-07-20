@@ -94,6 +94,10 @@ function parseAiken(text: string): NewQuestion[] {
     const positiveLine = lines.find((line) => /^POSITIVE\s*:/i.test(line))
     const negativeLine = lines.find((line) => /^NEGATIVE\s*:/i.test(line))
     
+    const imageLine = lines.find((line) => /^IMAGE\s*:/i.test(line))
+    const solutionLine = lines.find((line) => /^SOLUTION\s*:/i.test(line))
+    const solutionMediaLine = lines.find((line) => /^SOLUTION_MEDIA\s*:/i.test(line))
+
     const categoryLine = lines.find((line) => /^CATEGORY\s*:/i.test(line))
     const subcategoryLine = lines.find((line) => /^SUBCATEGORY\s*:/i.test(line))
     const topicLine = lines.find((line) => /^TOPIC\s*:/i.test(line))
@@ -109,6 +113,9 @@ function parseAiken(text: string): NewQuestion[] {
         !/^ANSWER\s*:/i.test(line) &&
         !/^POSITIVE\s*:/i.test(line) &&
         !/^NEGATIVE\s*:/i.test(line) &&
+        !/^IMAGE\s*:/i.test(line) &&
+        !/^SOLUTION\s*:/i.test(line) &&
+        !/^SOLUTION_MEDIA\s*:/i.test(line) &&
         !/^CATEGORY\s*:/i.test(line) &&
         !/^SUBCATEGORY\s*:/i.test(line) &&
         !/^TOPIC\s*:/i.test(line) &&
@@ -167,6 +174,9 @@ function parseAiken(text: string): NewQuestion[] {
       ? Number(negativeLine.replace(/^NEGATIVE\s*:/i, "").trim())
       : 1
 
+    const imageUrl = imageLine ? imageLine.replace(/^IMAGE\s*:/i, "").trim() : null
+    const solution = solutionLine ? solutionLine.replace(/^SOLUTION\s*:/i, "").trim() : ''
+    const solutionMedia = solutionMediaLine ? solutionMediaLine.replace(/^SOLUTION_MEDIA\s*:/i, "").trim() : ''
     const category = categoryLine ? categoryLine.replace(/^CATEGORY\s*:/i, "").trim() : ''
     const subcategory = subcategoryLine ? subcategoryLine.replace(/^SUBCATEGORY\s*:/i, "").trim() : ''
     const topic = topicLine ? topicLine.replace(/^TOPIC\s*:/i, "").trim() : ''
@@ -181,9 +191,9 @@ function parseAiken(text: string): NewQuestion[] {
       positiveMarks: Number.isFinite(positiveMarks) ? positiveMarks : 4,
       negativeMarks: Number.isFinite(negativeMarks) ? negativeMarks : 1,
       questionType: parsedType || (correctOptions.length > 1 ? "MSQ" : "MCQ"),
-      imageUrl: null,
-      solution: '',
-      solutionMedia: '',
+      imageUrl,
+      solution,
+      solutionMedia,
       category,
       subcategory,
       topic,
@@ -210,8 +220,9 @@ function parseJSON(text: string): NewQuestion[] {
       questionType:
         q.questionType ??
         ((q.correctOptions?.length ?? 0) > 1 ? 'MSQ' : 'MCQ'),
-      solution: q.solution ?? '',
-      solutionMedia: q.solutionMedia ?? '',
+      imageUrl: q.imageUrl ? String(q.imageUrl).trim() : null,
+      solution: q.solution ? String(q.solution).trim() : '',
+      solutionMedia: q.solutionMedia ? String(q.solutionMedia).trim() : '',
       category: q.category ?? '',
       subcategory: q.subcategory ?? '',
       topic: q.topic ?? '',

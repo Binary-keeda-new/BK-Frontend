@@ -47,7 +47,7 @@ export default function AddQuestionModal({
 
   const downloadSample = (type: "excel" | "json" | "aiken") => {
     if (type === "aiken") {
-      const text = `CATEGORY: Core CS\nSUBCATEGORY: Data Structures\nTOPIC: Array\nSUBTOPIC: Searching\nEXAM: GATE\nYEAR: 2024\nTYPE: MCQ\nWhat is the capital of France?\nA. London\nB. Paris\nC. Berlin\nD. Madrid\nANSWER: B\nPOSITIVE: 4\nNEGATIVE: 1\n\nTYPE: MSQ\nWhich of the following are prime numbers?\nA. 2\nB. 4\nC. 5\nD. 9\nANSWER: A, C\nPOSITIVE: 4\nNEGATIVE: 1\n\nTYPE: NAT\nWhat is 5 + 7?\nANSWER: 12\nPOSITIVE: 4\nNEGATIVE: 1`;
+      const text = `CATEGORY: Core CS\nSUBCATEGORY: Data Structures\nTOPIC: Array\nSUBTOPIC: Searching\nEXAM: GATE\nYEAR: 2024\nIMAGE: https://example.com/image.png\nSOLUTION: Binary search is O(log n).\nSOLUTION_MEDIA: https://example.com/video.mp4\nTYPE: MCQ\nWhat is the time complexity of binary search?\nA) O(1)\nB) O(n)\nC) O(log n)\nD) O(n log n)\nANSWER: C\nPOSITIVE: 4\nNEGATIVE: 1\n\nTYPE: MSQ\nWhich of the following are prime numbers?\nA. 2\nB. 4\nC. 5\nD. 9\nANSWER: A, C\nPOSITIVE: 4\nNEGATIVE: 1\n\nTYPE: NAT\nWhat is 5 + 7?\nANSWER: 12\nPOSITIVE: 4\nNEGATIVE: 1`;
       const blob = new Blob([text], { type: "text/plain" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -63,7 +63,16 @@ export default function AddQuestionModal({
           options: ["London", "Paris", "Berlin", "Madrid"],
           answer: "Paris",
           positiveMarks: 4,
-          negativeMarks: 1
+          negativeMarks: 1,
+          imageUrl: "https://example.com/image.png",
+          solution: "Paris is the capital of France.",
+          solutionMedia: "https://example.com/video.mp4",
+          category: "Geography",
+          subcategory: "Europe",
+          topic: "Capitals",
+          subTopic: "France",
+          exam: "General Knowledge",
+          year: 2024
         },
         {
           type: "MSQ",
@@ -91,7 +100,7 @@ export default function AddQuestionModal({
       URL.revokeObjectURL(url);
     } else if (type === "excel") {
       const data = [
-        { type: "MCQ", question: "What is the capital of France?", A: "London", B: "Paris", C: "Berlin", D: "Madrid", answer: "Paris", positiveMarks: 4, negativeMarks: 1 },
+        { type: "MCQ", question: "What is the capital of France?", A: "London", B: "Paris", C: "Berlin", D: "Madrid", answer: "Paris", positiveMarks: 4, negativeMarks: 1, imageUrl: "https://example.com/image.png", solution: "Paris is the capital of France.", solutionMedia: "https://example.com/video.mp4", category: "Geography", subcategory: "Europe", topic: "Capitals", subTopic: "France", exam: "General Knowledge", year: 2024 },
         { type: "MSQ", question: "Which of the following are prime numbers?", A: "2", B: "4", C: "5", D: "9", answer: "2,5", positiveMarks: 4, negativeMarks: 1 },
         { type: "NAT", question: "What is 5 + 7?", A: "", B: "", C: "", D: "", answer: "12", positiveMarks: 4, negativeMarks: 1 }
       ];

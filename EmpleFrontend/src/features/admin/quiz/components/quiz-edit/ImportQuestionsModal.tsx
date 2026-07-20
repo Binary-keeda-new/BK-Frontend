@@ -150,7 +150,7 @@ export default function ImportQuestionsModal({
       const topic = topicLine ? topicLine.replace(/^TOPIC\s*:/i, "").trim() : undefined;
       const subTopic = subtopicLine ? subtopicLine.replace(/^SUBTOPIC\s*:/i, "").trim() : undefined;
       const exam = examLine ? examLine.replace(/^EXAM\s*:/i, "").trim() : undefined;
-      const year = yearLine ? parseInt(yearLine.replace(/^YEAR\s*:/i, "").trim(), 10) || null : undefined;
+      const year = yearLine ? parseInt(yearLine.replace(/^YEAR\s*:/i, "").trim(), 10) || undefined : undefined;
 
       questions.push({
         question,
@@ -182,7 +182,15 @@ export default function ImportQuestionsModal({
 
         const positiveMarks = Number(item.positiveMarks ?? 4);
         const negativeMarks = Number(item.negativeMarks ?? 1);
-        const imageUrl = item.imageUrl ? String(item.imageUrl).trim() : null;
+        const imageUrl = item.imageUrl ? String(item.imageUrl).trim() : undefined;
+        const solution = item.solution ? String(item.solution).trim() : undefined;
+        const solutionMedia = item.solutionMedia ? String(item.solutionMedia).trim() : undefined;
+        const category = item.category ? String(item.category).trim() : undefined;
+        const subcategory = item.subcategory ? String(item.subcategory).trim() : undefined;
+        const topic = item.topic ? String(item.topic).trim() : undefined;
+        const subTopic = item.subTopic ? String(item.subTopic).trim() : undefined;
+        const exam = item.exam ? String(item.exam).trim() : undefined;
+        const year = item.year ? Number(item.year) : undefined;
 
         if (!question) return null;
 
@@ -199,6 +207,14 @@ export default function ImportQuestionsModal({
             positiveMarks,
             negativeMarks,
             imageUrl,
+            solution,
+            solutionMedia,
+            category,
+            subcategory,
+            topic,
+            subTopic,
+            exam,
+            year,
           };
         }
 
@@ -227,6 +243,14 @@ export default function ImportQuestionsModal({
           positiveMarks,
           negativeMarks,
           imageUrl,
+          solution,
+          solutionMedia,
+          category,
+          subcategory,
+          topic,
+          subTopic,
+          exam,
+          year,
         };
       })
       .filter((item): item is ParsedQuestion => Boolean(item));
@@ -254,7 +278,15 @@ export default function ImportQuestionsModal({
       const negativeMarks = Number(
         row.negativeMarks ?? row.NegativeMarks ?? 1
       );
-      const imageUrl = row.imageUrl ?? row.ImageUrl ?? null;
+      const imageUrl = row.imageUrl ?? row.ImageUrl ?? undefined;
+      const solution = row.solution ?? row.Solution ?? undefined;
+      const solutionMedia = row.solutionMedia ?? row.SolutionMedia ?? undefined;
+      const category = row.category ?? row.Category ?? undefined;
+      const subcategory = row.subcategory ?? row.Subcategory ?? undefined;
+      const topic = row.topic ?? row.Topic ?? undefined;
+      const subTopic = row.subTopic ?? row.SubTopic ?? undefined;
+      const exam = row.exam ?? row.Exam ?? undefined;
+      const year = row.year ?? row.Year ?? undefined;
 
       if (rawType === "NAT") {
         const answer = String(
@@ -268,7 +300,15 @@ export default function ImportQuestionsModal({
           correctOptions: answer ? [answer] : [],
           positiveMarks,
           negativeMarks,
-          imageUrl: imageUrl ? String(imageUrl).trim() : null,
+          imageUrl: imageUrl ? String(imageUrl).trim() : undefined,
+          solution: solution ? String(solution).trim() : undefined,
+          solutionMedia: solutionMedia ? String(solutionMedia).trim() : undefined,
+          category: category ? String(category).trim() : undefined,
+          subcategory: subcategory ? String(subcategory).trim() : undefined,
+          topic: topic ? String(topic).trim() : undefined,
+          subTopic: subTopic ? String(subTopic).trim() : undefined,
+          exam: exam ? String(exam).trim() : undefined,
+          year: year ? Number(year) : undefined,
         });
 
         continue;
@@ -331,13 +371,20 @@ export default function ImportQuestionsModal({
 
       questions.push({
         question,
-        questionType:
-          rawType === "MSQ" || correctOptions.length > 1 ? "MSQ" : "MCQ",
+        questionType: rawType === "MSQ" || correctOptions.length > 1 ? "MSQ" : "MCQ",
         options,
         correctOptions,
         positiveMarks,
         negativeMarks,
-        imageUrl: imageUrl ? String(imageUrl).trim() : null,
+        imageUrl: imageUrl ? String(imageUrl).trim() : undefined,
+        solution: solution ? String(solution).trim() : undefined,
+        solutionMedia: solutionMedia ? String(solutionMedia).trim() : undefined,
+        category: category ? String(category).trim() : undefined,
+        subcategory: subcategory ? String(subcategory).trim() : undefined,
+        topic: topic ? String(topic).trim() : undefined,
+        subTopic: subTopic ? String(subTopic).trim() : undefined,
+        exam: exam ? String(exam).trim() : undefined,
+        year: year ? Number(year) : undefined,
       });
     }
 
@@ -443,7 +490,7 @@ export default function ImportQuestionsModal({
 
   const downloadSample = (type: "excel" | "json" | "aiken") => {
     if (type === "aiken") {
-      const text = `CATEGORY: Core CS\nSUBCATEGORY: Data Structures\nTOPIC: Array\nSUBTOPIC: Searching\nEXAM: GATE\nYEAR: 2024\nTYPE: MCQ\nWhat is the capital of France?\nA. London\nB. Paris\nC. Berlin\nD. Madrid\nANSWER: B\nPOSITIVE: 4\nNEGATIVE: 1\n\nTYPE: MSQ\nWhich of the following are prime numbers?\nA. 2\nB. 4\nC. 5\nD. 9\nANSWER: A, C\nPOSITIVE: 4\nNEGATIVE: 1\n\nTYPE: NAT\nWhat is 5 + 7?\nANSWER: 12\nPOSITIVE: 4\nNEGATIVE: 1`;
+      const text = `CATEGORY: Core CS\nSUBCATEGORY: Data Structures\nTOPIC: Array\nSUBTOPIC: Searching\nEXAM: GATE\nYEAR: 2024\nIMAGE: https://example.com/image.png\nSOLUTION: Binary search is O(log n).\nSOLUTION_MEDIA: https://example.com/video.mp4\nTYPE: MCQ\nWhat is the time complexity of binary search?\nA) O(1)\nB) O(n)\nC) O(log n)\nD) O(n log n)\nANSWER: C\nPOSITIVE: 4\nNEGATIVE: 1\n\nTYPE: MSQ\nWhich of the following are prime numbers?\nA. 2\nB. 4\nC. 5\nD. 9\nANSWER: A, C\nPOSITIVE: 4\nNEGATIVE: 1\n\nTYPE: NAT\nWhat is 5 + 7?\nANSWER: 12\nPOSITIVE: 4\nNEGATIVE: 1`;
       const blob = new Blob([text], { type: "text/plain" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -459,7 +506,16 @@ export default function ImportQuestionsModal({
           options: ["London", "Paris", "Berlin", "Madrid"],
           answer: "Paris",
           positiveMarks: 4,
-          negativeMarks: 1
+          negativeMarks: 1,
+          imageUrl: "https://example.com/image.png",
+          solution: "Paris is the capital of France.",
+          solutionMedia: "https://example.com/video.mp4",
+          category: "Geography",
+          subcategory: "Europe",
+          topic: "Capitals",
+          subTopic: "France",
+          exam: "General Knowledge",
+          year: 2024
         },
         {
           type: "MSQ",
@@ -487,7 +543,7 @@ export default function ImportQuestionsModal({
       URL.revokeObjectURL(url);
     } else if (type === "excel") {
       const data = [
-        { type: "MCQ", question: "What is the capital of France?", A: "London", B: "Paris", C: "Berlin", D: "Madrid", answer: "Paris", positiveMarks: 4, negativeMarks: 1 },
+        { type: "MCQ", question: "What is the capital of France?", A: "London", B: "Paris", C: "Berlin", D: "Madrid", answer: "Paris", positiveMarks: 4, negativeMarks: 1, imageUrl: "https://example.com/image.png", solution: "Paris is the capital of France.", solutionMedia: "https://example.com/video.mp4", category: "Geography", subcategory: "Europe", topic: "Capitals", subTopic: "France", exam: "General Knowledge", year: 2024 },
         { type: "MSQ", question: "Which of the following are prime numbers?", A: "2", B: "4", C: "5", D: "9", answer: "2,5", positiveMarks: 4, negativeMarks: 1 },
         { type: "NAT", question: "What is 5 + 7?", A: "", B: "", C: "", D: "", answer: "12", positiveMarks: 4, negativeMarks: 1 }
       ];
