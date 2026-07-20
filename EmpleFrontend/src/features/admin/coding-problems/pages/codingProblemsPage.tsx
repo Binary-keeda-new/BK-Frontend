@@ -3,6 +3,9 @@
 import { useEffect, useState } from 'react';
 import { Eye, Pencil, Trash2 } from 'lucide-react';
 
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+
 interface CodingProblem {
   _id: string;
   title: string;
@@ -25,8 +28,14 @@ export default function CodingProblemsPage({
     const fetchProblems = async () => {
       try {
         const response = await fetch(
-          'http://localhost:5000/api/v1/coding-problems'
+          `${API_BASE_URL}/api/v1/coding-problems`
         );
+
+        if (!response.ok) {
+          throw new Error(
+            `Failed to fetch coding problems: ${response.status}`
+          );
+        }
 
         const data = await response.json();
 
@@ -137,6 +146,7 @@ export default function CodingProblemsPage({
                   <td className="px-6 py-4">
                     <div className="flex items-center justify-center gap-3">
                       <button
+                        type="button"
                         onClick={() =>
                           console.log('preview', problem._id)
                         }
@@ -146,15 +156,15 @@ export default function CodingProblemsPage({
                       </button>
 
                       <button
-                        onClick={() => {
-                          // console.log('edit', problem.id);
-                          onEditProblem(problem._id);
-                        }}
+                        type="button"
+                        onClick={() => onEditProblem(problem._id)}
                         className="text-[var(--clr-text2)] transition hover:text-green-500"
                       >
                         <Pencil size={18} />
                       </button>
+
                       <button
+                        type="button"
                         onClick={() =>
                           console.log('delete', problem._id)
                         }

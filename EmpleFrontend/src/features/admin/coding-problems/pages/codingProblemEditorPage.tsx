@@ -14,6 +14,9 @@ import HintsSection from '../components/hintsSection';
 import EditorialSection from '../components/editorialSection';
 import PublishSection from '../components/publishSection';
 
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+
 interface Props {
   problemId: string;
 }
@@ -136,7 +139,7 @@ const [activeTab, setActiveTab] =
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/v1/coding-problems/${problemId}`,
+        `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
         {
           method: 'PATCH',
           headers: {
@@ -181,7 +184,7 @@ const [activeTab, setActiveTab] =
   }
   try {
     const response = await fetch(
-      `http://localhost:5000/api/v1/coding-problems/${problemId}`,
+      `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
       {
         method: 'PATCH',
         headers: {
@@ -242,7 +245,7 @@ if (hasEmptyExample) {
 }
   try {
     const response = await fetch(
-      `http://localhost:5000/api/v1/coding-problems/${problemId}`,
+      `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
       {
         method: 'PATCH',
         headers: {
@@ -295,7 +298,7 @@ if (hasEmptyExample) {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/v1/coding-problems/${problemId}`,
+        `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
         {
           method: 'PATCH',
           headers: {
@@ -349,7 +352,7 @@ if (hasEmptyExample) {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/v1/coding-problems/${problemId}`,
+        `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
         {
           method: 'PATCH',
           headers: {
@@ -419,7 +422,7 @@ if (!updated[key]) {
 }
     try {
       const response = await fetch(
-        `http://localhost:5000/api/v1/coding-problems/${problemId}`,
+        `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
         {
           method: 'PATCH',
           headers: {
@@ -496,7 +499,7 @@ if (!updated[key]) {
 
   try {
     const response = await fetch(
-      `http://localhost:5000/api/v1/coding-problems/${problemId}`,
+      `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
       {
         method: 'PATCH',
         headers: {
@@ -546,7 +549,7 @@ const handleSaveHints = async () => {
 
   try {
     const response = await fetch(
-      `http://localhost:5000/api/v1/coding-problems/${problemId}`,
+      `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
       {
         method: 'PATCH',
         headers: {
@@ -592,7 +595,7 @@ const handleSaveEditorial =
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/v1/coding-problems/${problemId}`,
+        `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
         {
           method: 'PATCH',
           headers: {
@@ -632,7 +635,7 @@ const handleSaveEditorial =
   async () => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/v1/coding-problems/${problemId}`,
+        `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
         {
           method: 'PATCH',
           headers: {
@@ -682,7 +685,7 @@ const handlePublish =
 }
     try {
       const response = await fetch(
-        `http://localhost:5000/api/v1/coding-problems/${problemId}`,
+        `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
         {
           method: 'PATCH',
           headers: {
@@ -723,7 +726,7 @@ const handlePublish =
     const fetchProblem = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/v1/coding-problems/${problemId}`
+          `${API_BASE_URL}/api/v1/coding-problems/${problemId}`
         );
 
         const data = await response.json();
