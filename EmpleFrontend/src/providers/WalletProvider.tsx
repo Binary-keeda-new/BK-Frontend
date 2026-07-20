@@ -82,8 +82,8 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
     if (isAuthenticated) {
       refreshWallet();
 
-      if (typeof window !== "undefined" && sessionStorage.getItem("show_signup_bonus") === "true") {
-        sessionStorage.removeItem("show_signup_bonus");
+      if (typeof window !== "undefined" && localStorage.getItem("show_signup_bonus") === "true") {
+        localStorage.removeItem("show_signup_bonus");
         setTimeout(() => {
           notifyReward("Signup Bonus", "Welcome to Emple! Your signup bonus has been added.", 100);
         }, 500);

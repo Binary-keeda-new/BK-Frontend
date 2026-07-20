@@ -263,8 +263,8 @@ export default function QuizList() {
           </div>
         )}
 
-        <div className="mb-3 hidden grid-cols-[1fr_140px_160px] border-b border-[var(--border)] px-6 pb-[10px] sm:grid">
-          {["TITLE", "DURATION", ""].map((h) => (
+        <div className="mb-3 hidden grid-cols-[1fr_140px_160px_120px] border-b border-[var(--border)] px-6 pb-[10px] sm:grid">
+          {["TITLE", "DURATION", "COINS", ""].map((h) => (
             <span
               key={h}
               className="text-[11px] font-semibold tracking-[0.08em] text-[var(--muted)]"
@@ -300,7 +300,7 @@ export default function QuizList() {
               return (
                 <div
                   key={quiz._id}
-                  className="grid grid-cols-[1fr_auto] grid-rows-[auto_auto] items-center gap-x-3 gap-y-1 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-[14px] transition-[border,box-shadow] duration-200 ease-in-out hover:border-[var(--orange)] hover:shadow-[0_4px_16px_rgba(241,90,34,0.12)] sm:grid-cols-[1fr_140px_160px] sm:grid-rows-1 sm:px-6 sm:py-[18px]"
+                  className="grid grid-cols-[1fr_auto] grid-rows-[auto_auto] items-center gap-x-3 gap-y-1 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-[14px] transition-[border,box-shadow] duration-200 ease-in-out hover:border-[var(--orange)] hover:shadow-[0_4px_16px_rgba(241,90,34,0.12)] sm:grid-cols-[1fr_140px_160px_120px] sm:grid-rows-1 sm:px-6 sm:py-[18px]"
                 >
                   <div className="col-[1] row-[1] sm:col-auto sm:row-auto">
                     <p className="m-0 text-[15px] font-semibold text-[var(--text)]">
@@ -312,35 +312,22 @@ export default function QuizList() {
                         {quiz.description}
                       </p>
                     )}
-
-                    {badgeLabel && (
-                      <span
-                        className={`mt-2 inline-flex rounded-full border px-2.5 py-1 text-[11px] font-semibold ${
-                        attemptState?.status === "in_progress"
-                          ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
-                          : "border-sky-500/30 bg-sky-500/10 text-sky-300"
-                      }`}
-                      >
-                        {badgeLabel}
-                      </span>
-                    )}
                   </div>
 
                   <p className="col-[1] row-[2] m-0 text-[13px] text-[var(--muted2)] sm:col-auto sm:row-auto">
                     {formatDuration(quiz.duration)}
                   </p>
+                  
+                  <div className="col-[1] row-[3] sm:col-auto sm:row-auto flex sm:flex-col items-start gap-1 mt-2 sm:mt-0">
+                    <div className="flex items-center gap-1.5 text-[11px] sm:text-[12px] font-medium text-orange-400 px-2 py-0.5 rounded-md border border-orange-500/20 bg-orange-500/10 whitespace-nowrap">
+                      🪙 Cost: {quizCost}
+                    </div>
+                    <div className="flex items-center gap-1.5 text-[11px] font-medium text-green-400 px-2 py-0.5 rounded-md border border-green-500/20 bg-green-500/10 whitespace-nowrap">
+                      🟢 Earn up to {maxReward}
+                    </div>
+                  </div>
 
-                  <div className="col-[2] row-[1/3] flex flex-col sm:flex-row items-end sm:items-center justify-end gap-2 sm:gap-3 self-center sm:col-auto sm:row-auto">
-                    {actionLabel === "Attempt" && (
-                      <div className="flex flex-col items-end sm:items-center gap-1">
-                        <div className="flex items-center gap-1.5 text-[12px] font-medium text-orange-400 px-2 py-0.5 rounded-md border border-orange-500/20 bg-orange-500/10 whitespace-nowrap">
-                          🪙 Cost: {quizCost} Coins
-                        </div>
-                        <div className="flex items-center gap-1.5 text-[11px] font-medium text-green-400 px-2 py-0.5 rounded-md border border-green-500/20 bg-green-500/10 whitespace-nowrap">
-                          🟢 Earn up to {maxReward}
-                        </div>
-                      </div>
-                    )}
+                  <div className="col-[2] row-[1/4] sm:col-auto sm:row-auto flex items-center justify-end self-center sm:self-auto">
                     <button
                       onClick={() => handleQuizAction(quiz)}
                       className={`cursor-pointer whitespace-nowrap rounded-lg px-[18px] py-2 text-[13px] font-semibold ${actionButtonClass}`}
@@ -455,7 +442,6 @@ export default function QuizList() {
               >
                 Start Quiz
               </button>
-
             </div>
           </div>
         </div>

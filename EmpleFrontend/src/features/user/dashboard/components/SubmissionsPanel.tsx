@@ -52,17 +52,21 @@ function getReviewPath(item: SubmissionItem) {
   )}/${item.quizId}/review?attemptId=${item.attemptId}`;
 }
 
-export default function SubmissionsPanel() {
+export default function SubmissionsPanel({
+  isExpanded,
+  onToggleExpand,
+}: {
+  isExpanded?: boolean;
+  onToggleExpand?: () => void;
+}) {
   const router = useRouter();
 
   const [active, setActive] = useState<Tab>("Quiz");
-  const [visibleCount, setVisibleCount] = useState(5);
   const [submissions, setSubmissions] = useState<SubmissionItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   const handleTabChange = (tab: Tab) => {
     setActive(tab);
-    setVisibleCount(5);
   };
 
   useEffect(() => {
@@ -105,7 +109,7 @@ export default function SubmissionsPanel() {
     void fetchAttempts();
   }, [active]);
 
-  const visibleSubmissions = submissions.slice(0, visibleCount);
+  const visibleSubmissions = isExpanded ? submissions : submissions.slice(0, 5);
 
   return (
     <div
@@ -333,10 +337,10 @@ export default function SubmissionsPanel() {
         )}
       </div>
 
-      {visibleCount < submissions.length && active === "Quiz" && (
+      {(submissions.length > 5 || isExpanded) && active === "Quiz" && (
         <div style={{ marginTop: "clamp(10px, 2.5vw, 14px)" }}>
           <button
-            onClick={() => setVisibleCount((prev) => prev + 5)}
+            onClick={() => onToggleExpand && onToggleExpand()}
             className="rounded-[20px] font-semibold transition-all duration-200 hover:-translate-y-[1px]"
             style={{
               fontSize: "clamp(10px, 2.5vw, 12px)",
@@ -347,7 +351,7 @@ export default function SubmissionsPanel() {
               cursor: "pointer",
             }}
           >
-            View More
+            {isExpanded ? "View Less" : "View All"}
           </button>
         </div>
       )}
