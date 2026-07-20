@@ -84,7 +84,8 @@ export default function Leaderboard() {
           {podiumOrder.length > 0 ? (
             podiumOrder.map((leader) => {
               const isFirst = leader.rank === 1;
-              const height = Math.max(40, (leader.points / maxPoints) * 110);
+              // Stagger heights strictly by rank for a classic podium look
+              const height = leader.rank === 1 ? 110 : leader.rank === 2 ? 85 : 65;
 
               return (
                 <div
