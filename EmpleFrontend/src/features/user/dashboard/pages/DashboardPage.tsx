@@ -28,7 +28,7 @@ type Activity = {
 
 export default function DashboardPage() {
   const { sessionToken, isAuthenticated, isSessionLoading } = useSession()
-  const { config } = useWallet()
+  const { config, refreshWallet } = useWallet()
   const router = useRouter()
   const [user, setUser] = useState<User | null>(null)
   const [activity, setActivity] = useState<Activity | null>(null)
