@@ -1,1 +1,1 @@
-export const LOGO_URL = `/logo-final.png?v=20260713`;
+export const LOGO_URL = `/logo-final.png`;
