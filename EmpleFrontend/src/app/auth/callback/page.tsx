@@ -50,7 +50,7 @@ export default function CallbackPage() {
 
         const syncData = await syncRes.json()
         if (syncData.isNewUser) {
-          sessionStorage.setItem('show_signup_bonus', 'true')
+          localStorage.setItem('show_signup_bonus', 'true')
         }
 
         const meRes = await fetch(

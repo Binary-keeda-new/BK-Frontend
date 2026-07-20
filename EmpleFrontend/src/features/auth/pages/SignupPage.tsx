@@ -29,6 +29,7 @@ export default function SignupPage() {
   const [agreed, setAgreed] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [passwordError, setPasswordError] = useState('')
   const [universities, setUniversities] = useState<string[]>([])
   const [showDropdown, setShowDropdown] = useState(false)
   const [fetchingUni, setFetchingUni] = useState(false)
@@ -107,6 +108,7 @@ export default function SignupPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
+    setPasswordError('')
 
     if (!form.name || !form.email || !form.password || !form.confirm) {
       setError('Please fill in all required fields.')
@@ -152,13 +154,14 @@ export default function SignupPage() {
         return
       }
 
-      // Step 2: Sync user to MongoDB
+      // Step 2: Sync user to MongoDB as an unverified manual signup
       const syncRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/sync`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify({ isManualSignup: true }),
       })
 
       if (!syncRes.ok) {
@@ -167,17 +170,11 @@ export default function SignupPage() {
       } else {
         const syncData = await syncRes.json()
         if (syncData.isNewUser) {
-          sessionStorage.setItem('show_signup_bonus', 'true')
+          localStorage.setItem('show_signup_bonus', 'true')
         }
       }
 
-      // Step 3: Set 3 day session
-      const expiry = Date.now() + 3 * 24 * 60 * 60 * 1000
-      localStorage.setItem('token', token)
-      localStorage.setItem('role', 'user')
-      localStorage.setItem('sessionExpiry', expiry.toString())
-
-      // Step 4: Send verification email
+      // Step 3: Send verification email
       const verifyRes = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/send-verification`,
         {
@@ -194,9 +191,22 @@ export default function SignupPage() {
 
       // Step 5: Redirect to check email page
       router.replace(`/auth/check-email?email=${encodeURIComponent(form.email)}`)
-    } catch (err) {
+    } catch (err: any) {
       console.error('Signup error:', err)
-      setError('Something went wrong. Please try again.')
+      
+      // Handle Descope specific errors thrown as exceptions
+      if (err?.error?.errorCode === 'E062107') {
+        setError('You already have an account! Redirecting to login...')
+        setTimeout(() => router.replace('/auth/login'), 2000)
+      } else if (err?.error?.errorCode === 'E062904') {
+        setPasswordError(err.error.errorMessage)
+      } else if (err?.error?.errorMessage) {
+        setError(err.error.errorMessage)
+      } else if (err?.message) {
+        setError(err.message)
+      } else {
+        setError('Something went wrong. Please try again.')
+      }
     } finally {
       setLoading(false)
     }
@@ -319,7 +329,12 @@ export default function SignupPage() {
                   {showPassword ? <EyeOff size={18} strokeWidth={1.5} /> : <Eye size={18} strokeWidth={1.5} />}
                 </button>
               </div>
-              {form.password && (
+              {passwordError && (
+                <div style={{ fontSize: 'var(--text-xs)', color: '#ef4444', marginTop: 4 }}>
+                  ✗ {passwordError}
+                </div>
+              )}
+              {form.password && !passwordError && (
                 <div className="auth-strength">
                   <div className="auth-strength-bars">
                     {[1, 2, 3, 4].map((n) => (

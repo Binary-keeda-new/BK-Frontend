@@ -2,6 +2,7 @@
 
 import { RefObject, useMemo, useState } from "react";
 import * as XLSX from "xlsx";
+import { Info, Download } from "lucide-react";
 import { ThemeTokens } from "./quizEdit.types";
 import { ImportedQuestionInput } from "./useQuizEditor";
 
@@ -38,6 +39,7 @@ export default function ImportQuestionsModal({
 }: Props) {
   const [importing, setImporting] = useState(false);
   const [error, setError] = useState("");
+  const [showInfo, setShowInfo] = useState(false);
 
   const acceptedFileLabel = useMemo(() => {
     if (importTab === "excel") return "Excel / CSV";
@@ -64,11 +66,21 @@ export default function ImportQuestionsModal({
 
       if (lines.length < 3) continue;
 
-      const question = lines[0];
-
-      const optionLines = lines.filter((line) => /^[A-Z][\.\)]\s+/.test(line));
-      const answerLine = lines.find((line) => /^ANSWER\s*:/i.test(line));
       const typeLine = lines.find((line) => /^TYPE\s*:/i.test(line));
+      const answerLine = lines.find((line) => /^ANSWER\s*:/i.test(line));
+      const positiveLine = lines.find((line) => /^POSITIVE\s*:/i.test(line));
+      const negativeLine = lines.find((line) => /^NEGATIVE\s*:/i.test(line));
+      const optionLines = lines.filter((line) => /^[A-Z][\.\)]\s+/.test(line));
+
+      // The question text is the first line that is NOT a TYPE, ANSWER, POSITIVE, NEGATIVE, or OPTION line.
+      const question = lines.find(
+        (line) =>
+          !/^TYPE\s*:/i.test(line) &&
+          !/^ANSWER\s*:/i.test(line) &&
+          !/^POSITIVE\s*:/i.test(line) &&
+          !/^NEGATIVE\s*:/i.test(line) &&
+          !/^[A-Z][\.\)]\s+/.test(line)
+      );
 
       if (!question || !answerLine) continue;
 
@@ -110,9 +122,6 @@ export default function ImportQuestionsModal({
 
         if (!correctOptions.length) continue;
       }
-
-      const positiveLine = lines.find((line) => /^POSITIVE\s*:/i.test(line));
-      const negativeLine = lines.find((line) => /^NEGATIVE\s*:/i.test(line));
 
       const positiveMarks = positiveLine
         ? Number(positiveLine.replace(/^POSITIVE\s*:/i, "").trim())
@@ -468,26 +477,36 @@ export default function ImportQuestionsModal({
       className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 p-5"
     >
       <div
-        className="w-full max-w-[560px] overflow-hidden rounded-[18px] border shadow-2xl"
+        className="w-full max-w-[560px] max-h-[90vh] overflow-y-auto overflow-x-hidden rounded-[18px] border shadow-2xl relative"
         style={{
           background: t.cardBg,
           borderColor: t.cardBorder,
         }}
       >
-        <div className="h-1 bg-[var(--clr-accent)]" />
+        <div className="h-1 w-full bg-[var(--clr-accent)] sticky top-0 z-10" />
 
         <div className="px-7 py-6">
-          <div className="mb-5 flex items-center justify-between">
+          <div className="mb-5 flex items-start justify-between">
             <div>
-              <h3
-                className="text-lg font-extrabold"
-                style={{
-                  fontFamily: "'Nunito',sans-serif",
-                  color: t.headingColor,
-                }}
-              >
-                Import Questions
-              </h3>
+              <div className="flex items-center gap-2">
+                <h3
+                  className="text-lg font-extrabold"
+                  style={{
+                    fontFamily: "'Nunito',sans-serif",
+                    color: t.headingColor,
+                  }}
+                >
+                  Import Questions
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => setShowInfo(!showInfo)}
+                  className="text-[var(--muted2)] hover:text-[var(--text)] transition-colors"
+                  title="How imports work"
+                >
+                  <Info size={16} />
+                </button>
+              </div>
               <p className="mt-1 text-xs" style={{ color: t.subText }}>
                 Paste or upload question data in one of the supported formats.
               </p>
@@ -538,11 +557,68 @@ export default function ImportQuestionsModal({
             ))}
           </div>
 
+          {showInfo && (
+            <div
+              className="mb-5 rounded-xl border p-4 text-xs leading-[1.6] max-h-[250px] overflow-y-auto"
+              style={{
+                background: t.inputBg,
+                borderColor: t.inputBorder,
+                color: t.subText,
+              }}
+            >
+              <h4 className="mb-3 font-bold text-[13px]" style={{ color: t.headingColor }}>
+                Comprehensive Import Guide
+              </h4>
+              
+              <div className="space-y-4">
+                <div>
+                  <strong className="block mb-1" style={{ color: t.headingColor }}>General Rules:</strong>
+                  <ul className="ml-4 list-disc space-y-1">
+                    <li><strong style={{ color: t.headingColor }}>Question Types:</strong> Use <code className="text-[var(--clr-accent)]">MCQ</code> (Single choice), <code className="text-[var(--clr-accent)]">MSQ</code> (Multiple choices), or <code className="text-[var(--clr-accent)]">NAT</code> (Numerical answer).</li>
+                    <li><strong style={{ color: t.headingColor }}>Scoring:</strong> <code className="text-[var(--clr-accent)]">POSITIVE</code> defaults to +4. <code className="text-[var(--clr-accent)]">NEGATIVE</code> defaults to 1.</li>
+                    <li><strong style={{ color: t.headingColor }}>Images:</strong> JSON and Excel allow an optional <code className="text-[var(--clr-accent)]">imageUrl</code> column/field for question images.</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <strong className="block mb-1" style={{ color: t.headingColor }}>Aiken Format (.txt):</strong>
+                  <ul className="ml-4 list-disc space-y-1">
+                    <li>Separate each question block with a blank line.</li>
+                    <li>Start with an optional <code className="text-[var(--clr-accent)]">TYPE: MCQ</code>.</li>
+                    <li>Follow with the question text.</li>
+                    <li>Options must start with uppercase letters and a period or parenthesis (e.g., <code className="text-[var(--clr-accent)]">A.</code> or <code className="text-[var(--clr-accent)]">A)</code>).</li>
+                    <li><code className="text-[var(--clr-accent)]">ANSWER:</code> is required. For MSQ, use commas (e.g., <code className="text-[var(--clr-accent)]">ANSWER: A, C</code>).</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <strong className="block mb-1" style={{ color: t.headingColor }}>Excel / CSV Format:</strong>
+                  <ul className="ml-4 list-disc space-y-1">
+                    <li>Required headers: <code className="text-[var(--clr-accent)]">question</code>, <code className="text-[var(--clr-accent)]">answer</code>.</li>
+                    <li>Option headers: <code className="text-[var(--clr-accent)]">A</code>, <code className="text-[var(--clr-accent)]">B</code>, <code className="text-[var(--clr-accent)]">C</code>, <code className="text-[var(--clr-accent)]">D</code>...</li>
+                    <li>Optional headers: <code className="text-[var(--clr-accent)]">type</code>, <code className="text-[var(--clr-accent)]">positiveMarks</code>, <code className="text-[var(--clr-accent)]">negativeMarks</code>, <code className="text-[var(--clr-accent)]">imageUrl</code>.</li>
+                    <li>For NAT, leave option columns empty.</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <strong className="block mb-1" style={{ color: t.headingColor }}>JSON Format:</strong>
+                  <ul className="ml-4 list-disc space-y-1">
+                    <li>Must be an array of objects or a single object.</li>
+                    <li>Fields: <code className="text-[var(--clr-accent)]">question</code> (string), <code className="text-[var(--clr-accent)]">options</code> (array of strings), <code className="text-[var(--clr-accent)]">answer</code> (string/array).</li>
+                    <li>Optional fields: <code className="text-[var(--clr-accent)]">type</code>, <code className="text-[var(--clr-accent)]">positiveMarks</code>, <code className="text-[var(--clr-accent)]">negativeMarks</code>, <code className="text-[var(--clr-accent)]">imageUrl</code>.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          )}
+
           {importTab === "aiken" && (
             <div>
               <div className="flex items-start justify-between mb-3">
                 <p className="text-xs leading-[1.7]" style={{ color: t.subText }}>
-                  Format: question text →{" "}
+                  Format: <code className="text-[var(--clr-accent)]">TYPE: MCQ</code> (optional) →{" "}
+                  question text →{" "}
                   <code className="text-[var(--clr-accent)]">A. option</code> lines →{" "}
                   <code className="text-[var(--clr-accent)]">ANSWER: B</code> (optional{" "}
                   <code className="text-[var(--clr-accent)]">POSITIVE: 4</code>,{" "}
@@ -551,15 +627,16 @@ export default function ImportQuestionsModal({
                 <button
                   type="button"
                   onClick={() => downloadSample("aiken")}
-                  className="text-xs font-semibold text-[var(--clr-accent)] hover:underline whitespace-nowrap ml-2 flex-shrink-0 mt-1"
+                  className="flex items-center gap-1.5 rounded-lg border border-[var(--clr-accent)] px-3 py-1.5 text-[11px] font-bold text-[var(--clr-accent)] transition-all hover:bg-[var(--clr-accent)] hover:text-white whitespace-nowrap ml-2 flex-shrink-0 mt-1"
                 >
+                  <Download size={13} strokeWidth={2.5} />
                   Download Sample
                 </button>
               </div>
 
               <textarea
-                rows={6}
-                placeholder={"What is 2 + 2?\nA. 3\nB. 4\nC. 5\nD. 6\nANSWER: B"}
+                rows={9}
+                placeholder={"TYPE: MCQ\nWhat is 2 + 2?\nA. 3\nB. 4\nC. 5\nD. 6\nANSWER: B\nPOSITIVE: 4\nNEGATIVE: 1"}
                 value={importText}
                 onChange={(e) => setImportText(e.target.value)}
                 className="qph w-full resize-y rounded-[10px] border px-4 py-3 font-mono text-xs outline-none transition-all focus:border-[var(--clr-accent)] focus:shadow-[0_0_0_3px_rgba(241,90,34,0.12)]"
@@ -644,13 +721,16 @@ export default function ImportQuestionsModal({
                 <div className="text-xs" style={{ color: t.subText }}>
                   Columns: type, question, A, B, C, D, answer, positiveMarks, negativeMarks
                 </div>
-                <button
-                  type="button"
-                  onClick={() => downloadSample("excel")}
-                  className="mt-2 text-xs font-semibold text-[var(--clr-accent)] hover:underline"
-                >
-                  Download Sample File
-                </button>
+                <div className="mt-4 flex justify-center">
+                  <button
+                    type="button"
+                    onClick={() => downloadSample("excel")}
+                    className="flex items-center gap-1.5 rounded-lg border border-[var(--clr-accent)] px-4 py-2 text-xs font-bold text-[var(--clr-accent)] transition-all hover:bg-[var(--clr-accent)] hover:text-white"
+                  >
+                    <Download size={14} strokeWidth={2.5} />
+                    Download Sample File
+                  </button>
+                </div>
               </div>
 
               <input
@@ -685,8 +765,9 @@ export default function ImportQuestionsModal({
                 <button
                   type="button"
                   onClick={() => downloadSample("json")}
-                  className="text-xs font-semibold text-[var(--clr-accent)] hover:underline whitespace-nowrap ml-2 flex-shrink-0 mt-1"
+                  className="flex items-center gap-1.5 rounded-lg border border-[var(--clr-accent)] px-3 py-1.5 text-[11px] font-bold text-[var(--clr-accent)] transition-all hover:bg-[var(--clr-accent)] hover:text-white whitespace-nowrap ml-2 flex-shrink-0 mt-1"
                 >
+                  <Download size={13} strokeWidth={2.5} />
                   Download Sample
                 </button>
               </div>

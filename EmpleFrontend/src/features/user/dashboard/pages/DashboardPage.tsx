@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useSession } from '@descope/nextjs-sdk/client'
 import { useRouter } from 'next/navigation'
 import { useWallet } from '@/providers/WalletProvider'
@@ -34,6 +34,7 @@ export default function DashboardPage() {
   const [activity, setActivity] = useState<Activity | null>(null)
   const [isSubmissionsExpanded, setIsSubmissionsExpanded] = useState(false)
   const { notifyReward } = useNotification()
+  const fetchedRef = useRef(false)
   
   useEffect(() => {
 
@@ -42,10 +43,14 @@ export default function DashboardPage() {
       return
     }
 
-    const fetchUser = async () => {
+      const fetchUser = async () => {
+      if (fetchedRef.current) return
+      fetchedRef.current = true
+
       const token = sessionToken
 
       if (!token) {
+        fetchedRef.current = false
         return
       }
       
@@ -60,9 +65,11 @@ export default function DashboardPage() {
 
         const text = await res.text()
 
-
         if (!res.ok) {
-          router.replace('/auth/login')
+          fetchedRef.current = false
+          if (res.status === 401 || res.status === 403) {
+            router.replace('/auth/login')
+          }
           return
         }
 
@@ -82,7 +89,7 @@ export default function DashboardPage() {
           const activityData = JSON.parse(activityText)
           setActivity(activityData.data)
           
-          const todayStr = new Date().toISOString().split('T')[0];
+          const todayStr = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata' }).format(new Date());
           if (activityData.data.lastVisitedDate === todayStr) {
             const shownKey = `daily_reward_shown_${todayStr}`;
             if (!sessionStorage.getItem(shownKey)) {
@@ -94,7 +101,7 @@ export default function DashboardPage() {
         }
       } catch (error) {
         console.error('Error fetching /me ->', error)
-        router.replace('/auth/login')
+        fetchedRef.current = false
       }
     }
 
@@ -112,17 +119,19 @@ export default function DashboardPage() {
 
   return (
     <main className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-[22px_24px]">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-4">
-        <h2 className="text-white text-lg font-medium drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]">
-          Welcome back{firstName ? `, ` : ''}
-          {firstName && (
-            <span className="underline decoration-orange-500 underline-offset-4">
-              {firstName}
-            </span>
-          )}
-          {' '}👋
-        </h2>
-      </div>
+      {!isSubmissionsExpanded && (
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-4">
+          <h2 className="text-white text-lg font-medium drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]">
+            Welcome back{firstName ? `, ` : ''}
+            {firstName && (
+              <span className="underline decoration-orange-500 underline-offset-4">
+                {firstName}
+              </span>
+            )}
+            {' '}👋
+          </h2>
+        </div>
+      )}
 
       <div
         className={

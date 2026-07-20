@@ -89,12 +89,18 @@ export default function LoginPage() {
 
       const syncData = JSON.parse(syncText)
       if (syncData.isNewUser) {
-        sessionStorage.setItem('show_signup_bonus', 'true')
+        localStorage.setItem('show_signup_bonus', 'true')
       }
       
       const user = syncData.data?.user || syncData.user
       const role = user?.role
       const isEmailVerified = user?.isEmailVerified
+
+      // Block unverified users from logging in
+      if (!isEmailVerified) {
+        router.replace(`/auth/check-email?email=${encodeURIComponent(email)}`)
+        return
+      }
 
       localStorage.setItem('token', token)
       localStorage.setItem('role', role || 'user')
@@ -102,12 +108,6 @@ export default function LoginPage() {
       // Store session expiry based on remember me
       const expiry = Date.now() + (remember ? 30 : 3) * 24 * 60 * 60 * 1000
       localStorage.setItem('sessionExpiry', expiry.toString())
-
-      // Block unverified users from logging in
-      if (!isEmailVerified) {
-        router.replace(`/auth/check-email?email=${encodeURIComponent(email)}`)
-        return
-      }
 
       console.log("Role:", role);
       console.log("User:", user);
