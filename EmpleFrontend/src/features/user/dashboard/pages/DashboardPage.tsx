@@ -92,9 +92,9 @@ export default function DashboardPage() {
           const todayStr = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata' }).format(new Date());
           if (activityData.data.lastVisitedDate === todayStr) {
             const shownKey = `daily_reward_shown_${todayStr}`;
-            if (!sessionStorage.getItem(shownKey)) {
+            if (!localStorage.getItem(shownKey)) {
               notifyReward("Daily Login Reward", "Welcome back!", config?.LOGIN?.DAILY_REWARD || 1);
-              sessionStorage.setItem(shownKey, 'true');
+              localStorage.setItem(shownKey, 'true');
               refreshWallet();
             }
           }

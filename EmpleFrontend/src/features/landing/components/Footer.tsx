@@ -59,7 +59,7 @@ export default function Footer() {
 
         <div className="footer-bottom">
           <div className="footer-copy">
-            © 2026 <em>Emple</em>. All rights reserved.
+            © 2026 <em> </em>. All rights reserved.
           </div>
         </div>
 
