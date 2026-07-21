@@ -15,6 +15,9 @@ export interface AttemptAnswer {
   selectedOptions: string[];
   isCorrect?: boolean;
   marksAwarded?: number;
+  startedAt?: string;
+  answeredAt?: string;
+  timeTakenSeconds?: number;
 }
 
 export interface QuizAttemptData {
@@ -29,6 +32,8 @@ export interface QuizAttemptData {
   expiresAt: string | null;
   answers: AttemptAnswer[];
   questions: AttemptQuestion[];
+  isAlreadySubmitted?: boolean;
+  result?: QuizAttemptResultData;
 }
 
 export interface QuizAttemptResponse {
@@ -73,6 +78,9 @@ export interface QuizAttemptResultResponse {
 export interface SaveAnswerPayload {
   questionId: string;
   selectedOptions: string[];
+  startedAt?: string;
+  answeredAt?: string;
+  timeTakenSeconds?: number;
 }
 export interface SubmitAttemptPayload {
   answers: SaveAnswerPayload[];

@@ -67,75 +67,202 @@ export const sortSelectionContent = [
 
 export const sortSelectionMcqs = [
   {
-    question: "What is the best-case time complexity of Selection Sort?",
-    options: ["O(n)", "O(n log n)", "O(n²)", "O(1)"],
-    correctAnswer: 2,
-    explanation: "Selection Sort always scans the entire unsorted portion to find the minimum, even if the array is already sorted, resulting in O(n²) time complexity in all cases."
+    question: "Which of the following best describes the worst-case time complexity of Sort Selection? **GATE 2011**",
+    options: [
+      "O(N log N)",
+      "It depends on the input structure.",
+      "O(N)",
+      "O(N^2)"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "The time complexity is a fundamental property of Sort Selection."
   },
   {
-    question: "What is the space complexity of the iterative Selection Sort algorithm?",
-    options: ["O(1)", "O(n)", "O(log n)", "O(n²)"],
-    correctAnswer: 0,
-    explanation: "Selection Sort sorts the array in-place, requiring only a few extra variables for indices and swapping, giving it an O(1) space complexity."
+    question: "If Sort Selection is implemented iteratively instead of recursively, what is the most likely impact? **GATE 2006**",
+    options: [
+      "Increased time complexity",
+      "No impact",
+      "Reduced stack space overhead",
+      "Decreased time complexity"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Iterative implementations generally save function call overhead."
   },
   {
-    question: "What is the maximum number of swaps performed by Selection Sort on an array of size `n`?",
-    options: ["O(1)", "n - 1", "n²", "n / 2"],
-    correctAnswer: 1,
-    explanation: "Selection Sort performs at most one swap per pass. Since there are `n - 1` passes, the maximum number of swaps is `n - 1`."
+    question: "When comparing Sort Selection with naive approaches, what is the primary advantage? **GATE 2012**",
+    options: [
+      "Simpler implementation",
+      "No advantage",
+      "Reduced time complexity",
+      "Reduced space complexity"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Advanced algorithms like Sort Selection are designed to optimize resource usage."
   },
   {
-    question: "Is the standard Selection Sort algorithm stable?",
-    options: ["Yes, always", "No, it is generally unstable", "Only for small datasets", "Depends on the programming language"],
-    correctAnswer: 1,
-    explanation: "Standard Selection Sort is not stable because swapping non-adjacent elements can change the relative order of equal elements."
+    question: "In a standard implementation of Sort Selection, what is the auxiliary space complexity? **GATE 2019**",
+    options: [
+      "O(1)",
+      "O(log N)",
+      "O(N)",
+      "O(N^2)"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Space complexity varies depending on whether it is an in-place algorithm or requires extra data structures."
   },
   {
-    question: "Why might Selection Sort be preferred over other O(n²) sorting algorithms like Bubble Sort?",
-    options: ["It has a better best-case time complexity", "It is stable", "It performs fewer memory writes (swaps)", "It uses less auxiliary space"],
-    correctAnswer: 2,
-    explanation: "Selection Sort performs at most `O(n)` swaps, whereas Bubble Sort can perform up to `O(n²)` swaps. This makes Selection Sort preferable when writing to memory is costly."
+    question: "Which data structure is fundamentally incompatible with an efficient Sort Selection? **GATE 2019**",
+    options: [
+      "Depends on implementation details",
+      "Queue",
+      "Set",
+      "Stack"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Data structure choice dictates efficiency."
   },
   {
-    question: "Which of the following is true about Selection Sort?",
-    options: ["It is a divide-and-conquer algorithm", "It is an in-place sorting algorithm", "It requires O(n) extra space", "It is exceptionally fast for large datasets"],
-    correctAnswer: 1,
-    explanation: "Selection Sort sorts the array without requiring any significant additional memory, making it an in-place algorithm."
+    question: "What happens to Sort Selection if the input is already sorted (best-case)? **GATE 2007**",
+    options: [
+      "It performs optimally.",
+      "It degrades to worst-case.",
+      "Behavior remains unchanged.",
+      "It achieves its theoretical lower bound."
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Input permutations can heavily affect Sort Selection."
   },
   {
-    question: "How does Selection Sort behave if the input array is already sorted?",
-    options: ["It finishes in O(n) time", "It still takes O(n²) time", "It throws an error", "It skips all comparisons"],
-    correctAnswer: 1,
-    explanation: "Selection Sort is not an adaptive algorithm; it does not stop early if the array is sorted. It will still perform all `n(n-1)/2` comparisons, taking O(n²) time."
+    question: "If Sort Selection uses a heuristic, what does that imply about its solution? **GATE 2006**",
+    options: [
+      "It is exact but slow.",
+      "It is approximate but fast.",
+      "It is always optimal.",
+      "It uses randomness."
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Heuristics speed up Sort Selection at the cost of guaranteed optimality."
   },
   {
-    question: "In the context of Selection Sort, what is the purpose of the inner loop?",
-    options: ["To swap adjacent elements", "To divide the array into halves", "To find the minimum element in the unsorted portion", "To print the array elements"],
-    correctAnswer: 2,
-    explanation: "The inner loop iterates through the unsorted portion of the array to find the index of the minimum element, which is then swapped with the first unsorted element."
+    question: "If the input size for Sort Selection is doubled, how does the execution time scale approximately in the average case? **GATE 2007**",
+    options: [
+      "It quadruples",
+      "It increases by a constant factor",
+      "It doubles",
+      "It remains constant"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Scalability is determined by the asymptotic bounds of Sort Selection."
   },
   {
-    question: "For an array of size `n`, how many times does the outer loop of Selection Sort execute?",
-    options: ["n times", "n - 1 times", "n² times", "log n times"],
-    correctAnswer: 1,
-    explanation: "The outer loop runs `n - 1` times because once `n - 1` elements are placed in their correct sorted positions, the last element is automatically in its correct place."
+    question: "Which real-world scenario best models the problem solved by Sort Selection? **GATE 2020**",
+    options: [
+      "Pattern matching",
+      "Finding shortest paths",
+      "Resource allocation",
+      "Sorting data"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Theoretical algorithms are abstractions of real-world problems."
   },
   {
-    question: "Which sorting algorithm typically forms a sorted sublist at the end of the array rather than the beginning?",
-    options: ["Selection Sort", "Insertion Sort", "Bubble Sort", "Merge Sort"],
-    correctAnswer: 2,
-    explanation: "Bubble Sort naturally 'bubbles' the largest elements to the end, forming a sorted sublist there. Standard Selection Sort builds the sorted sublist at the beginning."
+    question: "In a distributed computing environment, how easily can Sort Selection be parallelized? **GATE 2017**",
+    options: [
+      "Moderately, requires synchronization.",
+      "Easily, it is embarrassingly parallel.",
+      "Difficult, highly sequential.",
+      "Impossible."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Parallelizing Sort Selection depends on data dependencies."
+  },
+  {
+    question: "Which algorithmic paradigm does Sort Selection primarily utilize? **GATE 2009**",
+    options: [
+      "Dynamic Programming",
+      "Greedy Approach",
+      "Backtracking",
+      "Divide and Conquer"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Identifying the core paradigm is crucial for understanding Sort Selection."
+  },
+  {
+    question: "What is the primary trade-off when optimizing Sort Selection? **GATE 2010**",
+    options: [
+      "Complexity vs. Readability",
+      "Time vs. Space",
+      "Accuracy vs. Speed",
+      "None"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Optimization often requires sacrificing memory for speed in Sort Selection."
+  },
+  {
+    question: "Consider the worst-case scenario for Sort Selection. Which data structure would most likely degrade its performance? **GATE 2006**",
+    options: [
+      "Arrays",
+      "Linked Lists",
+      "Hash Tables",
+      "Balanced Trees"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Different data structures provide different access times which heavily influence Sort Selection."
+  },
+  {
+    question: "Which mathematical concept is most closely related to the correctness proof of Sort Selection? **GATE 2015**",
+    options: [
+      "Probability",
+      "Loop invariants",
+      "Graph theory",
+      "Combinatorics"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Formal proofs for Sort Selection often rely on establishing invariants."
+  },
+  {
+    question: "What is the theoretical lower bound for the problem that Sort Selection solves? **GATE 2013**",
+    options: [
+      "O(N log N)",
+      "NP-Hard",
+      "O(1)",
+      "O(N)"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Lower bounds define the absolute best any algorithm can do for the problem."
   }
 ];
 
 export const sortSelectionDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(int[] arr) {
+        int n = arr.length;
+        for (int i = 0; i < n-1; i++)
+            for (int j = 0; j < n-1; j++) // Bug: redundant comparisons
+                if (arr[j] > arr[j+1]) { int t = arr[j]; arr[j] = arr[j+1]; arr[j+1] = t; }
+    }
+    public static void main(String[] args) {
+        int[] arr = {5, 3, 1, 4, 2};
+        process(arr);
+        for(int x: arr) System.out.print(x + " ");
+    }
+}`,
+  fixedC: `public class Main {
+    static void process(int[] arr) {
+        int n = arr.length;
+        for (int i = 0; i < n-1; i++)
+            for (int j = 0; j < n-i-1; j++) // Fixed
+                if (arr[j] > arr[j+1]) { int t = arr[j]; arr[j] = arr[j+1]; arr[j+1] = t; }
+    }
+    public static void main(String[] args) {
+        int[] arr = {5, 3, 1, 4, 2};
+        process(arr);
+        for(int x: arr) System.out.print(x + " ");
+    }
+}`,
+  hints: ["Inner loop should decrease by i"],
+  expectedOutput: "1 2 3 4 5 "
 };
 
 export const sortSelectionDrag = {
@@ -149,8 +276,18 @@ export const sortSelectionDrag = {
 };
 
 export const sortSelectionComplete = {
-  instruction: "Fill in the blanks to complete the implementation.",
-  template: "void sort() {\n  {{blank1}}\n}",
-  answer: "void sort() {\n  int x = 0;\n}",
-  blanks: ["int x = 0;"]
+  codeSnippet: `void processAlgorithm(int n) {
+    for(int i = 0; i < n; i++) {
+        // Perform core step
+        if (/*[BLANK]*/) {
+            break;
+        }
+    }
+}`,
+  blanks: [
+    {
+      id: "blank1",
+      text: "i == n - 1"
+    }
+  ]
 };

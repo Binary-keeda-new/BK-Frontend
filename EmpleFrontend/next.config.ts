@@ -9,8 +9,22 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
+<<<<<<< HEAD
         protocol: "https",
         hostname: "upload.wikimedia.org",
+=======
+        protocol: 'https',
+        hostname: 'upload.wikimedia.org',
+      }
+    ],
+    localPatterns: [
+      {
+        pathname: '/logo-final.png',
+        // search intentionally omitted — allows any query string (?t=...)
+      },
+      {
+        pathname: '/logo-isolated.png',
+>>>>>>> origin/develop
       },
     ],
   },

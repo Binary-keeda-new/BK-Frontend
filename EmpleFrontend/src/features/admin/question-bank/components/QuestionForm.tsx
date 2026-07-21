@@ -1,6 +1,7 @@
 'use client'
 
 import OptionRow from './OptionRow'
+import { QUIZ_CATEGORIES } from '@/shared/constants/quizCategories'
 
 export type NewQuestion = {
   question: string
@@ -11,14 +12,19 @@ export type NewQuestion = {
   questionType: 'MCQ' | 'MSQ' | 'NAT'
   imageUrl?: string | null
   imageFile?: File | null
+  solution?: string
+  solutionMedia?: string | null
+  category: string
+  subcategory: string
+  topic: string
+  subTopic?: string
+  exam?: string
+  year?: number | null
 }
 
 type Props = {
   draft: NewQuestion
   setDraft: React.Dispatch<React.SetStateAction<NewQuestion>>
-  onSubmit: () => void
-  loading: boolean
-  submitLabel: string
 }
 
 function makeOptionHandlers(
@@ -81,9 +87,6 @@ function makeOptionHandlers(
 export default function QuestionForm({
   draft,
   setDraft,
-  onSubmit,
-  loading,
-  submitLabel,
 }: Props) {
   const { updateOption, toggleCorrect, addOption, removeOption } =
     makeOptionHandlers(draft, setDraft)
@@ -229,6 +232,114 @@ export default function QuestionForm({
         </div>
       )}
 
+      <div className="space-y-3 rounded-xl ring-1 ring-white/10 p-4 bg-white/5">
+        <h3 className="text-sm font-semibold text-white">Metadata & Solution</h3>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div>
+            <label className="mb-1 block text-xs text-white/50">Category *</label>
+            <select
+              value={draft.category}
+              onChange={(e) => setDraft((prev) => ({ ...prev, category: e.target.value, subcategory: '', topic: '' }))}
+              className="w-full rounded-xl bg-[rgb(10,11,14)] px-3 py-2 text-sm text-white ring-1 ring-white/10 focus:outline-none focus:ring-[rgb(241,90,34)]"
+            >
+              <option value="">Select Category</option>
+              {Object.keys(QUIZ_CATEGORIES).map(cat => (
+                <option key={cat} value={cat}>{cat}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="mb-1 block text-xs text-white/50">Subcategory *</label>
+            <select
+              value={draft.subcategory}
+              onChange={(e) => setDraft((prev) => ({ ...prev, subcategory: e.target.value, topic: '' }))}
+              disabled={!draft.category}
+              className="w-full rounded-xl bg-[rgb(10,11,14)] px-3 py-2 text-sm text-white ring-1 ring-white/10 focus:outline-none focus:ring-[rgb(241,90,34)] disabled:opacity-50"
+            >
+              <option value="">Select Subcategory</option>
+              {draft.category && QUIZ_CATEGORIES[draft.category as keyof typeof QUIZ_CATEGORIES] && Object.keys(QUIZ_CATEGORIES[draft.category as keyof typeof QUIZ_CATEGORIES]).map(sub => (
+                <option key={sub} value={sub}>{sub}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="mb-1 block text-xs text-white/50">Topic *</label>
+            {draft.category && draft.subcategory && (QUIZ_CATEGORIES[draft.category as keyof typeof QUIZ_CATEGORIES] as any)?.[draft.subcategory]?.length > 0 ? (
+              <select
+                value={draft.topic}
+                onChange={(e) => setDraft((prev) => ({ ...prev, topic: e.target.value }))}
+                className="w-full rounded-xl bg-[rgb(10,11,14)] px-3 py-2 text-sm text-white ring-1 ring-white/10 focus:outline-none focus:ring-[rgb(241,90,34)]"
+              >
+                <option value="">Select Topic</option>
+                {(QUIZ_CATEGORIES[draft.category as keyof typeof QUIZ_CATEGORIES] as any)[draft.subcategory].map((top: string) => (
+                  <option key={top} value={top}>{top}</option>
+                ))}
+              </select>
+            ) : (
+              <input
+                type="text"
+                value={draft.topic}
+                onChange={(e) => setDraft((prev) => ({ ...prev, topic: e.target.value }))}
+                placeholder="E.g., Algorithms"
+                className="w-full rounded-xl bg-[rgb(10,11,14)] px-3 py-2 text-sm text-white ring-1 ring-white/10 focus:outline-none focus:ring-[rgb(241,90,34)]"
+              />
+            )}
+          </div>
+          <div>
+            <label className="mb-1 block text-xs text-white/50">SubTopic</label>
+            <input
+              type="text"
+              value={draft.subTopic ?? ''}
+              onChange={(e) => setDraft((prev) => ({ ...prev, subTopic: e.target.value }))}
+              placeholder="E.g., Trees"
+              className="w-full rounded-xl bg-[rgb(10,11,14)] px-3 py-2 text-sm text-white ring-1 ring-white/10 focus:outline-none focus:ring-[rgb(241,90,34)]"
+            />
+          </div>
+          <div>
+            <label className="mb-1 block text-xs text-white/50">Exam</label>
+            <input
+              type="text"
+              value={draft.exam ?? ''}
+              onChange={(e) => setDraft((prev) => ({ ...prev, exam: e.target.value }))}
+              placeholder="E.g., GATE 2023"
+              className="w-full rounded-xl bg-[rgb(10,11,14)] px-3 py-2 text-sm text-white ring-1 ring-white/10 focus:outline-none focus:ring-[rgb(241,90,34)]"
+            />
+          </div>
+          <div>
+            <label className="mb-1 block text-xs text-white/50">Year</label>
+            <input
+              type="number"
+              value={draft.year ?? ''}
+              onChange={(e) => setDraft((prev) => ({ ...prev, year: e.target.value ? parseInt(e.target.value) : null }))}
+              placeholder="E.g., 2023"
+              className="w-full rounded-xl bg-[rgb(10,11,14)] px-3 py-2 text-sm text-white ring-1 ring-white/10 focus:outline-none focus:ring-[rgb(241,90,34)]"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label className="mb-1 block text-xs text-white/50">Solution Explanation</label>
+          <textarea
+            value={draft.solution ?? ''}
+            onChange={(e) => setDraft((prev) => ({ ...prev, solution: e.target.value }))}
+            placeholder="Explain the correct answer..."
+            rows={2}
+            className="w-full resize-none rounded-xl bg-[rgb(10,11,14)] px-3 py-2 text-sm text-white ring-1 ring-white/10 focus:outline-none focus:ring-[rgb(241,90,34)]"
+          />
+        </div>
+        <div>
+          <label className="mb-1 block text-xs text-white/50">Solution Media URL</label>
+          <input
+            type="text"
+            value={draft.solutionMedia ?? ''}
+            onChange={(e) => setDraft((prev) => ({ ...prev, solutionMedia: e.target.value }))}
+            placeholder="URL for video or image solution"
+            className="w-full rounded-xl bg-[rgb(10,11,14)] px-3 py-2 text-sm text-white ring-1 ring-white/10 focus:outline-none focus:ring-[rgb(241,90,34)]"
+          />
+        </div>
+      </div>
+
       <div className="grid grid-cols-2 gap-3">
         <div>
           <label className="mb-1 block text-xs text-white/50">
@@ -267,13 +378,6 @@ export default function QuestionForm({
         </div>
       </div>
 
-      <button
-        onClick={onSubmit}
-        disabled={loading}
-        className="w-full rounded-2xl bg-[rgb(241,90,34)] py-3 text-sm font-semibold transition disabled:opacity-50"
-      >
-        {loading ? 'Saving…' : submitLabel}
-      </button>
     </div>
   )
 }

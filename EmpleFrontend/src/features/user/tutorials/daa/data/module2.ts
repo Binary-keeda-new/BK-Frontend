@@ -211,7 +211,8 @@ export const module2Drag: DragExercise = {
 
 export const module2Complete: CompleteExercise = {
   instruction: "Fill in the blanks regarding search algorithm constraints.",
-  template: "Linear search works on BLANK_1 data. Binary search requires the data to be BLANK_2, and Interpolation search assumes the data is BLANK_3 distributed.",
+  template: "Linear search works on /*[BLANK]*/ data. Binary search requires the data to be /*[BLANK]*/, and Interpolation search assumes the data is /*[BLANK]*/ distributed.",
   blanks: ["unsorted", "sorted", "uniformly"],
   answer: "Linear search works on unsorted data. Binary search requires the data to be sorted, and Interpolation search assumes the data is uniformly distributed."
 };
+

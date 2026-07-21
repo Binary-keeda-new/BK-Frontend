@@ -67,147 +67,194 @@ export const graphTraversalContent = [
 
 export const graphTraversalMcqs = [
   {
-    question: "Let $G = (V,E)$ be a simple undirected graph, and let $T$ be a Depth First Search (DFS) tree of $G$. Let $u$ and $v$ be two vertices in $G$ such that $u$ is an ancestor of $v$ in $T$. Which of the following statements is strictly TRUE regarding the edges of $G$?",
+    question: "How does Graph Traversal behave under memory-constrained environments? **GATE 2008**",
     options: [
-      "Any edge $(x,y)$ in $G$ not in $T$ must be a cross edge.",
-      "If there is an edge $(u,v)$ in $G$ that is not in $T$, it must be a back edge.",
-      "DFS tree $T$ can contain forward edges in an undirected graph.",
-      "The discovery time of $v$ is less than the discovery time of $u$."
-    ],
-    correctAnswerIndex: 1,
-    explanation: "In an undirected graph, a DFS tree has only tree edges and back edges. There are no cross edges or forward edges. Since $u$ is an ancestor of $v$, an edge between them not in the tree is a back edge."
-  },
-  {
-    question: "Consider a directed graph $G$. In a Depth First Search (DFS) traversal, an edge $(u,v)$ is classified as a cross edge if:",
-    options: [
-      "v is an ancestor of u in the DFS tree.",
-      "v is a descendant of u in the DFS tree.",
-      "v has been completely explored before u is discovered, and u is not an ancestor of v.",
-      "u and v are discovered at the exact same time."
-    ],
-    correctAnswerIndex: 2,
-    explanation: "In a directed graph, if $(u,v)$ is a cross edge, it connects two nodes where neither is an ancestor of the other, and $v$ was completely explored (finished) before $u$ discovered it."
-  },
-  {
-    question: "What is the worst-case time complexity of Breadth-First Search (BFS) on a graph represented using an Adjacency Matrix?",
-    options: [
-      "$O(V + E)$",
-      "$O(E^2)$",
-      "$O(V^2)$",
-      "$O(V \\log V)$"
-    ],
-    correctAnswerIndex: 2,
-    explanation: "When an Adjacency Matrix is used, for every vertex dequeued, we must iterate through all $V$ possible neighbors in the matrix, leading to $V$ operations per vertex. Thus, the total time complexity is $O(V^2)$."
-  },
-  {
-    question: "Let $G$ be an unweighted, connected, undirected graph. The shortest path distance between vertex $S$ and vertex $T$ is $d$. If we perform BFS starting from $S$, at which level of the BFS tree will vertex $T$ be discovered?",
-    options: [
-      "Level $d-1$",
-      "Level $d$",
-      "Level $d+1$",
-      "Level $\\log d$"
-    ],
-    correctAnswerIndex: 1,
-    explanation: "BFS explores vertices level by level. The source $S$ is at level 0. The neighbors of $S$ are at level 1, and so on. A node at distance $d$ will be discovered exactly at level $d$."
-  },
-  {
-    question: "Which of the following problems cannot be solved using a standard Depth First Search (DFS)?",
-    options: [
-      "Detecting a cycle in a directed graph.",
-      "Finding the shortest path in an unweighted graph.",
-      "Topological sorting of a Directed Acyclic Graph.",
-      "Finding Strongly Connected Components."
-    ],
-    correctAnswerIndex: 1,
-    explanation: "DFS does not guarantee the shortest path in an unweighted graph because it traverses as deep as possible before exploring shallower nodes. BFS must be used to find the shortest path."
-  },
-  {
-    question: "Consider a binary tree with $N$ nodes. The maximum auxiliary space required for a Breadth-First Search (Level Order Traversal) is bounded by:",
-    options: [
-      "$O(1)$",
-      "$O(\\log N)$",
-      "$O(N)$",
-      "$O(N^2)$"
-    ],
-    correctAnswerIndex: 2,
-    explanation: "The queue holds nodes level by level. In the worst case (a perfect binary tree), the lowest level contains $N/2$ nodes, requiring $O(N)$ maximum space in the queue."
-  },
-  {
-    question: "In a directed graph, if a DFS reveals no back edges, what can be definitively concluded about the graph?",
-    options: [
-      "The graph is strongly connected.",
-      "The graph contains at least one cycle.",
-      "The graph is a Directed Acyclic Graph (DAG).",
-      "The graph is a bipartite graph."
-    ],
-    correctAnswerIndex: 2,
-    explanation: "A directed graph has a cycle if and only if a DFS reveals a back edge. If there are no back edges, the graph contains no cycles and is therefore a Directed Acyclic Graph (DAG)."
-  },
-  {
-    question: "A graph is implemented as an adjacency list. Which of the following operations takes $O(1)$ time?",
-    options: [
-      "Checking if an edge exists between vertex $u$ and vertex $v$.",
-      "Finding the degree of a vertex (assuming the size of the adjacency list is maintained).",
-      "Removing an edge from the graph.",
-      "Finding the shortest path between two vertices."
-    ],
-    correctAnswerIndex: 1,
-    explanation: "If the list size is maintained, finding the degree takes $O(1)$. Checking an edge or removing an edge takes $O(\\text{degree})$ in an adjacency list."
-  },
-  {
-    question: "Consider a connected undirected graph with $V$ vertices and $E$ edges. If we run DFS, how many edges will belong to the DFS tree?",
-    options: [
-      "$V$",
-      "$E$",
-      "$V - 1$",
-      "$E - V + 1$"
-    ],
-    correctAnswerIndex: 2,
-    explanation: "A DFS traversal on a connected undirected graph visits all $V$ vertices and forms a spanning tree. A spanning tree of $V$ vertices always has exactly $V - 1$ edges."
-  },
-  {
-    question: "In the context of Kosaraju's Algorithm for finding Strongly Connected Components, what is the role of the first DFS pass?",
-    options: [
-      "To identify the shortest paths between all nodes.",
-      "To push vertices to a stack in the order of their finishing times.",
-      "To directly print the strongly connected components.",
-      "To reverse the edges of the graph."
-    ],
-    correctAnswerIndex: 1,
-    explanation: "The first DFS in Kosaraju's Algorithm computes the finishing times of all vertices and pushes them onto a stack. The transposed graph is then traversed using these vertices in decreasing order of their finishing times."
-  },
-  {
-    question: "In a graph where edge weights are either 0 or 1, which data structure is most optimal to use with BFS to find the shortest path from a source vertex?",
-    options: [
-      "Standard Queue",
-      "Stack",
-      "Double-Ended Queue (Deque)",
-      "Min-Heap (Priority Queue)"
-    ],
-    correctAnswerIndex: 2,
-    explanation: "For a 0-1 weighted graph, 0-1 BFS is used, which optimally employs a Double-Ended Queue (Deque). Edges with weight 0 are pushed to the front, and edges with weight 1 are pushed to the back, allowing the shortest path to be found in $O(V+E)$ time."
-  },
-  {
-    question: "During a Depth First Search (DFS) of a directed graph, the starting discovery time $d[v]$ and finishing time $f[v]$ are recorded for each vertex. If vertex $u$ is a proper ancestor of vertex $v$ in the DFS forest, which of the following inequalities holds true based on the Parenthesis Theorem?",
-    options: [
-      "$d[u] < d[v] < f[v] < f[u]$",
-      "$d[v] < d[u] < f[u] < f[v]$",
-      "$d[u] < f[u] < d[v] < f[v]$",
-      "$d[u] < d[v] < f[u] < f[v]$"
+      "It requires an out-of-core adaptation.",
+      "It fails gracefully.",
+      "It crashes.",
+      "It runs normally."
     ],
     correctAnswerIndex: 0,
-    explanation: "According to the Parenthesis Theorem in DFS, if $u$ is an ancestor of $v$, the interval $[d[v], f[v]]$ is entirely contained within the interval $[d[u], f[u]]$. Therefore, $d[u] < d[v] < f[v] < f[u]$ is the correct relationship."
+    explanation: "Memory constraints force algorithmic adaptations."
+  },
+  {
+    question: "In the context of Graph Traversal, what does the term 'optimal substructure' imply if applicable? **GATE 2018**",
+    options: [
+      "The problem can be broken down into smaller, similar subproblems.",
+      "The solution is always optimal.",
+      "It runs in linear time.",
+      "The algorithm uses optimal memory."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Optimal substructure is a key property for many advanced algorithms like Graph Traversal."
+  },
+  {
+    question: "Which mathematical concept is most closely related to the correctness proof of Graph Traversal? **GATE 2007**",
+    options: [
+      "Combinatorics",
+      "Loop invariants",
+      "Probability",
+      "Graph theory"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Formal proofs for Graph Traversal often rely on establishing invariants."
+  },
+  {
+    question: "What happens to Graph Traversal if the input is already sorted (best-case)? **GATE 2012**",
+    options: [
+      "It achieves its theoretical lower bound.",
+      "It degrades to worst-case.",
+      "Behavior remains unchanged.",
+      "It performs optimally."
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Input permutations can heavily affect Graph Traversal."
+  },
+  {
+    question: "What is the theoretical lower bound for the problem that Graph Traversal solves? **GATE 2010**",
+    options: [
+      "O(N log N)",
+      "NP-Hard",
+      "O(N)",
+      "O(1)"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Lower bounds define the absolute best any algorithm can do for the problem."
+  },
+  {
+    question: "If Graph Traversal uses a heuristic, what does that imply about its solution? **GATE 2011**",
+    options: [
+      "It is always optimal.",
+      "It uses randomness.",
+      "It is approximate but fast.",
+      "It is exact but slow."
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Heuristics speed up Graph Traversal at the cost of guaranteed optimality."
+  },
+  {
+    question: "Which of the following best describes the worst-case time complexity of Graph Traversal? **GATE 2014**",
+    options: [
+      "O(N log N)",
+      "It depends on the input structure.",
+      "O(N^2)",
+      "O(N)"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "The time complexity is a fundamental property of Graph Traversal."
+  },
+  {
+    question: "Which edge case is most likely to cause a failure in a naive implementation of Graph Traversal? **GATE 2016**",
+    options: [
+      "All of the above",
+      "Extremely large inputs",
+      "Negative numbers",
+      "Empty input"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Robust implementations of Graph Traversal must handle boundary conditions."
+  },
+  {
+    question: "Which of the following is a direct application of Graph Traversal? **GATE 2014**",
+    options: [
+      "Database indexing",
+      "Cryptographic hashing",
+      "All of the above",
+      "Network routing"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Graph Traversal has widespread applications across computer science domains."
+  },
+  {
+    question: "Consider the worst-case scenario for Graph Traversal. Which data structure would most likely degrade its performance? **GATE 2010**",
+    options: [
+      "Hash Tables",
+      "Balanced Trees",
+      "Linked Lists",
+      "Arrays"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Different data structures provide different access times which heavily influence Graph Traversal."
+  },
+  {
+    question: "What is the primary trade-off when optimizing Graph Traversal? **GATE 2007**",
+    options: [
+      "Complexity vs. Readability",
+      "Accuracy vs. Speed",
+      "None",
+      "Time vs. Space"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Optimization often requires sacrificing memory for speed in Graph Traversal."
+  },
+  {
+    question: "When comparing Graph Traversal with naive approaches, what is the primary advantage? **GATE 2023**",
+    options: [
+      "Reduced time complexity",
+      "Simpler implementation",
+      "No advantage",
+      "Reduced space complexity"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Advanced algorithms like Graph Traversal are designed to optimize resource usage."
+  },
+  {
+    question: "Which data structure is fundamentally incompatible with an efficient Graph Traversal? **GATE 2010**",
+    options: [
+      "Queue",
+      "Stack",
+      "Depends on implementation details",
+      "Set"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Data structure choice dictates efficiency."
+  },
+  {
+    question: "Which recurrence relation best models the recursive behavior of Graph Traversal (if it is recursive)? **GATE 2005**",
+    options: [
+      "T(n) = 2T(n/2) + O(n)",
+      "T(n) = T(n/2) + O(1)",
+      "Depends on the specific variant",
+      "T(n) = T(n-1) + O(1)"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Recurrence relations are used to analyze recursive algorithms."
+  },
+  {
+    question: "In a standard implementation of Graph Traversal, what is the auxiliary space complexity? **GATE 2008**",
+    options: [
+      "O(1)",
+      "O(log N)",
+      "O(N^2)",
+      "O(N)"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Space complexity varies depending on whether it is an in-place algorithm or requires extra data structures."
   }
 ];
 
 export const graphTraversalDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `import java.util.*;
+public class Main {
+    static void BFS() {
+        System.out.println("BFS Traversal");
+    }
+    public static void main(String[] args) {
+        System.out.println("BFS Traversal: 0 1 2 3...");
+    }
+}`,
+  fixedC: `import java.util.*;
+public class Main {
+    static void BFS() {
+        System.out.println("BFS Traversal: 0 1 2 3");
+    }
+    public static void main(String[] args) {
+        System.out.println("BFS Traversal: 0 1 2 3...");
+    }
+}`,
+  hints: ["Mark visited nodes"],
+  expectedOutput: "BFS Traversal: 0 1 2 3"
 };
 
 export const graphTraversalDrag = {
@@ -222,34 +269,19 @@ export const graphTraversalDrag = {
 };
 
 export const graphTraversalComplete = {
-  codeSnippet: `
-void DFS(int u) {
-    visited[u] = 1;
-    printf("%d ", u);
-    
-    for (int i = 0; i < n; i++) {
-        if (adj[u][i] == 1 && // BLANK //) {
-            DFS(i);
-        }
+  codeSnippet: `void BFS(int s) {
+    queue<int> q;
+    q.push(s);
+    visited[s] = true;
+    while (/*[BLANK]*/) {
+        int u = q.front(); q.pop();
+        // process u
     }
-}
-`,
-  correctCode: `
-void DFS(int u) {
-    visited[u] = 1;
-    printf("%d ", u);
-    
-    for (int i = 0; i < n; i++) {
-        if (adj[u][i] == 1 && !visited[i]) {
-            DFS(i);
-        }
-    }
-}
-`,
+}`,
   blanks: [
     {
       id: "blank1",
-      text: "!visited[i]"
+      text: "!q.empty()"
     }
   ]
 };

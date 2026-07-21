@@ -129,4 +129,15 @@ export const chapter21_MCQ = [
 
 export const chapter21_DEBUG = undefined;
 export const chapter21_DRAG_DROP = undefined;
-export const chapter21_COMPLETE_EXERCISES = [];
+export const chapter21_COMPLETE_EXERCISES = [
+  {
+    template: `public class Outer {
+    class ___ {
+        void display() { System.out.println("Inner"); }
+    }
+}`,
+    blanks: [
+      "Inner"
+    ]
+  }
+];

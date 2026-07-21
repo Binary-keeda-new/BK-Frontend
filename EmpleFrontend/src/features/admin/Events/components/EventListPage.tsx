@@ -1,21 +1,52 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { Trophy, Sparkles, Rocket, Pencil, Trash2, Plus, CalendarDays, Eye } from 'lucide-react'
+import { Trophy, Sparkles, Rocket, Pencil, Trash2, Plus, CalendarDays, Eye, BookOpen } from 'lucide-react'
 import { Event, EventType } from '../types'
 import { getEventsByType, deleteEvent } from '../services/events.service'
 
-const CONFIG = {
-  hackathon: { label: 'Hackathons', icon: <Trophy size={16} />, accentColor: '#ff5722', badgeClass: 'text-orange-400 bg-orange-500/10', iconBg: 'bg-orange-500/10' },
-  techfest: { label: 'Techfest', icon: <Sparkles size={16} />, accentColor: '#a855f7', badgeClass: 'text-purple-400 bg-purple-500/10', iconBg: 'bg-purple-500/10' },
-  'our-hackathon': { label: 'Our Hackathons', icon: <Rocket size={16} />, accentColor: '#10b981', badgeClass: 'text-emerald-400 bg-emerald-500/10', iconBg: 'bg-emerald-500/10' },
+const CONFIG: Record<EventType, {
+  label: string;
+  icon: React.ReactNode;
+  accentColor: string;
+  badgeClass: string;
+  iconBg: string;
+}> = {
+  hackathon: {
+    label: 'Hackathons',
+    icon: <Trophy size={16} />,
+    accentColor: '#ff5722',
+    badgeClass: 'text-orange-400 bg-orange-500/10',
+    iconBg: 'bg-orange-500/10',
+  },
+  techfest: {
+    label: 'Techfest',
+    icon: <Sparkles size={16} />,
+    accentColor: '#a855f7',
+    badgeClass: 'text-purple-400 bg-purple-500/10',
+    iconBg: 'bg-purple-500/10',
+  },
+  'our-hackathon': {
+    label: 'Emple Events',
+    icon: <Rocket size={16} />,
+    accentColor: '#10b981',
+    badgeClass: 'text-emerald-400 bg-emerald-500/10',
+    iconBg: 'bg-emerald-500/10',
+  },
+  'research-conference': {
+    label: 'Research Conferences',
+    icon: <BookOpen size={16} />,
+    accentColor: '#3b82f6',
+    badgeClass: 'text-blue-400 bg-blue-500/10',
+    iconBg: 'bg-blue-500/10',
+  },
 }
 
 interface Props {
   type: EventType
-  onPreview: (id: string) => void
-  onEdit: (event: Event) => void
-  onAddNew: () => void
+  onPreview?: (id: string) => void
+  onEdit?: (event: Event) => void
+  onAddNew?: () => void
 }
 
 export default function EventListPage({ type, onPreview, onEdit, onAddNew }: Props) {
@@ -60,12 +91,14 @@ export default function EventListPage({ type, onPreview, onEdit, onAddNew }: Pro
           </div>
           <p className="text-white/40 text-sm">Manage all {config.label.toLowerCase()} visible to users.</p>
         </div>
+        {onAddNew && (
         <button
-          onClick={onAddNew}
+          onClick={() => onAddNew()}
           className="flex items-center gap-2 rounded-2xl bg-[rgb(241,90,34)] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[rgb(241,90,34)]/85"
         >
           <Plus size={16} /> Add Event
         </button>
+      )}
       </div>
 
       {loading ? (
@@ -102,10 +135,10 @@ export default function EventListPage({ type, onPreview, onEdit, onAddNew }: Pro
               </div>
 
               <div className="flex items-center gap-2 flex-shrink-0">
-                <button onClick={() => onPreview(event._id)} className="rounded-xl bg-[rgb(10,11,14)] p-2 text-white/50 ring-1 ring-white/10 transition hover:text-white" title="Preview">
+                <button onClick={() => onPreview?.(event._id)} className="rounded-xl bg-[rgb(10,11,14)] p-2 text-white/50 ring-1 ring-white/10 transition hover:text-white" title="Preview">
                   <Eye size={14} />
                 </button>
-                <button onClick={() => onEdit(event)} className="rounded-xl bg-[rgb(10,11,14)] p-2 text-white/50 ring-1 ring-white/10 transition hover:text-white" title="Edit">
+                <button onClick={() => onEdit?.(event)} className="rounded-xl bg-[rgb(10,11,14)] p-2 text-white/50 ring-1 ring-white/10 transition hover:text-white" title="Edit">
                   <Pencil size={14} />
                 </button>
                 <button onClick={() => handleDelete(event._id)} className="rounded-xl bg-[rgb(10,11,14)] p-2 text-red-400/50 ring-1 ring-white/10 transition hover:text-red-400" title="Delete">

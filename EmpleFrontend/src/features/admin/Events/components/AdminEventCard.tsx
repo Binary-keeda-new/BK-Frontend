@@ -1,9 +1,13 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { Trophy, Sparkles, Rocket } from 'lucide-react'
+import { Trophy, Sparkles, Rocket, BookOpen } from 'lucide-react'
 
-type EventType = 'hackathon' | 'techfest' | 'our-hackathon'
+type EventType =
+  | 'hackathon'
+  | 'techfest'
+  | 'our-hackathon'
+  | 'research-conference'
 
 interface AdminEventCard {
   id: EventType
@@ -17,6 +21,7 @@ const ICONS = {
   hackathon: <Trophy size={18} />,
   techfest: <Sparkles size={18} />,
   'our-hackathon': <Rocket size={18} />,
+  'research-conference': <BookOpen size={18} />,
 }
 
 const STYLES = {
@@ -37,6 +42,12 @@ const STYLES = {
     badgeClass: 'text-emerald-400 bg-emerald-500/10',
     iconBg: 'bg-emerald-500/10',
     topBar: 'from-emerald-600 to-emerald-400',
+  },
+  'research-conference': {
+  accentColor: '#3b82f6',
+  badgeClass: 'text-blue-400 bg-blue-500/10',
+  iconBg: 'bg-blue-500/10',
+  topBar: 'from-blue-600 to-blue-400',
   },
 }
 

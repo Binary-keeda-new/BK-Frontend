@@ -2,6 +2,7 @@
 
 import { RefObject, useMemo, useState } from "react";
 import * as XLSX from "xlsx";
+import { Info, Download } from "lucide-react";
 import { ThemeTokens } from "./quizEdit.types";
 import { ImportedQuestionInput } from "./useQuizEditor";
 
@@ -38,6 +39,7 @@ export default function ImportQuestionsModal({
 }: Props) {
   const [importing, setImporting] = useState(false);
   const [error, setError] = useState("");
+  const [showInfo, setShowInfo] = useState(false);
 
   const acceptedFileLabel = useMemo(() => {
     if (importTab === "excel") return "Excel / CSV";
@@ -64,60 +66,109 @@ export default function ImportQuestionsModal({
 
       if (lines.length < 3) continue;
 
-      const question = lines[0];
+      const typeLine = lines.find((line) => /^TYPE\s*:/i.test(line));
+      const answerLine = lines.find((line) => /^ANSWER\s*:/i.test(line));
+      const positiveLine = lines.find((line) => /^POSITIVE\s*:/i.test(line));
+      const negativeLine = lines.find((line) => /^NEGATIVE\s*:/i.test(line));
+      
+      const categoryLine = lines.find((line) => /^CATEGORY\s*:/i.test(line));
+      const subcategoryLine = lines.find((line) => /^SUBCATEGORY\s*:/i.test(line));
+      const topicLine = lines.find((line) => /^TOPIC\s*:/i.test(line));
+      const subtopicLine = lines.find((line) => /^SUBTOPIC\s*:/i.test(line));
+      const examLine = lines.find((line) => /^EXAM\s*:/i.test(line));
+      const yearLine = lines.find((line) => /^YEAR\s*:/i.test(line));
 
-      const optionLines = lines.filter((line) => /^[A-Z]\.\s+/.test(line));
-      const answerLine = lines.find((line) =>
-        /^ANSWER\s*:/i.test(line)
+      const optionLines = lines.filter((line) => /^[A-Z][\.\)]\s+/.test(line));
+
+      // The question text is the first line that is NOT a TYPE, ANSWER, POSITIVE, NEGATIVE, or OPTION line.
+      const question = lines.find(
+        (line) =>
+          !/^TYPE\s*:/i.test(line) &&
+          !/^ANSWER\s*:/i.test(line) &&
+          !/^POSITIVE\s*:/i.test(line) &&
+          !/^NEGATIVE\s*:/i.test(line) &&
+          !/^IMAGE\s*:/i.test(line) &&
+          !/^SOLUTION\s*:/i.test(line) &&
+          !/^SOLUTION_MEDIA\s*:/i.test(line) &&
+          !/^CATEGORY\s*:/i.test(line) &&
+          !/^SUBCATEGORY\s*:/i.test(line) &&
+          !/^TOPIC\s*:/i.test(line) &&
+          !/^SUBTOPIC\s*:/i.test(line) &&
+          !/^EXAM\s*:/i.test(line) &&
+          !/^YEAR\s*:/i.test(line) &&
+          !/^[A-Z][\.\)]\s+/.test(line)
       );
 
-      if (!question || !optionLines.length || !answerLine) continue;
+      if (!question || !answerLine) continue;
+
+      let parsedType: "MCQ" | "MSQ" | "NAT" | null = null;
+      if (typeLine) {
+        const t = typeLine.replace(/^TYPE\s*:/i, "").trim().toUpperCase();
+        if (t === "MSQ") parsedType = "MSQ";
+        else if (t === "NAT") parsedType = "NAT";
+        else if (t === "MCQ") parsedType = "MCQ";
+      }
+
+      if (parsedType !== "NAT" && !optionLines.length) continue;
 
       const options = optionLines.map((line) =>
-        line.replace(/^[A-Z]\.\s+/, "").trim()
+        line.replace(/^[A-Z][\.\)]\s+/, "").trim()
       );
 
-      const correctKeys = answerLine
-        .replace(/^ANSWER\s*:/i, "")
-        .split(",")
-        .map((item) => item.trim().toUpperCase())
-        .filter(Boolean);
+      let correctOptions: string[] = [];
 
-      const correctOptions = correctKeys
-        .map((key) => {
-          const match = optionLines.find((line) =>
-            line.toUpperCase().startsWith(`${key}.`)
-          );
-          return match?.replace(/^[A-Z]\.\s+/, "").trim();
-        })
-        .filter((value): value is string => Boolean(value));
+      if (parsedType === "NAT") {
+        correctOptions = [answerLine.replace(/^ANSWER\s*:/i, "").trim()];
+      } else {
+        const correctKeys = answerLine
+          .replace(/^ANSWER\s*:/i, "")
+          .split(",")
+          .map((item) => item.trim().toUpperCase())
+          .filter(Boolean);
 
-      if (!correctOptions.length) continue;
+        correctOptions = correctKeys
+          .map((key) => {
+            const match = optionLines.find(
+              (line) =>
+                line.toUpperCase().startsWith(`${key}.`) ||
+                line.toUpperCase().startsWith(`${key})`)
+            );
+            return match?.replace(/^[A-Z][\.\)]\s+/, "").trim();
+          })
+          .filter((value): value is string => Boolean(value));
 
-      const positiveLine = lines.find((line) =>
-  /^POSITIVE\s*:/i.test(line)
-);
+        if (!correctOptions.length) continue;
+      }
 
-const negativeLine = lines.find((line) =>
-  /^NEGATIVE\s*:/i.test(line)
-);
+      const positiveMarks = positiveLine
+        ? Number(positiveLine.replace(/^POSITIVE\s*:/i, "").trim())
+        : 4;
 
-const positiveMarks = positiveLine
-  ? Number(positiveLine.replace(/^POSITIVE\s*:/i, "").trim())
-  : 4;
+      const negativeMarks = negativeLine
+        ? Number(negativeLine.replace(/^NEGATIVE\s*:/i, "").trim())
+        : 1;
 
-const negativeMarks = negativeLine
-  ? Number(negativeLine.replace(/^NEGATIVE\s*:/i, "").trim())
-  : 1;
+      const category = categoryLine ? categoryLine.replace(/^CATEGORY\s*:/i, "").trim() : undefined;
+      const subcategory = subcategoryLine ? subcategoryLine.replace(/^SUBCATEGORY\s*:/i, "").trim() : undefined;
+      const topic = topicLine ? topicLine.replace(/^TOPIC\s*:/i, "").trim() : undefined;
+      const subTopic = subtopicLine ? subtopicLine.replace(/^SUBTOPIC\s*:/i, "").trim() : undefined;
+      const exam = examLine ? examLine.replace(/^EXAM\s*:/i, "").trim() : undefined;
+      const year = yearLine ? parseInt(yearLine.replace(/^YEAR\s*:/i, "").trim(), 10) || undefined : undefined;
 
       questions.push({
-  question,
-  options,
-  correctOptions,
-  questionType: correctOptions.length > 1 ? "MSQ" : "MCQ",
-  positiveMarks: Number.isFinite(positiveMarks) ? positiveMarks : 4,
-  negativeMarks: Number.isFinite(negativeMarks) ? negativeMarks : 1,
-});
+        question,
+        options,
+        correctOptions,
+        questionType: parsedType || (correctOptions.length > 1 ? "MSQ" : "MCQ"),
+        positiveMarks: Number.isFinite(positiveMarks) ? positiveMarks : 4,
+        negativeMarks: Number.isFinite(negativeMarks) ? negativeMarks : 1,
+        category,
+        subcategory,
+        topic,
+        subTopic,
+        exam,
+        year,
+      });
     }
 
     return questions;
@@ -130,11 +181,19 @@ const negativeMarks = negativeLine
     return arr
       .map((item: any): ParsedQuestion | null => {
         const question = String(item.question ?? "").trim();
-        const rawType = String(item.questionType ?? "").trim().toUpperCase();
+        const rawType = String(item.type ?? item.questionType ?? "").trim().toUpperCase();
 
         const positiveMarks = Number(item.positiveMarks ?? 4);
         const negativeMarks = Number(item.negativeMarks ?? 1);
-        const imageUrl = item.imageUrl ? String(item.imageUrl).trim() : null;
+        const imageUrl = item.imageUrl ? String(item.imageUrl).trim() : undefined;
+        const solution = item.solution ? String(item.solution).trim() : undefined;
+        const solutionMedia = item.solutionMedia ? String(item.solutionMedia).trim() : undefined;
+        const category = item.category ? String(item.category).trim() : undefined;
+        const subcategory = item.subcategory ? String(item.subcategory).trim() : undefined;
+        const topic = item.topic ? String(item.topic).trim() : undefined;
+        const subTopic = item.subTopic ? String(item.subTopic).trim() : undefined;
+        const exam = item.exam ? String(item.exam).trim() : undefined;
+        const year = item.year ? Number(item.year) : undefined;
 
         if (!question) return null;
 
@@ -151,6 +210,14 @@ const negativeMarks = negativeLine
             positiveMarks,
             negativeMarks,
             imageUrl,
+            solution,
+            solutionMedia,
+            category,
+            subcategory,
+            topic,
+            subTopic,
+            exam,
+            year,
           };
         }
 
@@ -179,6 +246,14 @@ const negativeMarks = negativeLine
           positiveMarks,
           negativeMarks,
           imageUrl,
+          solution,
+          solutionMedia,
+          category,
+          subcategory,
+          topic,
+          subTopic,
+          exam,
+          year,
         };
       })
       .filter((item): item is ParsedQuestion => Boolean(item));
@@ -195,7 +270,7 @@ const negativeMarks = negativeLine
       if (!question) continue;
 
       const rawType = String(
-        row.questionType ?? row.QuestionType ?? ""
+        row.type ?? row.Type ?? row.questionType ?? row.QuestionType ?? ""
       )
         .trim()
         .toUpperCase();
@@ -206,7 +281,15 @@ const negativeMarks = negativeLine
       const negativeMarks = Number(
         row.negativeMarks ?? row.NegativeMarks ?? 1
       );
-      const imageUrl = row.imageUrl ?? row.ImageUrl ?? null;
+      const imageUrl = row.imageUrl ?? row.ImageUrl ?? undefined;
+      const solution = row.solution ?? row.Solution ?? undefined;
+      const solutionMedia = row.solutionMedia ?? row.SolutionMedia ?? undefined;
+      const category = row.category ?? row.Category ?? undefined;
+      const subcategory = row.subcategory ?? row.Subcategory ?? undefined;
+      const topic = row.topic ?? row.Topic ?? undefined;
+      const subTopic = row.subTopic ?? row.SubTopic ?? undefined;
+      const exam = row.exam ?? row.Exam ?? undefined;
+      const year = row.year ?? row.Year ?? undefined;
 
       if (rawType === "NAT") {
         const answer = String(
@@ -220,7 +303,15 @@ const negativeMarks = negativeLine
           correctOptions: answer ? [answer] : [],
           positiveMarks,
           negativeMarks,
-          imageUrl: imageUrl ? String(imageUrl).trim() : null,
+          imageUrl: imageUrl ? String(imageUrl).trim() : undefined,
+          solution: solution ? String(solution).trim() : undefined,
+          solutionMedia: solutionMedia ? String(solutionMedia).trim() : undefined,
+          category: category ? String(category).trim() : undefined,
+          subcategory: subcategory ? String(subcategory).trim() : undefined,
+          topic: topic ? String(topic).trim() : undefined,
+          subTopic: subTopic ? String(subTopic).trim() : undefined,
+          exam: exam ? String(exam).trim() : undefined,
+          year: year ? Number(year) : undefined,
         });
 
         continue;
@@ -283,13 +374,20 @@ const negativeMarks = negativeLine
 
       questions.push({
         question,
-        questionType:
-          rawType === "MSQ" || correctOptions.length > 1 ? "MSQ" : "MCQ",
+        questionType: rawType === "MSQ" || correctOptions.length > 1 ? "MSQ" : "MCQ",
         options,
         correctOptions,
         positiveMarks,
         negativeMarks,
-        imageUrl: imageUrl ? String(imageUrl).trim() : null,
+        imageUrl: imageUrl ? String(imageUrl).trim() : undefined,
+        solution: solution ? String(solution).trim() : undefined,
+        solutionMedia: solutionMedia ? String(solutionMedia).trim() : undefined,
+        category: category ? String(category).trim() : undefined,
+        subcategory: subcategory ? String(subcategory).trim() : undefined,
+        topic: topic ? String(topic).trim() : undefined,
+        subTopic: subTopic ? String(subTopic).trim() : undefined,
+        exam: exam ? String(exam).trim() : undefined,
+        year: year ? Number(year) : undefined,
       });
     }
 
@@ -393,32 +491,108 @@ const negativeMarks = negativeLine
     }
   };
 
+  const downloadSample = (type: "excel" | "json" | "aiken") => {
+    if (type === "aiken") {
+      const text = `CATEGORY: Core CS\nSUBCATEGORY: Data Structures\nTOPIC: Array\nSUBTOPIC: Searching\nEXAM: GATE\nYEAR: 2024\nIMAGE: https://example.com/image.png\nSOLUTION: Binary search is O(log n).\nSOLUTION_MEDIA: https://example.com/video.mp4\nTYPE: MCQ\nWhat is the time complexity of binary search?\nA) O(1)\nB) O(n)\nC) O(log n)\nD) O(n log n)\nANSWER: C\nPOSITIVE: 4\nNEGATIVE: 1\n\nTYPE: MSQ\nWhich of the following are prime numbers?\nA. 2\nB. 4\nC. 5\nD. 9\nANSWER: A, C\nPOSITIVE: 4\nNEGATIVE: 1\n\nTYPE: NAT\nWhat is 5 + 7?\nANSWER: 12\nPOSITIVE: 4\nNEGATIVE: 1`;
+      const blob = new Blob([text], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "sample_questions.txt";
+      a.click();
+      URL.revokeObjectURL(url);
+    } else if (type === "json") {
+      const json = [
+        {
+          type: "MCQ",
+          question: "What is the capital of France?",
+          options: ["London", "Paris", "Berlin", "Madrid"],
+          answer: "Paris",
+          positiveMarks: 4,
+          negativeMarks: 1,
+          imageUrl: "https://example.com/image.png",
+          solution: "Paris is the capital of France.",
+          solutionMedia: "https://example.com/video.mp4",
+          category: "Geography",
+          subcategory: "Europe",
+          topic: "Capitals",
+          subTopic: "France",
+          exam: "General Knowledge",
+          year: 2024
+        },
+        {
+          type: "MSQ",
+          question: "Which of the following are prime numbers?",
+          options: ["2", "4", "5", "9"],
+          correctOptions: ["2", "5"],
+          positiveMarks: 4,
+          negativeMarks: 1
+        },
+        {
+          type: "NAT",
+          question: "What is 5 + 7?",
+          options: [],
+          answer: "12",
+          positiveMarks: 4,
+          negativeMarks: 1
+        }
+      ];
+      const blob = new Blob([JSON.stringify(json, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "sample_questions.json";
+      a.click();
+      URL.revokeObjectURL(url);
+    } else if (type === "excel") {
+      const data = [
+        { type: "MCQ", question: "What is the capital of France?", A: "London", B: "Paris", C: "Berlin", D: "Madrid", answer: "Paris", positiveMarks: 4, negativeMarks: 1, imageUrl: "https://example.com/image.png", solution: "Paris is the capital of France.", solutionMedia: "https://example.com/video.mp4", category: "Geography", subcategory: "Europe", topic: "Capitals", subTopic: "France", exam: "General Knowledge", year: 2024 },
+        { type: "MSQ", question: "Which of the following are prime numbers?", A: "2", B: "4", C: "5", D: "9", answer: "2,5", positiveMarks: 4, negativeMarks: 1 },
+        { type: "NAT", question: "What is 5 + 7?", A: "", B: "", C: "", D: "", answer: "12", positiveMarks: 4, negativeMarks: 1 }
+      ];
+      const ws = XLSX.utils.json_to_sheet(data);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Questions");
+      XLSX.writeFile(wb, "sample_questions.xlsx");
+    }
+  };
+
   return (
     <div
       onClick={(e) => e.target === e.currentTarget && onClose()}
       className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 p-5"
     >
       <div
-        className="w-full max-w-[560px] overflow-hidden rounded-[18px] border shadow-2xl"
+        className="w-full max-w-[560px] max-h-[90vh] overflow-y-auto overflow-x-hidden rounded-[18px] border shadow-2xl relative"
         style={{
           background: t.cardBg,
           borderColor: t.cardBorder,
         }}
       >
-        <div className="h-1 bg-[var(--clr-accent)]" />
+        <div className="h-1 w-full bg-[var(--clr-accent)] sticky top-0 z-10" />
 
         <div className="px-7 py-6">
-          <div className="mb-5 flex items-center justify-between">
+          <div className="mb-5 flex items-start justify-between">
             <div>
-              <h3
-                className="text-lg font-extrabold"
-                style={{
-                  fontFamily: "'Nunito',sans-serif",
-                  color: t.headingColor,
-                }}
-              >
-                Import Questions
-              </h3>
+              <div className="flex items-center gap-2">
+                <h3
+                  className="text-lg font-extrabold"
+                  style={{
+                    fontFamily: "'Nunito',sans-serif",
+                    color: t.headingColor,
+                  }}
+                >
+                  Import Questions
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => setShowInfo(!showInfo)}
+                  className="text-[var(--muted2)] hover:text-[var(--text)] transition-colors"
+                  title="How imports work"
+                >
+                  <Info size={16} />
+                </button>
+              </div>
               <p className="mt-1 text-xs" style={{ color: t.subText }}>
                 Paste or upload question data in one of the supported formats.
               </p>
@@ -469,19 +643,86 @@ const negativeMarks = negativeLine
             ))}
           </div>
 
+          {showInfo && (
+            <div
+              className="mb-5 rounded-xl border p-4 text-xs leading-[1.6] max-h-[250px] overflow-y-auto"
+              style={{
+                background: t.inputBg,
+                borderColor: t.inputBorder,
+                color: t.subText,
+              }}
+            >
+              <h4 className="mb-3 font-bold text-[13px]" style={{ color: t.headingColor }}>
+                Comprehensive Import Guide
+              </h4>
+              
+              <div className="space-y-4">
+                <div>
+                  <strong className="block mb-1" style={{ color: t.headingColor }}>General Rules:</strong>
+                  <ul className="ml-4 list-disc space-y-1">
+                    <li><strong style={{ color: t.headingColor }}>Question Types:</strong> Use <code className="text-[var(--clr-accent)]">MCQ</code> (Single choice), <code className="text-[var(--clr-accent)]">MSQ</code> (Multiple choices), or <code className="text-[var(--clr-accent)]">NAT</code> (Numerical answer).</li>
+                    <li><strong style={{ color: t.headingColor }}>Scoring:</strong> <code className="text-[var(--clr-accent)]">POSITIVE</code> defaults to +4. <code className="text-[var(--clr-accent)]">NEGATIVE</code> defaults to 1.</li>
+                    <li><strong style={{ color: t.headingColor }}>Images:</strong> JSON and Excel allow an optional <code className="text-[var(--clr-accent)]">imageUrl</code> column/field for question images.</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <strong className="block mb-1" style={{ color: t.headingColor }}>Aiken Format (.txt):</strong>
+                  <ul className="ml-4 list-disc space-y-1">
+                    <li>Separate each question block with a blank line.</li>
+                    <li>Start with an optional <code className="text-[var(--clr-accent)]">TYPE: MCQ</code>.</li>
+                    <li>Follow with the question text.</li>
+                    <li>Options must start with uppercase letters and a period or parenthesis (e.g., <code className="text-[var(--clr-accent)]">A.</code> or <code className="text-[var(--clr-accent)]">A)</code>).</li>
+                    <li><code className="text-[var(--clr-accent)]">ANSWER:</code> is required. For MSQ, use commas (e.g., <code className="text-[var(--clr-accent)]">ANSWER: A, C</code>).</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <strong className="block mb-1" style={{ color: t.headingColor }}>Excel / CSV Format:</strong>
+                  <ul className="ml-4 list-disc space-y-1">
+                    <li>Required headers: <code className="text-[var(--clr-accent)]">question</code>, <code className="text-[var(--clr-accent)]">answer</code>.</li>
+                    <li>Option headers: <code className="text-[var(--clr-accent)]">A</code>, <code className="text-[var(--clr-accent)]">B</code>, <code className="text-[var(--clr-accent)]">C</code>, <code className="text-[var(--clr-accent)]">D</code>...</li>
+                    <li>Optional headers: <code className="text-[var(--clr-accent)]">type</code>, <code className="text-[var(--clr-accent)]">positiveMarks</code>, <code className="text-[var(--clr-accent)]">negativeMarks</code>, <code className="text-[var(--clr-accent)]">imageUrl</code>.</li>
+                    <li>For NAT, leave option columns empty.</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <strong className="block mb-1" style={{ color: t.headingColor }}>JSON Format:</strong>
+                  <ul className="ml-4 list-disc space-y-1">
+                    <li>Must be an array of objects or a single object.</li>
+                    <li>Fields: <code className="text-[var(--clr-accent)]">question</code> (string), <code className="text-[var(--clr-accent)]">options</code> (array of strings), <code className="text-[var(--clr-accent)]">answer</code> (string/array).</li>
+                    <li>Optional fields: <code className="text-[var(--clr-accent)]">type</code>, <code className="text-[var(--clr-accent)]">positiveMarks</code>, <code className="text-[var(--clr-accent)]">negativeMarks</code>, <code className="text-[var(--clr-accent)]">imageUrl</code>.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          )}
+
           {importTab === "aiken" && (
             <div>
-              <p className="mb-3 text-xs leading-[1.7]" style={{ color: t.subText }}>
-  Format: question text →{" "}
-  <code className="text-[var(--clr-accent)]">A. option</code> lines →{" "}
-  <code className="text-[var(--clr-accent)]">ANSWER: B</code> (optional{" "}
-  <code className="text-[var(--clr-accent)]">POSITIVE: 4</code>,{" "}
-  <code className="text-[var(--clr-accent)]">NEGATIVE: 1</code>)
-</p>
+              <div className="flex items-start justify-between mb-3">
+                <p className="text-xs leading-[1.7]" style={{ color: t.subText }}>
+                  Format: <code className="text-[var(--clr-accent)]">TYPE: MCQ</code> (optional) →{" "}
+                  question text →{" "}
+                  <code className="text-[var(--clr-accent)]">A. option</code> lines →{" "}
+                  <code className="text-[var(--clr-accent)]">ANSWER: B</code> (optional{" "}
+                  <code className="text-[var(--clr-accent)]">POSITIVE: 4</code>,{" "}
+                  <code className="text-[var(--clr-accent)]">NEGATIVE: 1</code>)
+                </p>
+                <button
+                  type="button"
+                  onClick={() => downloadSample("aiken")}
+                  className="flex items-center gap-1.5 rounded-lg border border-[var(--clr-accent)] px-3 py-1.5 text-[11px] font-bold text-[var(--clr-accent)] transition-all hover:bg-[var(--clr-accent)] hover:text-white whitespace-nowrap ml-2 flex-shrink-0 mt-1"
+                >
+                  <Download size={13} strokeWidth={2.5} />
+                  Download Sample
+                </button>
+              </div>
 
               <textarea
-                rows={6}
-                placeholder={"What is 2 + 2?\nA. 3\nB. 4\nC. 5\nD. 6\nANSWER: B"}
+                rows={9}
+                placeholder={"TYPE: MCQ\nWhat is 2 + 2?\nA. 3\nB. 4\nC. 5\nD. 6\nANSWER: B\nPOSITIVE: 4\nNEGATIVE: 1"}
                 value={importText}
                 onChange={(e) => setImportText(e.target.value)}
                 className="qph w-full resize-y rounded-[10px] border px-4 py-3 font-mono text-xs outline-none transition-all focus:border-[var(--clr-accent)] focus:shadow-[0_0_0_3px_rgba(241,90,34,0.12)]"
@@ -564,7 +805,17 @@ const negativeMarks = negativeLine
                   Upload Excel / CSV
                 </div>
                 <div className="text-xs" style={{ color: t.subText }}>
-                  Columns: question, A, B, C, D, answer, positiveMarks, negativeMarks
+                  Columns: type, question, A, B, C, D, answer, positiveMarks, negativeMarks
+                </div>
+                <div className="mt-4 flex justify-center">
+                  <button
+                    type="button"
+                    onClick={() => downloadSample("excel")}
+                    className="flex items-center gap-1.5 rounded-lg border border-[var(--clr-accent)] px-4 py-2 text-xs font-bold text-[var(--clr-accent)] transition-all hover:bg-[var(--clr-accent)] hover:text-white"
+                  >
+                    <Download size={14} strokeWidth={2.5} />
+                    Download Sample File
+                  </button>
                 </div>
               </div>
 
@@ -590,12 +841,22 @@ const negativeMarks = negativeLine
 
           {importTab === "json" && (
             <div>
-              <p className="mb-3 text-xs leading-[1.7]" style={{ color: t.subText }}>
-                Array of:{" "}
-                <code className="text-[var(--clr-accent)]">
-                  {"{ question, options[], answer, positiveMarks, negativeMarks }"}
-                </code>
-              </p>
+              <div className="flex items-start justify-between mb-3">
+                <p className="text-xs leading-[1.7]" style={{ color: t.subText }}>
+                  Array of:{" "}
+                  <code className="text-[var(--clr-accent)]">
+                    {"{ type, question, options[], answer, positiveMarks, negativeMarks }"}
+                  </code>
+                </p>
+                <button
+                  type="button"
+                  onClick={() => downloadSample("json")}
+                  className="flex items-center gap-1.5 rounded-lg border border-[var(--clr-accent)] px-3 py-1.5 text-[11px] font-bold text-[var(--clr-accent)] transition-all hover:bg-[var(--clr-accent)] hover:text-white whitespace-nowrap ml-2 flex-shrink-0 mt-1"
+                >
+                  <Download size={13} strokeWidth={2.5} />
+                  Download Sample
+                </button>
+              </div>
 
               <textarea
                 rows={6}

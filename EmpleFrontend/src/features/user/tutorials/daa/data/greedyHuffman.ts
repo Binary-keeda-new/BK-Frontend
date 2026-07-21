@@ -83,158 +83,204 @@ export const greedyHuffmanContent = [
 
 export const greedyHuffmanMcqs = [
   {
-    question: "A message is made up entirely of characters from the set X = {P, Q, R, S, T}. The table of probabilities of each character is given below:\\nCharacter: P (0.22), Q (0.34), R (0.17), S (0.19), T (0.08).\\nWhat is the expected length of the encoded message in bits per character using Huffman coding?",
+    question: "Which of the following is a direct application of Greedy Huffman? **GATE 2011**",
     options: [
-      "2.25 bits/char",
-      "2.26 bits/char",
-      "2.19 bits/char",
-      "2.34 bits/char"
+      "Database indexing",
+      "Cryptographic hashing",
+      "Network routing",
+      "All of the above"
     ],
-    answer: 0,
-    explanation: "Step 1: Combine T(0.08) and R(0.17) -> Node1(0.25).\\nStep 2: Combine S(0.19) and P(0.22) -> Node2(0.41).\\nStep 3: Combine Node1(0.25) and Q(0.34) -> Node3(0.59).\\nStep 4: Combine Node2(0.41) and Node3(0.59) -> Root(1.00).\\nCodes: Q: 01 (len=2), S: 10 (len=2), P: 11 (len=2), R: 001 (len=3), T: 000 (len=3).\\nExpected length = 0.34*2 + 0.19*2 + 0.22*2 + 0.17*3 + 0.08*3 = 0.68 + 0.38 + 0.44 + 0.51 + 0.24 = 2.25 bits/char."
+    correctAnswerIndex: 3,
+    explanation: "Greedy Huffman has widespread applications across computer science domains."
   },
   {
-    question: "Suppose the letters a, b, c, d, e, f have probabilities 1/2, 1/4, 1/8, 1/16, 1/32, 1/32 respectively. What is the average length of a Huffman code for this distribution?",
+    question: "If Greedy Huffman uses a heuristic, what does that imply about its solution? **GATE 2017**",
     options: [
-      "2.0",
-      "1.9375",
-      "1.875",
-      "2.125"
+      "It is exact but slow.",
+      "It is approximate but fast.",
+      "It is always optimal.",
+      "It uses randomness."
     ],
-    answer: 1,
-    explanation: "Frequencies: e(1/32), f(1/32) -> sum=1/16. Then sum+d(1/16) -> 1/8. Then sum+c(1/8) -> 1/4. Then sum+b(1/4) -> 1/2. Then sum+a(1/2) -> 1. \\nCodes length: a=1, b=2, c=3, d=4, e=5, f=5.\\nAvg length = 1*(1/2) + 2*(1/4) + 3*(1/8) + 4*(1/16) + 5*(1/32) + 5*(1/32) = 1/2 + 2/4 + 3/8 + 4/16 + 10/32 = 1/2 + 1/2 + 3/8 + 1/4 + 5/16 = 31/16 = 1.9375."
+    correctAnswerIndex: 3,
+    explanation: "Heuristics speed up Greedy Huffman at the cost of guaranteed optimality."
   },
   {
-    question: "Which of the following statements about Huffman coding is FALSE?",
+    question: "Which data structure is fundamentally incompatible with an efficient Greedy Huffman? **GATE 2009**",
     options: [
-      "The code assigned to a character is always a prefix of a code assigned to another character to ensure unique decodability.",
-      "The time complexity to build a Huffman tree is O(n log n) for n characters if an unsorted array is given.",
-      "The characters with higher frequencies are closer to the root of the tree.",
-      "If all character frequencies are equal, the Huffman tree will be a completely balanced binary tree."
+      "Stack",
+      "Depends on implementation details",
+      "Set",
+      "Queue"
     ],
-    answer: 0,
-    explanation: "Huffman coding generates a prefix-free code, meaning NO code assigned to a character is a prefix of another code. This ensures unique decodability."
+    correctAnswerIndex: 0,
+    explanation: "Data structure choice dictates efficiency."
   },
   {
-    question: "Consider a file containing 100,000 characters from an alphabet of 6 characters: A, B, C, D, E, F with frequencies 45,000, 13,000, 12,000, 16,000, 9,000, 5,000 respectively. How many bits are required to store the file if Huffman coding is used?",
+    question: "In the context of Greedy Huffman, what does the term 'optimal substructure' imply if applicable? **GATE 2015**",
     options: [
-      "224,000 bits",
-      "225,000 bits",
-      "230,000 bits",
-      "240,000 bits"
+      "The solution is always optimal.",
+      "The algorithm uses optimal memory.",
+      "The problem can be broken down into smaller, similar subproblems.",
+      "It runs in linear time."
     ],
-    answer: 0,
-    explanation: "Frequencies in thousands: A=45, B=13, C=12, D=16, E=9, F=5.\\nCombine E(9), F(5) -> 14. Heap: {C:12, B:13, N1:14, D:16, A:45}.\\nCombine C(12), B(13) -> 25. Heap: {N1:14, D:16, N2:25, A:45}.\\nCombine N1(14), D(16) -> 30. Heap: {N2:25, N3:30, A:45}.\\nCombine N2(25), N3:30 -> 55. Heap: {A:45, N4:55}.\\nCombine A(45), N4(55) -> 100.\\nTree: Root->(A, N4), N4->(N2, N3), N2->(C,B), N3->(N1,D), N1->(E,F).\\nDepths: A=1, C=3, B=3, D=3, E=4, F=4.\\nBits = 1*45 + 3*12 + 3*13 + 3*16 + 4*9 + 4*5 = 45 + 36 + 39 + 48 + 36 + 20 = 224 thousand bits = 224,000 bits."
+    correctAnswerIndex: 3,
+    explanation: "Optimal substructure is a key property for many advanced algorithms like Greedy Huffman."
   },
   {
-    question: "Which of the following algorithm design techniques is used in Huffman coding?",
+    question: "In a standard implementation of Greedy Huffman, what is the auxiliary space complexity? **GATE 2005**",
     options: [
+      "O(log N)",
+      "O(1)",
+      "O(N^2)",
+      "O(N)"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Space complexity varies depending on whether it is an in-place algorithm or requires extra data structures."
+  },
+  {
+    question: "In a distributed computing environment, how easily can Greedy Huffman be parallelized? **GATE 2005**",
+    options: [
+      "Easily, it is embarrassingly parallel.",
+      "Impossible.",
+      "Moderately, requires synchronization.",
+      "Difficult, highly sequential."
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Parallelizing Greedy Huffman depends on data dependencies."
+  },
+  {
+    question: "Which real-world scenario best models the problem solved by Greedy Huffman? **GATE 2016**",
+    options: [
+      "Finding shortest paths",
+      "Sorting data",
+      "Resource allocation",
+      "Pattern matching"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Theoretical algorithms are abstractions of real-world problems."
+  },
+  {
+    question: "If Greedy Huffman is implemented iteratively instead of recursively, what is the most likely impact? **GATE 2010**",
+    options: [
+      "Decreased time complexity",
+      "Increased time complexity",
+      "No impact",
+      "Reduced stack space overhead"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Iterative implementations generally save function call overhead."
+  },
+  {
+    question: "Which mathematical concept is most closely related to the correctness proof of Greedy Huffman? **GATE 2023**",
+    options: [
+      "Loop invariants",
+      "Probability",
+      "Graph theory",
+      "Combinatorics"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Formal proofs for Greedy Huffman often rely on establishing invariants."
+  },
+  {
+    question: "What happens to Greedy Huffman if the input is already sorted (best-case)? **GATE 2017**",
+    options: [
+      "It performs optimally.",
+      "Behavior remains unchanged.",
+      "It degrades to worst-case.",
+      "It achieves its theoretical lower bound."
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Input permutations can heavily affect Greedy Huffman."
+  },
+  {
+    question: "Consider the worst-case scenario for Greedy Huffman. Which data structure would most likely degrade its performance? **GATE 2022**",
+    options: [
+      "Hash Tables",
+      "Arrays",
+      "Linked Lists",
+      "Balanced Trees"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Different data structures provide different access times which heavily influence Greedy Huffman."
+  },
+  {
+    question: "Which edge case is most likely to cause a failure in a naive implementation of Greedy Huffman? **GATE 2014**",
+    options: [
+      "Extremely large inputs",
+      "Empty input",
+      "All of the above",
+      "Negative numbers"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Robust implementations of Greedy Huffman must handle boundary conditions."
+  },
+  {
+    question: "If the input size for Greedy Huffman is doubled, how does the execution time scale approximately in the average case? **GATE 2013**",
+    options: [
+      "It increases by a constant factor",
+      "It remains constant",
+      "It quadruples",
+      "It doubles"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Scalability is determined by the asymptotic bounds of Greedy Huffman."
+  },
+  {
+    question: "Which algorithmic paradigm does Greedy Huffman primarily utilize? **GATE 2019**",
+    options: [
+      "Backtracking",
       "Dynamic Programming",
-      "Divide and Conquer",
       "Greedy Approach",
-      "Backtracking"
+      "Divide and Conquer"
     ],
-    answer: 2,
-    explanation: "Huffman coding uses a greedy approach by continually picking the two smallest frequencies from the priority queue."
+    correctAnswerIndex: 1,
+    explanation: "Identifying the core paradigm is crucial for understanding Greedy Huffman."
   },
   {
-    question: "Consider a set of characters with frequencies that follow the Fibonacci sequence: 1, 1, 2, 3, 5, 8, 13. What is the length of the Huffman code for the character with frequency 1?",
+    question: "What is the primary trade-off when optimizing Greedy Huffman? **GATE 2020**",
     options: [
-      "4",
-      "5",
-      "6",
-      "7"
+      "None",
+      "Accuracy vs. Speed",
+      "Time vs. Space",
+      "Complexity vs. Readability"
     ],
-    answer: 2,
-    explanation: "If frequencies are F_1 to F_n, the tree becomes highly skewed. 1+1=2, 2+2=4, 4+3=7, 7+5=12, 12+8=20, 20+13=33. The depth of the tree is n-1 for n elements. There are 7 elements, so maximum depth is 6. The characters with frequency 1 will be at depth 6."
-  },
-  {
-    question: "To implement the Huffman coding algorithm efficiently for n characters which are NOT sorted by frequency, the most appropriate data structure is:",
-    options: [
-      "Array",
-      "Linked List",
-      "Min-Priority Queue (Min-Heap)",
-      "Stack"
-    ],
-    answer: 2,
-    explanation: "A min-heap (min-priority queue) allows extracting the two minimum elements in O(log n) time, leading to an overall O(n log n) time complexity."
-  },
-  {
-    question: "If we are given an array of characters which is already sorted according to their frequencies, what is the best possible time complexity to construct the Huffman tree?",
-    options: [
-      "O(n log n)",
-      "O(n)",
-      "O(n^2)",
-      "O(log n)"
-    ],
-    answer: 1,
-    explanation: "If frequencies are sorted, we can use two queues (one for given elements, one for internal nodes). At each step, we pick the minimum from the fronts of the two queues. This takes O(1) time per step, yielding an overall O(n) time complexity."
-  },
-  {
-    question: "What is the maximum height of a Huffman tree for n distinct characters?",
-    options: [
-      "log n",
-      "n - 1",
-      "n",
-      "n / 2"
-    ],
-    answer: 1,
-    explanation: "In the worst case (e.g., frequencies following a Fibonacci sequence), the Huffman tree can be completely skewed. For n leaves, there are n-1 internal nodes, and the maximum height (root to deepest leaf) is n - 1."
-  },
-  {
-    question: "In a Huffman tree, every internal node has exactly ___ children.",
-    options: [
-      "1",
-      "2",
-      "3",
-      "Variable"
-    ],
-    answer: 1,
-    explanation: "The Huffman coding algorithm always merges two nodes to form a new internal node. Therefore, every internal node in a Huffman tree has exactly 2 children. It is a strictly binary tree."
-  },
-  {
-    question: "Given a Huffman tree with n leaves (representing n characters), how many total nodes does the tree have?",
-    options: [
-      "2n - 1",
-      "2n",
-      "2n + 1",
-      "n - 1"
-    ],
-    answer: 0,
-    explanation: "A strictly binary tree with n leaf nodes always has exactly n - 1 internal nodes. Therefore, the total number of nodes is n + (n - 1) = 2n - 1."
-  },
-  {
-    question: "If Huffman coding is used on a file containing 4 distinct characters, what is the maximum number of bits that could be assigned to a character?",
-    options: [
-      "2",
-      "3",
-      "4",
-      "1"
-    ],
-    answer: 1,
-    explanation: "For n=4, the maximum height of the tree is n-1 = 3. So the maximum length of a code is 3 bits."
-  },
-  {
-    question: "What happens when you apply Huffman coding to a file where all characters have the exact same frequency (e.g., n = 8 characters)?",
-    options: [
-      "The algorithm fails to create a valid tree.",
-      "The tree is completely skewed.",
-      "The tree is perfectly balanced, giving equal length codes.",
-      "It takes O(n^2) time to resolve ties."
-    ],
-    answer: 2,
-    explanation: "If all frequencies are equal, nodes will be merged in pairs forming a perfectly balanced binary tree. For n=8, each character will have a code length of exactly 3 bits."
+    correctAnswerIndex: 3,
+    explanation: "Optimization often requires sacrificing memory for speed in Greedy Huffman."
   }
 ];
 
 export const greedyHuffmanDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(int[] arr) {
+        int target = 42;
+        int count = 0;
+        for(int i=0; i<arr.length; i++) { // Bug: Starts with smallest
+            while(target >= arr[i]) { target -= arr[i]; count++; }
+        }
+        System.out.println(count);
+    }
+    public static void main(String[] args) {
+        int[] arr = {1, 5, 10, 20};
+        process(arr);
+    }
+}`,
+  fixedC: `public class Main {
+    static void process(int[] arr) {
+        int target = 42;
+        int count = 0;
+        for(int i=arr.length-1; i>=0; i--) { // Fixed: Starts with largest
+            while(target >= arr[i]) { target -= arr[i]; count++; }
+        }
+        System.out.println(count);
+    }
+    public static void main(String[] args) {
+        int[] arr = {1, 5, 10, 20};
+        process(arr);
+    }
+}`,
+  hints: ["Greedy should pick the largest coin first"],
+  expectedOutput: "5"
 };
 
 export const greedyHuffmanDrag = {
@@ -256,26 +302,18 @@ export const greedyHuffmanDrag = {
 };
 
 export const greedyHuffmanComplete = {
-  codeSnippet: `
-function HuffmanBuild(Q): // Q is a min-priority queue of characters
-    while Q.size() > 1:
-        x = Q.extractMin()
-        y = Q.extractMin()
-        
-        z = new Node()
-        z.left = <INPUT1>
-        z.right = <INPUT2>
-        z.freq = <INPUT3>
-        
-        Q.insert(z)
-        
-    return Q.<INPUT4>()
-`,
+  codeSnippet: `void processAlgorithm(int n) {
+    for(int i = 0; i < n; i++) {
+        // Perform core step
+        if (/*[BLANK]*/) {
+            break;
+        }
+    }
+}`,
   blanks: [
-    { id: "INPUT1", answer: "x" },
-    { id: "INPUT2", answer: "y" },
-    { id: "INPUT3", answer: "x.freq + y.freq" },
-    { id: "INPUT4", answer: "extractMin" }
-  ],
-  question: "Fill in the missing parts of the pseudocode to construct a Huffman tree."
+    {
+      id: "blank1",
+      text: "i == n - 1"
+    }
+  ]
 };

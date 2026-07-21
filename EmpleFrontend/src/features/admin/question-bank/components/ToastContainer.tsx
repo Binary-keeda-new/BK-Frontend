@@ -1,10 +1,14 @@
 'use client'
 
-type Toast = { id: number; message: string; type: 'success' | 'error' }
+type Toast = {
+  id: string
+  message: string
+  type: 'success' | 'error'
+}
 
 type Props = {
   toasts: Toast[]
-  removeToast?: (id: number) => void
+  removeToast?: (id: string) => void
 }
 
 export default function ToastContainer({ toasts, removeToast }: Props) {

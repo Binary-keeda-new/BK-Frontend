@@ -33,19 +33,18 @@ export default function QuizForm({
   })
 
   const [toasts, setToasts] = useState<{
-    id: number
+    id: string
     message: string
     type: 'success' | 'error'
   }[]>([])
 
-  const toastId = useRef(0)
   const [loading, setLoading] = useState(false)
 
   const addToast = (
     message: string,
     type: 'success' | 'error' = 'success'
   ) => {
-    const id = ++toastId.current
+    const id = crypto.randomUUID()
     setToasts((prev) => [...prev, { id, message, type }])
 
     setTimeout(() => {
@@ -292,7 +291,7 @@ export default function QuizForm({
                     >
                       <option value="">Select subcategory</option>
                       {form.category &&
-                        QUIZ_CATEGORIES[form.category].map((sub) => (
+                        Object.keys(QUIZ_CATEGORIES[form.category as keyof typeof QUIZ_CATEGORIES]).map((sub) => (
                           <option key={sub} value={sub}>
                             {sub}
                           </option>

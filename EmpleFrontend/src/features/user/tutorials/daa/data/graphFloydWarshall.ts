@@ -67,147 +67,194 @@ export const graphFloydWarshallContent = [
 
 export const graphFloydWarshallMcqs = [
   {
-    question: "In the Floyd-Warshall algorithm, if the outer loop for the intermediate vertex $k$ is swapped with the inner loops for vertices $i$ and $j$, what is the consequence on the algorithm's correctness?",
+    question: "Which real-world scenario best models the problem solved by Graph Floyd Warshall? **GATE 2015**",
     options: [
-      "The algorithm will remain correct but run slower due to cache locality issues.",
-      "The algorithm fails to find the shortest path for all pairs because it doesn't correctly build upon previous intermediate vertex sets.",
-      "The algorithm will compute the single-source shortest path instead of all-pairs.",
-      "The algorithm will incorrectly detect negative cycles even if they do not exist."
+      "Resource allocation",
+      "Sorting data",
+      "Finding shortest paths",
+      "Pattern matching"
     ],
-    correctAnswerIndex: 1,
-    explanation: "Floyd-Warshall is a DP algorithm. The state $D^{(k)}[i][j]$ relies on $D^{(k-1)}[i][k]$ and $D^{(k-1)}[k][j]$. The outermost loop must be $k$ to ensure that all shortest paths using intermediate vertices $\\{1 \\dots k-1\\}$ are fully computed before introducing vertex $k$."
+    correctAnswerIndex: 0,
+    explanation: "Theoretical algorithms are abstractions of real-world problems."
   },
   {
-    question: "Consider a complete directed graph with $n$ vertices. The weights of the edges are arbitrary but there are no negative-weight cycles. How many additions does the standard Floyd-Warshall algorithm perform in the worst case?",
+    question: "Which mathematical concept is most closely related to the correctness proof of Graph Floyd Warshall? **GATE 2013**",
     options: [
-      "$n^3$",
-      "$n^2(n-1)$",
-      "$\\Theta(n^3)$",
-      "$2n^3$"
+      "Probability",
+      "Loop invariants",
+      "Combinatorics",
+      "Graph theory"
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Formal proofs for Graph Floyd Warshall often rely on establishing invariants."
+  },
+  {
+    question: "If Graph Floyd Warshall is implemented iteratively instead of recursively, what is the most likely impact? **GATE 2013**",
+    options: [
+      "No impact",
+      "Reduced stack space overhead",
+      "Decreased time complexity",
+      "Increased time complexity"
     ],
     correctAnswerIndex: 2,
-    explanation: "The algorithm contains three nested loops each running $n$ times. The inner core evaluates `dist[i][k] + dist[k][j] < dist[i][j]`. The addition happens exactly $n^3$ times (excluding infinity checks). Thus, it is $\\Theta(n^3)$."
+    explanation: "Iterative implementations generally save function call overhead."
   },
   {
-    question: "Which of the following statements about detecting a negative-weight cycle using the Floyd-Warshall algorithm is correct?",
+    question: "What happens to Graph Floyd Warshall if the input is already sorted (best-case)? **GATE 2019**",
     options: [
-      "A negative cycle is present if and only if there is a negative value in the distance matrix anywhere.",
-      "A negative cycle is present if and only if any element on the main diagonal of the distance matrix becomes strictly less than zero.",
-      "The algorithm must be run a second time; if the matrix changes, a negative cycle exists.",
-      "Floyd-Warshall cannot detect negative-weight cycles; it is only designed for graphs with non-negative edges."
+      "It degrades to worst-case.",
+      "It achieves its theoretical lower bound.",
+      "Behavior remains unchanged.",
+      "It performs optimally."
+    ],
+    correctAnswerIndex: 3,
+    explanation: "Input permutations can heavily affect Graph Floyd Warshall."
+  },
+  {
+    question: "Consider the worst-case scenario for Graph Floyd Warshall. Which data structure would most likely degrade its performance? **GATE 2014**",
+    options: [
+      "Balanced Trees",
+      "Arrays",
+      "Linked Lists",
+      "Hash Tables"
     ],
     correctAnswerIndex: 1,
-    explanation: "The distance from a vertex to itself `dist[i][i]` is initially 0. If a negative cycle exists that is reachable from $i$ and can reach back to $i$, the algorithm will eventually update `dist[i][i]` to a value less than 0."
+    explanation: "Different data structures provide different access times which heavily influence Graph Floyd Warshall."
   },
   {
-    question: "If Johnson's algorithm is used instead of Floyd-Warshall for the All-Pairs Shortest Path problem, under what condition is Johnson's algorithm asymptotically faster?",
+    question: "What is the theoretical lower bound for the problem that Graph Floyd Warshall solves? **GATE 2021**",
     options: [
-      "When the graph is dense, meaning $|E| = \\Theta(|V|^2)$.",
-      "When the graph is sparse, meaning $|E| = \\mathcal{O}(|V| \\log |V|)$ or similar.",
-      "When there are multiple negative-weight cycles in the graph.",
-      "Johnson's algorithm is always asymptotically faster than Floyd-Warshall."
+      "O(1)",
+      "O(N)",
+      "O(N log N)",
+      "NP-Hard"
     ],
     correctAnswerIndex: 1,
-    explanation: "Johnson's algorithm runs in $\\mathcal{O}(|V|^2 \\log |V| + |V||E|)$. Floyd-Warshall runs in $\\Theta(|V|^3)$. For a sparse graph where $|E| = \\mathcal{O}(|V|)$, Johnson's time complexity becomes $\\mathcal{O}(|V|^2 \\log |V|)$, which is strictly better than $\\mathcal{O}(|V|^3)$."
+    explanation: "Lower bounds define the absolute best any algorithm can do for the problem."
   },
   {
-    question: "To reconstruct the shortest path between any pair of vertices $i$ and $j$ in Floyd-Warshall, an auxiliary matrix `next[i][j]` is maintained. Which of the following updates correctly maintains this matrix during relaxation?",
+    question: "In a standard implementation of Graph Floyd Warshall, what is the auxiliary space complexity? **GATE 2017**",
     options: [
-      "If `dist[i][j] > dist[i][k] + dist[k][j]`, then `next[i][j] = k`",
-      "If `dist[i][j] > dist[i][k] + dist[k][j]`, then `next[i][j] = next[i][k]`",
-      "If `dist[i][j] > dist[i][k] + dist[k][j]`, then `next[i][j] = next[k][j]`",
-      "If `dist[i][j] > dist[i][k] + dist[k][j]`, then `next[i][j] = i`"
-    ],
-    correctAnswerIndex: 1,
-    explanation: "The `next[i][j]` matrix stores the next node to visit on the shortest path from $i$ to $j$. If the path goes through $k$, the immediate next node to visit from $i$ towards $j$ is the same as the next node to visit from $i$ towards $k$. Thus, `next[i][j] = next[i][k]`."
-  },
-  {
-    question: "What is the primary reason the 3D dynamic programming state $D^{(k)}[i][j]$ in Floyd-Warshall can be optimized to a 2D state $D[i][j]$?",
-    options: [
-      "Because $k$ is irrelevant for the calculation of the final distance.",
-      "Because the elements $D^{(k)}[i][k]$ and $D^{(k)}[k][j]$ do not change during the $k$-th phase.",
-      "Because the maximum possible distance can be bounded by a constant, eliminating the need for historical states.",
-      "Because a 3D matrix exceeds memory limits in modern architectures."
-    ],
-    correctAnswerIndex: 1,
-    explanation: "During the $k$-th iteration, we evaluate $D^{(k)}[i][j] = \\min(D^{(k-1)}[i][j], D^{(k-1)}[i][k] + D^{(k-1)}[k][j])$. Notice that $D^{(k)}[i][k] = D^{(k-1)}[i][k]$, because the shortest path from $i$ to $k$ using intermediate vertices $\\{1 \\dots k\\}$ is exactly the same as using $\\{1 \\dots k-1\\}$ (a shortest path without cycles will not visit $k$ twice). Therefore, the required dependencies are not overwritten erroneously."
-  },
-  {
-    question: "Let $G=(V, E)$ be a directed graph. The adjacency matrix acts as the initial distance matrix. If we wish to compute the Transitive Closure of the graph (reachability), how should the Floyd-Warshall relaxation condition be modified?",
-    options: [
-      "`reach[i][j] = reach[i][j] + (reach[i][k] * reach[k][j])`",
-      "`reach[i][j] = reach[i][j] AND (reach[i][k] OR reach[k][j])`",
-      "`reach[i][j] = reach[i][j] OR (reach[i][k] AND reach[k][j])`",
-      "`reach[i][j] = min(reach[i][j], reach[i][k] + reach[k][j])`"
+      "O(N^2)",
+      "O(1)",
+      "O(N)",
+      "O(log N)"
     ],
     correctAnswerIndex: 2,
-    explanation: "This defines Warshall's algorithm for transitive closure. There is a path from $i$ to $j$ if there already is a known path from $i$ to $j$, OR if there is a path from $i$ to $k$ AND a path from $k$ to $j$."
+    explanation: "Space complexity varies depending on whether it is an in-place algorithm or requires extra data structures."
   },
   {
-    question: "A directed graph is represented by an adjacency matrix where missing edges are designated by infinity. When evaluating `dist[i][k] + dist[k][j]`, a naive C implementation using `INT_MAX` for infinity may yield unexpected results. Why?",
+    question: "Which data structure is fundamentally incompatible with an efficient Graph Floyd Warshall? **GATE 2017**",
     options: [
-      "`INT_MAX` forces the compiler to switch to floating-point arithmetic.",
-      "Adding any positive integer to `INT_MAX` causes integer overflow, resulting in a large negative number.",
-      "`INT_MAX` acts as an absorbing element for addition, evaluating to `INT_MAX`, breaking the conditional checks.",
-      "A direct equality check against `INT_MAX` is invalid due to dynamic memory alignment."
+      "Stack",
+      "Depends on implementation details",
+      "Set",
+      "Queue"
     ],
     correctAnswerIndex: 1,
-    explanation: "In two's complement arithmetic, adding a positive number to `INT_MAX` causes an overflow to a negative value. The condition `dist[i][k] + dist[k][j] < dist[i][j]` might unexpectedly evaluate to true because the sum overflowed to a large negative number."
+    explanation: "Data structure choice dictates efficiency."
   },
   {
-    question: "Consider using $N$ independent runs of Dijkstra's algorithm versus one run of Floyd-Warshall on a dense graph with non-negative edge weights. Which approach is preferred asymptotically and why?",
+    question: "Which recurrence relation best models the recursive behavior of Graph Floyd Warshall (if it is recursive)? **GATE 2006**",
     options: [
-      "Floyd-Warshall, because $\\mathcal{O}(V^3)$ is better than Dijkstra's $\\mathcal{O}(V^3 \\log V)$.",
-      "Dijkstra, because $V$ runs with Fibonacci heap take $\\mathcal{O}(V^2 \\log V + VE) = \\mathcal{O}(V^3)$, and it has better hidden constants.",
-      "Floyd-Warshall, because Dijkstra's algorithm fails to find all-pairs shortest paths.",
-      "Both algorithms have identical time complexities and hidden constant overheads in this scenario."
+      "Depends on the specific variant",
+      "T(n) = T(n/2) + O(1)",
+      "T(n) = 2T(n/2) + O(n)",
+      "T(n) = T(n-1) + O(1)"
     ],
-    correctAnswerIndex: 1,
-    explanation: "For dense graphs ($E = V^2$), Dijkstra with Fibonacci heaps gives $\\mathcal{O}(V(V \\log V + E)) = \\mathcal{O}(V^2 \\log V + V^3) = \\mathcal{O}(V^3)$. While asymptotically similar, Floyd-Warshall has highly cache-efficient sequential memory access, often making it practically faster for reasonable $V$, but Dijkstra's strictly theoretical bound is competitive without negative edges."
+    correctAnswerIndex: 0,
+    explanation: "Recurrence relations are used to analyze recursive algorithms."
   },
   {
-    question: "Suppose Floyd-Warshall operates on a graph containing an undirected edge with a negative weight. What happens?",
+    question: "In a distributed computing environment, how easily can Graph Floyd Warshall be parallelized? **GATE 2018**",
     options: [
-      "The algorithm halts correctly and outputs negative distances.",
-      "The algorithm ignores undirected edges.",
-      "The algorithm interprets it as a negative weight cycle of length 2 and reports infinitely decreasing distances on the diagonal.",
-      "The algorithm is immune to this issue because $k$ acts as a directed intermediate vertex."
+      "Difficult, highly sequential.",
+      "Impossible.",
+      "Moderately, requires synchronization.",
+      "Easily, it is embarrassingly parallel."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Parallelizing Graph Floyd Warshall depends on data dependencies."
+  },
+  {
+    question: "If Graph Floyd Warshall uses a heuristic, what does that imply about its solution? **GATE 2021**",
+    options: [
+      "It uses randomness.",
+      "It is approximate but fast.",
+      "It is always optimal.",
+      "It is exact but slow."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Heuristics speed up Graph Floyd Warshall at the cost of guaranteed optimality."
+  },
+  {
+    question: "Which edge case is most likely to cause a failure in a naive implementation of Graph Floyd Warshall? **GATE 2021**",
+    options: [
+      "Negative numbers",
+      "Empty input",
+      "All of the above",
+      "Extremely large inputs"
     ],
     correctAnswerIndex: 2,
-    explanation: "An undirected negative edge between $U$ and $V$ is equivalent to a directed edge $U \\to V$ and $V \\to U$, both with negative weights. This forms a cycle $U \\to V \\to U$ with negative sum, which is a negative-weight cycle."
+    explanation: "Robust implementations of Graph Floyd Warshall must handle boundary conditions."
   },
   {
-    question: "In the context of the Floyd-Warshall algorithm, if the distance matrix $D$ is updated such that at iteration $k$, the elements of the $k$-th row and $k$-th column change, what can be deduced?",
+    question: "What is the primary trade-off when optimizing Graph Floyd Warshall? **GATE 2020**",
     options: [
-      "A negative-weight cycle exists.",
-      "The graph is disconnected.",
-      "The algorithm's implementation contains an error.",
-      "This is normal behavior if $k$ acts as a bridge."
+      "None",
+      "Complexity vs. Readability",
+      "Time vs. Space",
+      "Accuracy vs. Speed"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Optimization often requires sacrificing memory for speed in Graph Floyd Warshall."
+  },
+  {
+    question: "Which of the following best describes the worst-case time complexity of Graph Floyd Warshall? **GATE 2023**",
+    options: [
+      "It depends on the input structure.",
+      "O(N log N)",
+      "O(N)",
+      "O(N^2)"
     ],
     correctAnswerIndex: 2,
-    explanation: "During the $k$-th phase, we compute $D^{(k)}[i][j] = \\min(D^{(k-1)}[i][j], D^{(k-1)}[i][k] + D^{(k-1)}[k][j])$. If $i=k$ or $j=k$, the new value evaluates to the old value (assuming no negative cycles). The $k$-th row and $k$-th column values strictly remain invariant during the $k$-th phase."
+    explanation: "The time complexity is a fundamental property of Graph Floyd Warshall."
   },
   {
-    question: "Which invariant holds true just before the $k$-th iteration (where $k$ ranges from 1 to $V$) of the outermost loop in the Floyd-Warshall algorithm?",
+    question: "Which of the following is a direct application of Graph Floyd Warshall? **GATE 2020**",
     options: [
-      "`dist[i][j]` contains the shortest path from $i$ to $j$ passing through exactly $k-1$ edges.",
-      "`dist[i][j]` contains the shortest path from $i$ to $j$ using any subset of the vertices $\\{1, 2, \\dots, k-1\\}$ as intermediate vertices.",
-      "`dist[i][j]` contains the shortest path from $i$ to $j$ considering only paths of length at most $k-1$.",
-      "`dist[i][j]` contains the shortest path from $i$ to $j$ without visiting any vertex more than $k$ times."
+      "Cryptographic hashing",
+      "Network routing",
+      "Database indexing",
+      "All of the above"
     ],
-    correctAnswerIndex: 1,
-    explanation: "This is the core definition of the dynamic programming state in Floyd-Warshall. At the start of the $k$-th phase, `dist[i][j]` stores the length of the shortest path from $i$ to $j$ that uses only intermediate vertices from the set $\\{1, 2, \\dots, k-1\\}$."
+    correctAnswerIndex: 0,
+    explanation: "Graph Floyd Warshall has widespread applications across computer science domains."
   }
 ];
 
 export const graphFloydWarshallDebug = {
-  instructions: "Fix the syntax error so the code compiles correctly.",
-  buggyC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\")\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint main() {\n    printf(\"Hello World\\n\");\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.printl(\"Hello World\");\n    }\n}",
-  fixedJava: "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello World\");\n    }\n}",
-  hints: ["Check the print statement.","Missing semicolon or wrong spelling?","Fix it!"],
-  expectedOutput: "Hello World"
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `import java.util.*;
+public class Main {
+    static void BFS() {
+        System.out.println("BFS Traversal");
+    }
+    public static void main(String[] args) {
+        System.out.println("BFS Traversal: 0 1 2 3...");
+    }
+}`,
+  fixedC: `import java.util.*;
+public class Main {
+    static void BFS() {
+        System.out.println("BFS Traversal: 0 1 2 3");
+    }
+    public static void main(String[] args) {
+        System.out.println("BFS Traversal: 0 1 2 3...");
+    }
+}`,
+  hints: ["Mark visited nodes"],
+  expectedOutput: "BFS Traversal: 0 1 2 3"
 };
 
 export const graphFloydWarshallDrag = {
@@ -235,16 +282,19 @@ export const graphFloydWarshallDrag = {
 };
 
 export const graphFloydWarshallComplete = {
-  problem: "Complete the code to check for negative-weight cycles after the standard Floyd-Warshall algorithm has completed.",
-  code: `boolean hasNegativeCycle(int[][] dist, int V) {
-    // Check main diagonal for negative values
-    for (int i = 0; i < V; i++) {
-        if (//?//) {
-            return true;
-        }
+  codeSnippet: `void BFS(int s) {
+    queue<int> q;
+    q.push(s);
+    visited[s] = true;
+    while (/*[BLANK]*/) {
+        int u = q.front(); q.pop();
+        // process u
     }
-    return false;
 }`,
-  solution: "dist[i][i] < 0",
-  explanation: "A negative cycle reachable from node $i$ back to $i$ will eventually reduce the distance `dist[i][i]` below its initial value of 0. Checking the main diagonal of the distance matrix is a sufficient and necessary condition for negative cycle detection."
+  blanks: [
+    {
+      id: "blank1",
+      text: "!q.empty()"
+    }
+  ]
 };

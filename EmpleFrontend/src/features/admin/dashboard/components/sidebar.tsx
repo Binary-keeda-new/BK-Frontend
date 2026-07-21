@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { LOGO_URL } from '@/shared/constants/assets'
 
 export type AdminSection =
   | 'dashboard'
@@ -18,6 +19,7 @@ export type AdminSection =
   | 'blogs'
   | 'sessions'
   | 'notifications'
+  | 'requests'  
   | 'events'
   | 'quiz-preview'
   | 'quiz-edit'
@@ -182,6 +184,15 @@ const NAV_ITEMS: {
     </svg>
   ),
 },
+  {
+  label: 'Requests',
+  key: 'requests',
+  icon: (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+    </svg>
+  ),
+},
 ];
 
 type SidebarProps = {
@@ -209,7 +220,7 @@ export default function Sidebar({
           <div className="relative h-[42px] flex-1">
             {!collapsed ? (
               <Image
-                src="/logo-final.png"
+                src={LOGO_URL}
                 alt="Logo"
                 fill
                 className="object-contain object-left"

@@ -3,7 +3,9 @@
 import { RotateCcw } from "lucide-react";
 import React, { Dispatch, SetStateAction , useState, useEffect, useRef,} from "react";
 import { Trash2 } from "lucide-react";
-
+import { useWallet } from "@/providers/WalletProvider";
+import { useNotification } from "@/providers/NotificationProvider";
+import { useSession } from "@descope/nextjs-sdk/client";
 type Task = {
   id: number;
   text: string;
@@ -30,6 +32,10 @@ export default function TodoList({
   tasks,
   setTasks,
 }: TodoListProps) {
+  const { config, refreshWallet } = useWallet();
+  const { notifyReward } = useNotification();
+  const { sessionToken } = useSession();
+  const todoReward = config?.TODO?.COMPLETION_REWARD || 5;
 
 
 const [deletedTasks, setDeletedTasks] = useState<Task[]>([]);
@@ -178,7 +184,7 @@ useEffect(() => {
   >
 
   {/* Header */}
-    <div className="flex items-center justify-between mb-5">
+    <div className="flex items-center justify-between mb-2">
       <h2 className="text-white text-xl font-bold">
         Task List
       </h2>
@@ -383,8 +389,8 @@ useEffect(() => {
         d.getDate()
         ).padStart(2, "0")}`;
 
-        updated[index].done =
-        !updated[index].done;
+        const isNowDone = !updated[index].done;
+        updated[index].done = isNowDone;
 
         updated[index].history = {
         ...updated[index].history,
@@ -392,6 +398,34 @@ useEffect(() => {
         };
 
         setTasks(updated);
+
+        // Notify backend of task state change
+        const checkRewards = async () => {
+          try {
+            if (!sessionToken) return;
+            
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/v1/users/rewards/todo`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${sessionToken}`
+              },
+              body: JSON.stringify({ tasks: updated })
+            });
+            
+            if (res.ok) {
+              const data = await res.json();
+              if (data.rewarded) {
+                notifyReward("Todo Milestone Reached!", data.message || "You earned coins for completing tasks!", data.amount || 5);
+                refreshWallet();
+              }
+            }
+          } catch (e) {
+            console.error('Error checking todo rewards:', e);
+          }
+        };
+
+        checkRewards();
         }}
         className="
           w-5

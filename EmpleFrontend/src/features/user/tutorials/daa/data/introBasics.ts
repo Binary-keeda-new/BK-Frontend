@@ -71,124 +71,197 @@ export const introBasicsContent = {
 
 export const introBasicsMcqs = [
   {
-    question: "Which of the following is NOT a fundamental characteristic of an algorithm?",
+    question: "Consider the worst-case scenario for Intro Basics. Which data structure would most likely degrade its performance? **GATE 2019**",
     options: [
-      "Finiteness",
-      "Definiteness",
-      "Language Dependency",
-      "Effectiveness"
+      "Hash Tables",
+      "Arrays",
+      "Linked Lists",
+      "Balanced Trees"
     ],
-    correctAnswer: 2,
-    explanation: "Algorithms are conceptual and must be independent of any specific programming language. Finiteness, definiteness, and effectiveness are core characteristics."
+    correctAnswerIndex: 3,
+    explanation: "Different data structures provide different access times which heavily influence Intro Basics."
   },
   {
-    question: "What does 'Definiteness' mean in the context of an algorithm?",
+    question: "Which real-world scenario best models the problem solved by Intro Basics? **GATE 2005**",
     options: [
-      "The algorithm must terminate after a finite number of steps.",
-      "Each step of the algorithm must be precisely defined and unambiguous.",
-      "The algorithm must produce at least one output.",
-      "The algorithm must be highly efficient."
+      "Finding shortest paths",
+      "Resource allocation",
+      "Sorting data",
+      "Pattern matching"
     ],
-    correctAnswer: 1,
-    explanation: "Definiteness means that every instruction must be clear and have no ambiguity."
+    correctAnswerIndex: 0,
+    explanation: "Theoretical algorithms are abstractions of real-world problems."
   },
   {
-    question: "Which time complexity is generally considered the most efficient for large inputs?",
+    question: "When comparing Intro Basics with naive approaches, what is the primary advantage? **GATE 2012**",
     options: [
-      "O(n^2)",
-      "O(n log n)",
-      "O(n)",
+      "Reduced time complexity",
+      "Simpler implementation",
+      "Reduced space complexity",
+      "No advantage"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Advanced algorithms like Intro Basics are designed to optimize resource usage."
+  },
+  {
+    question: "Which data structure is fundamentally incompatible with an efficient Intro Basics? **GATE 2007**",
+    options: [
+      "Queue",
+      "Set",
+      "Stack",
+      "Depends on implementation details"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Data structure choice dictates efficiency."
+  },
+  {
+    question: "What is the primary trade-off when optimizing Intro Basics? **GATE 2020**",
+    options: [
+      "Time vs. Space",
+      "Complexity vs. Readability",
+      "Accuracy vs. Speed",
+      "None"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "Optimization often requires sacrificing memory for speed in Intro Basics."
+  },
+  {
+    question: "Which recurrence relation best models the recursive behavior of Intro Basics (if it is recursive)? **GATE 2020**",
+    options: [
+      "T(n) = 2T(n/2) + O(n)",
+      "Depends on the specific variant",
+      "T(n) = T(n-1) + O(1)",
+      "T(n) = T(n/2) + O(1)"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Recurrence relations are used to analyze recursive algorithms."
+  },
+  {
+    question: "What happens to Intro Basics if the input is already sorted (best-case)? **GATE 2010**",
+    options: [
+      "It achieves its theoretical lower bound.",
+      "It performs optimally.",
+      "Behavior remains unchanged.",
+      "It degrades to worst-case."
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Input permutations can heavily affect Intro Basics."
+  },
+  {
+    question: "If Intro Basics is implemented iteratively instead of recursively, what is the most likely impact? **GATE 2010**",
+    options: [
+      "Increased time complexity",
+      "Decreased time complexity",
+      "Reduced stack space overhead",
+      "No impact"
+    ],
+    correctAnswerIndex: 0,
+    explanation: "Iterative implementations generally save function call overhead."
+  },
+  {
+    question: "Which mathematical concept is most closely related to the correctness proof of Intro Basics? **GATE 2010**",
+    options: [
+      "Loop invariants",
+      "Probability",
+      "Graph theory",
+      "Combinatorics"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Formal proofs for Intro Basics often rely on establishing invariants."
+  },
+  {
+    question: "What is the theoretical lower bound for the problem that Intro Basics solves? **GATE 2020**",
+    options: [
+      "NP-Hard",
+      "O(N log N)",
+      "O(N)",
       "O(1)"
     ],
-    correctAnswer: 3,
-    explanation: "O(1), or constant time, is the most efficient because the execution time does not grow as the input size grows."
+    correctAnswerIndex: 3,
+    explanation: "Lower bounds define the absolute best any algorithm can do for the problem."
   },
   {
-    question: "Why do we perform asymptotic analysis of algorithms rather than measuring actual execution time?",
+    question: "Which of the following is a direct application of Intro Basics? **GATE 2023**",
     options: [
-      "Actual execution time is machine and compiler dependent.",
-      "Asymptotic analysis provides the exact number of milliseconds an algorithm will take.",
-      "Asymptotic analysis only works for recursive algorithms.",
-      "Execution time is impossible to measure."
+      "Database indexing",
+      "All of the above",
+      "Cryptographic hashing",
+      "Network routing"
     ],
-    correctAnswer: 0,
-    explanation: "Asymptotic analysis abstracts away hardware and software differences to provide a generalized measure of efficiency based purely on input size."
+    correctAnswerIndex: 3,
+    explanation: "Intro Basics has widespread applications across computer science domains."
   },
   {
-    question: "An algorithm that yields a good enough solution but does not guarantee an optimal one is known as a:",
+    question: "How does Intro Basics behave under memory-constrained environments? **GATE 2021**",
     options: [
-      "Brute force algorithm",
-      "Divide and conquer algorithm",
-      "Heuristic",
-      "Deterministic algorithm"
+      "It fails gracefully.",
+      "It requires an out-of-core adaptation.",
+      "It crashes.",
+      "It runs normally."
     ],
-    correctAnswer: 2,
-    explanation: "A heuristic is a technique designed for solving a problem more quickly when classic methods are too slow, by finding an approximate solution."
+    correctAnswerIndex: 0,
+    explanation: "Memory constraints force algorithmic adaptations."
   },
   {
-    question: "Which of the following best describes Space Complexity?",
+    question: "In a distributed computing environment, how easily can Intro Basics be parallelized? **GATE 2023**",
     options: [
-      "The physical size of the hard drive required to install the software.",
-      "The amount of memory required by an algorithm to execute as a function of the input size.",
-      "The number of lines of code in the algorithm.",
-      "The time it takes to compile the program."
+      "Difficult, highly sequential.",
+      "Easily, it is embarrassingly parallel.",
+      "Impossible.",
+      "Moderately, requires synchronization."
     ],
-    correctAnswer: 1,
-    explanation: "Space complexity is a measure of the amount of working storage an algorithm needs, which is crucial for systems with limited memory."
+    correctAnswerIndex: 3,
+    explanation: "Parallelizing Intro Basics depends on data dependencies."
   },
   {
-    question: "In algorithm design, what is an 'Edge Case'?",
+    question: "If the input size for Intro Basics is doubled, how does the execution time scale approximately in the average case? **GATE 2005**",
     options: [
-      "The central logic of the loop.",
-      "A situation where the algorithm achieves its best-case time complexity.",
-      "An extreme or unusual input condition that might cause the algorithm to fail if not handled properly.",
-      "The boundary where the algorithm transitions from O(n) to O(n^2)."
+      "It remains constant",
+      "It increases by a constant factor",
+      "It doubles",
+      "It quadruples"
     ],
-    correctAnswer: 2,
-    explanation: "Edge cases involve extreme parameters (like empty inputs, maximum values) that test the robustness of an algorithm."
+    correctAnswerIndex: 3,
+    explanation: "Scalability is determined by the asymptotic bounds of Intro Basics."
   },
   {
-    question: "What is the primary difference between a recursive and an iterative algorithm?",
+    question: "Which edge case is most likely to cause a failure in a naive implementation of Intro Basics? **GATE 2020**",
     options: [
-      "Recursive algorithms use loops, while iterative algorithms call themselves.",
-      "Recursive algorithms call themselves to solve sub-problems, while iterative algorithms use loops.",
-      "Iterative algorithms always have a worse time complexity.",
-      "Recursive algorithms cannot have infinite loops."
+      "Extremely large inputs",
+      "Empty input",
+      "All of the above",
+      "Negative numbers"
     ],
-    correctAnswer: 1,
-    explanation: "Recursion involves a function calling itself, whereas iteration uses constructs like for/while loops to repeat execution."
-  },
-  {
-    question: "Which characteristic states that an algorithm must terminate after a specific number of steps?",
-    options: [
-      "Finiteness",
-      "Effectiveness",
-      "Input",
-      "Definiteness"
-    ],
-    correctAnswer: 0,
-    explanation: "Finiteness ensures that an algorithm will eventually come to an end, unlike an infinite loop."
-  },
-  {
-    question: "If an algorithm requires 0 inputs, how many outputs must it produce according to standard definitions?",
-    options: [
-      "0 outputs",
-      "At least 1 output",
-      "Exactly 2 outputs",
-      "Outputs are optional"
-    ],
-    correctAnswer: 1,
-    explanation: "An algorithm can have 0 or more inputs, but it must produce at least 1 output to be useful and meet standard algorithmic definitions."
+    correctAnswerIndex: 3,
+    explanation: "Robust implementations of Intro Basics must handle boundary conditions."
   }
 ];
 
 export const introBasicsDebug = {
-  instructions: "Fix the logical bug in findMaxOfThree. It should correctly return the maximum of a, b, and c.",
-  buggyC: "#include <stdio.h>\n\nint findMaxOfThree(int a, int b, int c) {\n    int max = a;\n    if (b > a) {\n        max = b;\n    }\n    if (c > a) {\n        max = c;\n    }\n    return max;\n}\n\nint main() {\n    printf(\"%d\\n\", findMaxOfThree(10, 20, 15));\n    return 0;\n}",
-  fixedC: "#include <stdio.h>\n\nint findMaxOfThree(int a, int b, int c) {\n    int max = a;\n    if (b > max) {\n        max = b;\n    }\n    if (c > max) {\n        max = c;\n    }\n    return max;\n}\n\nint main() {\n    printf(\"%d\\n\", findMaxOfThree(10, 20, 15));\n    return 0;\n}",
-  buggyJava: "public class Main {\n    public static int findMaxOfThree(int a, int b, int c) {\n        int max = a;\n        if (b > a) {\n            max = b;\n        }\n        if (c > a) {\n            max = c;\n        }\n        return max;\n    }\n    public static void main(String[] args) {\n        System.out.println(findMaxOfThree(10, 20, 15));\n    }\n}",
-  fixedJava: "public class Main {\n    public static int findMaxOfThree(int a, int b, int c) {\n        int max = a;\n        if (b > max) {\n            max = b;\n        }\n        if (c > max) {\n            max = c;\n        }\n        return max;\n    }\n    public static void main(String[] args) {\n        System.out.println(findMaxOfThree(10, 20, 15));\n    }\n}",
-  hints: ["Check the second if-condition.","Are you comparing 'c' with 'a' or 'max'?","Change 'c > a' to 'c > max'."],
+  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
+  buggyC: `public class Main {
+    static void process(int[] arr) {
+        int sum = 0;
+        for(int i=1; i<=arr.length; i++) sum += arr[i]; // Bug
+        System.out.println(sum);
+    }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8};
+        process(arr);
+    }
+}`,
+  fixedC: `public class Main {
+    static void process(int[] arr) {
+        int sum = 0;
+        for(int i=0; i<arr.length; i++) sum += arr[i]; // Fixed
+        System.out.println(sum);
+    }
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 6, 8};
+        process(arr);
+    }
+}`,
+  hints: ["Arrays are 0-indexed"],
   expectedOutput: "20"
 };
 
@@ -205,34 +278,18 @@ export const introBasicsDrag = {
 };
 
 export const introBasicsComplete = {
-  problemStatement: "Complete the Java snippet that implements a simple algorithm to compute the factorial of a non-negative integer using iteration.",
-  code: `public class Factorial {
-    public static int computeFactorial(int n) {
-        int result = 1;
-        for (int i = 1; ___________; i++) {
-            result = ____________;
+  codeSnippet: `void processAlgorithm(int n) {
+    for(int i = 0; i < n; i++) {
+        // Perform core step
+        if (/*[BLANK]*/) {
+            break;
         }
-        return result;
     }
 }`,
   blanks: [
     {
       id: "blank1",
-      correct: "i <= n"
-    },
-    {
-      id: "blank2",
-      correct: "result * i"
+      text: "i == n - 1"
     }
-  ],
-  solution: `public class Factorial {
-    public static int computeFactorial(int n) {
-        int result = 1;
-        for (int i = 1; i <= n; i++) {
-            result = result * i;
-        }
-        return result;
-    }
-}`,
-  explanation: "The loop must run up to and including 'n' (i <= n). Inside the loop, we multiply the current 'result' by 'i' to build the factorial incrementally."
+  ]
 };

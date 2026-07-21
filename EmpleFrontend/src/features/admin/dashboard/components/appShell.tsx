@@ -24,6 +24,7 @@ import CodingProblemsPage from '@/features/admin/coding-problems/pages/codingPro
 import CodingProblemEditorPage from '@/features/admin/coding-problems/pages/codingProblemEditorPage';
 import AdminEventsPage from '@/features/admin/Events/components/AdminEventsPage';
 import AdminNotificationsPage from '@/features/admin/notifications/pages/AdminNotificationsPage';
+import AdminRequestsPage from '@/features/admin/requests/pages/AdminRequestsPage';
 import QuizReportPage from '@/features/admin/quiz/pages/QuizReportPage';
 import AdminQuizReview from '../../quiz/pages/adminQuizReview';
 import TestReportPage from '@/features/admin/test/pages/TestReportPage';
@@ -42,6 +43,11 @@ export default function AppShell({
   const searchParams = useSearchParams();
 
   const { user, loading, isAdmin } = useAppAuth();
+  console.log({
+  loading,
+  user,
+  isAdmin,
+  });
 
   const sectionFromUrl =
     (searchParams.get('section') as AdminSection) || initialSection;
@@ -66,8 +72,12 @@ const [selectedReviewAttemptId, setSelectedReviewAttemptId] = useState<string | 
   const [testListRefreshKey, setTestListRefreshKey] = useState(0);
   const [selectedTestId, setSelectedTestId] = useState<string | null>(null);
   const [selectedProblemId, setSelectedProblemId] = useState<string | null>(null);
+<<<<<<< HEAD
   const [selectedReportTestId, setSelectedReportTestId] = useState<string | null>(null);
   const [eventsSubPage, setEventsSubPage] = useState<'hackathon' | 'techfest' | 'our-hackathon' | null>(null);
+=======
+  const [eventsSubPage, setEventsSubPage] = useState<'hackathon' | 'techfest' | 'our-hackathon' | 'research-conference' | null>(null);
+>>>>>>> origin/develop
 
 
 const [previewProblemId, setPreviewProblemId] =
@@ -401,7 +411,10 @@ const openAttemptReview = (attemptId: string) => {
         return <AdminSessionsPage />;
 
       case 'notifications':
-        return <AdminNotificationsPage />;  
+        return <AdminNotificationsPage />;
+
+      case 'requests':
+        return <AdminRequestsPage />;  
 
       case 'practice':
         return (
