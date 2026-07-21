@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import { Eye, Pencil, Trash2 } from 'lucide-react';
 
+import { apiRequest } from '@/shared/utils/api';
+
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
@@ -27,18 +29,7 @@ export default function CodingProblemsPage({
   useEffect(() => {
     const fetchProblems = async () => {
       try {
-        const response = await fetch(
-          `${API_BASE_URL}/api/v1/coding-problems`
-        );
-
-        if (!response.ok) {
-          throw new Error(
-            `Failed to fetch coding problems: ${response.status}`
-          );
-        }
-
-        const data = await response.json();
-
+        const data = await apiRequest<{ data: CodingProblem[] }>('/api/v1/admin/coding-problems');
         setProblems(data.data || []);
       } catch (error) {
         console.error('Failed to fetch coding problems:', error);
