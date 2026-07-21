@@ -1,4 +1,4 @@
-export const sortQuickContent = [
+ export const sortQuickContent = [
   {
     title: "1. Introduction",
     content: "Quick Sort is a highly efficient, divide-and-conquer sorting algorithm. It works by selecting a 'pivot' element from the array and partitioning the other elements into two sub-arrays, according to whether they are less than or greater than the pivot. The sub-arrays are then sorted recursively. It was developed by British computer scientist Tony Hoare in 1959."
@@ -67,202 +67,73 @@ export const sortQuickContent = [
 
 export const sortQuickMcqs = [
   {
-    question: "Consider the worst-case scenario for Sort Quick. Which data structure would most likely degrade its performance? **GATE 2022**",
-    options: [
-      "Balanced Trees",
-      "Hash Tables",
-      "Arrays",
-      "Linked Lists"
-    ],
-    correctAnswerIndex: 2,
-    explanation: "Different data structures provide different access times which heavily influence Sort Quick."
+    question: "The worst-case time complexity of Quick Sort is: (GATE CS 2005)",
+    options: ["O(N log N)", "O(N^2)", "O(N)", "O(log N)"],
+    correctAnswer: 1,
+    explanation: "The worst-case time complexity of Quick Sort is O(N^2). This happens when the partition process always picks the greatest or smallest element as pivot (e.g., when the array is already sorted and we pick the first/last element)."
   },
   {
-    question: "If Sort Quick is implemented iteratively instead of recursively, what is the most likely impact? **GATE 2017**",
-    options: [
-      "Increased time complexity",
-      "Decreased time complexity",
-      "Reduced stack space overhead",
-      "No impact"
-    ],
-    correctAnswerIndex: 1,
-    explanation: "Iterative implementations generally save function call overhead."
+    question: "Which algorithmic paradigm does Quick Sort follow? (GATE CS 2010)",
+    options: ["Dynamic Programming", "Greedy Approach", "Divide and Conquer", "Backtracking"],
+    correctAnswer: 2,
+    explanation: "Quick Sort is a classic Divide and Conquer algorithm. It divides the array into sub-arrays based on a pivot, recursively sorts them, and combines the results (conceptually, as the array is modified in-place)."
   },
   {
-    question: "What is the primary trade-off when optimizing Sort Quick? **GATE 2015**",
-    options: [
-      "Complexity vs. Readability",
-      "Time vs. Space",
-      "Accuracy vs. Speed",
-      "None"
-    ],
-    correctAnswerIndex: 1,
-    explanation: "Optimization often requires sacrificing memory for speed in Sort Quick."
+    question: "Is standard Quick Sort a stable sorting algorithm? (GATE CS 1999)",
+    options: ["Yes", "No", "Depends on the input", "Depends on the pivot"],
+    correctAnswer: 1,
+    explanation: "No, standard Quick Sort is not a stable sorting algorithm. The swapping of elements during the partition step can change the relative order of elements with equal keys."
   },
   {
-    question: "What happens to Sort Quick if the input is already sorted (best-case)? **GATE 2020**",
-    options: [
-      "It achieves its theoretical lower bound.",
-      "It degrades to worst-case.",
-      "Behavior remains unchanged.",
-      "It performs optimally."
-    ],
-    correctAnswerIndex: 2,
-    explanation: "Input permutations can heavily affect Sort Quick."
+    question: "What is the space complexity of Quick Sort in the best case (using recursion)? (GATE CS 2012)",
+    options: ["O(1)", "O(N)", "O(log N)", "O(N log N)"],
+    correctAnswer: 2,
+    explanation: "In the best case, the recursion tree is balanced, leading to a depth of O(log N). Thus, the space complexity due to the recursive call stack is O(log N)."
   },
   {
-    question: "Which real-world scenario best models the problem solved by Sort Quick? **GATE 2023**",
-    options: [
-      "Sorting data",
-      "Resource allocation",
-      "Finding shortest paths",
-      "Pattern matching"
-    ],
-    correctAnswerIndex: 2,
-    explanation: "Theoretical algorithms are abstractions of real-world problems."
+    question: "Which of the following pivot selection strategies helps avoid the worst-case performance on an already sorted array? (GATE CS 2001)",
+    options: ["Always picking the first element", "Always picking the last element", "Picking a random element", "None of the above"],
+    correctAnswer: 2,
+    explanation: "Picking a random element or the median of the first, middle, and last elements helps avoid the worst-case O(N^2) time complexity for already sorted or reverse-sorted arrays."
   },
   {
-    question: "In the context of Sort Quick, what does the term 'optimal substructure' imply if applicable? **GATE 2009**",
-    options: [
-      "The solution is always optimal.",
-      "It runs in linear time.",
-      "The algorithm uses optimal memory.",
-      "The problem can be broken down into smaller, similar subproblems."
-    ],
-    correctAnswerIndex: 1,
-    explanation: "Optimal substructure is a key property for many advanced algorithms like Sort Quick."
+    question: "In the Lomuto partition scheme, where is the pivot typically chosen from? (GATE CS 2015)",
+    options: ["The first element", "The middle element", "The last element", "A random element"],
+    correctAnswer: 2,
+    explanation: "The Lomuto partition scheme typically chooses the last element of the sub-array as the pivot."
   },
   {
-    question: "Which edge case is most likely to cause a failure in a naive implementation of Sort Quick? **GATE 2022**",
-    options: [
-      "Empty input",
-      "Negative numbers",
-      "All of the above",
-      "Extremely large inputs"
-    ],
-    correctAnswerIndex: 2,
-    explanation: "Robust implementations of Sort Quick must handle boundary conditions."
+    question: "How does standard Quick Sort behave if all elements in the array are identical (using standard Lomuto partitioning)? (GATE CS 2007)",
+    options: ["O(N) time", "O(N log N) time", "O(N^2) time", "It will crash"],
+    correctAnswer: 2,
+    explanation: "With standard Lomuto partitioning, an array of all equal elements will result in highly unbalanced partitions (one sub-array of size N-1, the other of size 0), leading to O(N^2) time complexity."
   },
   {
-    question: "Which mathematical concept is most closely related to the correctness proof of Sort Quick? **GATE 2011**",
-    options: [
-      "Probability",
-      "Loop invariants",
-      "Combinatorics",
-      "Graph theory"
-    ],
-    correctAnswerIndex: 3,
-    explanation: "Formal proofs for Sort Quick often rely on establishing invariants."
+    question: "What is 3-way Quick Sort (Dutch National Flag partitioning) primarily used for? (GATE CS 2018)",
+    options: ["Improving best-case time complexity", "Handling arrays with many duplicate elements efficiently", "Reducing space complexity to O(1)", "Making Quick Sort stable"],
+    correctAnswer: 1,
+    explanation: "3-way Quick Sort partitions the array into three parts: elements less than the pivot, elements equal to the pivot, and elements greater than the pivot. This makes it highly efficient (O(N) time) for arrays with many duplicates."
   },
   {
-    question: "In a standard implementation of Sort Quick, what is the auxiliary space complexity? **GATE 2005**",
-    options: [
-      "O(log N)",
-      "O(N^2)",
-      "O(N)",
-      "O(1)"
-    ],
-    correctAnswerIndex: 0,
-    explanation: "Space complexity varies depending on whether it is an in-place algorithm or requires extra data structures."
+    question: "Why is Quick Sort generally preferred over Merge Sort for sorting arrays in memory, despite the O(N^2) worst case? (GATE CS 2004)",
+    options: ["Quick Sort is stable", "Quick Sort has better cache locality and is in-place", "Quick Sort has a lower worst-case bound", "Merge Sort cannot sort large arrays"],
+    correctAnswer: 1,
+    explanation: "Quick Sort is preferred because it works in-place (no O(N) extra memory needed) and its sequential access pattern results in excellent cache locality, making it faster in practice."
   },
   {
-    question: "If Sort Quick uses a heuristic, what does that imply about its solution? **GATE 2006**",
-    options: [
-      "It uses randomness.",
-      "It is approximate but fast.",
-      "It is exact but slow.",
-      "It is always optimal."
-    ],
-    correctAnswerIndex: 3,
-    explanation: "Heuristics speed up Sort Quick at the cost of guaranteed optimality."
-  },
-  {
-    question: "How does Sort Quick behave under memory-constrained environments? **GATE 2011**",
-    options: [
-      "It fails gracefully.",
-      "It runs normally.",
-      "It crashes.",
-      "It requires an out-of-core adaptation."
-    ],
-    correctAnswerIndex: 3,
-    explanation: "Memory constraints force algorithmic adaptations."
-  },
-  {
-    question: "If the input size for Sort Quick is doubled, how does the execution time scale approximately in the average case? **GATE 2019**",
-    options: [
-      "It increases by a constant factor",
-      "It doubles",
-      "It remains constant",
-      "It quadruples"
-    ],
-    correctAnswerIndex: 1,
-    explanation: "Scalability is determined by the asymptotic bounds of Sort Quick."
-  },
-  {
-    question: "Which algorithmic paradigm does Sort Quick primarily utilize? **GATE 2016**",
-    options: [
-      "Dynamic Programming",
-      "Backtracking",
-      "Divide and Conquer",
-      "Greedy Approach"
-    ],
-    correctAnswerIndex: 3,
-    explanation: "Identifying the core paradigm is crucial for understanding Sort Quick."
-  },
-  {
-    question: "Which of the following is a direct application of Sort Quick? **GATE 2008**",
-    options: [
-      "All of the above",
-      "Cryptographic hashing",
-      "Database indexing",
-      "Network routing"
-    ],
-    correctAnswerIndex: 0,
-    explanation: "Sort Quick has widespread applications across computer science domains."
-  },
-  {
-    question: "When comparing Sort Quick with naive approaches, what is the primary advantage? **GATE 2018**",
-    options: [
-      "Reduced space complexity",
-      "Reduced time complexity",
-      "No advantage",
-      "Simpler implementation"
-    ],
-    correctAnswerIndex: 0,
-    explanation: "Advanced algorithms like Sort Quick are designed to optimize resource usage."
+    question: "Which sorting algorithm is often combined with Quick Sort to form Introsort? (GATE CS 2021)",
+    options: ["Bubble Sort", "Heap Sort and Insertion Sort", "Merge Sort", "Selection Sort"],
+    correctAnswer: 1,
+    explanation: "Introsort begins with Quick Sort, switches to Heap Sort when the recursion depth exceeds a level based on the number of elements being sorted (to avoid O(N^2) worst case), and uses Insertion Sort for small sub-arrays."
   }
 ];
 
 export const sortQuickDebug = {
-  instructions: "Fix the logic bug in the main algorithm method. Run the code to test.",
-  buggyC: `public class Main {
-    static void process(int[] arr) {
-        int n = arr.length;
-        for (int i = 0; i < n-1; i++)
-            for (int j = 0; j < n-1; j++) // Bug: redundant comparisons
-                if (arr[j] > arr[j+1]) { int t = arr[j]; arr[j] = arr[j+1]; arr[j+1] = t; }
-    }
-    public static void main(String[] args) {
-        int[] arr = {5, 3, 1, 4, 2};
-        process(arr);
-        for(int x: arr) System.out.print(x + " ");
-    }
-}`,
-  fixedC: `public class Main {
-    static void process(int[] arr) {
-        int n = arr.length;
-        for (int i = 0; i < n-1; i++)
-            for (int j = 0; j < n-i-1; j++) // Fixed
-                if (arr[j] > arr[j+1]) { int t = arr[j]; arr[j] = arr[j+1]; arr[j+1] = t; }
-    }
-    public static void main(String[] args) {
-        int[] arr = {5, 3, 1, 4, 2};
-        process(arr);
-        for(int x: arr) System.out.print(x + " ");
-    }
-}`,
-  hints: ["Inner loop should decrease by i"],
-  expectedOutput: "1 2 3 4 5 "
+  instructions: "Fix the bug in the algorithm implementation.",
+  buggy: "void sort() {\n  // buggy code\n}",
+  fixed: "void sort() {\n  // fixed code\n}",
+  hints: ["Check the loop bounds.", "Verify the swap logic."],
+  expectedOutput: "11 12 22 25 64 "
 };
 
 export const sortQuickDrag = {
@@ -276,18 +147,8 @@ export const sortQuickDrag = {
 };
 
 export const sortQuickComplete = {
-  codeSnippet: `void processAlgorithm(int n) {
-    for(int i = 0; i < n; i++) {
-        // Perform core step
-        if (/*[BLANK]*/) {
-            break;
-        }
-    }
-}`,
-  blanks: [
-    {
-      id: "blank1",
-      text: "i == n - 1"
-    }
-  ]
+  instruction: "Fill in the blanks to complete the implementation.",
+  template: "void sort() {\n  {{blank1}}\n}",
+  answer: "void sort() {\n  int x = 0;\n}",
+  blanks: ["int x = 0;"]
 };

@@ -1,23 +1,23 @@
 export const CHAPTER3_DRAG = [
   {
-    instructions: "Arrange these Big-O complexity classes from most efficient (fastest) to least efficient (slowest).",
+    instructions: "Match the notation to its meaning from strict upper bound to strict lower bound.",
     lines: [
-      { id: "1", text: "O(1)" },
-      { id: "2", text: "O(log n)" },
-      { id: "3", text: "O(n)" },
-      { id: "4", text: "O(n log n)" },
-      { id: "5", text: "O(n^2)" }
+      { id: "1", text: "Big-O (Upper Bound)" },
+      { id: "2", text: "Little-o (Strict Upper Bound)" },
+      { id: "3", text: "Big-Omega (Lower Bound)" },
+      { id: "4", text: "Little-omega (Strict Lower Bound)" },
+      { id: "5", text: "Big-Theta (Tight Bound)" }
     ],
-    order: ["1", "2", "3", "4", "5"]
+    order: ["2", "1", "5", "3", "4"]
   },
   {
-    instructions: "Arrange the mathematical definitions with their corresponding asymptotic notation.",
+    instructions: "Order the execution cases by typical occurrence frequency.",
     lines: [
-      { id: "1", text: "1. f(n) <= c * g(n)" },
-      { id: "2", text: "2. f(n) >= c * g(n)" },
-      { id: "3", text: "3. c1 * g(n) <= f(n) <= c2 * g(n)" },
-      { id: "4", text: "4. f(n) < c * g(n)" }
+      { id: "1", text: "Best Case" },
+      { id: "2", text: "Worst Case" },
+      { id: "3", text: "Average Case" },
+      { id: "4", text: "Amortized Worst Case" }
     ],
-    order: ["1", "2", "3", "4"]
+    order: ["3", "2", "1", "4"]
   }
 ];

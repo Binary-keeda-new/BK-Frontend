@@ -1,24 +1,14 @@
 export const CHAPTER1_COMPLETE = [
   {
-    instruction: "Complete the algorithm to swap two variables without using a third variable.",
-    template: `void swap(int *a, int *b) {
-    *a = *a + *b;
-    *b = ________;
-    *a = *a - *b;
-}`,
-    answer: "*a - *b",
-    blanks: ["*a - *b"]
+    template: "// Time Complexity: O(____)",
+    answer: ["n"],
+    blanks: ["____"],
+    instructions: "Complete the statement describing the most common time complexity for iterating over an array."
   },
   {
-    instruction: "Complete the basic algorithm that checks if a number is even.",
-    template: `bool isEven(int num) {
-    // If the remainder when divided by 2 is 0
-    if (num ________ 2 == 0) {
-        return true;
-    }
-    return false;
-}`,
-    answer: "%",
-    blanks: ["%"]
+    template: "for(int i = 0; i < ____; i++)",
+    answer: ["n"],
+    blanks: ["____"],
+    instructions: "Complete the loop to process n elements."
   }
 ];
