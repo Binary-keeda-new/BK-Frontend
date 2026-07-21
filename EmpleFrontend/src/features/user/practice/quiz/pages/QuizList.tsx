@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter, useParams } from "next/navigation";
-import { QUIZ_CATEGORIES } from "@/shared/constants/quizCategories";
+import { useParams, useRouter } from "next/navigation";
+import { Coins, Trophy } from "lucide-react";
 import { getSessionToken } from "@descope/nextjs-sdk/client";
-import { Share2 } from "lucide-react";
+
+import { QUIZ_CATEGORIES } from "@/shared/constants/quizCategories";
 import { useWallet } from "@/providers/WalletProvider";
 import InsufficientCoinsDialog from "@/features/wallet/components/InsufficientCoinsDialog";
 
@@ -55,7 +56,10 @@ function slugify(value: string) {
 }
 
 function formatDuration(minutes?: number) {
-  if (!minutes || minutes <= 0) return "No time limit";
+  if (!minutes || minutes <= 0) {
+    return "No time limit";
+  }
+
   return `${minutes} mins`;
 }
 
@@ -69,7 +73,7 @@ function formatTitleFromSlug(slug: string) {
 function mapRouteCategoryToDbCategory(categorySlug: string) {
   const mapping: Record<string, string> = {
     "core-cs": "Core CS",
-    "aptitude": "Aptitude",
+    aptitude: "Aptitude",
     "it-skills": "IT Skills",
     "govt-exams": "Govt Exams",
   };
@@ -77,59 +81,123 @@ function mapRouteCategoryToDbCategory(categorySlug: string) {
   return mapping[categorySlug] || formatTitleFromSlug(categorySlug);
 }
 
-function mapTopicSlugToDbSubcategory(categorySlug: string, topicSlug: string) {
+function mapTopicSlugToDbSubcategory(
+  categorySlug: string,
+  topicSlug: string,
+) {
   const dbCategory = mapRouteCategoryToDbCategory(categorySlug);
-  const options = Object.keys(QUIZ_CATEGORIES[dbCategory as keyof typeof QUIZ_CATEGORIES] || {});
+
+  const options = Object.keys(
+    QUIZ_CATEGORIES[
+      dbCategory as keyof typeof QUIZ_CATEGORIES
+    ] || {},
+  );
 
   return (
-    options.find((item) => slugify(item) === topicSlug.toLowerCase()) ||
-    formatTitleFromSlug(topicSlug)
+    options.find(
+      (item) => slugify(item) === topicSlug.toLowerCase(),
+    ) || formatTitleFromSlug(topicSlug)
   );
 }
 
 function getQuizAttemptState(
   quizId: string,
-  attemptStatusMap: Record<string, AttemptStatusItem>
+  attemptStatusMap: Record<string, AttemptStatusItem>,
 ) {
   return attemptStatusMap[quizId] || null;
 }
 
-function getQuizActionLabel(attemptState: AttemptStatusItem | null) {
-  if (!attemptState) return "Attempt";
-  if (attemptState.status === "in_progress") return "Resume";
+function getQuizActionLabel(
+  attemptState: AttemptStatusItem | null,
+) {
+  if (!attemptState) {
+    return "Attempt";
+  }
+
+  if (attemptState.status === "in_progress") {
+    return "Resume";
+  }
+
   return "Review";
 }
 
-function getQuizBadgeLabel(attemptState: AttemptStatusItem | null) {
-  if (!attemptState) return null;
-  if (attemptState.status === "in_progress") return "In Progress";
-  return "Completed";
+function getActionButtonClass(
+  attemptState: AttemptStatusItem | null,
+) {
+  if (
+    attemptState?.status === "submitted" ||
+    attemptState?.status === "auto_submitted"
+  ) {
+    return [
+      "border border-sky-500/30",
+      "bg-sky-500/10",
+      "text-sky-300",
+      "hover:border-sky-500/50",
+      "hover:bg-sky-500/15",
+    ].join(" ");
+  }
+
+  if (attemptState?.status === "in_progress") {
+    return [
+      "border border-emerald-500/30",
+      "bg-emerald-500/10",
+      "text-emerald-300",
+      "hover:border-emerald-500/50",
+      "hover:bg-emerald-500/15",
+    ].join(" ");
+  }
+
+  return [
+    "border border-[var(--orange)]",
+    "bg-[var(--orange)]",
+    "text-white",
+    "hover:brightness-110",
+  ].join(" ");
 }
 
 export default function QuizList() {
   const router = useRouter();
   const params = useParams();
 
-  const categorySlug = (params?.category as string) ?? "core-cs";
-  const topicSlug = (params?.topic as string) ?? "topic";
+  const categorySlug =
+    (params?.category as string) ?? "core-cs";
 
-  const dbCategory = mapRouteCategoryToDbCategory(categorySlug);
-  const dbSubcategory = mapTopicSlugToDbSubcategory(categorySlug, topicSlug);
+  const topicSlug =
+    (params?.topic as string) ?? "topic";
+
+  const dbCategory =
+    mapRouteCategoryToDbCategory(categorySlug);
+
+  const dbSubcategory =
+    mapTopicSlugToDbSubcategory(
+      categorySlug,
+      topicSlug,
+    );
 
   const [quizzes, setQuizzes] = useState<QuizItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [selectedQuiz, setSelectedQuiz] = useState<QuizItem | null>(null);
+
+  const [selectedQuiz, setSelectedQuiz] =
+    useState<QuizItem | null>(null);
+
   const [agreed, setAgreed] = useState(false);
-  const [attemptStatusMap, setAttemptStatusMap] = useState<
-    Record<string, AttemptStatusItem>
-  >({});
-  
-  const [showInsufficientDialog, setShowInsufficientDialog] = useState(false);
+
+  const [attemptStatusMap, setAttemptStatusMap] =
+    useState<Record<string, AttemptStatusItem>>({});
+
+  const [
+    showInsufficientDialog,
+    setShowInsufficientDialog,
+  ] = useState(false);
 
   const { config, balance } = useWallet();
-  const quizCost = config?.QUIZ?.ATTEMPT_COST || 5;
-  const maxReward = config?.QUIZ?.MAX_REWARD || 10;
+
+  const quizCost =
+    config?.QUIZ?.ATTEMPT_COST || 5;
+
+  const maxReward =
+    config?.QUIZ?.MAX_REWARD || 10;
 
   useEffect(() => {
     const fetchQuizzes = async () => {
@@ -142,63 +210,87 @@ export default function QuizList() {
           subcategory: dbSubcategory,
         });
 
-        const res = await fetch(`${API_BASE}/api/v1/quizzes?${query.toString()}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
+        const quizResponse = await fetch(
+          `${API_BASE}/api/v1/quizzes?${query.toString()}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            cache: "no-store",
           },
-          cache: "no-store",
-        });
+        );
 
-        const result: QuizListResponse = await res.json();
+        const quizResult: QuizListResponse =
+          await quizResponse.json();
 
-        if (!res.ok) {
-          throw new Error(result.message || "Failed to fetch quizzes");
+        if (!quizResponse.ok) {
+          throw new Error(
+            quizResult.message ||
+              "Failed to fetch quizzes",
+          );
         }
 
-        const fetchedQuizzes = result.data || [];
+        const fetchedQuizzes =
+          quizResult.data || [];
+
         setQuizzes(fetchedQuizzes);
 
-        const quizIds = fetchedQuizzes.map((quiz) => quiz._id);
+        const quizIds = fetchedQuizzes.map(
+          (quiz) => quiz._id,
+        );
 
-        if (quizIds.length > 0) {
-          const token = getSessionToken();
-
-          const statusRes = await fetch(
-            `${API_BASE}/api/v1/quiz-attempts/status?quizIds=${quizIds.join(",")}`,
-            {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-                ...(token ? { Authorization: `Bearer ${token}` } : {}),
-              },
-              credentials: "include",
-              cache: "no-store",
-            }
-          );
-
-          console.log("fetchedQuizzes", fetchedQuizzes);
-          console.log("quizIds", quizIds);
-          console.log("statusResult", statusRes);
-
-          if (statusRes.ok) {
-            const statusResult: AttemptStatusResponse = await statusRes.json();
-            setAttemptStatusMap(statusResult.data || {});
-          } else {
-            setAttemptStatusMap({});
-          }
-        } else {
+        if (quizIds.length === 0) {
           setAttemptStatusMap({});
+          return;
         }
+
+        const token = getSessionToken();
+
+        const statusResponse = await fetch(
+          `${API_BASE}/api/v1/quiz-attempts/status?quizIds=${quizIds.join(
+            ",",
+          )}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              ...(token
+                ? {
+                    Authorization: `Bearer ${token}`,
+                  }
+                : {}),
+            },
+            credentials: "include",
+            cache: "no-store",
+          },
+        );
+
+        if (!statusResponse.ok) {
+          setAttemptStatusMap({});
+          return;
+        }
+
+        const statusResult: AttemptStatusResponse =
+          await statusResponse.json();
+
+        setAttemptStatusMap(
+          statusResult.data || {},
+        );
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to load quizzes");
+        setError(
+          err instanceof Error
+            ? err.message
+            : "Failed to load quizzes",
+        );
+
         setQuizzes([]);
         setAttemptStatusMap({});
       } finally {
         setLoading(false);
       }
     };
-    
+
     void fetchQuizzes();
   }, [dbCategory, dbSubcategory]);
 
@@ -213,15 +305,20 @@ export default function QuizList() {
   }
 
   function handleStartQuiz() {
-    if (!selectedQuiz) return;
+    if (!selectedQuiz) {
+      return;
+    }
 
     router.push(
-      `/user/practice/quiz/${categorySlug}/${topicSlug}/${selectedQuiz._id}/attempt`
+      `/user/practice/quiz/${categorySlug}/${topicSlug}/${selectedQuiz._id}/attempt`,
     );
   }
 
   function handleQuizAction(quiz: QuizItem) {
-    const attemptState = getQuizAttemptState(quiz._id, attemptStatusMap);
+    const attemptState = getQuizAttemptState(
+      quiz._id,
+      attemptStatusMap,
+    );
 
     if (!attemptState) {
       if (balance < quizCost) {
@@ -229,47 +326,56 @@ export default function QuizList() {
         setShowInsufficientDialog(true);
         return;
       }
+
       openModal(quiz);
       return;
     }
 
     if (attemptState.status === "in_progress") {
       router.push(
-        `/user/practice/quiz/${categorySlug}/${topicSlug}/${quiz._id}/attempt`
+        `/user/practice/quiz/${categorySlug}/${topicSlug}/${quiz._id}/attempt`,
       );
+
       return;
     }
 
     router.push(
-      `/user/practice/quiz/${categorySlug}/${topicSlug}/${quiz._id}/review?attemptId=${attemptState.attemptId}`
+      `/user/practice/quiz/${categorySlug}/${topicSlug}/${quiz._id}/review?attemptId=${attemptState.attemptId}`,
     );
   }
 
   return (
     <>
       <div className="p-[clamp(16px,4vw,28px)]">
-        <div className="mb-7">
-          <h1 className="m-0 text-[clamp(20px,4vw,24px)] font-extrabold text-[var(--text)] [font-family:var(--font-syne,sans-serif)]">
+        <div className="mb-8">
+          <h1 className="m-0 font-[family-name:var(--font-syne,sans-serif)] text-[clamp(20px,4vw,24px)] font-extrabold text-[var(--text)]">
             {dbSubcategory}
           </h1>
+
           <p className="mt-1 text-sm text-[var(--muted2)]">
             Select a quiz to attempt
           </p>
         </div>
 
         {error && (
-          <div className="mb-4 rounded-xl border border-[rgba(239,68,68,0.35)] bg-[rgba(239,68,68,0.08)] px-[14px] py-3 text-[13px] text-[#ef4444]">
+          <div className="mb-4 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-[13px] text-red-400">
             {error}
           </div>
         )}
 
-        <div className="mb-3 hidden grid-cols-[1fr_140px_160px] border-b border-[var(--border)] px-6 pb-[10px] sm:grid">
-          {["TITLE", "DURATION", ""].map((h) => (
+        <div className="mb-3 hidden grid-cols-[minmax(300px,1fr)_160px_160px_160px_140px] xl:gap-x-4 items-center border-b border-[var(--border)] px-6 pb-3 xl:grid">
+          {[
+            "TITLE",
+            "DURATION",
+            "ENTRY FEE",
+            "MAX REWARD",
+            "STATUS",
+          ].map((heading) => (
             <span
-              key={h}
+              key={heading}
               className="text-[11px] font-semibold tracking-[0.08em] text-[var(--muted)]"
             >
-              {h}
+              {heading}
             </span>
           ))}
         </div>
@@ -285,65 +391,102 @@ export default function QuizList() {
             </div>
           ) : (
             quizzes.map((quiz) => {
-              const attemptState = getQuizAttemptState(quiz._id, attemptStatusMap);
-              const badgeLabel = getQuizBadgeLabel(attemptState);
-              const actionLabel = getQuizActionLabel(attemptState);
+              const attemptState =
+                getQuizAttemptState(
+                  quiz._id,
+                  attemptStatusMap,
+                );
 
-             const actionButtonClass =
-              attemptState?.status === "submitted" ||
-              attemptState?.status === "auto_submitted"
-                ? "border border-sky-500/30 bg-sky-500/10 text-sky-300"
-                : attemptState?.status === "in_progress"
-                ? "border border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
-                : "border-none bg-[var(--orange)] text-white";
+              const actionLabel =
+                getQuizActionLabel(attemptState);
+
+              const actionButtonClass =
+                getActionButtonClass(attemptState);
 
               return (
                 <div
                   key={quiz._id}
-                  className="grid grid-cols-[1fr_auto] grid-rows-[auto_auto] items-center gap-x-3 gap-y-1 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-[14px] transition-[border,box-shadow] duration-200 ease-in-out hover:border-[var(--orange)] hover:shadow-[0_4px_16px_rgba(241,90,34,0.12)] sm:grid-cols-[1fr_140px_160px] sm:grid-rows-1 sm:px-6 sm:py-[18px]"
+                  className="grid grid-cols-[1fr_auto] gap-x-4 gap-y-4 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-4 transition duration-200 hover:border-[var(--orange)]/50 hover:shadow-[0_4px_16px_rgba(241,90,34,0.08)] xl:grid-cols-[minmax(300px,1fr)_160px_160px_160px_140px] xl:items-center xl:px-6 xl:py-5"
                 >
-                  <div className="col-[1] row-[1] sm:col-auto sm:row-auto">
-                    <p className="m-0 text-[15px] font-semibold text-[var(--text)]">
+                  {/* Title */}
+                  <div className="min-w-0 xl:col-start-1">
+                    <p className="m-0 truncate text-[15px] font-semibold text-[var(--text)]">
                       {quiz.title}
                     </p>
 
                     {quiz.description && (
-                      <p className="mb-0 mt-[6px] text-xs text-[var(--muted2)]">
+                      <p className="mb-0 mt-1.5 line-clamp-1 text-xs text-[var(--muted2)]">
                         {quiz.description}
                       </p>
                     )}
-
-                    {badgeLabel && (
-                      <span
-                        className={`mt-2 inline-flex rounded-full border px-2.5 py-1 text-[11px] font-semibold ${
-                        attemptState?.status === "in_progress"
-                          ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
-                          : "border-sky-500/30 bg-sky-500/10 text-sky-300"
-                      }`}
-                      >
-                        {badgeLabel}
-                      </span>
-                    )}
                   </div>
 
-                  <p className="col-[1] row-[2] m-0 text-[13px] text-[var(--muted2)] sm:col-auto sm:row-auto">
+                  {/* Status button on mobile */}
+                  <div className="col-start-2 row-start-1 flex items-center justify-end xl:hidden">
+                    <button
+                      type="button"
+                      onClick={() => handleQuizAction(quiz)}
+                      className={`min-w-[104px] cursor-pointer whitespace-nowrap rounded-lg px-4 py-2.5 text-[13px] font-semibold transition ${actionButtonClass}`}
+                    >
+                      {actionLabel}
+                    </button>
+                  </div>
+
+                  {/* Mobile details */}
+                  <div className="col-span-2 grid grid-cols-3 gap-3 border-t border-[var(--border)] pt-4 xl:hidden">
+                    <div>
+                      <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.06em] text-[var(--muted)]">
+                        Duration
+                      </p>
+                      <p className="m-0 text-[13px] text-[var(--muted2)]">
+                        {formatDuration(quiz.duration)}
+                      </p>
+                    </div>
+
+                    <div>
+                      <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.06em] text-[var(--muted)]">
+                        Entry fee
+                      </p>
+                      <div className="flex items-center gap-1.5 text-[13px] font-semibold text-orange-400">
+                        <Coins className="size-4" strokeWidth={1.8} />
+                        <span>{quizCost} Coins</span>
+                      </div>
+                    </div>
+
+                    <div>
+                      <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.06em] text-[var(--muted)]">
+                        Max reward
+                      </p>
+                      <div className="flex items-center gap-1.5 text-[13px] font-semibold text-emerald-400">
+                      <Coins className="size-4" strokeWidth={1.8} />
+                        <span>{maxReward} Coins</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Desktop duration */}
+                  <p className="m-0 hidden text-[13px] text-[var(--muted2)] xl:col-start-2 xl:block">
                     {formatDuration(quiz.duration)}
                   </p>
 
-                  <div className="col-[2] row-[1/3] flex flex-col sm:flex-row items-end sm:items-center justify-end gap-2 sm:gap-3 self-center sm:col-auto sm:row-auto">
-                    {actionLabel === "Attempt" && (
-                      <div className="flex flex-col items-end sm:items-center gap-1">
-                        <div className="flex items-center gap-1.5 text-[12px] font-medium text-orange-400 px-2 py-0.5 rounded-md border border-orange-500/20 bg-orange-500/10 whitespace-nowrap">
-                          🪙 Cost: {quizCost} Coins
-                        </div>
-                        <div className="flex items-center gap-1.5 text-[11px] font-medium text-green-400 px-2 py-0.5 rounded-md border border-green-500/20 bg-green-500/10 whitespace-nowrap">
-                          🟢 Earn up to {maxReward}
-                        </div>
-                      </div>
-                    )}
+                  {/* Desktop entry fee */}
+                  <div className="hidden items-center gap-1.5 text-[13px] font-semibold text-orange-400 xl:col-start-3 xl:flex">
+                    <Coins className="size-4" strokeWidth={1.8} />
+                    <span>{quizCost} Coins</span>
+                  </div>
+
+                  {/* Desktop max reward */}
+                  <div className="hidden items-center gap-1.5 text-[13px] font-semibold text-emerald-400 xl:col-start-4 xl:flex">
+                    <Trophy className="size-4" strokeWidth={1.8} />
+                    <span>{maxReward} Coins</span>
+                  </div>
+
+                  {/* Desktop status */}
+                  <div className="hidden justify-start xl:col-start-5 xl:flex">
                     <button
+                      type="button"
                       onClick={() => handleQuizAction(quiz)}
-                      className={`cursor-pointer whitespace-nowrap rounded-lg px-[18px] py-2 text-[13px] font-semibold ${actionButtonClass}`}
+                      className={`min-w-[104px] cursor-pointer whitespace-nowrap rounded-lg px-4 py-2.5 text-[13px] font-semibold transition ${actionButtonClass}`}
                     >
                       {actionLabel}
                     </button>
@@ -358,36 +501,74 @@ export default function QuizList() {
       {selectedQuiz && (
         <div
           onClick={closeModal}
-          className="fixed inset-0 z-[1000] flex items-center justify-center bg-[rgba(0,0,0,0.75)] p-4 backdrop-blur-[4px]"
+          className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/75 p-4 backdrop-blur-[4px]"
         >
           <div
-            onClick={(e) => e.stopPropagation()}
+            onClick={(event) =>
+              event.stopPropagation()
+            }
             className="flex max-h-[90vh] w-full max-w-[480px] flex-col gap-5 overflow-y-auto rounded-[20px] border border-[var(--border)] bg-[var(--surface)] p-[clamp(20px,5vw,32px)]"
           >
-            <div className="flex items-start justify-between">
+            <div className="flex items-start justify-between gap-4">
               <div>
                 <h2 className="m-0 text-[clamp(16px,4vw,20px)] font-bold text-[var(--text)]">
                   {selectedQuiz.title}
                 </h2>
+
                 <p className="mb-0 mt-1 text-[13px] text-[var(--muted2)]">
-                  Duration: {formatDuration(selectedQuiz.duration)}
+                  Duration:{" "}
+                  {formatDuration(
+                    selectedQuiz.duration,
+                  )}
                 </p>
+
                 <p className="mb-0 mt-1 text-[13px] text-[var(--muted2)]">
-                  Total Marks: {selectedQuiz.totalMarks}
+                  Total marks:{" "}
+                  {selectedQuiz.totalMarks}
                 </p>
+
                 {selectedQuiz.numberOfQuestions ? (
                   <p className="mb-0 mt-1 text-[13px] text-[var(--muted2)]">
-                    Questions: {selectedQuiz.numberOfQuestions}
+                    Questions:{" "}
+                    {
+                      selectedQuiz.numberOfQuestions
+                    }
                   </p>
                 ) : null}
               </div>
 
               <button
+                type="button"
                 onClick={closeModal}
-                className="shrink-0 cursor-pointer border-none bg-transparent px-1 py-0 text-2xl leading-none text-[var(--muted2)]"
+                aria-label="Close quiz details"
+                className="shrink-0 cursor-pointer border-none bg-transparent px-1 py-0 text-2xl leading-none text-[var(--muted2)] transition hover:text-[var(--text)]"
               >
                 ×
               </button>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="rounded-xl border border-orange-500/20 bg-orange-500/5 p-3">
+                <p className="mb-1 text-[11px] text-[var(--muted2)]">
+                  Entry fee
+                </p>
+
+                <div className="flex items-center gap-1.5 text-sm font-semibold text-orange-400">
+                  <Coins className="size-4" />
+                  {quizCost} Coins
+                </div>
+              </div>
+
+              <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-3">
+                <p className="mb-1 text-[11px] text-[var(--muted2)]">
+                  Maximum reward
+                </p>
+
+                <div className="flex items-center gap-1.5 text-sm font-semibold text-emerald-400">
+                  <Trophy className="size-4" />
+                  {maxReward} Coins
+                </div>
+              </div>
             </div>
 
             {selectedQuiz.instructions && (
@@ -402,9 +583,9 @@ export default function QuizList() {
               </p>
 
               <ul className="m-0 flex list-disc flex-col gap-2 pl-[18px]">
-                {RULES.map((rule, i) => (
+                {RULES.map((rule) => (
                   <li
-                    key={i}
+                    key={rule}
                     className="text-[13px] leading-[1.6] text-[var(--muted2)]"
                   >
                     {rule}
@@ -414,58 +595,75 @@ export default function QuizList() {
             </div>
 
             <label
-              className="flex cursor-pointer items-start gap-[10px] rounded-[10px] px-4 py-[14px]"
-              style={{
-                border: `1px solid ${agreed ? "var(--orange)" : "var(--border)"}`,
-                background: agreed ? "rgba(241,90,34,0.08)" : "transparent",
-              }}
+              className={`flex cursor-pointer items-start gap-2.5 rounded-[10px] border px-4 py-3.5 transition ${
+                agreed
+                  ? "border-[var(--orange)] bg-[rgba(241,90,34,0.08)]"
+                  : "border-[var(--border)]"
+              }`}
             >
               <input
                 type="checkbox"
                 checked={agreed}
-                onChange={(e) => setAgreed(e.target.checked)}
-                className="mt-[2px] h-4 w-4 shrink-0 cursor-pointer"
-                style={{ accentColor: "var(--orange)" }}
+                onChange={(event) =>
+                  setAgreed(
+                    event.target.checked,
+                  )
+                }
+                className="mt-0.5 h-4 w-4 shrink-0 cursor-pointer accent-[var(--orange)]"
               />
+
               <span className="text-[13px] leading-[1.5] text-[var(--text)]">
-                I have read and understood all the rules. I am ready to start the
-                quiz.
+                I have read and understood all the
+                rules. I am ready to start the quiz.
               </span>
             </label>
 
             <div className="flex gap-3">
               <button
+                type="button"
                 onClick={closeModal}
-                className="flex-1 cursor-pointer rounded-[10px] border border-[var(--border)] bg-transparent p-3 text-sm font-medium text-[var(--muted2)]"
+                className="flex-1 cursor-pointer rounded-[10px] border border-[var(--border)] bg-transparent p-3 text-sm font-medium text-[var(--muted2)] transition hover:bg-white/5"
               >
                 Cancel
               </button>
 
               <button
+                type="button"
                 disabled={!agreed}
                 onClick={handleStartQuiz}
-                className="flex-[2] rounded-[10px] p-3 text-sm font-bold"
+                className="flex-[2] rounded-[10px] border p-3 text-sm font-bold transition"
                 style={{
-                  background: agreed ? "var(--orange)" : "transparent",
-                  border: `1px solid ${agreed ? "var(--orange)" : "var(--border)"}`,
-                  color: agreed ? "#fff" : "var(--muted)",
-                  cursor: agreed ? "pointer" : "not-allowed",
+                  background: agreed
+                    ? "var(--orange)"
+                    : "transparent",
+                  borderColor: agreed
+                    ? "var(--orange)"
+                    : "var(--border)",
+                  color: agreed
+                    ? "#ffffff"
+                    : "var(--muted)",
+                  cursor: agreed
+                    ? "pointer"
+                    : "not-allowed",
                   opacity: agreed ? 1 : 0.5,
                 }}
               >
                 Start Quiz
               </button>
-
             </div>
           </div>
         </div>
       )}
-      
+
       <InsufficientCoinsDialog
         isOpen={showInsufficientDialog}
-        onClose={() => setShowInsufficientDialog(false)}
+        onClose={() =>
+          setShowInsufficientDialog(false)
+        }
         requiredCoins={quizCost}
         onRetry={() => {
+          setShowInsufficientDialog(false);
+
           if (selectedQuiz) {
             openModal(selectedQuiz);
           }

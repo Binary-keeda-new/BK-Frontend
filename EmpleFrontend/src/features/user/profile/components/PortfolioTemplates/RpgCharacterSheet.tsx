@@ -175,7 +175,7 @@ export function RpgCharacterSheet({ profile }: { profile: UserProfile }) {
                           {category.replace('_', ' ')}
                         </h4>
                         <div className="flex flex-wrap gap-3">
-                          {items.map((skill, sIdx) => (
+                          {items.map((skill: string, sIdx: number) => (
                             <div key={skill} className="flex items-center gap-2">
                               <div className="text-sm text-gray-300">{skill}</div>
                               {sIdx < items.length - 1 && <ArrowRight size={12} className="text-[#3f3f46]" />}

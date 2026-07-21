@@ -1,12 +1,106 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { getRoadmapById } from '../data/index';
 import QuizModal from './QuizModal';
 import SectionCard from './SectionCard';
-import { Search, ChevronLeft, ChevronRight, Filter } from 'lucide-react';
+import { Search, ChevronLeft, ChevronRight, Filter, Star } from 'lucide-react';
+import { useSession } from '@descope/nextjs-sdk/client';
+import { recordRoadmapActivityAPI, submitRoadmapRatingAPI } from '../services/roadmapProgress.service';
 import { useWallet } from "@/providers/WalletProvider";
 import { useNotification } from "@/providers/NotificationProvider";
+
+const WeeklyRatingModal = ({ title, weekNumber, onClose, onSubmit }: { title: string; weekNumber: number; onClose: () => void; onSubmit: (rating: number) => void }) => {
+  const [rating, setRating] = useState(0);
+  const [hover, setHover] = useState(0);
+  
+  return (
+    <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 10000, backdropFilter: 'blur(6px)', animation: 'fadeIn 0.3s ease-out' }}>
+      <style>{`
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .star-btn { transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .star-btn:hover { transform: scale(1.15); }
+        .submit-btn { transition: all 0.2s; box-shadow: 0 4px 14px rgba(255, 92, 53, 0.3); }
+        .submit-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 92, 53, 0.4); }
+        .skip-btn { transition: all 0.2s; }
+        .skip-btn:hover { background: rgba(255,255,255,0.1) !important; color: #fff !important; }
+      `}</style>
+      <div style={{ 
+        background: 'linear-gradient(145deg, var(--surface), #1a1a1a)', 
+        padding: '36px 40px', 
+        borderRadius: 24, 
+        border: '1px solid rgba(255,255,255,0.08)', 
+        boxShadow: '0 24px 50px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05)',
+        textAlign: 'center', 
+        width: '90%', 
+        maxWidth: 420,
+        animation: 'slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+        position: 'relative',
+        overflow: 'hidden'
+      }}>
+        {/* Decorative background glow */}
+        <div style={{ position: 'absolute', top: -50, left: '50%', transform: 'translateX(-50%)', width: 200, height: 100, background: 'var(--orange)', opacity: 0.15, filter: 'blur(50px)', borderRadius: '50%', pointerEvents: 'none' }} />
+
+        <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 64, height: 64, borderRadius: '50%', background: 'rgba(255,92,53,0.1)', border: '1px solid rgba(255,92,53,0.2)', marginBottom: 20 }}>
+          <span style={{ fontSize: 32 }}>🏆</span>
+        </div>
+
+        <h2 style={{ color: '#fff', fontSize: '24px', fontWeight: 800, marginBottom: 8, letterSpacing: '-0.02em' }}>
+          Amazing Job!
+        </h2>
+        <p style={{ color: 'var(--text)', fontSize: 16, fontWeight: 500, marginBottom: 6 }}>
+          You've officially crushed <span style={{ color: 'var(--orange)' }}>{title}</span>
+        </p>
+        <p style={{ color: 'var(--muted2)', fontSize: 13, marginBottom: 32, lineHeight: 1.5, padding: '0 10px' }}>
+          Your feedback helps us make Emple's roadmaps even better. How was your experience this week?
+        </p>
+        
+        <div style={{ display: 'flex', justifyContent: 'center', gap: 12, marginBottom: 36 }}>
+          {[1, 2, 3, 4, 5].map((star) => (
+            <button 
+              key={star} 
+              className="star-btn"
+              onClick={() => setRating(star)} 
+              onMouseEnter={() => setHover(star)} 
+              onMouseLeave={() => setHover(0)} 
+              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+            >
+              <Star 
+                size={36} 
+                fill={star <= (hover || rating) ? 'var(--orange)' : 'transparent'} 
+                color={star <= (hover || rating) ? 'var(--orange)' : 'rgba(255,255,255,0.15)'} 
+                strokeWidth={star <= (hover || rating) ? 0 : 1.5}
+                style={{ 
+                  filter: star <= (hover || rating) ? 'drop-shadow(0 0 8px rgba(255,92,53,0.5))' : 'none',
+                  transition: 'all 0.2s ease'
+                }}
+              />
+            </button>
+          ))}
+        </div>
+
+        <div style={{ display: 'flex', gap: 16 }}>
+          <button 
+            className="skip-btn"
+            onClick={onClose} 
+            style={{ flex: 1, padding: '12px', background: 'transparent', color: 'var(--muted2)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 12, cursor: 'pointer', fontWeight: 600, fontSize: 14 }}
+          >
+            Skip for now
+          </button>
+          <button 
+            className="submit-btn"
+            onClick={() => onSubmit(rating)} 
+            disabled={!rating} 
+            style={{ flex: 1, padding: '12px', background: 'var(--orange)', color: '#fff', border: 'none', borderRadius: 12, cursor: rating ? 'pointer' : 'not-allowed', fontWeight: 600, fontSize: 14, opacity: rating ? 1 : 0.5 }}
+          >
+            Submit Feedback
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const categoryColors: Record<string, { bg: string; text: string }> = {
   "Aptitude": { bg: "rgba(249, 115, 22, 0.15)", text: "#f97316" },
@@ -29,6 +123,7 @@ interface ProgressDetails {
   watchedVideos: Record<string, any>;
   passedQuizzes: Record<string, any>;
   completedProblems?: number[];
+  ratedWeeks?: number[];
 }
 
 const getDaysForSection = (sectionId: number): number[] => {
@@ -65,6 +160,9 @@ const RoadmapDetail: React.FC<RoadmapDetailProps> = ({ roadmapId, onBack }) => {
     progressBg: 'var(--surface2)',
   };
 
+  const { sessionToken } = useSession();
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  const [ratingWeek, setRatingWeek] = useState<{ number: number, title: string } | null>(null);
   const { notifyReward } = useNotification();
   const { config, refreshWallet } = useWallet();
   const rewardCoins = config?.ROADMAP?.COMPLETION_REWARD || 50;
@@ -106,6 +204,7 @@ const RoadmapDetail: React.FC<RoadmapDetailProps> = ({ roadmapId, onBack }) => {
   const [totalPoints, setTotalPoints] = useState<number>(0);
   const [selectedSection, setSelectedSection] = useState<any>(null);
   const [selectedLevel, setSelectedLevel] = useState<string | null>(null);
+  const hasCalculatedOnce = useRef(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [activeIframeUrl, setActiveIframeUrl] = useState<string | null>(null);
@@ -139,7 +238,8 @@ const RoadmapDetail: React.FC<RoadmapDetailProps> = ({ roadmapId, onBack }) => {
         viewedWebsites: parsed.viewedWebsites || {},
         watchedVideos: parsed.watchedVideos || {},
         passedQuizzes: parsed.passedQuizzes || {},
-        completedProblems: parsed.completedProblems || []
+        completedProblems: parsed.completedProblems || [],
+        ratedWeeks: parsed.ratedWeeks || []
       });
     } else {
       setProgressDetails({
@@ -147,11 +247,16 @@ const RoadmapDetail: React.FC<RoadmapDetailProps> = ({ roadmapId, onBack }) => {
         viewedWebsites: {},
         watchedVideos: {},
         passedQuizzes: {},
-        completedProblems: []
+        completedProblems: [],
+        ratedWeeks: []
       });
     }
     setIsLoaded(true);
-  }, [roadmapId]);
+    
+    if (sessionToken) {
+      recordRoadmapActivityAPI(roadmapId, sessionToken);
+    }
+  }, [roadmapId, sessionToken]);
 
   useEffect(() => {
     if (!roadmap || !isLoaded) return;
@@ -217,11 +322,28 @@ const RoadmapDetail: React.FC<RoadmapDetailProps> = ({ roadmapId, onBack }) => {
       if (hasChanged) {
         setCompletedSections(newCompleted);
         setTotalPoints(newPoints);
+        
+        // Trigger rating popup when a phase (section) is completed (skip on initial load)
+        if (hasCalculatedOnce.current) {
+          const newlyCompleted = newCompletedArr.filter(id => !currentCompletedArr.includes(id));
+          if (newlyCompleted.length > 0) {
+            const sectionId = newlyCompleted[0];
+            const sectionIndex = roadmap.sections.findIndex((s: any) => s.id === sectionId);
+            if (sectionIndex !== -1) {
+              const sectionNumber = sectionIndex + 1;
+              if (!(progressDetails.ratedWeeks || []).includes(sectionNumber)) {
+                setRatingWeek({ number: sectionNumber, title: `Phase ${sectionNumber}` });
+              }
+            }
+          }
+        }
+
         localStorage.setItem(`roadmap_progress_${roadmapId}`, JSON.stringify({
           sections: newCompletedArr,
           points: newPoints
         }));
       }
+      hasCalculatedOnce.current = true;
       return;
     }
 
@@ -264,11 +386,29 @@ const RoadmapDetail: React.FC<RoadmapDetailProps> = ({ roadmapId, onBack }) => {
     if (hasChanged) {
       setCompletedSections(newCompleted);
       setTotalPoints(newPoints);
+
+      // Check if a new section was just completed (skip on initial load)
+      if (hasCalculatedOnce.current) {
+        const newlyCompleted = newCompletedArr.filter(id => !currentCompletedArr.includes(id));
+        if (newlyCompleted.length > 0) {
+          const sectionId = newlyCompleted[0];
+          const sectionIndex = roadmap.sections.findIndex((s: any) => s.id === sectionId);
+          if (sectionIndex !== -1) {
+            const sectionNumber = sectionIndex + 1;
+            // Prevent rating again if already rated
+            if (!(progressDetails.ratedWeeks || []).includes(sectionNumber)) {
+              setRatingWeek({ number: sectionNumber, title: `Section ${sectionNumber}` });
+            }
+          }
+        }
+      }
+
       localStorage.setItem(`roadmap_progress_${roadmapId}`, JSON.stringify({
         sections: newCompletedArr,
         points: newPoints
       }));
     }
+    hasCalculatedOnce.current = true;
   }, [progressDetails, roadmap, roadmapId, isLoaded]);
 
   const handleStartQuiz = (section: any, level?: string | null) => {
@@ -277,11 +417,23 @@ const RoadmapDetail: React.FC<RoadmapDetailProps> = ({ roadmapId, onBack }) => {
   };
 
   const handleDayToggle = (dayNumber: number, checked: boolean) => {
+    if (!sessionToken) {
+      alert("Please log in to save your progress!");
+      return;
+    }
     const dayId = `day-${dayNumber}`;
     let newCompletedContent = [...(progressDetails.completedContent || [])];
     if (checked) {
       if (!newCompletedContent.includes(dayId)) {
         newCompletedContent.push(dayId);
+      }
+      
+      // Trigger rating popup every 7 days (e.g. Day 7, Day 14)
+      if (dayNumber % 7 === 0) {
+        const week = dayNumber / 7;
+        if (!(progressDetails.ratedWeeks || []).includes(week)) {
+          setRatingWeek({ number: week, title: `Week ${week}` });
+        }
       }
     } else {
       newCompletedContent = newCompletedContent.filter(id => id !== dayId);
@@ -291,6 +443,8 @@ const RoadmapDetail: React.FC<RoadmapDetailProps> = ({ roadmapId, onBack }) => {
       completedContent: newCompletedContent
     }));
   };
+
+
 
   const handleQuizComplete = (passed: boolean, points: number, percentage: number, level?: string | null) => {
     if (passed && selectedSection) {
@@ -525,7 +679,7 @@ const RoadmapDetail: React.FC<RoadmapDetailProps> = ({ roadmapId, onBack }) => {
                   </thead>
                   <tbody>
                     {paginatedDays.map((day: any) => {
-                      const isDayChecked = completedSections.has(`day-${day.day}`);
+                      const isDayChecked = (progressDetails.completedContent || []).includes(`day-${day.day}`);
                       return (
                         <tr
                           key={day.day}
@@ -778,6 +932,23 @@ const RoadmapDetail: React.FC<RoadmapDetailProps> = ({ roadmapId, onBack }) => {
             ></iframe>
           </div>
         </div>
+      )}
+      {ratingWeek !== null && (
+        <WeeklyRatingModal 
+          title={ratingWeek.title}
+          weekNumber={ratingWeek.number} 
+          onClose={() => {
+             setProgressDetails(prev => ({ ...prev, ratedWeeks: [...(prev.ratedWeeks || []), ratingWeek.number] }));
+             setRatingWeek(null);
+          }} 
+          onSubmit={async (rating: number) => {
+            if (sessionToken) {
+              await submitRoadmapRatingAPI(roadmapId, ratingWeek.number, rating, sessionToken);
+              setProgressDetails(prev => ({ ...prev, ratedWeeks: [...(prev.ratedWeeks || []), ratingWeek.number] }));
+            }
+            setRatingWeek(null);
+          }} 
+        />
       )}
     </div>
   );

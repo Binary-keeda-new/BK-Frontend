@@ -6,7 +6,6 @@ import {
   startQuizAttempt,
   submitQuizAttempt,
 } from "../services/quizAttempt.service";
-import type { QuizAttemptData } from "../types/quizAttempt.types";
 import InsufficientCoinsDialog from "@/features/wallet/components/InsufficientCoinsDialog";
 import { useWallet } from "@/providers/WalletProvider";
 import { useNotification } from "@/providers/NotificationProvider";
@@ -141,8 +140,8 @@ export default function QuizAttemptPage() {
 
       setAttemptId(startedAttempt._id);
 
-      // Only notify if we just started it (createdAt is recent) to prevent toast on refresh
-      const isNew = Date.now() - new Date(startedAttempt.createdAt).getTime() < 10000;
+      // Only notify if we just started it (startedAt is recent) to prevent toast on refresh
+      const isNew = Date.now() - new Date(startedAttempt.startedAt).getTime() < 10000;
       if (isNew) {
         notifyDeduction("Quiz Attempt", "Good luck!", requiredCoins);
         refreshWallet();
