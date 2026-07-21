@@ -132,6 +132,19 @@ export default function TestsContent({
     setPage(1);
   };
 
+  const handleShareTest = (testId: string) => {
+    const url = `${window.location.origin}/user/practice/test?testId=${testId}`;
+    navigator.clipboard
+      .writeText(url)
+      .then(() => {
+        addToast('Share link copied to clipboard!', 'success');
+      })
+      .catch((err) => {
+        console.error('Failed to copy text: ', err);
+        addToast('Failed to copy share link.', 'error');
+      });
+  };
+
   const handleDeleteTest = async () => {
     if (!testToDelete) return;
 
@@ -307,11 +320,12 @@ export default function TestsContent({
                           <FileBarChart2 className="h-4 w-4" />
                         </button>
                         <button
-                        title="Copy Share Link"
-                              className="flex h-8 w-8 items-center justify-center rounded-md border border-[var(--clr-border2)] text-purple-500 transition hover:bg-purple-100"
-                            >
-                              <Share2 className="h-4 w-4" />
-                            </button>
+                          title="Copy Share Link"
+                          onClick={() => handleShareTest(test._id)}
+                          className="flex h-8 w-8 items-center justify-center rounded-md border border-[var(--clr-border2)] text-purple-500 transition hover:bg-purple-100"
+                        >
+                          <Share2 className="h-4 w-4" />
+                        </button>
 
                           <button
                             onClick={() => setTestToDelete(test)}
