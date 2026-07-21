@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { Coins, Trophy } from "lucide-react";
+import { Coins} from "lucide-react";
 import { getSessionToken } from "@descope/nextjs-sdk/client";
 
 import { QUIZ_CATEGORIES } from "@/shared/constants/quizCategories";
@@ -478,7 +478,7 @@ export default function QuizList() {
 
                   {/* Desktop max reward */}
                   <div className="hidden items-center gap-1.5 text-[13px] font-semibold text-emerald-400 xl:col-start-4 xl:flex">
-                    <Trophy className="size-4" strokeWidth={1.8} />
+                    <Coins className="size-4" strokeWidth={1.8} />
                     <span>{maxReward} Coins</span>
                   </div>
 
@@ -566,7 +566,7 @@ export default function QuizList() {
                 </p>
 
                 <div className="flex items-center gap-1.5 text-sm font-semibold text-emerald-400">
-                  <Trophy className="size-4" />
+                  <Coins className="size-4" />
                   {maxReward} Coins
                 </div>
               </div>
