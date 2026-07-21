@@ -72,12 +72,8 @@ const [selectedReviewAttemptId, setSelectedReviewAttemptId] = useState<string | 
   const [testListRefreshKey, setTestListRefreshKey] = useState(0);
   const [selectedTestId, setSelectedTestId] = useState<string | null>(null);
   const [selectedProblemId, setSelectedProblemId] = useState<string | null>(null);
-<<<<<<< HEAD
   const [selectedReportTestId, setSelectedReportTestId] = useState<string | null>(null);
-  const [eventsSubPage, setEventsSubPage] = useState<'hackathon' | 'techfest' | 'our-hackathon' | null>(null);
-=======
-  const [eventsSubPage, setEventsSubPage] = useState<'hackathon' | 'techfest' | 'our-hackathon' | 'research-conference' | null>(null);
->>>>>>> origin/develop
+  const [eventsSubPage, setEventsSubPage] = useState<'hackathon' | 'techfest' | 'our-hackathon' |'research-conference'| null>(null);
 
 
 const [previewProblemId, setPreviewProblemId] =

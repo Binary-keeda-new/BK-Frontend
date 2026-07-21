@@ -332,7 +332,6 @@ export default function Topbar() {
             </button>
           )}
 
-<<<<<<< HEAD
           {/* Todo Button */}
           {isAuthenticated && (
             <div className="relative" ref={todoRef}>
@@ -440,7 +439,6 @@ export default function Topbar() {
               </div>
             </div>
           )}
-=======
 
           {/* Raise a Request button */}
 {isAuthenticated && (
@@ -454,7 +452,6 @@ export default function Topbar() {
   </button>
 )}
 
->>>>>>> origin/develop
           {/* Productivity Button */}
 <button
   onClick={() => router.push("/user/productivity")}

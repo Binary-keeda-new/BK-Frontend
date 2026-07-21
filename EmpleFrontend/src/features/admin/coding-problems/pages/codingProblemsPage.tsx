@@ -91,9 +91,6 @@ const handleDeleteProblem = async () => {
 };
 
   useEffect(() => {
-<<<<<<< HEAD
-    
-=======
     const fetchProblems = async () => {
       try {
         const response = await fetch(
@@ -115,7 +112,6 @@ const handleDeleteProblem = async () => {
         setLoading(false);
       }
     };
->>>>>>> origin/develop
 
     fetchProblems();
   }, []);
@@ -236,22 +232,12 @@ const handleDeleteProblem = async () => {
                       </button>
 
                       <button
-<<<<<<< HEAD
                          onClick={() =>
                            setProblemToDelete(problem)
                          }
                          className="text-[var(--clr-text2)] transition hover:text-red-500"
                        >  
                        <Trash2 size={18} />
-=======
-                        type="button"
-                        onClick={() =>
-                          console.log('delete', problem._id)
-                        }
-                        className="text-[var(--clr-text2)] transition hover:text-red-500"
-                      >
-                        <Trash2 size={18} />
->>>>>>> origin/develop
                       </button>
                     </div>
                   </td>

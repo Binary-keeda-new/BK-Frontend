@@ -166,11 +166,7 @@ const [activeTab, setActiveTab] =
 
     try {
       const response = await fetch(
-<<<<<<< HEAD
-        `http://localhost:5000/api/v1/admin/coding-problems/${problemId}`,
-=======
         `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
->>>>>>> origin/develop
         {
           method: 'PATCH',
           headers: {
@@ -215,11 +211,7 @@ const [activeTab, setActiveTab] =
   }
   try {
     const response = await fetch(
-<<<<<<< HEAD
-      `http://localhost:5000/api/v1/admin/coding-problems/${problemId}`,
-=======
       `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
->>>>>>> origin/develop
       {
         method: 'PATCH',
         headers: {
@@ -280,11 +272,7 @@ if (hasEmptyExample) {
 }
   try {
     const response = await fetch(
-<<<<<<< HEAD
-      `http://localhost:5000/api/v1/admin/coding-problems/${problemId}`,
-=======
       `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
->>>>>>> origin/develop
       {
         method: 'PATCH',
         headers: {
@@ -337,11 +325,7 @@ if (hasEmptyExample) {
 
     try {
       const response = await fetch(
-<<<<<<< HEAD
-        `http://localhost:5000/api/v1/admin/coding-problems/${problemId}`,
-=======
         `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
->>>>>>> origin/develop
         {
           method: 'PATCH',
           headers: {
@@ -395,11 +379,7 @@ if (hasEmptyExample) {
 
     try {
       const response = await fetch(
-<<<<<<< HEAD
-        `http://localhost:5000/api/v1/admin/coding-problems/${problemId}`,
-=======
         `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
->>>>>>> origin/develop
         {
           method: 'PATCH',
           headers: {
@@ -468,11 +448,7 @@ if (!updated[key]) {
 }
     try {
       const response = await fetch(
-<<<<<<< HEAD
-        `http://localhost:5000/api/v1/admin/coding-problems/${problemId}`,
-=======
         `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
->>>>>>> origin/develop
         {
           method: 'PATCH',
           headers: {
@@ -550,11 +526,7 @@ if (!updated[key]) {
 
   try {
     const response = await fetch(
-<<<<<<< HEAD
-      `http://localhost:5000/api/v1/admin/coding-problems/${problemId}`,
-=======
       `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
->>>>>>> origin/develop
       {
         method: 'PATCH',
         headers: {
@@ -604,11 +576,7 @@ const handleSaveHints = async () => {
 
   try {
     const response = await fetch(
-<<<<<<< HEAD
-      `http://localhost:5000/api/v1/admin/coding-problems/${problemId}`,
-=======
       `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
->>>>>>> origin/develop
       {
         method: 'PATCH',
         headers: {
@@ -654,11 +622,7 @@ const handleSaveEditorial =
 
     try {
       const response = await fetch(
-<<<<<<< HEAD
-        `http://localhost:5000/api/v1/admin/coding-problems/${problemId}`,
-=======
         `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
->>>>>>> origin/develop
         {
           method: 'PATCH',
           headers: {
@@ -698,11 +662,7 @@ const handleSaveEditorial =
   async () => {
     try {
       const response = await fetch(
-<<<<<<< HEAD
-        `http://localhost:5000/api/v1/admin/coding-problems/${problemId}`,
-=======
         `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
->>>>>>> origin/develop
         {
           method: 'PATCH',
           headers: {
@@ -752,11 +712,7 @@ const handlePublish =
 }
     try {
       const response = await fetch(
-<<<<<<< HEAD
-        `http://localhost:5000/api/v1/admin/coding-problems/${problemId}`,
-=======
         `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
->>>>>>> origin/develop
         {
           method: 'PATCH',
           headers: {
@@ -830,11 +786,7 @@ const handleSaveExecution = async () => {
     const fetchProblem = async () => {
       try {
         const response = await fetch(
-<<<<<<< HEAD
-          `http://localhost:5000/api/v1/admin/coding-problems/${problemId}`
-=======
           `${API_BASE_URL}/api/v1/coding-problems/${problemId}`
->>>>>>> origin/develop
         );
 
         const data = await response.json();
