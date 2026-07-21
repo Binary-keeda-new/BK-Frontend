@@ -414,11 +414,12 @@ export default function QuizList() {
                       {quiz.title}
                     </p>
 
-                    {quiz.description && (
+                    {/* {quiz.description && ( 
                       <p className="mb-0 mt-1.5 line-clamp-1 text-xs text-[var(--muted2)]">
                         {quiz.description}
                       </p>
                     )}
+                      */}
                   </div>
 
                   {/* Status button on mobile */}
