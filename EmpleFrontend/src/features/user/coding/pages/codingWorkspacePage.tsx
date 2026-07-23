@@ -7,5 +7,6 @@ type Props = {
 };
 
 export default function CodingWorkspacePage({ problemId }: Props) {
-  return <CodingWorkspace problemId={problemId} />;
+  // Pass it as an array to satisfy the new CodingWorkspace signature
+  return <CodingWorkspace problems={[{ _id: problemId } as any]} />;
 }

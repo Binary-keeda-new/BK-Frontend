@@ -18,6 +18,7 @@ import TestFullscreenGate from '../components/TestFullscreenGate';
 import TestViolationModal from '../components/TestViolationModal';
 import TestMCQReview from './TestMCQReview';
 import TestCodingReview from './TestCodingReview';
+import TestResult from './TestResult';
 
 type Props = {
   onFullscreenModeChange?: (value: boolean) => void;
@@ -43,6 +44,7 @@ export default function TestList({ onFullscreenModeChange }: Props) {
   | 'sections'
   | 'attempt'
   | 'feedback'
+  | 'report'
 >('list');
 
   const [agreed, setAgreed] = useState(false);
@@ -101,19 +103,26 @@ const [reviewSectionIndex, setreviewSectionIndex] = useState(0);
       setActiveAttemptId(attempt._id);
       setAttemptExpiresAt(attempt.expiresAt || null);
       setSelectedTest(test);
-      setAgreed(false);
-      setEnabledSectionIndex(0);
-      setCompletedSectionIds([]);
-      setSecurityWarnings(0);
-      setView(test.settings?.noExitScreen ? 'fullscreen' : 'instructions');
-      setShowPasswordPrompt(false);
-      setPendingTest(null);
-      setPasswordError('');
+      setAgreed(true);
+
+      if (test.settings?.noExitScreen) {
+        setView('fullscreen');
+      } else {
+        setView('instructions');
+      }
     } catch (error) {
-      setPasswordError(
-        error instanceof Error ? error.message : 'Failed to start test'
-      );
-    }
+  const message =
+    error instanceof Error ? error.message : 'Unable to start test';
+  
+  if (message.toLowerCase().includes('password')) {
+    setPasswordError(message);
+    setShowPasswordPrompt(true);
+    setPendingTest(test);
+    return;
+  }
+  
+  alert(message);
+}
   };
 
 const handleAttempt = async (test: UserTest) => {
@@ -197,6 +206,19 @@ const handleReviewTest = (test: UserTest) => {
   setreviewSection(null);
   setreviewSectionIndex(0);
   setView('review-sections');
+};
+
+const handleViewReport = (test: UserTest) => {
+  const status = attemptStatusMap[test._id];
+
+  if (!status?.attemptId) {
+    console.error('No attempt id found for report');
+    return;
+  }
+
+  setActiveAttemptId(status.attemptId);
+  setSelectedTest(test);
+  setView('report');
 };
 
 const handleReviewSection = (
@@ -436,6 +458,12 @@ if (view === 'resume-fullscreen' && selectedTest) {
     );
   }
 
+  if (view === 'report' && activeAttemptId) {
+    return (
+      <TestResult attemptId={activeAttemptId} onBack={handleBackToList} />
+    );
+  }
+
   return (
     <>
       {showPasswordPrompt && pendingTest && (
@@ -525,6 +553,14 @@ if (view === 'resume-fullscreen' && selectedTest) {
                   </div>
 
                  <div className="flex flex-wrap gap-2">
+                {attemptStatus?.status === 'submitted' && (
+                  <button
+                    onClick={() => handleViewReport(test)}
+                    className="rounded-xl border border-[var(--orange)] px-5 py-3 text-sm font-bold text-[var(--orange)] hover:bg-[var(--orange)] hover:text-white transition-colors"
+                  >
+                    View Report
+                  </button>
+                )}
                 <button
   onClick={() => {
     if (isAttempted) {

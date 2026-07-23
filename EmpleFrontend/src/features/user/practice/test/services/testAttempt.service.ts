@@ -28,6 +28,7 @@ export type TestSectionAttemptData = {
     questionId: string;
     selectedOptions: string[];
   }[];
+  codingSubmissions?: CodingSubmissionPayload[];
 };
 
 export type TestSectionAnswerPayload = {

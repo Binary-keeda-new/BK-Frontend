@@ -178,15 +178,6 @@ export default function QuizList() {
     }
   }, [isAuthenticated, isSessionLoading, router]);
 
-  if (isSessionLoading || !isAuthenticated) {
-    return (
-      <div className="flex min-h-[50vh] w-full items-center justify-center">
-        <ToastContainer toasts={toasts} />
-        <p className="text-sm text-[var(--clr-text2)]">Redirecting to login...</p>
-      </div>
-    );
-  }
-
   const categorySlug =
     (params?.category as string) ?? "core-cs";
 
@@ -228,6 +219,8 @@ export default function QuizList() {
     config?.QUIZ?.MAX_REWARD || 10;
 
   useEffect(() => {
+    if (isSessionLoading || !isAuthenticated) return;
+
     const fetchQuizzes = async () => {
       try {
         setLoading(true);
@@ -320,7 +313,7 @@ export default function QuizList() {
     };
 
     void fetchQuizzes();
-  }, [dbCategory, dbSubcategory]);
+  }, [dbCategory, dbSubcategory, isAuthenticated, isSessionLoading]);
 
   function openModal(quiz: QuizItem) {
     setSelectedQuiz(quiz);
@@ -369,6 +362,15 @@ export default function QuizList() {
 
     router.push(
       `/user/practice/quiz/${categorySlug}/${topicSlug}/${quiz._id}/review?attemptId=${attemptState.attemptId}`,
+    );
+  }
+
+  if (isSessionLoading || !isAuthenticated) {
+    return (
+      <div className="flex min-h-[50vh] w-full items-center justify-center">
+        <ToastContainer toasts={toasts} />
+        <p className="text-sm text-[var(--clr-text2)]">Redirecting to login...</p>
+      </div>
     );
   }
 

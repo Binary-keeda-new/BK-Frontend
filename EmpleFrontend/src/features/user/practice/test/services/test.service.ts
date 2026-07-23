@@ -1,5 +1,5 @@
 import { apiRequest } from '@/shared/utils/api';
-import { UserTest } from '../types/test.types';
+import { UserTest, UserTestReport } from '../types/test.types';
 
 type ApiResponse<T> = {
   success: boolean;
@@ -136,6 +136,17 @@ export const getTestSectionReview = async (
 ) => {
   const result = await apiRequest<ApiResponse<TestSectionReviewResponse>>(
     `/api/v1/test-attempts/${attemptId}/sections/${sectionId}/review`,
+    {
+      method: 'GET',
+    }
+  );
+
+  return result.data;
+};
+
+export const getUserTestReport = async (attemptId: string) => {
+  const result = await apiRequest<ApiResponse<UserTestReport>>(
+    `/api/v1/test-attempts/${attemptId}/report`,
     {
       method: 'GET',
     }

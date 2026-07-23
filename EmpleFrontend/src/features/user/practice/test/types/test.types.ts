@@ -10,6 +10,84 @@ export type UserTestSection = {
   codingProblemIds?: UserCodingProblem[];
 };
 
+export type TestAttemptStatusMap = Record<
+  string,
+  { attempted: boolean; status: string; attemptId: string }
+>;
+
+export interface UserTestReport {
+  attemptId: string;
+  test: {
+    id: string;
+    title: string;
+    description?: string;
+  };
+  candidate: {
+    id: string;
+    name: string;
+    email?: string;
+  };
+  status: string;
+  startedAt: string;
+  submittedAt: string;
+  timeUsedMs: number;
+  totalDurationMs: number;
+  summary: {
+    score: number;
+    totalMarks: number;
+    percentage: number;
+    correct: number;
+    incorrect: number;
+    skipped: number;
+    totalMcqQuestions: number;
+    codingAccepted: number;
+    totalCodingProblems: number;
+    codingTestCasesPassed: number;
+    codingTestCasesTotal: number;
+    accuracy: number;
+  };
+  rank?: {
+    position: number;
+    totalCandidates: number;
+  } | null;
+  sections: Array<{
+    sectionId: string;
+    title: string;
+    type: 'mcq' | 'coding';
+    score: number | null;
+    totalMarks: number | null;
+    attempted: number;
+    totalItems: number;
+    accuracyOrAcceptanceRate: number;
+    timeSpentMs: number;
+    status: string;
+  }>;
+  mcqReview: Array<{
+    questionId: string;
+    question: string;
+    options: string[];
+    difficulty: string;
+    topic: string;
+    selectedOptions: string[];
+    isCorrect: boolean;
+    marks: number;
+  }>;
+  codingReview: Array<{
+    problemId: string;
+    title: string;
+    difficulty: string;
+    language: string;
+    accepted: boolean;
+    passedCount: number;
+    totalCount: number;
+    sourceCode: string;
+    compileOutput?: string | null;
+    stderr?: string | null;
+    executionTime?: number | null;
+    memory?: number | null;
+  }>;
+}
+
 export type UserTest = {
   _id: string;
   title: string;

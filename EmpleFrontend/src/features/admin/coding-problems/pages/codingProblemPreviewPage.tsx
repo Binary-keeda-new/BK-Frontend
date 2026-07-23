@@ -18,7 +18,6 @@ export default function CodingProblemPreviewPage({
       const response = await fetch(
         `http://localhost:5000/api/v1/admin/coding-problems/${problemId}`
       );
-
       const data =
         await response.json();
 

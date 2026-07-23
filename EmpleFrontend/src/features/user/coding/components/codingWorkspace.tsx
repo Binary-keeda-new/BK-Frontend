@@ -2,6 +2,7 @@
 
 import type { UserCodingProblem } from '../../practice/test/types/test.types';
 import WorkspaceLayout from './workspaceLayout';
+import useCodingWorkspace from '../hooks/useCodingWorkspace';
 
 type CodingSubmission = {
   problemId: string;
@@ -17,9 +18,10 @@ type Props = {
   problems: UserCodingProblem[];
   mode?: 'practice' | 'test';
   onBack?: () => void;
-  onComplete?: (submission: CodingSubmission) => void | Promise<void>;
+  onComplete?: (submissions: CodingSubmission[]) => void | Promise<void>;
   formattedTimeLeft?: string | null;
-timeLeftMs?: number | null;
+  timeLeftMs?: number | null;
+  initialSubmissions?: CodingSubmission[];
 };
 
 export default function CodingWorkspace({
@@ -29,10 +31,11 @@ export default function CodingWorkspace({
   onComplete,
   formattedTimeLeft,
   timeLeftMs,
+  initialSubmissions = [],
 }: Props) {
-  const firstProblem = problems[0];
+  const workspaceState = useCodingWorkspace(problems, initialSubmissions);
 
-  if (!firstProblem) {
+  if (problems.length === 0) {
     return (
       <div className="p-6 text-red-400">
         No coding problems found for this section.
@@ -42,12 +45,12 @@ export default function CodingWorkspace({
 
   return (
     <WorkspaceLayout
-      problemId={firstProblem._id}
+      workspaceState={workspaceState}
       mode={mode}
       onBack={onBack}
       onComplete={onComplete}
       formattedTimeLeft={formattedTimeLeft}
-  timeLeftMs={timeLeftMs}
+      timeLeftMs={timeLeftMs}
     />
   );
 }

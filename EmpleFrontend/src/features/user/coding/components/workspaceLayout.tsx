@@ -1,6 +1,6 @@
 'use client';
 
-import useCodingWorkspace from '../hooks/useCodingWorkspace';
+import type useCodingWorkspace from '../hooks/useCodingWorkspace';
 import WorkspaceHeader from './workspaceHeader';
 import ProblemSidebar from './problemSidebar';
 import MonacoEditor from './monacoEditor';
@@ -22,16 +22,16 @@ type CodingSubmission = {
 };
 
 type Props = {
-  problemId: string;
+  workspaceState: ReturnType<typeof useCodingWorkspace>;
   mode?: 'practice' | 'test';
   onBack?: () => void;
-  onComplete?: (submission: CodingSubmission) => void | Promise<void>;
+  onComplete?: (submissions: CodingSubmission[]) => void | Promise<void>;
   formattedTimeLeft?: string | null;
   timeLeftMs?: number | null;
 };
 
 export default function WorkspaceLayout({
-  problemId,
+  workspaceState,
   mode = 'practice',
   onBack,
   onComplete,
@@ -39,6 +39,10 @@ export default function WorkspaceLayout({
   timeLeftMs,
 }: Props) {
   const {
+    activeProblemId,
+    currentProblemIndex,
+    setCurrentProblemIndex,
+    totalProblems,
     problem,
     loading,
     error,
@@ -55,7 +59,13 @@ export default function WorkspaceLayout({
     submitCompleted,
     customInput,
     setCustomInput,
-  } = useCodingWorkspace(problemId);
+    problemStates,
+    problems,
+  } = workspaceState;
+
+  const allProblemsSubmitted = problems.every(
+    (p) => problemStates[p._id]?.submitCompleted
+  );
 
   if (loading) {
     return (
@@ -76,12 +86,16 @@ export default function WorkspaceLayout({
   return (
     <div className="flex h-screen flex-col bg-[var(--clr-background)]">
       <WorkspaceHeader
-  problem={problem}
-  mode={mode}
-  onBack={onBack}
-  formattedTimeLeft={formattedTimeLeft}
-  timeLeftMs={timeLeftMs}
-/>
+        problem={problem}
+        mode={mode}
+        onBack={onBack}
+        formattedTimeLeft={formattedTimeLeft}
+        timeLeftMs={timeLeftMs}
+        currentProblemIndex={currentProblemIndex}
+        totalProblems={totalProblems}
+        onPrev={() => setCurrentProblemIndex(currentProblemIndex - 1)}
+        onNext={() => setCurrentProblemIndex(currentProblemIndex + 1)}
+      />
 
       <div className="flex flex-1 overflow-hidden p-4">
   <PanelGroup direction="horizontal" className="h-full w-full gap-3">
@@ -100,7 +114,7 @@ export default function WorkspaceLayout({
             <MonacoEditor
               problem={problem}
               code={code}
-              setCode={setCode}
+              setCode={setCode as any}
               language={selectedLanguage}
               changeLanguage={changeLanguage}
               running={running}
@@ -121,28 +135,32 @@ export default function WorkspaceLayout({
   result={executionResult}
   error={executionError}
   customInput={customInput}
-  setCustomInput={setCustomInput}
+  setCustomInput={setCustomInput as any}
   onRunCode={handleRunCode}
 />
           </div>
         </Panel>
 
-        {mode === 'test' && submitCompleted && (
+        {mode === 'test' && allProblemsSubmitted && (
           <div className="rounded-2xl border border-[var(--clr-border)] bg-[var(--clr-surface)] p-4">
             <div className="flex justify-end">
               <button
                 type="button"
-                onClick={() =>
-                  onComplete?.({
-                    problemId,
-                    language: selectedLanguage,
-                    sourceCode: code,
-                    accepted: executionResult?.accepted,
-                    passedCount: executionResult?.passedCount,
-                    totalCount: executionResult?.totalCount,
-                    results: executionResult?.results || [],
-                  })
-                }
+                onClick={() => {
+                  const submissions = problems.map((p) => {
+                    const state = problemStates[p._id];
+                    return {
+                      problemId: p._id,
+                      language: state?.selectedLanguage || 'Java',
+                      sourceCode: state?.code || '',
+                      accepted: state?.executionResult?.accepted,
+                      passedCount: state?.executionResult?.passedCount,
+                      totalCount: state?.executionResult?.totalCount,
+                      results: state?.executionResult?.results || [],
+                    };
+                  });
+                  onComplete?.(submissions);
+                }}
                 className="rounded-xl bg-[var(--clr-accent)] px-5 py-3 text-sm font-bold text-white"
               >
                 Complete Coding Section

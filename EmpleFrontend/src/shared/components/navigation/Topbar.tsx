@@ -263,7 +263,7 @@ export default function Topbar() {
   }, []);
 
   return (
-    <header className="relative h-[62px]">
+    <header className="relative h-[62px] shrink-0">
       <nav
         className="fixed top-0 left-0 z-40 w-full h-[62px] flex items-center justify-between px-3 sm:px-6 pr-4 sm:pr-8
         backdrop-blur-md bg-[var(--surface)] border-b border-[var(--border)]

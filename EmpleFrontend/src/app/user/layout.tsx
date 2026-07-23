@@ -18,11 +18,11 @@ export default function UserLayout({ children }: { children: React.ReactNode }) 
   }
 
   return (
-    <div className="flex h-screen overflow-hidden" style={{ background: "var(--bg)", color: "var(--text)" }}>
+    <div className="flex h-[100dvh] w-full overflow-hidden" style={{ background: "var(--bg)", color: "var(--text)" }}>
       <Sidebar />
       <div className="flex flex-col flex-1 overflow-hidden">
         <Topbar />
-        <main className="flex-1 overflow-y-auto">
+        <main className="flex-1 overflow-y-auto min-h-0">
           {children}
           <HelpChatWidget />
         </main>
