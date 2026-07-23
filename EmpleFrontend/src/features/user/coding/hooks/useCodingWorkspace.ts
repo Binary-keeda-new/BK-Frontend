@@ -74,6 +74,14 @@ export default function useCodingWorkspace(
           lang = savedSubmission?.language || data.languages?.[0] || 'Java';
 
           let initialCode = savedSubmission?.sourceCode;
+
+          if (typeof window !== 'undefined') {
+            const localDraft = localStorage.getItem(`emple_draft_${activeProblemId}_${lang}`);
+            if (localDraft) {
+              initialCode = localDraft;
+            }
+          }
+
           if (typeof initialCode !== 'string') {
             const prefix = data.lockedPrefixTemplates?.[lang] || '';
             const editable = data.codeTemplates?.[lang] || '';
@@ -135,7 +143,21 @@ export default function useCodingWorkspace(
         [activeProblemId]: initialState
       };
     });
-  }, [activeProblemId, problems, safeIndex]);
+  }, [activeProblemId, problems, safeIndex, initialSubmissions]);
+
+  // Auto-save while typing to localStorage
+  useEffect(() => {
+    if (!activeProblemId) return;
+    const currentState = problemStates[activeProblemId];
+    if (!currentState || currentState.loading || !currentState.problem) return;
+
+    const storageKey = `emple_draft_${activeProblemId}_${currentState.selectedLanguage}`;
+    const timeoutId = setTimeout(() => {
+      localStorage.setItem(storageKey, currentState.code);
+    }, 1000);
+
+    return () => clearTimeout(timeoutId);
+  }, [activeProblemId, problemStates[activeProblemId]?.code, problemStates[activeProblemId]?.selectedLanguage]);
 
   const activeState = problemStates[activeProblemId] || {
     problem: null,
@@ -164,10 +186,18 @@ export default function useCodingWorkspace(
     if (!activeState.problem) return;
 
     const lang = language as keyof typeof activeState.problem.codeTemplates;
-    const prefix = activeState.problem.lockedPrefixTemplates?.[lang] || '';
-    const editable = activeState.problem.codeTemplates?.[lang] || '';
-    const suffix = activeState.problem.lockedSuffixTemplates?.[lang] || '';
-    const newCode = `${prefix}${editable}${suffix}`;
+    
+    let newCode: string | null = null;
+    if (typeof window !== 'undefined') {
+       newCode = localStorage.getItem(`emple_draft_${activeProblemId}_${language}`);
+    }
+
+    if (!newCode) {
+      const prefix = activeState.problem.lockedPrefixTemplates?.[lang] || '';
+      const editable = activeState.problem.codeTemplates?.[lang] || '';
+      const suffix = activeState.problem.lockedSuffixTemplates?.[lang] || '';
+      newCode = `${prefix}${editable}${suffix}`;
+    }
 
     updateActiveState({
       selectedLanguage: language,
