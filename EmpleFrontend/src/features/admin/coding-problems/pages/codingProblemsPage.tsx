@@ -5,6 +5,8 @@ import { Eye, Pencil, Trash2 } from 'lucide-react';
 import ConfirmDeleteModal from '../components/confirmDeleteModal';
 import { apiRequest } from '@/shared/utils/api';
 
+import { apiRequest } from '@/shared/utils/api';
+
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 

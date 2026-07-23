@@ -1,6 +1,6 @@
 import React from 'react';
 import { UserProfile } from '../../types';
-import { Github, Linkedin, Mail, MapPin, ExternalLink, Calendar, Code2, Sparkles } from 'lucide-react';
+import { Github, Linkedin, Mail, MapPin, ExternalLink, Calendar, Code2, Sparkles, GraduationCap } from 'lucide-react';
 
 export default function ModernPersonal({ profile }: { profile: Partial<UserProfile> }) {
   const getInitials = (name?: string) => {
