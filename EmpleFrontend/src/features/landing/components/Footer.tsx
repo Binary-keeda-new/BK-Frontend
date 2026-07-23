@@ -59,11 +59,7 @@ export default function Footer() {
 
         <div className="footer-bottom">
           <div className="footer-copy">
-<<<<<<< HEAD
             © Binary Keeda Pvt Ltd 2026 <em> </em>. All rights reserved.
-=======
-            © 2026 Binary Keeda Pvt Ltd<em> </em>. All rights reserved.
->>>>>>> origin/develop
           </div>
         </div>
 

@@ -95,14 +95,14 @@ export default function OverallSummary({ report }: Props) {
               <Code className="h-4 w-4 text-sky-500" /> Coding
             </p>
             <p className="mt-3 text-2xl font-extrabold text-[var(--text)]">
-              {summary.codingPassed}{' '}
+              {summary.codingAccepted}{' '}
               <span className="text-sm font-semibold text-[var(--muted2)]">
                 / {summary.totalCodingProblems} Passed
               </span>
             </p>
             <p className="mt-1 text-xs text-[var(--muted2)]">
               {summary.totalCodingProblems > 0 
-                ? formatPercentage((summary.codingPassed / summary.totalCodingProblems) * 100) 
+                ? formatPercentage((summary.codingAccepted / summary.totalCodingProblems) * 100) 
                 : '0%'} Pass Rate
             </p>
           </div>

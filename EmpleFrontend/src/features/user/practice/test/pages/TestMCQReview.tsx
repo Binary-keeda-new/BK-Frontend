@@ -64,7 +64,7 @@ export default function TestMCQReview({
         setError(null);
 
         const result = await getTestSectionReview(attemptId, section._id);
-        setData(result);
+        setData(result as unknown as SectionReviewData);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to load review');
       } finally {

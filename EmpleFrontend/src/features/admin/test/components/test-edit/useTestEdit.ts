@@ -52,7 +52,7 @@ export function useTestEdit(testId: string) {
   const [toasts, setToasts] = useState<ToastItem[]>([]);
 
   const addToast = (message: string, type: ToastType = 'success') => {
-    const id = Date.now();
+    const id = Date.now().toString();
     setToasts((prev) => [...prev, { id, message, type }]);
 
     setTimeout(() => {

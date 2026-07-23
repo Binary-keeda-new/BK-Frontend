@@ -36,7 +36,7 @@ export type SectionForm = {
 export type ToastType = 'success' | 'error';
 
 export type ToastItem = {
-  id: number;
+  id: string;
   message: string;
   type: ToastType;
 };

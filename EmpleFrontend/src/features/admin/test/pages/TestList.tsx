@@ -61,16 +61,14 @@ export default function TestsContent({
   const [localRefreshKey, setLocalRefreshKey] = useState(0);
 
   const [toasts, setToasts] = useState<
-    { id: number; message: string; type: 'success' | 'error' }[]
+    { id: string; message: string; type: 'success' | 'error' }[]
   >([]);
-
-  const toastId = useRef(0);
 
   const addToast = (
     message: string,
     type: 'success' | 'error' = 'success'
   ) => {
-    const id = ++toastId.current;
+    const id = Date.now().toString();
     setToasts((prev) => [...prev, { id, message, type }]);
 
     setTimeout(() => {
