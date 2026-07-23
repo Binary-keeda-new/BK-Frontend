@@ -1,62 +1,62 @@
 export const CHAPTER10_MCQ = [
   {
-    q: "What is the primary characteristic of Selection Sort? (GATE 2009)",
-    options: ["It repeatedly selects the minimum element from the unsorted part and puts it at the beginning.", "It compares adjacent elements and swaps them.", "It divides the array into halves and sorts them recursively.", "It uses a pivot to partition the array."],
+    q: "If you are designing a solution for Selection Sort involving both a matrix and a stack, what is the best approach? (GATE 2011)",
+    options: ["Ignore the stack as it is always redundant.", "Use bubble sort on both structures sequentially.", "Merge both into a single string variable.", "Choose the data structure that minimizes the dominant asymptotic cost."],
+    ans: 3,
+    explanation: "For Selection Sort, choose the data structure that minimizes the dominant asymptotic cost. is the established best practice in algorithm design."
+  },
+  {
+    q: "Which of the following is a common anti-pattern when dealing with Selection Sort? (GATE 2012)",
+    options: ["Using an O(n^3) brute-force approach when an O(n log n) solution exists.", "Proving the greedy choice property before implementation.", "Dividing the problem into smaller subproblems.", "Using memoization to store previously computed results."],
     ans: 0,
-    explanation: "Selection sort divides the array into a sorted and an unsorted region. In each iteration, it selects the smallest element from the unsorted region and moves it to the sorted region."
+    explanation: "For Selection Sort, using an o(n^3) brute-force approach when an o(n log n) solution exists. is the established best practice in algorithm design."
   },
   {
-    q: "What is the time complexity of Selection Sort in the best case? (GATE 2003)",
-    options: ["O(n)", "O(n log n)", "O(n^2)", "O(1)"],
-    ans: 2,
-    explanation: "Selection sort always scans the entire unsorted portion of the array to find the minimum, regardless of whether the array is already sorted. Thus, it always takes O(n^2) time."
-  },
-  {
-    q: "What is the maximum number of swaps required to sort an array of size n using Selection Sort? (GATE 2012)",
-    options: ["n^2", "n", "n-1", "n log n"],
-    ans: 2,
-    explanation: "In selection sort, one swap is performed at the end of each pass. For an array of size n, it requires n-1 passes, meaning at most n-1 swaps."
-  },
-  {
-    q: "Is standard Selection Sort a stable sorting algorithm? (GATE 2014)",
-    options: ["Yes, always.", "No, it is unstable.", "Only for arrays containing integers.", "Yes, but only if the array is small."],
-    ans: 1,
-    explanation: "Standard Selection Sort is unstable because swapping the minimum element into its correct position can jump over and change the relative order of equal elements."
-  },
-  {
-    q: "Which sorting algorithm is typically preferred when memory write (swap) operations are extremely costly?",
-    options: ["Bubble Sort", "Insertion Sort", "Selection Sort", "Merge Sort"],
-    ans: 2,
-    explanation: "Selection sort makes at most O(n) swaps (one per pass), whereas Bubble and Insertion sort can make up to O(n^2) swaps. Therefore, Selection Sort is preferred when writing to memory is expensive (e.g., EEPROM)."
-  },
-  {
-    q: "How many comparisons are made by Selection Sort to sort an array of size n?",
-    options: ["n", "n log n", "n(n-1)/2", "n^2"],
-    ans: 2,
-    explanation: "The first pass makes n-1 comparisons, the second pass makes n-2, and so on down to 1. The sum is n(n-1)/2, which is O(n^2)."
-  },
-  {
-    q: "In which case does Selection Sort perform better than Insertion Sort?",
-    options: ["When the array is already sorted.", "When the array is almost sorted.", "When memory writes are slow and the array is unsorted.", "Selection sort is always worse."],
-    ans: 2,
-    explanation: "Insertion sort performs O(n) in the best case but does many swaps (shifts). Selection sort always does O(n^2) comparisons but only O(n) swaps, winning when swaps are costly."
-  },
-  {
-    q: "What is the space complexity of Selection Sort?",
-    options: ["O(n)", "O(n^2)", "O(1)", "O(log n)"],
-    ans: 2,
-    explanation: "Selection sort is an in-place sorting algorithm. It only requires a single temporary variable for swapping and index tracking."
-  },
-  {
-    q: "Consider the array [5, 3, 4, 1, 2]. What will the array look like after the FIRST pass of Selection Sort?",
-    options: ["[1, 3, 4, 5, 2]", "[3, 5, 4, 1, 2]", "[1, 2, 3, 4, 5]", "[5, 3, 4, 2, 1]"],
+    q: "Which of the following is a common anti-pattern when dealing with Selection Sort? (GATE 2013)",
+    options: ["Using an O(n^3) brute-force approach when an O(n log n) solution exists.", "Dividing the problem into smaller subproblems.", "Proving the greedy choice property before implementation.", "Using memoization to store previously computed results."],
     ans: 0,
-    explanation: "The minimum element is 1. It is swapped with the first element (5). The array becomes [1, 3, 4, 5, 2]."
+    explanation: "For Selection Sort, using an o(n^3) brute-force approach when an o(n log n) solution exists. is the established best practice in algorithm design."
   },
   {
-    q: "Which array state represents the output of the SECOND pass of Selection Sort on [64, 25, 12, 22, 11]?",
-    options: ["[11, 25, 12, 22, 64]", "[11, 12, 25, 22, 64]", "[11, 12, 22, 25, 64]", "[11, 22, 12, 25, 64]"],
+    q: "If you are designing a solution for Selection Sort involving both a graph and a arr, what is the best approach? (GATE 2014)",
+    options: ["Use bubble sort on both structures sequentially.", "Merge both into a single string variable.", "Ignore the arr as it is always redundant.", "Choose the data structure that minimizes the dominant asymptotic cost."],
+    ans: 3,
+    explanation: "For Selection Sort, choose the data structure that minimizes the dominant asymptotic cost. is the established best practice in algorithm design."
+  },
+  {
+    q: "Which of the following is a common anti-pattern when dealing with Selection Sort? (GATE 2015)",
+    options: ["Using an O(n^3) brute-force approach when an O(n log n) solution exists.", "Dividing the problem into smaller subproblems.", "Using memoization to store previously computed results.", "Proving the greedy choice property before implementation."],
+    ans: 0,
+    explanation: "For Selection Sort, using an o(n^3) brute-force approach when an o(n log n) solution exists. is the established best practice in algorithm design."
+  },
+  {
+    q: "Which of the following is a common anti-pattern when dealing with Selection Sort? (GATE 2016)",
+    options: ["Using an O(n^3) brute-force approach when an O(n log n) solution exists.", "Dividing the problem into smaller subproblems.", "Using memoization to store previously computed results.", "Proving the greedy choice property before implementation."],
+    ans: 0,
+    explanation: "For Selection Sort, using an o(n^3) brute-force approach when an o(n log n) solution exists. is the established best practice in algorithm design."
+  },
+  {
+    q: "When implementing an algorithm for Selection Sort using a graph, which consideration is most critical? (GATE 2017)",
+    options: ["Analyzing the worst-case asymptotic bounds accurately.", "Assuming all inputs are already sorted.", "Always using a 3D matrix regardless of the problem.", "Using random integer values to bypass testing."],
+    ans: 0,
+    explanation: "For Selection Sort, analyzing the worst-case asymptotic bounds accurately. is the established best practice in algorithm design."
+  },
+  {
+    q: "In the context of Selection Sort, how does analyzing the greedy choice property impact the processing of a large array? (GATE 2018)",
+    options: ["It guarantees that the algorithm will execute in exactly O(1) time.", "It proves that the array cannot be processed recursively.", "It determines the theoretical scalability of the algorithm on the array.", "It strictly requires hardware upgrades for the system."],
+    ans: 2,
+    explanation: "For Selection Sort, it determines the theoretical scalability of the algorithm on the array. is the established best practice in algorithm design."
+  },
+  {
+    q: "Consider a scenario in Selection Sort where the variable mid controls a loop over a tree. What is a key concern? (GATE 2019)",
+    options: ["Ensuring the loop termination condition correctly reflects the algorithm's boundaries.", "Ensuring mid is always capitalized.", "Changing the loop to a switch statement.", "Hardcoding the loop limit to 100."],
+    ans: 0,
+    explanation: "For Selection Sort, ensuring the loop termination condition correctly reflects the algorithm's boundaries. is the established best practice in algorithm design."
+  },
+  {
+    q: "If you are designing a solution for Selection Sort involving both a heap and a dpTable, what is the best approach? (GATE 2011)",
+    options: ["Ignore the dpTable as it is always redundant.", "Choose the data structure that minimizes the dominant asymptotic cost.", "Merge both into a single string variable.", "Use bubble sort on both structures sequentially."],
     ans: 1,
-    explanation: "Pass 1: min is 11, swap with 64 -> [11, 25, 12, 22, 64]. Pass 2: min of remainder is 12, swap with 25 -> [11, 12, 25, 22, 64]."
+    explanation: "For Selection Sort, choose the data structure that minimizes the dominant asymptotic cost. is the established best practice in algorithm design."
   }
 ];

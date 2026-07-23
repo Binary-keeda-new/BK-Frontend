@@ -23,6 +23,16 @@ import { CHAPTER5_MCQ } from './CHAPTER5_MCQ';
 import { CHAPTER5_DEBUG } from './CHAPTER5_DEBUG';
 import { CHAPTER5_DRAG } from './CHAPTER5_DRAG';
 import { CHAPTER5_COMPLETE } from './CHAPTER5_COMPLETE';
+import { CHAPTER6_CONTENT } from './CHAPTER6_CONTENT';
+import { CHAPTER6_MCQ } from './CHAPTER6_MCQ';
+import { CHAPTER6_DEBUG } from './CHAPTER6_DEBUG';
+import { CHAPTER6_DRAG } from './CHAPTER6_DRAG';
+import { CHAPTER6_COMPLETE } from './CHAPTER6_COMPLETE';
+import { CHAPTER7_CONTENT } from './CHAPTER7_CONTENT';
+import { CHAPTER7_MCQ } from './CHAPTER7_MCQ';
+import { CHAPTER7_DEBUG } from './CHAPTER7_DEBUG';
+import { CHAPTER7_DRAG } from './CHAPTER7_DRAG';
+import { CHAPTER7_COMPLETE } from './CHAPTER7_COMPLETE';
 import { CHAPTER8_CONTENT } from './CHAPTER8_CONTENT';
 import { CHAPTER8_MCQ } from './CHAPTER8_MCQ';
 import { CHAPTER8_DEBUG } from './CHAPTER8_DEBUG';
@@ -58,6 +68,11 @@ import { CHAPTER14_MCQ } from './CHAPTER14_MCQ';
 import { CHAPTER14_DEBUG } from './CHAPTER14_DEBUG';
 import { CHAPTER14_DRAG } from './CHAPTER14_DRAG';
 import { CHAPTER14_COMPLETE } from './CHAPTER14_COMPLETE';
+import { CHAPTER15_CONTENT } from './CHAPTER15_CONTENT';
+import { CHAPTER15_MCQ } from './CHAPTER15_MCQ';
+import { CHAPTER15_DEBUG } from './CHAPTER15_DEBUG';
+import { CHAPTER15_DRAG } from './CHAPTER15_DRAG';
+import { CHAPTER15_COMPLETE } from './CHAPTER15_COMPLETE';
 import { CHAPTER16_CONTENT } from './CHAPTER16_CONTENT';
 import { CHAPTER16_MCQ } from './CHAPTER16_MCQ';
 import { CHAPTER16_DEBUG } from './CHAPTER16_DEBUG';
@@ -126,7 +141,7 @@ export interface CompleteExercise {
   instruction: string;
 }
 
-// --- CURRICULUM DATA ---
+// --- CURRICULUM DAT---
 
 export const CONTENT: Record<string, ChapterContent> = {
   "chapter1": CHAPTER1_CONTENT as any,
@@ -134,6 +149,8 @@ export const CONTENT: Record<string, ChapterContent> = {
   "chapter3": CHAPTER3_CONTENT as any,
   "chapter4": CHAPTER4_CONTENT as any,
   "chapter5": CHAPTER5_CONTENT as any,
+  "chapter6": CHAPTER6_CONTENT as any,
+  "chapter7": CHAPTER7_CONTENT as any,
   "chapter8": CHAPTER8_CONTENT as any,
   "chapter9": CHAPTER9_CONTENT as any,
   "chapter10": CHAPTER10_CONTENT as any,
@@ -141,18 +158,21 @@ export const CONTENT: Record<string, ChapterContent> = {
   "chapter12": CHAPTER12_CONTENT as any,
   "chapter13": CHAPTER13_CONTENT as any,
   "chapter14": CHAPTER14_CONTENT as any,
+  "chapter15": CHAPTER15_CONTENT as any,
   "chapter16": CHAPTER16_CONTENT as any,
   "chapter17": CHAPTER17_CONTENT as any,
   "chapter18": CHAPTER18_CONTENT as any,
   "chapter19": CHAPTER19_CONTENT as any,
 };
 
-export const MCQS: Record<string, MCQQuestion[]> = {
+export const MCQ: Record<string, MCQQuestion[]> = {
   "chapter1": CHAPTER1_MCQ as any,
   "chapter2": CHAPTER2_MCQ as any,
   "chapter3": CHAPTER3_MCQ as any,
   "chapter4": CHAPTER4_MCQ as any,
   "chapter5": CHAPTER5_MCQ as any,
+  "chapter6": CHAPTER6_MCQ as any,
+  "chapter7": CHAPTER7_MCQ as any,
   "chapter8": CHAPTER8_MCQ as any,
   "chapter9": CHAPTER9_MCQ as any,
   "chapter10": CHAPTER10_MCQ as any,
@@ -160,18 +180,21 @@ export const MCQS: Record<string, MCQQuestion[]> = {
   "chapter12": CHAPTER12_MCQ as any,
   "chapter13": CHAPTER13_MCQ as any,
   "chapter14": CHAPTER14_MCQ as any,
+  "chapter15": CHAPTER15_MCQ as any,
   "chapter16": CHAPTER16_MCQ as any,
   "chapter17": CHAPTER17_MCQ as any,
   "chapter18": CHAPTER18_MCQ as any,
   "chapter19": CHAPTER19_MCQ as any,
 };
 
-export const DEBUG_EXERCISES: Record<string, DebugExercise[]> = {
+export const DEBUG: Record<string, DebugExercise[]> = {
   "chapter1": CHAPTER1_DEBUG as any,
   "chapter2": CHAPTER2_DEBUG as any,
   "chapter3": CHAPTER3_DEBUG as any,
   "chapter4": CHAPTER4_DEBUG as any,
   "chapter5": CHAPTER5_DEBUG as any,
+  "chapter6": CHAPTER6_DEBUG as any,
+  "chapter7": CHAPTER7_DEBUG as any,
   "chapter8": CHAPTER8_DEBUG as any,
   "chapter9": CHAPTER9_DEBUG as any,
   "chapter10": CHAPTER10_DEBUG as any,
@@ -179,6 +202,7 @@ export const DEBUG_EXERCISES: Record<string, DebugExercise[]> = {
   "chapter12": CHAPTER12_DEBUG as any,
   "chapter13": CHAPTER13_DEBUG as any,
   "chapter14": CHAPTER14_DEBUG as any,
+  "chapter15": CHAPTER15_DEBUG as any,
   "chapter16": CHAPTER16_DEBUG as any,
   "chapter17": CHAPTER17_DEBUG as any,
   "chapter18": CHAPTER18_DEBUG as any,
@@ -191,6 +215,8 @@ export const COMPLETE_EXERCISES: Record<string, CompleteExercise[]> = {
   "chapter3": CHAPTER3_COMPLETE as any,
   "chapter4": CHAPTER4_COMPLETE as any,
   "chapter5": CHAPTER5_COMPLETE as any,
+  "chapter6": CHAPTER6_COMPLETE as any,
+  "chapter7": CHAPTER7_COMPLETE as any,
   "chapter8": CHAPTER8_COMPLETE as any,
   "chapter9": CHAPTER9_COMPLETE as any,
   "chapter10": CHAPTER10_COMPLETE as any,
@@ -198,18 +224,21 @@ export const COMPLETE_EXERCISES: Record<string, CompleteExercise[]> = {
   "chapter12": CHAPTER12_COMPLETE as any,
   "chapter13": CHAPTER13_COMPLETE as any,
   "chapter14": CHAPTER14_COMPLETE as any,
+  "chapter15": CHAPTER15_COMPLETE as any,
   "chapter16": CHAPTER16_COMPLETE as any,
   "chapter17": CHAPTER17_COMPLETE as any,
   "chapter18": CHAPTER18_COMPLETE as any,
   "chapter19": CHAPTER19_COMPLETE as any,
 };
 
-export const DRAG_EXERCISES: Record<string, DragExercise[]> = {
+export const DRAG_DROP: Record<string, DragExercise[]> = {
   "chapter1": CHAPTER1_DRAG as any,
   "chapter2": CHAPTER2_DRAG as any,
   "chapter3": CHAPTER3_DRAG as any,
   "chapter4": CHAPTER4_DRAG as any,
   "chapter5": CHAPTER5_DRAG as any,
+  "chapter6": CHAPTER6_DRAG as any,
+  "chapter7": CHAPTER7_DRAG as any,
   "chapter8": CHAPTER8_DRAG as any,
   "chapter9": CHAPTER9_DRAG as any,
   "chapter10": CHAPTER10_DRAG as any,
@@ -217,6 +246,7 @@ export const DRAG_EXERCISES: Record<string, DragExercise[]> = {
   "chapter12": CHAPTER12_DRAG as any,
   "chapter13": CHAPTER13_DRAG as any,
   "chapter14": CHAPTER14_DRAG as any,
+  "chapter15": CHAPTER15_DRAG as any,
   "chapter16": CHAPTER16_DRAG as any,
   "chapter17": CHAPTER17_DRAG as any,
   "chapter18": CHAPTER18_DRAG as any,
@@ -224,22 +254,25 @@ export const DRAG_EXERCISES: Record<string, DragExercise[]> = {
 };
 
 export const CHAPTERS = [
-  { id: "chapter1", label: "01 · Introduction to Algorithms", module: "Module 1: Introduction & Analysis" },
-  { id: "chapter2", label: "02 · Mathematical Foundations", module: "Module 1: Introduction & Analysis" },
-  { id: "chapter3", label: "03 · Asymptotic Analysis", module: "Module 1: Introduction & Analysis" },
-  { id: "chapter4", label: "04 · Recurrence Relations", module: "Module 1: Introduction & Analysis" },
-  { id: "chapter5", label: "05 · Linear Search", module: "Module 2: Searching & Basic Sorting" },
-  { id: "chapter8", label: "08 · Introduction to Sorting", module: "Module 2: Searching & Basic Sorting" },
-  { id: "chapter9", label: "09 · Bubble Sort", module: "Module 2: Searching & Basic Sorting" },
-  { id: "chapter10", label: "10 · Selection Sort", module: "Module 2: Searching & Basic Sorting" },
-  { id: "chapter11", label: "11 · Insertion Sort", module: "Module 2: Searching & Basic Sorting" },
-  { id: "chapter12", label: "12 · Merge Sort", module: "Module 3: Advanced Sorting" },
-  { id: "chapter13", label: "13 · Quick Sort", module: "Module 3: Advanced Sorting" },
-  { id: "chapter14", label: "14 · Heap Sort", module: "Module 3: Advanced Sorting" },
-  { id: "chapter16", label: "16 · Greedy Paradigm", module: "Module 4: Algorithmic Paradigms" },
-  { id: "chapter17", label: "17 · DP Fundamentals", module: "Module 4: Algorithmic Paradigms" },
-  { id: "chapter18", label: "18 · 1D Dynamic Programming", module: "Module 4: Algorithmic Paradigms" },
-  { id: "chapter19", label: "19 · 2D Dynamic Programming", module: "Module 4: Algorithmic Paradigms" },
+  { id: "chapter1", label: "01 · Introduction to Algorithms", module: "1. Algorithmic Time Complexity & Analysis" },
+  { id: "chapter2", label: "02 · Mathematical Foundations", module: "1. Algorithmic Time Complexity & Analysis" },
+  { id: "chapter3", label: "03 · Asymptotic Analysis", module: "1. Algorithmic Time Complexity & Analysis" },
+  { id: "chapter4", label: "04 · Recurrence Relations", module: "1. Algorithmic Time Complexity & Analysis" },
+  { id: "chapter5", label: "05 · Linear Search", module: "1. Algorithmic Time Complexity & Analysis" },
+  { id: "chapter6", label: "06 · Binary Search", module: "1. Algorithmic Time Complexity & Analysis" },
+  { id: "chapter7", label: "07 · Searching Variations", module: "1. Algorithmic Time Complexity & Analysis" },
+  { id: "chapter8", label: "08 · Introduction to Sorting", module: "2. Sorting Algorithms" },
+  { id: "chapter9", label: "09 · Bubble Sort", module: "2. Sorting Algorithms" },
+  { id: "chapter10", label: "10 · Selection Sort", module: "2. Sorting Algorithms" },
+  { id: "chapter11", label: "11 · Insertion Sort", module: "2. Sorting Algorithms" },
+  { id: "chapter12", label: "12 · Merge Sort", module: "2. Sorting Algorithms" },
+  { id: "chapter13", label: "13 · Quick Sort", module: "2. Sorting Algorithms" },
+  { id: "chapter14", label: "14 · Heap Sort", module: "2. Sorting Algorithms" },
+  { id: "chapter15", label: "15 · Non-Comparison Sorting", module: "2. Sorting Algorithms" },
+  { id: "chapter16", label: "16 · Greedy Paradigm", module: "3. Greedy Algorithms" },
+  { id: "chapter17", label: "17 · DP Fundamentals", module: "4. Dynamic Programming" },
+  { id: "chapter18", label: "18 · 1D Dynamic Programming", module: "4. Dynamic Programming" },
+  { id: "chapter19", label: "19 · 2D Dynamic Programming", module: "4. Dynamic Programming" },
 ];
 
 export function shuffle<T>(arr: T[]): T[] {

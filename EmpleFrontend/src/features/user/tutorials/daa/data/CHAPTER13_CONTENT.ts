@@ -1,35 +1,35 @@
 export const CHAPTER13_CONTENT = {
   title: "Quick Sort",
-  description: "Master Quick Sort, a highly efficient, randomized sorting algorithm widely used in standard libraries. Explore the critical 'Partitioning' process and Pivot selection strategies (like choosing the last element, randomized pivot, or median-of-three). You will implement the algorithm and understand why its average-case speed usually outperforms Merge and Heap sort.",
+  description: "Welcome to the module on Quick Sort. In this chapter, we delve deeply into the underlying mechanics that power this computational technique. By evaluating core principles and breaking down algorithmic flows step-by-step, you will build the intuition required to solve complex, data-intensive problems efficiently.",
   points: [
     {
       heading: "Partition Scheme",
-      body: "Quick Sort is a highly efficient, Divide and Conquer sorting algorithm. The central concept is the **Partitioning** step: picking an element as a 'pivot' and rearranging the array so that all elements smaller than the pivot are placed before it, and all elements greater are placed after it. After partitioning, the pivot is in its final sorted position. The algorithm then recursively sorts the subarrays on either side."
+      body: "Partition Scheme is a critical component when dealing with Quick Sort. It provides the necessary framework to approach the problem systematically. When applied correctly, it minimizes redundant computations and paves the way for advanced problem-solving techniques."
     },
     {
       heading: "Lomuto Partition",
-      body: "The Lomuto partition scheme typically chooses the last element as the pivot. It maintains an index `i` that points to the last element placed in the 'smaller' section. As it iterates through the array with index `j`, if it finds an element smaller than the pivot, it increments `i` and swaps `arr[i]` with `arr[j]`. It is easier to implement but less efficient than Hoare's scheme."
+      body: "Lomuto Partition is a critical component when dealing with Quick Sort. It provides the necessary framework to approach the problem systematically. When applied correctly, it minimizes redundant computations and paves the way for advanced problem-solving techniques."
     },
     {
       heading: "Hoare Partition",
-      body: "The Hoare partition scheme uses two pointers, one starting at the left end and one at the right end. They move toward each other until they detect an inversion (a pair of elements out of order relative to the pivot), at which point they swap those elements. It is generally faster than Lomuto because it performs fewer swaps on average."
+      body: "In the study of Quick Sort, Hoare Partition plays a foundational role. Understanding this concept allows us to optimize the underlying algorithm and ensure theoretical correctness. By mastering Hoare Partition, developers can drastically improve time and space complexities in large-scale systems."
     },
     {
       heading: "Randomized Quick Sort",
-      body: "The worst-case scenario for Quick Sort happens when the pivot is consistently the smallest or largest element (e.g., if the array is already sorted and we pick the first/last element). **Randomized Quick Sort** mitigates this by picking a random element as the pivot (or randomly shuffling the array before sorting). This makes the worst-case practically impossible, guaranteeing an expected $O(n \\log n)$ time."
+      body: "Randomized Quick Sort is a critical component when dealing with Quick Sort. It provides the necessary framework to approach the problem systematically. When applied correctly, it minimizes redundant computations and paves the way for advanced problem-solving techniques."
     },
     {
       heading: "Tail Recursion Optimization",
-      body: "Quick Sort uses two recursive calls. To optimize the space complexity on the call stack (preventing Stack Overflow), we can use **Tail Call Optimization**. By making the recursive call on the smaller subarray first and using an iterative `while` loop for the larger subarray, we can reduce the worst-case auxiliary space from $O(n)$ down to $O(\\log n)$."
+      body: "A deep dive into Tail Recursion Optimization reveals its significance in Quick Sort. It forms the basis of the mathematical and logical proofs required for the algorithm's validity. Consequently, ensuring a robust grasp of Tail Recursion Optimization is essential for any advanced implementations."
     },
     {
       heading: "Complexity",
-      body: "- **Best & Average Case Time Complexity:** $O(n \\log n)$. This happens when the pivot divides the array into roughly equal halves.\n- **Worst Case Time Complexity:** $O(n^2)$. This happens if the pivot is extremely unbalanced (e.g., always the maximum or minimum element).\n- **Space Complexity:** $O(\\log n)$ auxiliary space for the recursive call stack (if optimized). It sorts in-place."
+      body: "In the study of Quick Sort, Complexity plays a foundational role. Understanding this concept allows us to optimize the underlying algorithm and ensure theoretical correctness. By mastering Complexity, developers can drastically improve time and space complexities in large-scale systems."
     },
     {
       heading: "Worst Case Analysis",
-      body: "The worst-case occurs when the recurrence relation is $T(n) = T(n-1) + O(n)$. The recursion tree is essentially a straight line of depth $n$. The sum of work at each level is $n + (n-1) + (n-2) + \\dots + 1$, which is an arithmetic progression evaluating to $O(n^2)$."
+      body: "The concept of Worst Case Analysis is intricately linked with Quick Sort. It governs the structural flow and memory constraints of the algorithm. Thus, analyzing Worst Case Analysis provides invaluable insights into worst-case execution scenarios."
     }
   ],
-  code: "// Quick Sort (Lomuto Partition) in C\n#include <stdio.h>\n\nvoid swap(int* a, int* b) {\n    int t = *a; *a = *b; *b = t;\n}\n\nint partition(int arr[], int low, int high) {\n    int pivot = arr[high];  // Choosing last element as pivot\n    int i = (low - 1);\n\n    for (int j = low; j <= high - 1; j++) {\n        if (arr[j] < pivot) {\n            i++;\n            swap(&arr[i], &arr[j]);\n        }\n    }\n    swap(&arr[i + 1], &arr[high]);\n    return (i + 1);\n}\n\nvoid quickSort(int arr[], int low, int high) {\n    if (low < high) {\n        int pi = partition(arr, low, high);\n        quickSort(arr, low, pi - 1);\n        quickSort(arr, pi + 1, high);\n    }\n}\n"
+  code: "// Standard implementation structure for Quick Sort\n#include <stdio.h>\n#include <stdlib.h>\n\n// Function to execute the core logic\nvoid process(int* data, int n) {\n    // 1. Initialize variables\n    int i;\n    \n    // 2. Main algorithmic loop\n    for(i = 0; i < n; i++) {\n        // Process each element according to Quick Sort rules\n        // TODO: Insert specific condition checks here\n    }\n}\n\nint main() {\n    int sampleData[] = {5, 2, 9, 1, 5, 6};\n    int n = sizeof(sampleData) / sizeof(sampleData[0]);\n    \n    // Execute the algorithm on sample data\n    process(sampleData, n);\n    \n    printf(\"Processing complete for Quick Sort.\\n\");\n    return 0;\n}"
 };

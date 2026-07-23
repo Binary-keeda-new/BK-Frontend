@@ -596,7 +596,7 @@ function CompleteExercise({ data, onNext, current, total }: { data: any, onNext:
     setCorrect(false);
   };
 
-  const parts = data.template.split("___");
+  const parts = data.template.split(/_{3,}/);
   let blankCount = 0;
 
   return (

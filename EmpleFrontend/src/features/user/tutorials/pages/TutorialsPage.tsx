@@ -9,6 +9,11 @@ import DBMSTutorialPage from "../dbms/pages/DBMSTutorialPage";
 import TutorialsLandingPage from "./TutorialsLandingPage";
 import VideosPlaceholderPage from "./VideosPlaceholderPage";
 
+import { CHAPTERS as cChapters } from "../c/data/cTutorial";
+import { CHAPTERS as javaChapters } from "../java/data/javaTutorial";
+import { CHAPTERS as daaChapters } from "../daa/data/daaTutorial";
+import { CHAPTERS as dbmsChapters } from "../dbms/data/dbmsTutorial";
+
 // Official stylized programming language logo SVGs
 const CLogo = (props: any) => (
   <svg viewBox="0 0 306 344.35" width="22" height="22" className={props.className} style={props.style}>
@@ -40,7 +45,7 @@ const SUBJECTS = [
     color: "#ff6b35",
     difficulty: "Beginner",
     duration: "2-4 Weeks",
-    chapters: 17
+    chapters: cChapters.length
   },
   {
     id: "java",
@@ -50,7 +55,7 @@ const SUBJECTS = [
     color: "#e2433b",
     difficulty: "Intermediate",
     duration: "4-8 Weeks",
-    chapters: 25
+    chapters: javaChapters.length
   },
   { 
     id: "daa",
@@ -61,7 +66,7 @@ const SUBJECTS = [
     disabled: false,
     difficulty: "Advanced",
     duration: "6-10 Weeks",
-    chapters: 44
+    chapters: daaChapters.length
   },
   { 
     id: "dbms",
@@ -72,7 +77,7 @@ const SUBJECTS = [
     disabled: false,
     difficulty: "Intermediate",
     duration: "4-6 Weeks",
-    chapters: 10
+    chapters: dbmsChapters.length
   },
 ];
 

@@ -1,107 +1,23 @@
 export const CHAPTER18_DEBUG = [
   {
-    instructions: "This Top-Down DP (Memoization) for Fibonacci forgets to actually SAVE the calculated value into the memo table. Fix it.",
-    buggy: `int fib(int n, int memo[]) {
-    if (n <= 1) return n;
-    
-    // Return cached result if available
-    if (memo[n] != -1) return memo[n];
-    
-    // Bug: Calculates the result, but returns it without saving it to memo[n]!
-    return fib(n - 1, memo) + fib(n - 2, memo);
-}`,
-    fixed: `int fib(int n, int memo[]) {
-    if (n <= 1) return n;
-    
-    // Return cached result if available
-    if (memo[n] != -1) return memo[n];
-    
-    // Fix: Save the result into the memo table before returning
-    memo[n] = fib(n - 1, memo) + fib(n - 2, memo);
-    return memo[n];
-}`,
-    hints: [
-      "The point of memoization is to cache the result so future calls are fast.",
-      "If you just return 'fib(n-1) + fib(n-2)', the memo table is never updated.",
-      "Assign the result to 'memo[n]' before returning."
-    ],
-    expectedOutput: "Executes in O(n) time instead of O(2^n)."
+    instructions: "Fix the transition logic in Longest Increasing Subsequence (1D DP).",
+    buggy: "for (int i = 1; i < n; i++) {\n    for (int j = 0; j < i; j++) {\n        if (arr[i] > arr[j]) {\n            dp[i] = dp[j] + 1;\n        }\n    }\n}",
+    fixed: "for (int i = 1; i < n; i++) {\n    for (int j = 0; j < i; j++) {\n        if (arr[i] > arr[j] && dp[i] < dp[j] + 1) {\n            dp[i] = dp[j] + 1;\n        }\n    }\n}",
+    hints: ["You are constantly overwriting dp[i] with dp[j]+1.", "You must take the MAXIMUM of the current dp[i] and dp[j]+1."],
+    expectedOutput: "Correct LIS length calculated."
   },
   {
-    instructions: "This Bottom-Up DP for Fibonacci calculates the sequence but goes out of bounds on the array. Fix it.",
-    buggy: `int fibBottomUp(int n) {
-    if (n <= 1) return n;
-    
-    // Bug: Allocates an array of size n, which only has indices 0 to n-1
-    int dp[n]; 
-    dp[0] = 0;
-    dp[1] = 1;
-    
-    for (int i = 2; i <= n; i++) {
-        // Bug: When i = n, dp[n] is out of bounds!
-        dp[i] = dp[i - 1] + dp[i - 2];
-    }
-    return dp[n];
-}`,
-    fixed: `int fibBottomUp(int n) {
-    if (n <= 1) return n;
-    
-    // Fix: Allocate an array of size n + 1 to include index n
-    int dp[n + 1]; 
-    dp[0] = 0;
-    dp[1] = 1;
-    
-    for (int i = 2; i <= n; i++) {
-        dp[i] = dp[i - 1] + dp[i - 2];
-    }
-    return dp[n];
-}`,
-    hints: [
-      "If you want to calculate up to the 'n'th Fibonacci number, you need an array that goes up to index 'n'.",
-      "An array of size 'n' only goes up to index 'n-1'.",
-      "Allocate the array with size 'n + 1'."
-    ],
-    expectedOutput: "Safely returns the nth Fibonacci number without segfaults."
+    instructions: "Correct the initialization for the Minimum Coin Change DP array.",
+    buggy: "int coin_change(int coins[], int n, int amount) {\n    int dp[amount + 1];\n    for(int i=0; i<=amount; i++) dp[i] = 0;\n    dp[0] = 0;\n    // ... transition\n}",
+    fixed: "int coin_change(int coins[], int n, int amount) {\n    int dp[amount + 1];\n    for(int i=0; i<=amount; i++) dp[i] = 99999;\n    dp[0] = 0;\n    // ... transition\n}",
+    hints: ["We want to find the MINIMUM coins.", "Initializing with 0 will make the min() function always return 0. Initialize with a very large number (infinity)."],
+    expectedOutput: "Proper minimum values stored in DP array."
   },
   {
-    instructions: "This DP solution for 0/1 Knapsack has a logic error in its state transition formula.",
-    buggy: `int knapsack(int W, int wt[], int val[], int n) {
-    int dp[n+1][W+1];
-    
-    for (int i = 0; i <= n; i++) {
-        for (int w = 0; w <= W; w++) {
-            if (i == 0 || w == 0)
-                dp[i][w] = 0;
-            else if (wt[i-1] <= w)
-                // Bug: It adds val[i-1], but looks at the WRONG previous state!
-                dp[i][w] = max(val[i-1] + dp[i][w - wt[i-1]], dp[i-1][w]);
-            else
-                dp[i][w] = dp[i-1][w];
-        }
-    }
-    return dp[n][W];
-}`,
-    fixed: `int knapsack(int W, int wt[], int val[], int n) {
-    int dp[n+1][W+1];
-    
-    for (int i = 0; i <= n; i++) {
-        for (int w = 0; w <= W; w++) {
-            if (i == 0 || w == 0)
-                dp[i][w] = 0;
-            else if (wt[i-1] <= w)
-                // Fix: Look at the previous row (i-1) when including the item
-                dp[i][w] = max(val[i-1] + dp[i-1][w - wt[i-1]], dp[i-1][w]);
-            else
-                dp[i][w] = dp[i-1][w];
-        }
-    }
-    return dp[n][W];
-}`,
-    hints: [
-      "In 0/1 Knapsack, you can only pick each item ONCE.",
-      "If you pick item 'i', the remaining capacity is solved using the FIRST 'i-1' items.",
-      "Look at dp[i][w - wt[i-1]]. It should be dp[i-1][w - wt[i-1]] to prevent picking the same item infinitely."
-    ],
-    expectedOutput: "Calculates the correct maximum value for the 0/1 Knapsack."
+    instructions: "Fix the boundary condition in the Rod Cutting problem.",
+    buggy: "for (int i = 1; i <= n; i++) {\n    int max_val = -1;\n    for (int j = 0; j <= i; j++) {\n        max_val = max(max_val, price[j] + dp[i-j-1]);\n    }\n    dp[i] = max_val;\n}",
+    fixed: "for (int i = 1; i <= n; i++) {\n    int max_val = -1;\n    for (int j = 0; j < i; j++) {\n        max_val = max(max_val, price[j] + dp[i-j-1]);\n    }\n    dp[i] = max_val;\n}",
+    hints: ["If j goes up to i, i-j-1 becomes -1, crashing the program.", "j must be strictly less than i."],
+    expectedOutput: "Maximum profit calculated safely."
   }
 ];
