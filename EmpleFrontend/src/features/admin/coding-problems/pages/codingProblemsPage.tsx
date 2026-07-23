@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Eye, Pencil, Trash2 } from 'lucide-react';
-
+import ConfirmDeleteModal from '../components/confirmDeleteModal';
 import { apiRequest } from '@/shared/utils/api';
 
 const API_BASE_URL =
@@ -18,16 +18,65 @@ interface CodingProblem {
 
 interface CodingProblemsPageProps {
   onEditProblem: (id: string) => void;
+  onPreviewProblem: (
+    id: string
+  ) => void;
 }
 
 export default function CodingProblemsPage({
   onEditProblem,
+  onPreviewProblem,
 }: CodingProblemsPageProps) {
   const [problems, setProblems] = useState<CodingProblem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [problemToDelete, setProblemToDelete] =
+  useState<CodingProblem | null>(null);
+
+const [isDeleting, setIsDeleting] =
+  useState(false);
+
+  const fetchProblems = async () => {
+  try {
+    const data = await apiRequest<{ data: CodingProblem[] }>('/api/v1/admin/coding-problems');
+    setProblems(data.data || []);
+  } catch (error) {
+    console.error(
+      'Failed to fetch coding problems:',
+      error
+    );
+  } finally {
+    setLoading(false);
+  }
+};
+
+const handleDeleteProblem = async () => {
+  if (!problemToDelete) return;
+
+  try {
+    setIsDeleting(true);
+
+    await apiRequest(`/api/v1/admin/coding-problems/${problemToDelete._id}`, {
+      method: 'DELETE',
+    });
+
+    setProblems((prev) =>
+      prev.filter(
+        (problem) =>
+          problem._id !== problemToDelete._id
+      )
+    );
+
+    setProblemToDelete(null);
+  } catch (error) {
+    console.error(error);
+    alert('Failed to delete problem.');
+  } finally {
+    setIsDeleting(false);
+  }
+};
 
   useEffect(() => {
-    const fetchProblems = async () => {
+    const fetchProblemsList = async () => {
       try {
         const data = await apiRequest<{ data: CodingProblem[] }>('/api/v1/admin/coding-problems');
         setProblems(data.data || []);
@@ -38,7 +87,7 @@ export default function CodingProblemsPage({
       }
     };
 
-    fetchProblems();
+    fetchProblemsList();
   }, []);
 
   if (loading) {
@@ -139,8 +188,10 @@ export default function CodingProblemsPage({
                       <button
                         type="button"
                         onClick={() =>
-                          console.log('preview', problem._id)
-                        }
+                         onPreviewProblem(
+                           problem._id
+                         )
+                       }
                         className="text-[var(--clr-text2)] transition hover:text-blue-500"
                       >
                         <Eye size={18} />
@@ -155,13 +206,12 @@ export default function CodingProblemsPage({
                       </button>
 
                       <button
-                        type="button"
-                        onClick={() =>
-                          console.log('delete', problem._id)
-                        }
-                        className="text-[var(--clr-text2)] transition hover:text-red-500"
-                      >
-                        <Trash2 size={18} />
+                         onClick={() =>
+                           setProblemToDelete(problem)
+                         }
+                         className="text-[var(--clr-text2)] transition hover:text-red-500"
+                       >  
+                       <Trash2 size={18} />
                       </button>
                     </div>
                   </td>
@@ -171,6 +221,17 @@ export default function CodingProblemsPage({
           </tbody>
         </table>
       </div>
+
+      <ConfirmDeleteModal
+        open={!!problemToDelete}
+        title="Delete Coding Problem"
+        message={`Are you sure you want to delete "${problemToDelete?.title}"? This action cannot be undone.`}
+        loading={isDeleting}
+        onCancel={() =>
+          setProblemToDelete(null)
+        }
+        onConfirm={handleDeleteProblem}
+      />
     </div>
   );
 }
