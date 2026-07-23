@@ -28,13 +28,13 @@ export default function McqDifficultyPerformance({ data }: Props) {
   });
 
   return (
-    <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-sm">
+    <div className="rounded-3xl  bg-[var(--surface)] p-6 shadow-sm">
       <h3 className="mb-1 text-lg font-bold text-[var(--text)]">Difficulty Performance</h3>
       <p className="mb-6 text-sm text-[var(--muted2)]">Accuracy breakdown by question difficulty level.</p>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {sortedData.map((item) => (
-          <div key={item.name} className="flex flex-col rounded-2xl border border-[var(--border)] bg-[var(--bg)] p-5">
+          <div key={item.name} className="flex flex-col rounded-2xl  bg-[var(--bg)] p-5">
             <div className="mb-4 flex items-center justify-between border-b border-[var(--border)] pb-3">
               <h4 className="font-bold text-[var(--text)] text-base">{item.name}</h4>
               <div className="flex items-center gap-1.5 text-[var(--orange)]">

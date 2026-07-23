@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import TestInstructionsView from '../components/TestInstructionsView';
 import TestSectionsPreview from '../components/TestSectionsPreview';
 import TestAttempt from './TestAttempt';
@@ -30,7 +31,11 @@ export default function TestList({ onFullscreenModeChange }: Props) {
   const [tests, setTests] = useState<UserTest[]>([]);
   const [loading, setLoading] = useState(true);
   const [attemptStatusMap, setAttemptStatusMap] = useState<Record<string, any>>({});
-  const [activeAttemptId, setActiveAttemptId] = useState<string | null>(null);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const initialAttemptId = searchParams?.get('attemptId');
+
+  const [activeAttemptId, setActiveAttemptId] = useState<string | null>(initialAttemptId || null);
 
   const [selectedTest, setSelectedTest] = useState<UserTest | null>(null);
   const [view, setView] = useState<
@@ -45,7 +50,7 @@ export default function TestList({ onFullscreenModeChange }: Props) {
   | 'attempt'
   | 'feedback'
   | 'report'
->('list');
+>(initialAttemptId ? 'report' : 'list');
 
   const [agreed, setAgreed] = useState(false);
   const [enabledSectionIndex, setEnabledSectionIndex] = useState(0);
@@ -239,6 +244,10 @@ const handleReviewSection = (
     setSelectedTest(null);
     setAgreed(false);
     setView('list');
+    setActiveAttemptId(null);
+    if (initialAttemptId) {
+      router.replace('/user/practice/test');
+    }
   };
 
   const handleAttemptSection = (section: UserTestSection, index: number) => {

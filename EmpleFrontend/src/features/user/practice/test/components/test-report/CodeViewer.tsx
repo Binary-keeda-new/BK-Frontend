@@ -21,7 +21,7 @@ export default function CodeViewer({ language, sourceCode }: Props) {
   const monacoLanguage = resolveLanguage(language);
 
   return (
-    <div className="relative h-[400px] w-full overflow-hidden rounded-xl border border-[var(--border)] bg-[#1e1e1e]">
+    <div className="relative h-[400px] w-full overflow-hidden rounded-xl  bg-[#1e1e1e]">
       <Editor
         height="100%"
         language={monacoLanguage}

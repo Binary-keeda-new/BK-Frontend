@@ -27,7 +27,7 @@ export default function OverallSummary({ report }: Props) {
     <ReportSection title="Overall Performance" icon={LayoutDashboard} className="!mt-8">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
         {/* Metric Cards - Admin Style */}
-        <div className="flex flex-col justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm transition-all duration-200 hover:border-[var(--muted)]">
+        <div className="flex flex-col justify-center rounded-xl  bg-[var(--surface)] p-4 shadow-sm transition-all duration-200 hover:border-[var(--muted)]">
           <p className="text-xs font-bold uppercase tracking-wider text-[var(--muted2)] flex items-center gap-2">
             <Clock className="h-4 w-4 text-[var(--orange)]" /> Time Used
           </p>
@@ -37,7 +37,7 @@ export default function OverallSummary({ report }: Props) {
         </div>
 
         {rank && rank.position && rank.totalCandidates && (
-          <div className="flex flex-col justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm transition-all duration-200 hover:border-[var(--muted)]">
+          <div className="flex flex-col justify-center rounded-xl  bg-[var(--surface)] p-4 shadow-sm transition-all duration-200 hover:border-[var(--muted)]">
             <p className="text-xs font-bold uppercase tracking-wider text-[var(--muted2)] flex items-center gap-2">
               <Trophy className="h-4 w-4 text-amber-500" /> Global Rank
             </p>
@@ -52,7 +52,7 @@ export default function OverallSummary({ report }: Props) {
 
         {hasMcq && (
           <>
-            <div className="flex flex-col justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm transition-all duration-200 hover:border-[var(--muted)]">
+            <div className="flex flex-col justify-center rounded-xl  bg-[var(--surface)] p-4 shadow-sm transition-all duration-200 hover:border-[var(--muted)]">
               <p className="text-xs font-bold uppercase tracking-wider text-[var(--muted2)] flex items-center gap-2">
                 <BrainCircuit className="h-4 w-4 text-[var(--orange)]" /> MCQ Score
               </p>
@@ -67,7 +67,7 @@ export default function OverallSummary({ report }: Props) {
               </p>
             </div>
             
-            <div className="flex flex-col justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm transition-all duration-200 hover:border-[var(--muted)]">
+            <div className="flex flex-col justify-center rounded-xl  bg-[var(--surface)] p-4 shadow-sm transition-all duration-200 hover:border-[var(--muted)]">
               <p className="text-xs font-bold uppercase tracking-wider text-[var(--muted2)]">
                 MCQ Breakdown
               </p>
@@ -90,7 +90,7 @@ export default function OverallSummary({ report }: Props) {
         )}
 
         {hasCoding && (
-          <div className="flex flex-col justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm transition-all duration-200 hover:border-[var(--muted)]">
+          <div className="flex flex-col justify-center rounded-xl  bg-[var(--surface)] p-4 shadow-sm transition-all duration-200 hover:border-[var(--muted)]">
             <p className="text-xs font-bold uppercase tracking-wider text-[var(--muted2)] flex items-center gap-2">
               <Code className="h-4 w-4 text-sky-500" /> Coding
             </p>

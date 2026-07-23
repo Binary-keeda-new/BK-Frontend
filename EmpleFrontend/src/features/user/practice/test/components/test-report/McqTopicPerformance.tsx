@@ -20,7 +20,7 @@ const CustomTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload as AggregationResult;
     return (
-      <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-lg min-w-[200px]">
+      <div className="rounded-xl  bg-[var(--surface)] p-4 shadow-lg min-w-[200px]">
         <p className="mb-3 font-bold text-[var(--text)] border-b border-[var(--border)] pb-2">{data.name}</p>
         
         <div className="space-y-1.5 text-sm">
@@ -60,13 +60,13 @@ export default function McqTopicPerformance({ data }: Props) {
   const isSingleTopic = sortedData.length === 1;
 
   return (
-    <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-sm">
+    <div className="rounded-3xl  bg-[var(--surface)] p-6 shadow-sm">
       <h3 className="mb-1 text-lg font-bold text-[var(--text)]">Topic Performance</h3>
       <p className="mb-6 text-sm text-[var(--muted2)]">Accuracy breakdown by topic category.</p>
 
       {isSingleTopic ? (
         // Compact card for single topic
-        <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg)] p-5">
+        <div className="rounded-2xl  bg-[var(--bg)] p-5">
           <div className="mb-4 flex items-center justify-between border-b border-[var(--border)] pb-4">
             <h4 className="font-bold text-[var(--text)] text-lg">{sortedData[0].name}</h4>
             <div className="flex items-center gap-2 rounded-lg bg-[var(--orange)]/10 px-3 py-1.5 text-[var(--orange)]">

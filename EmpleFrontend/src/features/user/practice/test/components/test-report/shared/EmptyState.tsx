@@ -6,7 +6,7 @@ type Props = {
 
 export default function EmptyState({ message }: Props) {
   return (
-    <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-8 text-center">
+    <div className="rounded-3xl  bg-[var(--surface)] p-8 text-center">
       <p className="text-sm font-medium text-[var(--muted2)]">
         {message}
       </p>

@@ -32,7 +32,7 @@ const CustomTooltip = ({ active, payload, totalSubmissions }: any) => {
     const percentage = totalSubmissions > 0 ? (data.count / totalSubmissions) * 100 : 0;
     
     return (
-      <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-3 shadow-lg">
+      <div className="rounded-xl  bg-[var(--surface)] p-3 shadow-lg">
         <p className="font-bold text-[var(--text)]">{data.language}</p>
         <p className="mt-1 text-sm text-[var(--muted2)]">
           Submissions: <span className="font-bold text-[var(--text)]">{data.count}</span>
@@ -74,12 +74,12 @@ export default function CodingLanguageDistribution({ data, totalSubmissions }: P
   const isSingleLanguage = data.length === 1;
 
   return (
-    <div className="flex flex-col rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm transition-all duration-200 hover:border-[var(--muted)]">
+    <div className="flex flex-col rounded-xl  bg-[var(--surface)] p-4 shadow-sm transition-all duration-200 hover:border-[var(--muted)]">
       <h3 className="mb-2 text-lg font-bold text-[var(--text)]">Language Usage</h3>
       <p className="mb-6 text-sm text-[var(--muted2)]">Languages used across coding submissions.</p>
 
       {isSingleLanguage ? (
-        <div className="flex flex-1 flex-col items-center justify-center rounded-2xl border border-[var(--border)] bg-[var(--bg)] p-6 text-center">
+        <div className="flex flex-1 flex-col items-center justify-center rounded-2xl  bg-[var(--bg)] p-6 text-center">
           <div className="mb-4 rounded-full bg-blue-500/10 p-4 text-blue-500">
             <Terminal className="h-8 w-8" />
           </div>

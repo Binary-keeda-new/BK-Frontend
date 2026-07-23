@@ -10,7 +10,7 @@ export default function CodingProblemPerformance({ codingReview }: Props) {
   if (!codingReview || codingReview.length === 0) return null;
 
   return (
-    <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm transition-all duration-200 hover:border-[var(--muted)]">
+    <div className="rounded-xl  bg-[var(--surface)] p-4 shadow-sm transition-all duration-200 hover:border-[var(--muted)]">
       <h3 className="mb-2 text-lg font-bold text-[var(--text)]">Problem Performance</h3>
       <p className="mb-6 text-sm text-[var(--muted2)]">Detailed performance per coding problem.</p>
 
@@ -35,7 +35,7 @@ export default function CodingProblemPerformance({ codingReview }: Props) {
           }
 
           return (
-            <div key={item.problemId || index} className="flex flex-col rounded-2xl border border-[var(--border)] bg-[var(--bg)] p-5">
+            <div key={item.problemId || index} className="flex flex-col rounded-2xl  bg-[var(--bg)] p-5">
               
               {/* Header: Title, Badge, Status */}
               <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border-b border-[var(--border)] pb-4">
@@ -45,10 +45,10 @@ export default function CodingProblemPerformance({ codingReview }: Props) {
                     <h4 className="font-bold text-[var(--text)] text-base">{title}</h4>
                   </div>
                   <div className="mt-2 flex flex-wrap items-center gap-2">
-                    <span className="inline-flex items-center gap-1 rounded border border-[var(--border)] bg-[var(--surface)] px-2 py-0.5 text-xs font-medium text-[var(--muted2)]">
+                    <span className="inline-flex items-center gap-1 rounded  bg-[var(--surface)] px-2 py-0.5 text-xs font-medium text-[var(--muted2)]">
                       {difficulty}
                     </span>
-                    <span className="inline-flex items-center gap-1 rounded border border-[var(--border)] bg-[var(--surface)] px-2 py-0.5 text-xs font-medium text-[var(--muted2)]">
+                    <span className="inline-flex items-center gap-1 rounded  bg-[var(--surface)] px-2 py-0.5 text-xs font-medium text-[var(--muted2)]">
                       <Terminal className="h-3 w-3" />
                       {item.language}
                     </span>

@@ -80,6 +80,8 @@ export interface UserTestReport {
     accepted: boolean;
     passedCount: number;
     totalCount: number;
+    marks?: number;
+    totalMarks?: number;
     sourceCode: string;
     compileOutput?: string | null;
     stderr?: string | null;

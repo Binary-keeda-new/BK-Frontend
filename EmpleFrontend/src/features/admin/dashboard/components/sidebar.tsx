@@ -223,6 +223,7 @@ export default function Sidebar({
                 src={LOGO_URL}
                 alt="Logo"
                 fill
+                sizes="220px"
                 className="object-contain object-left"
                 priority
               />
@@ -231,6 +232,7 @@ export default function Sidebar({
                 src="/logo-isolated.png"
                 alt="Logo icon"
                 fill
+                sizes="66px"
                 className="object-contain object-left"
                 priority
               />

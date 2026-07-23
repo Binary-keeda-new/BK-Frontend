@@ -13,7 +13,7 @@ export default function CodingSummary({ report }: Props) {
   const testcasePassRate = calculateRate(summary.codingTestCasesPassed, summary.codingTestCasesTotal);
 
   return (
-    <div className="flex flex-col justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm transition-all duration-200 hover:border-[var(--muted)]">
+    <div className="flex flex-col justify-center rounded-xl  bg-[var(--surface)] p-4 shadow-sm transition-all duration-200 hover:border-[var(--muted)]">
       <h3 className="mb-6 text-lg font-bold text-[var(--text)]">Coding Overview</h3>
       
       <div className="flex flex-col items-center justify-center mb-8">
@@ -27,7 +27,7 @@ export default function CodingSummary({ report }: Props) {
 
       <div className="grid grid-cols-2 gap-4">
         {/* Problems Accepted */}
-        <div className="flex flex-col rounded-2xl border border-[var(--border)] bg-[var(--bg)] p-4 text-center">
+        <div className="flex flex-col rounded-2xl  bg-[var(--bg)] p-4 text-center">
           <div className="mx-auto mb-2 rounded-full bg-emerald-500/10 p-2 text-emerald-500">
             <CheckCircle2 className="h-5 w-5" />
           </div>
@@ -38,7 +38,7 @@ export default function CodingSummary({ report }: Props) {
         </div>
 
         {/* Testcases Passed */}
-        <div className="flex flex-col rounded-2xl border border-[var(--border)] bg-[var(--bg)] p-4 text-center">
+        <div className="flex flex-col rounded-2xl  bg-[var(--bg)] p-4 text-center">
           <div className="mx-auto mb-2 rounded-full bg-blue-500/10 p-2 text-blue-500">
             <Hash className="h-5 w-5" />
           </div>

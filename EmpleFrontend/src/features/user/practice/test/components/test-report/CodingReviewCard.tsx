@@ -43,10 +43,10 @@ export default function CodingReviewCard({ item, index, isExpanded, onToggle }: 
   const passRate = calculateRate(item.passedCount, item.totalCount);
 
   return (
-    <div className={`overflow-hidden rounded-xl border transition-all duration-200 ${
+    <div className={`overflow-hidden rounded-xl transition-all duration-200 ${
       isExpanded 
-        ? 'border-[var(--muted)] shadow-sm bg-[var(--surface)]' 
-        : 'border-[var(--border)] bg-[var(--surface)] hover:border-[var(--muted)]'
+        ? 'shadow-sm bg-[var(--surface)]' 
+        : 'bg-[var(--surface)]'
     }`}>
       {/* Accordion Header */}
       <button 
@@ -56,7 +56,7 @@ export default function CodingReviewCard({ item, index, isExpanded, onToggle }: 
       >
         <div className="flex flex-1 items-start gap-4">
           <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl font-black text-lg transition-colors ${
-            isExpanded ? 'bg-sky-500 text-white shadow-md' : 'bg-[var(--surface)] text-[var(--text)] border border-[var(--border)]'
+            isExpanded ? 'bg-sky-500 text-white shadow-md' : 'bg-[var(--surface)] text-[var(--text)] '
           }`}>
             {index + 1}
           </div>
@@ -76,15 +76,15 @@ export default function CodingReviewCard({ item, index, isExpanded, onToggle }: 
                 <StatusIcon className="h-3.5 w-3.5" />
                 {statusText}
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-[var(--muted2)] shadow-sm">
+              <span className="inline-flex items-center gap-1.5 rounded-lg  bg-[var(--surface)] px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-[var(--muted2)] shadow-sm">
                 {difficulty}
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-[var(--muted2)] shadow-sm">
+              <span className="inline-flex items-center gap-1.5 rounded-lg  bg-[var(--surface)] px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-[var(--muted2)] shadow-sm">
                 <Terminal className="h-3.5 w-3.5" />
                 {language}
               </span>
               {!isExpanded && item.totalCount > 0 && (
-                <span className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 text-xs font-black text-[var(--text)] shadow-sm">
+                <span className="inline-flex items-center gap-1.5 rounded-lg  bg-[var(--surface)] px-3 py-1.5 text-xs font-black text-[var(--text)] shadow-sm">
                   {item.passedCount} / {item.totalCount} ({formatPercentage(passRate)})
                 </span>
               )}
@@ -108,7 +108,7 @@ export default function CodingReviewCard({ item, index, isExpanded, onToggle }: 
             
             {/* Detailed Testcase Summary */}
             {item.totalCount > 0 && (
-              <div className="mb-6 flex flex-col gap-6 rounded-2xl border border-[var(--border)] bg-[var(--bg)] p-5 sm:flex-row sm:items-center sm:justify-between shadow-sm">
+              <div className="mb-6 flex flex-col gap-6 rounded-2xl  bg-[var(--bg)] p-5 sm:flex-row sm:items-center sm:justify-between shadow-sm">
                 <div className="flex items-center gap-8">
                   <div>
                     <p className="text-xs font-bold uppercase tracking-wider text-[var(--muted2)] flex items-center gap-1.5 mb-1">
@@ -122,6 +122,14 @@ export default function CodingReviewCard({ item, index, isExpanded, onToggle }: 
                     </p>
                     <p className="text-2xl font-black text-[var(--text)]">{formatPercentage(passRate)}</p>
                   </div>
+                  {item.totalMarks !== undefined && (
+                    <div>
+                      <p className="text-xs font-bold uppercase tracking-wider text-[var(--muted2)] flex items-center gap-1.5 mb-1">
+                        <Target className="h-4 w-4" /> Points
+                      </p>
+                      <p className="text-2xl font-black text-[var(--text)]">{item.marks} <span className="text-base font-semibold text-[var(--muted2)]">/ {item.totalMarks}</span></p>
+                    </div>
+                  )}
                 </div>
                 
                 <div className="w-full sm:max-w-xs shrink-0">
@@ -146,14 +154,14 @@ export default function CodingReviewCard({ item, index, isExpanded, onToggle }: 
             {(item.executionTime != null || item.memory != null) && (
               <div className="mb-6 flex flex-wrap items-center gap-4 text-sm">
                 {item.executionTime != null && (
-                  <div className="flex items-center gap-2 rounded-xl border border-[var(--border)] bg-[var(--bg)] px-4 py-2 text-[var(--text)] shadow-sm">
+                  <div className="flex items-center gap-2 rounded-xl  bg-[var(--bg)] px-4 py-2 text-[var(--text)] shadow-sm">
                     <Clock className="h-4 w-4 text-blue-500" />
                     <span className="font-black text-base">{item.executionTime}s</span>
                     <span className="text-xs font-bold uppercase tracking-wider text-[var(--muted2)]">Avg Runtime</span>
                   </div>
                 )}
                 {item.memory != null && (
-                  <div className="flex items-center gap-2 rounded-xl border border-[var(--border)] bg-[var(--bg)] px-4 py-2 text-[var(--text)] shadow-sm">
+                  <div className="flex items-center gap-2 rounded-xl  bg-[var(--bg)] px-4 py-2 text-[var(--text)] shadow-sm">
                     <HardDrive className="h-4 w-4 text-violet-500" />
                     <span className="font-black text-base">{item.memory} KB</span>
                     <span className="text-xs font-bold uppercase tracking-wider text-[var(--muted2)]">Avg Memory</span>
@@ -196,7 +204,7 @@ export default function CodingReviewCard({ item, index, isExpanded, onToggle }: 
                 <Terminal className="h-4 w-4 text-[var(--muted2)]" />
                 Source Code
               </h5>
-              <div className="overflow-hidden rounded-2xl border border-[var(--border)] shadow-sm">
+              <div className="overflow-hidden rounded-2xl  shadow-sm">
                 <Suspense fallback={
                   <div className="flex h-[400px] items-center justify-center bg-[#1e1e1e]">
                     <span className="text-sm font-bold uppercase tracking-wider text-[var(--muted2)]">Loading editor...</span>

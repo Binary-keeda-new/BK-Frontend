@@ -20,7 +20,7 @@ const CustomTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     return (
-      <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-3 shadow-lg">
+      <div className="rounded-xl  bg-[var(--surface)] p-3 shadow-lg">
         <p className="font-bold text-[var(--text)] capitalize">{data.name}</p>
         <p className="text-sm text-[var(--muted2)]">
           Count: <span className="font-bold text-[var(--text)]">{data.value}</span>
@@ -54,7 +54,7 @@ const CustomLegend = ({ payload }: any) => {
 export default function McqDistributionChart({ correct, incorrect, skipped, total }: Props) {
   if (total === 0) {
     return (
-      <div className="flex h-[250px] items-center justify-center rounded-2xl border border-[var(--border)] bg-[var(--bg)] p-4 text-center">
+      <div className="flex h-[250px] items-center justify-center rounded-2xl  bg-[var(--bg)] p-4 text-center">
         <p className="text-sm font-medium text-[var(--muted2)]">No MCQ data available</p>
       </div>
     );

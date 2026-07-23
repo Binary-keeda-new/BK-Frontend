@@ -46,7 +46,7 @@ export default function McqAnalytics({ report }: Props) {
       {/* Top Row: Distribution & Accuracy Summary */}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         {/* Distribution Chart */}
-        <div className="flex flex-col rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm transition-all duration-200 hover:border-[var(--muted)]">
+        <div className="flex flex-col rounded-xl  bg-[var(--surface)] p-4 shadow-sm transition-all duration-200 hover:border-[var(--muted)]">
           <h3 className="mb-2 text-lg font-bold text-[var(--text)]">Response Distribution</h3>
           <p className="text-sm text-[var(--muted2)] mb-4">Overall breakdown of MCQ responses.</p>
           <div className="flex-1">
@@ -60,7 +60,7 @@ export default function McqAnalytics({ report }: Props) {
         </div>
 
         {/* Accuracy Summary */}
-        <div className="flex flex-col justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm transition-all duration-200 hover:border-[var(--muted)]">
+        <div className="flex flex-col justify-center rounded-xl  bg-[var(--surface)] p-4 shadow-sm transition-all duration-200 hover:border-[var(--muted)]">
           <h3 className="mb-6 text-lg font-bold text-[var(--text)]">Accuracy Summary</h3>
           
           <div className="flex flex-col items-center justify-center mb-8">
@@ -73,14 +73,14 @@ export default function McqAnalytics({ report }: Props) {
           </div>
 
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-2">
-            <div className="flex flex-col rounded-2xl border border-[var(--border)] bg-[var(--bg)] p-4 text-center">
+            <div className="flex flex-col rounded-2xl  bg-[var(--bg)] p-4 text-center">
               <div className="mx-auto mb-2 rounded-full bg-blue-500/10 p-2 text-blue-500">
                 <HelpCircle className="h-5 w-5" />
               </div>
               <p className="text-xs text-[var(--muted2)]">Attempted</p>
               <p className="mt-1 font-bold text-[var(--text)]">{attempted} <span className="text-xs font-normal text-[var(--muted2)]">/ {summary.totalMcqQuestions}</span></p>
             </div>
-            <div className="flex flex-col rounded-2xl border border-[var(--border)] bg-[var(--bg)] p-4 text-center">
+            <div className="flex flex-col rounded-2xl  bg-[var(--bg)] p-4 text-center">
               <div className="mx-auto mb-2 rounded-full bg-amber-500/10 p-2 text-amber-500">
                 <SkipForward className="h-5 w-5" />
               </div>

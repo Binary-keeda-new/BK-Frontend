@@ -36,7 +36,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
     const data = payload[0].payload;
     const isMcq = data.type === 'mcq';
     return (
-      <div className="rounded-2xl border border-[var(--border)]/80 bg-[var(--surface)]/90 p-4 shadow-xl backdrop-blur-md">
+      <div className="rounded-2xl /80 bg-[var(--surface)]/90 p-4 shadow-xl backdrop-blur-md">
         <p className="mb-2 font-extrabold text-[var(--text)]">{data.fullTitle}</p>
         <p className="flex items-center justify-between gap-6 text-sm">
           <span className="font-semibold uppercase tracking-wider text-[var(--muted2)] text-xs">

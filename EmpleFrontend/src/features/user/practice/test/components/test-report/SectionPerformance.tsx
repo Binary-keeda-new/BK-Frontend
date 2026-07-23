@@ -25,7 +25,7 @@ export default function SectionPerformance({ report }: Props) {
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Chart Column */}
-        <div className="col-span-1 lg:col-span-1 flex flex-col rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm transition-all duration-200 hover:border-[var(--muted)]">
+        <div className="col-span-1 lg:col-span-1 flex flex-col rounded-xl  bg-[var(--surface)] p-4 shadow-sm transition-all duration-200 hover:border-[var(--muted)]">
           <h3 className="mb-2 text-xl font-extrabold text-[var(--text)]">
             Performance Overview
           </h3>

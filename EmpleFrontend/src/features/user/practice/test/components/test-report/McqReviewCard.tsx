@@ -57,7 +57,7 @@ export default function McqReviewCard({ item, index, isExpanded, onToggle }: Pro
             // but if options is an array of strings, it's just the text.
             const resolvedText = opt;
             return (
-              <li key={i} className="rounded-lg border border-[var(--border)] bg-[var(--surface)] p-3 text-sm text-[var(--text)]">
+              <li key={i} className="rounded-lg  bg-[var(--surface)] p-3 text-sm text-[var(--text)]">
                 {resolvedText || "Selected option unavailable"}
               </li>
             );
@@ -68,10 +68,10 @@ export default function McqReviewCard({ item, index, isExpanded, onToggle }: Pro
   };
 
   return (
-    <div className={`overflow-hidden rounded-xl border transition-all duration-200 ${
+    <div className={`overflow-hidden rounded-xl transition-all duration-200 ${
       isExpanded 
-        ? 'border-[var(--muted)] shadow-sm bg-[var(--surface)]' 
-        : 'border-[var(--border)] bg-[var(--surface)] hover:border-[var(--muted)]'
+        ? 'shadow-sm bg-[var(--surface)]' 
+        : 'bg-[var(--surface)]'
     }`}>
       {/* Accordion Header */}
       <button 
@@ -81,7 +81,7 @@ export default function McqReviewCard({ item, index, isExpanded, onToggle }: Pro
       >
         <div className="flex flex-1 gap-4">
           <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl font-black text-lg transition-colors ${
-            isExpanded ? 'bg-[var(--orange)] text-white shadow-md' : 'bg-[var(--surface)] text-[var(--text)] border border-[var(--border)]'
+            isExpanded ? 'bg-[var(--orange)] text-white shadow-md' : 'bg-[var(--surface)] text-[var(--text)] '
           }`}>
             {index + 1}
           </div>
@@ -125,14 +125,14 @@ export default function McqReviewCard({ item, index, isExpanded, onToggle }: Pro
                 <StatusIcon className="h-4 w-4" />
                 {statusText}
               </span>
-              <span className={`rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 text-sm font-black shadow-sm ${marksColor}`}>
+              <span className={`rounded-lg  bg-[var(--surface)] px-3 py-1.5 text-sm font-black shadow-sm ${marksColor}`}>
                 Marks Earned: {item.marks > 0 ? '+' : ''}{item.marks}
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-[var(--muted2)] shadow-sm">
+              <span className="inline-flex items-center gap-1.5 rounded-lg  bg-[var(--surface)] px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-[var(--muted2)] shadow-sm">
                 <Target className="h-3.5 w-3.5" />
                 {item.topic || 'General'}
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-[var(--muted2)] shadow-sm">
+              <span className="inline-flex items-center gap-1.5 rounded-lg  bg-[var(--surface)] px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-[var(--muted2)] shadow-sm">
                 {item.difficulty || 'Medium'}
               </span>
             </div>

@@ -35,7 +35,7 @@ export default function SectionPerformanceCard({ section }: Props) {
   }
 
   return (
-    <div className="flex flex-col overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm transition-all duration-200 hover:border-[var(--muted)]">
+    <div className="flex flex-col overflow-hidden rounded-xl  bg-[var(--surface)] p-4 shadow-sm transition-all duration-200 hover:border-[var(--muted)]">
       {/* Header */}
       <div className="mb-5 flex items-start justify-between gap-4 border-b border-[var(--border)]/50 pb-5">
         <div>
@@ -46,7 +46,7 @@ export default function SectionPerformanceCard({ section }: Props) {
             <h3 className="text-lg font-bold tracking-tight text-[var(--text)]">{section.title}</h3>
           </div>
           <div className="mt-3 flex flex-wrap gap-2">
-            <span className="inline-block rounded-lg border border-[var(--border)] bg-[var(--bg)] px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-[var(--muted2)]">
+            <span className="inline-block rounded-lg  bg-[var(--bg)] px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-[var(--muted2)]">
               {isMcq ? 'MCQ' : 'Coding'}
             </span>
             <span className={`inline-block rounded-lg border px-2.5 py-1 text-xs font-bold capitalize tracking-wide ${
@@ -63,7 +63,7 @@ export default function SectionPerformanceCard({ section }: Props) {
       {/* Main Stats */}
       <div className="mb-6 grid grid-cols-2 gap-4">
         {/* Score/Evaluation */}
-        <div className="rounded-2xl border border-[var(--border)]/50 bg-[var(--surface)]/50 p-4 backdrop-blur-sm">
+        <div className="rounded-2xl bg-[var(--surface)]/50 p-4 backdrop-blur-sm">
           <p className="text-xs font-bold uppercase tracking-wider text-[var(--muted2)]">Score</p>
           {section.score !== null && section.totalMarks !== null ? (
             <p className="mt-1 text-3xl font-black text-[var(--text)]">
@@ -77,7 +77,7 @@ export default function SectionPerformanceCard({ section }: Props) {
         </div>
 
         {/* Time Spent */}
-        <div className="rounded-2xl border border-[var(--border)]/50 bg-[var(--surface)]/50 p-4 backdrop-blur-sm">
+        <div className="rounded-2xl bg-[var(--surface)]/50 p-4 backdrop-blur-sm">
           <p className="text-xs font-bold uppercase tracking-wider text-[var(--muted2)]">Time Spent</p>
           <div className="mt-1 flex items-center gap-2 text-2xl font-black text-[var(--text)]">
             <Clock className="h-5 w-5 text-[var(--orange)]" />
@@ -86,7 +86,7 @@ export default function SectionPerformanceCard({ section }: Props) {
         </div>
         
         {/* Attempted */}
-        <div className="rounded-2xl border border-[var(--border)]/50 bg-[var(--surface)]/50 p-4 backdrop-blur-sm">
+        <div className="rounded-2xl bg-[var(--surface)]/50 p-4 backdrop-blur-sm">
           <p className="text-xs font-bold uppercase tracking-wider text-[var(--muted2)]">Attempted</p>
           <div className="mt-1 flex items-center gap-2 text-2xl font-black text-[var(--text)]">
             <Hash className="h-5 w-5 text-sky-500" />
@@ -95,7 +95,7 @@ export default function SectionPerformanceCard({ section }: Props) {
         </div>
         
         {/* Accuracy/Acceptance Rate */}
-        <div className="rounded-2xl border border-[var(--border)]/50 bg-[var(--surface)]/50 p-4 backdrop-blur-sm">
+        <div className="rounded-2xl bg-[var(--surface)]/50 p-4 backdrop-blur-sm">
           <p className="text-xs font-bold uppercase tracking-wider text-[var(--muted2)]">
             {isMcq ? 'Accuracy' : 'Acceptance Rate'}
           </p>
@@ -107,7 +107,7 @@ export default function SectionPerformanceCard({ section }: Props) {
       </div>
 
       {/* Progress Indicator */}
-      <div className="relative z-10 mt-auto rounded-2xl bg-[var(--bg)] p-4 border border-[var(--border)]/50">
+      <div className="relative z-10 mt-auto rounded-2xl bg-[var(--bg)] p-4 /50">
         <div className="mb-2 flex items-center justify-between text-xs font-bold tracking-wide">
           <span className="uppercase text-[var(--muted2)]">
             {isMcq ? 'Accuracy Progress' : 'Acceptance Progress'}
