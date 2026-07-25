@@ -133,7 +133,7 @@ export default function QuizQuestionForm({
           try {
             setUploadingSolutionImage(true);
 
-            const imageUrl = await uploadAdminImage(file);
+            const imageUrl = await uploadAdminImage(file, 'quiz');
 
             updateQ(question.id, {
               solutionMedia: imageUrl,
