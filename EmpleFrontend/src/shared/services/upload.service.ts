@@ -13,9 +13,10 @@ type UploadImageResponse = {
   };
 };
 
-export async function uploadAdminImage(file: File): Promise<string> {
+export async function uploadAdminImage(file: File, moduleName: string = 'misc'): Promise<string> {
   const formData = new FormData();
   formData.append("image", file);
+  formData.append("module", moduleName);
 
   const headers: Record<string, string> = {};
 
