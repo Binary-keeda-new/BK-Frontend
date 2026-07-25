@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { fetchJobs } from '@/features/user/jobs/services/jobs.service';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://emple.in';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://www.emple.in";
   
   const staticPages: MetadataRoute.Sitemap = [
     { url: baseUrl, lastModified: new Date(), changeFrequency: 'daily', priority: 1 },
