@@ -39,6 +39,7 @@ export function ResumeUploadForm({
     try {
       const formData = new FormData();
       formData.append('document', file);
+      formData.append('module', 'resume');
       
       const token = (await import('@descope/nextjs-sdk/client')).getSessionToken();
       const headers = { ...(token ? { Authorization: `Bearer ${token}` } : {}) };
@@ -70,7 +71,7 @@ export function ResumeUploadForm({
     setUploadingPhoto(true);
     setError('');
     try {
-      const url = await uploadAdminImage(file);
+      const url = await uploadAdminImage(file, 'profile');
       onChange({ profilePhoto: url });
     } catch (err: any) {
       setError(err.message || 'Failed to upload photo');

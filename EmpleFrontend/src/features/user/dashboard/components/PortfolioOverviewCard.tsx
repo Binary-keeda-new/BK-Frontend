@@ -242,14 +242,6 @@ export default function PortfolioOverviewCard() {
                   <>Create Portfolio <PlusCircle size={14} /></>
                 )}
               </Link>
-              
-              <Link 
-                href="/dashboard/profile"
-                className="w-full flex items-center justify-center gap-2 py-2 rounded-[8px] font-semibold transition-all hover:bg-[rgba(255,255,255,0.05)]"
-                style={{ color: "var(--muted)", fontSize: "clamp(11px, 2.8vw, 12px)" }}
-              >
-                <Edit2 size={13} /> Edit Profile
-              </Link>
             </div>
             
           </div>
