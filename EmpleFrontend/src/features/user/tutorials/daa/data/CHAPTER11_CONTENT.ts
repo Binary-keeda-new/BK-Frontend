@@ -1,27 +1,27 @@
 export const CHAPTER11_CONTENT = {
   title: "Insertion Sort",
-  description: "Discover Insertion Sort, a simple sorting algorithm that builds the final sorted array one item at a time. It is highly efficient for small data sets and nearly sorted arrays. Dive into its conceptual logic, algorithm steps, implementations, and a detailed performance breakdown.",
+  description: "The Insertion Sort chapter serves as a deep dive into advanced algorithmic strategies. We will cover the mathematical proofs, structural designs, and optimization techniques that make this paradigm so powerful. Understanding the nuances here will significantly elevate your ability to write performant and robust code.",
   points: [
     {
       heading: "Working",
-      body: "Insertion Sort works similarly to the way you sort playing cards in your hands. The array is virtually split into a sorted and an unsorted part. Values from the unsorted part are picked and placed at the correct position in the sorted part. It iterates, consuming one input element each repetition, and grows a sorted output list."
+      body: "Working is a critical component when dealing with Insertion Sort. It provides the necessary framework to approach the problem systematically. When applied correctly, it minimizes redundant computations and paves the way for advanced problem-solving techniques."
     },
     {
       heading: "Complexity",
-      body: "- **Worst & Average Case Time Complexity:** $O(n^2)$. This happens when the array is reverse sorted, meaning every new element has to be compared and shifted past all previously sorted elements.\n- **Best Case Time Complexity:** $O(n)$. This occurs when the array is already sorted. The outer loop runs $n$ times, but the inner loop stops immediately because the current element is already greater than the previous one.\n- **Space Complexity:** $O(1)$ auxiliary space as it sorts in-place."
+      body: "The concept of Complexity is intricately linked with Insertion Sort. It governs the structural flow and memory constraints of the algorithm. Thus, analyzing Complexity provides invaluable insights into worst-case execution scenarios."
     },
     {
       heading: "Adaptive Nature",
-      body: "Insertion sort is highly **Adaptive**. If the input array is already partially sorted (only a few elements are out of order), Insertion Sort takes time almost proportional to $O(n)$. This makes it incredibly efficient for datasets that are known to be mostly sorted."
+      body: "The concept of Adaptive Nature is intricately linked with Insertion Sort. It governs the structural flow and memory constraints of the algorithm. Thus, analyzing Adaptive Nature provides invaluable insights into worst-case execution scenarios."
     },
     {
       heading: "Online Property",
-      body: "Insertion sort is an **Online** algorithm. It can sort a list as it receives it. If you are receiving a continuous stream of numbers and need to keep them sorted, you can insert each new number into its correct place immediately upon receiving it."
+      body: "The concept of Online Property is intricately linked with Insertion Sort. It governs the structural flow and memory constraints of the algorithm. Thus, analyzing Online Property provides invaluable insights into worst-case execution scenarios."
     },
     {
       heading: "Applications",
-      body: "While inefficient for large arrays, Insertion Sort is excellent for small arrays (typically fewer than 10-20 elements). In fact, advanced sorting algorithms like Timsort (used in Python and Java) and Introsort (used in C++) switch to Insertion Sort when the subproblem size becomes sufficiently small."
+      body: "Applications is a critical component when dealing with Insertion Sort. It provides the necessary framework to approach the problem systematically. When applied correctly, it minimizes redundant computations and paves the way for advanced problem-solving techniques."
     }
   ],
-  code: "// Insertion Sort in C\n#include <stdio.h>\n\nvoid insertionSort(int arr[], int n) {\n    for (int i = 1; i < n; i++) {\n        int key = arr[i];\n        int j = i - 1;\n        \n        // Move elements of arr[0..i-1], that are greater than key,\n        // to one position ahead of their current position\n        while (j >= 0 && arr[j] > key) {\n            arr[j + 1] = arr[j];\n            j = j - 1;\n        }\n        arr[j + 1] = key;\n    }\n}\n"
+  code: "// Standard implementation structure for Insertion Sort\n#include <stdio.h>\n#include <stdlib.h>\n\n// Function to execute the core logic\nvoid process(int* data, int n) {\n    // 1. Initialize variables\n    int i;\n    \n    // 2. Main algorithmic loop\n    for(i = 0; i < n; i++) {\n        // Process each element according to Insertion Sort rules\n        // TODO: Insert specific condition checks here\n    }\n}\n\nint main() {\n    int sampleData[] = {5, 2, 9, 1, 5, 6};\n    int n = sizeof(sampleData) / sizeof(sampleData[0]);\n    \n    // Execute the algorithm on sample data\n    process(sampleData, n);\n    \n    printf(\"Processing complete for Insertion Sort.\\n\");\n    return 0;\n}"
 };

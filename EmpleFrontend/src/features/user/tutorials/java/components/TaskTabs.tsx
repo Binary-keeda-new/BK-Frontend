@@ -448,7 +448,7 @@ export function CompleteTab({ chapter, onXP }: TabProps) {
     setCorrect(false);
   };
 
-  const parts = ex.template.split("___");
+  const parts = ex.template.split(/_{3,}/);
   let blankCount = 0;
 
   return (

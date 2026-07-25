@@ -1,23 +1,24 @@
 export const CHAPTER12_DRAG = [
   {
-    instructions: "Arrange the steps to perform Merge Sort recursively.",
+    instructions: "Order the operations of Merge Sort (Divide & Conquer).",
     lines: [
-      { id: "1", text: "1. If the array has 1 or 0 elements, return (Base Case)." },
-      { id: "2", text: "2. Calculate the middle index of the array." },
-      { id: "3", text: "3. Recursively call Merge Sort on the left half." },
-      { id: "4", text: "4. Recursively call Merge Sort on the right half." },
-      { id: "5", text: "5. Merge the two sorted halves back together." }
+      { id: "1", text: "Check base case (l < r)" },
+      { id: "2", text: "Merge the two sorted halves" },
+      { id: "3", text: "Recursively sort the left half [l..m]" },
+      { id: "4", text: "Recursively sort the right half [m+1..r]" },
+      { id: "5", text: "Calculate middle index m" }
     ],
-    order: ["1", "2", "3", "4", "5"]
+    order: ["1", "5", "3", "4", "2"]
   },
   {
-    instructions: "Arrange the steps inside the Merge() function.",
+    instructions: "Arrange the steps inside the Merge procedure.",
     lines: [
-      { id: "1", text: "1. Create temporary arrays L[] and R[]." },
-      { id: "2", text: "2. Copy data from the main array into L[] and R[]." },
-      { id: "3", text: "3. Compare elements of L[] and R[] and place the smaller one into the main array." },
-      { id: "4", text: "4. Once one temp array is exhausted, copy the remaining elements from the other." }
+      { id: "1", text: "Allocate memory for temporary arrays L and R" },
+      { id: "2", text: "Copy any remaining elements from L or R" },
+      { id: "3", text: "Compare elements and copy smallest back to original array" },
+      { id: "4", text: "Calculate sizes of two subarrays" },
+      { id: "5", text: "Copy data into temporary arrays" }
     ],
-    order: ["1", "2", "3", "4"]
+    order: ["4", "1", "5", "3", "2"]
   }
 ];

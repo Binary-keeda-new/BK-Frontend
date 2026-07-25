@@ -14,6 +14,7 @@ export type AdminSection =
   | 'question-bank-detail'
   | 'coding-problems'
   | 'coding-problem-edit'
+  | 'coding-problem-preview'
   | 'jobs'
   | 'blogs'
   | 'sessions'
@@ -24,8 +25,10 @@ export type AdminSection =
   | 'quiz-edit'
   | 'quiz-create'
   | 'test-edit'
+  | 'test-create'
   | 'quiz-report'
-  |'quiz-attempt-review';
+  |'quiz-attempt-review'
+  | 'test-report';
 
 const NAV_ITEMS: {
   label: string;
@@ -220,6 +223,7 @@ export default function Sidebar({
                 src={LOGO_URL}
                 alt="Logo"
                 fill
+                sizes="220px"
                 className="object-contain object-left"
                 priority
               />
@@ -228,6 +232,7 @@ export default function Sidebar({
                 src="/logo-isolated.png"
                 alt="Logo icon"
                 fill
+                sizes="66px"
                 className="object-contain object-left"
                 priority
               />

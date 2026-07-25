@@ -96,8 +96,8 @@ export async function fetchLearnersCountAPI(): Promise<number> {
       headers: {
         'Content-Type': 'application/json',
       },
-      // Cache revalidation to ensure we get fresh data occasionally
-      next: { revalidate: 60 },
+      // Disable caching to ensure we get fresh data every time
+      cache: 'no-store',
     });
     
     if (!res.ok) return 0;

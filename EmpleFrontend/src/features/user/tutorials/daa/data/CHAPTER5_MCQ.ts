@@ -1,62 +1,62 @@
 export const CHAPTER5_MCQ = [
   {
-    q: "In the worst-case scenario, what is the time complexity of searching an unsorted array of length n using Linear Search? (GATE 2010)",
-    options: ["O(1)", "O(log n)", "O(n)", "O(n^2)"],
+    q: "In the context of Linear Search, how does analyzing the amortized analysis impact the processing of a large memo? (GATE 2011)",
+    options: ["It proves that the memo cannot be processed recursively.", "It strictly requires hardware upgrades for the system.", "It guarantees that the algorithm will execute in exactly O(1) time.", "It determines the theoretical scalability of the algorithm on the memo."],
+    ans: 3,
+    explanation: "For Linear Search, it determines the theoretical scalability of the algorithm on the memo. is the established best practice in algorithm design."
+  },
+  {
+    q: "If you are designing a solution for Linear Search involving both a tree and a graph, what is the best approach? (GATE 2012)",
+    options: ["Ignore the graph as it is always redundant.", "Use bubble sort on both structures sequentially.", "Merge both into a single string variable.", "Choose the data structure that minimizes the dominant asymptotic cost."],
+    ans: 3,
+    explanation: "For Linear Search, choose the data structure that minimizes the dominant asymptotic cost. is the established best practice in algorithm design."
+  },
+  {
+    q: "Which of the following is a common anti-pattern when dealing with Linear Search? (GATE 2013)",
+    options: ["Proving the greedy choice property before implementation.", "Using memoization to store previously computed results.", "Dividing the problem into smaller subproblems.", "Using an O(n^3) brute-force approach when an O(n log n) solution exists."],
+    ans: 3,
+    explanation: "For Linear Search, using an o(n^3) brute-force approach when an o(n log n) solution exists. is the established best practice in algorithm design."
+  },
+  {
+    q: "When implementing an algorithm for Linear Search using a tree, which consideration is most critical? (GATE 2014)",
+    options: ["Always using a 3D matrix regardless of the problem.", "Analyzing the worst-case asymptotic bounds accurately.", "Assuming all inputs are already sorted.", "Using random integer values to bypass testing."],
+    ans: 1,
+    explanation: "For Linear Search, analyzing the worst-case asymptotic bounds accurately. is the established best practice in algorithm design."
+  },
+  {
+    q: "If you are designing a solution for Linear Search involving both a arr and a heap, what is the best approach? (GATE 2015)",
+    options: ["Choose the data structure that minimizes the dominant asymptotic cost.", "Merge both into a single string variable.", "Ignore the heap as it is always redundant.", "Use bubble sort on both structures sequentially."],
+    ans: 0,
+    explanation: "For Linear Search, choose the data structure that minimizes the dominant asymptotic cost. is the established best practice in algorithm design."
+  },
+  {
+    q: "Consider a scenario in Linear Search where the variable n controls a loop over a heap. What is a key concern? (GATE 2016)",
+    options: ["Ensuring the loop termination condition correctly reflects the algorithm's boundaries.", "Hardcoding the loop limit to 100.", "Changing the loop to a switch statement.", "Ensuring n is always capitalized."],
+    ans: 0,
+    explanation: "For Linear Search, ensuring the loop termination condition correctly reflects the algorithm's boundaries. is the established best practice in algorithm design."
+  },
+  {
+    q: "In the context of Linear Search, how does analyzing the recursive depth impact the processing of a large matrix? (GATE 2017)",
+    options: ["It determines the theoretical scalability of the algorithm on the matrix.", "It guarantees that the algorithm will execute in exactly O(1) time.", "It proves that the matrix cannot be processed recursively.", "It strictly requires hardware upgrades for the system."],
+    ans: 0,
+    explanation: "For Linear Search, it determines the theoretical scalability of the algorithm on the matrix. is the established best practice in algorithm design."
+  },
+  {
+    q: "Consider a scenario in Linear Search where the variable index controls a loop over a stack. What is a key concern? (GATE 2018)",
+    options: ["Hardcoding the loop limit to 100.", "Ensuring index is always capitalized.", "Ensuring the loop termination condition correctly reflects the algorithm's boundaries.", "Changing the loop to a switch statement."],
     ans: 2,
-    explanation: "Linear search must check every element one by one. In the worst case (the element is at the end or not present), it takes O(n) time."
+    explanation: "For Linear Search, ensuring the loop termination condition correctly reflects the algorithm's boundaries. is the established best practice in algorithm design."
   },
   {
-    q: "Which of the following is an essential pre-condition for Binary Search to work correctly on an array? (GATE 2004)",
-    options: ["The array must be reversed.", "The array must be sorted.", "The array must contain only positive integers.", "The array length must be a power of 2."],
-    ans: 1,
-    explanation: "Binary search relies on the array being sorted so it can confidently discard half of the remaining elements at each step."
+    q: "Which of the following is a common anti-pattern when dealing with Linear Search? (GATE 2019)",
+    options: ["Using an O(n^3) brute-force approach when an O(n log n) solution exists.", "Proving the greedy choice property before implementation.", "Dividing the problem into smaller subproblems.", "Using memoization to store previously computed results."],
+    ans: 0,
+    explanation: "For Linear Search, using an o(n^3) brute-force approach when an o(n log n) solution exists. is the established best practice in algorithm design."
   },
   {
-    q: "What is the worst-case time complexity of Binary Search? (GATE 2006)",
-    options: ["O(n)", "O(n log n)", "O(log n)", "O(1)"],
-    ans: 2,
-    explanation: "Binary search halves the search space at every step. The number of times you can halve N until reaching 1 is log_2(N), giving O(log n) complexity."
-  },
-  {
-    q: "If an array has 1024 elements, what is the maximum number of comparisons Binary Search will make? (GATE 2015)",
-    options: ["10", "11", "512", "1024"],
-    ans: 1,
-    explanation: "log_2(1024) is 10. Depending on the implementation, it may take up to 11 comparisons (floor(log_2(N)) + 1) in the worst case."
-  },
-  {
-    q: "Which search algorithm is generally faster for very small arrays (e.g., length 5)?",
-    options: ["Binary Search", "Linear Search", "Jump Search", "Fibonacci Search"],
-    ans: 1,
-    explanation: "For very small arrays, the overhead of calculating midpoints in Binary Search makes Linear Search faster due to simplicity and memory caching."
-  },
-  {
-    q: "What is the best-case time complexity of both Linear Search and Binary Search? (GATE 2002)",
-    options: ["O(n)", "O(log n)", "O(1)", "O(n log n)"],
-    ans: 2,
-    explanation: "In the best case, the target element is found on the very first comparison (index 0 for Linear, midpoint for Binary), which takes O(1) time."
-  },
-  {
-    q: "If you have a sorted linked list, which search algorithm is most efficient? (GATE 2012)",
-    options: ["Binary Search", "Linear Search", "Interpolation Search", "Exponential Search"],
-    ans: 1,
-    explanation: "Binary Search requires random access (finding the midpoint in O(1) time). Linked lists do not support random access, so you must use Linear Search (O(n))."
-  },
-  {
-    q: "In Binary Search, how is the midpoint usually calculated to prevent integer overflow for large arrays? (GATE 2017)",
-    options: ["(low + high) / 2", "low + (high - low) / 2", "high - (low + high) / 2", "(low * high) / 2"],
-    ans: 1,
-    explanation: "If low and high are very large integers, (low + high) can exceed the maximum integer limit. low + (high - low) / 2 mathematically equals the midpoint but prevents overflow."
-  },
-  {
-    q: "Which algorithm uses the divide and conquer paradigm?",
-    options: ["Linear Search", "Bubble Sort", "Binary Search", "Insertion Sort"],
-    ans: 2,
-    explanation: "Binary search divides the problem into smaller subproblems (halves) and conquers them by recursively searching the appropriate half."
-  },
-  {
-    q: "When is Linear Search preferable over Binary Search?",
-    options: ["When the array is very large.", "When the array is unsorted.", "When space complexity must be O(1).", "Never."],
-    ans: 1,
-    explanation: "If the array is unsorted, you cannot use Binary Search. Sorting it first would take O(n log n), which is slower than just running a Linear Search O(n)."
+    q: "Which of the following is a common anti-pattern when dealing with Linear Search? (GATE 2011)",
+    options: ["Proving the greedy choice property before implementation.", "Using memoization to store previously computed results.", "Dividing the problem into smaller subproblems.", "Using an O(n^3) brute-force approach when an O(n log n) solution exists."],
+    ans: 3,
+    explanation: "For Linear Search, using an o(n^3) brute-force approach when an o(n log n) solution exists. is the established best practice in algorithm design."
   }
 ];

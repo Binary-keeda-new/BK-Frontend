@@ -1,22 +1,23 @@
 export const CHAPTER9_DRAG = [
   {
-    instructions: "Arrange the steps to perform one complete pass of Bubble Sort.",
+    instructions: "Arrange the phases of a single pass of Bubble Sort.",
     lines: [
-      { id: "1", text: "1. Start at the first element (index 0)." },
-      { id: "2", text: "2. Compare the current element with the next element." },
-      { id: "3", text: "3. If the current element is greater, swap them." },
-      { id: "4", text: "4. Move to the next adjacent pair and repeat." },
-      { id: "5", text: "5. Stop when you reach the end of the unsorted portion." }
+      { id: "1", text: "Compare adjacent elements arr[j] and arr[j+1]" },
+      { id: "2", text: "Largest element bubbles to the end" },
+      { id: "3", text: "Swap if they are in the wrong order" },
+      { id: "4", text: "Start at the first element" },
+      { id: "5", text: "Move to the next adjacent pair" }
     ],
-    order: ["1", "2", "3", "4", "5"]
+    order: ["4", "1", "3", "5", "2"]
   },
   {
-    instructions: "Arrange the state of the array [4, 2, 5, 1] after each swap during the first pass of Bubble Sort.",
+    instructions: "Order the iterations for array [3, 2, 1] using Bubble Sort.",
     lines: [
-      { id: "1", text: "Initial: [4, 2, 5, 1]" },
-      { id: "2", text: "Swap 1 (4,2): [2, 4, 5, 1]" },
-      { id: "3", text: "Swap 2 (5,1): [2, 4, 1, 5] (End of Pass 1)" }
+      { id: "1", text: "Pass 2: Swap 2,1 -> [1, 2, 3]" },
+      { id: "2", text: "Pass 3: No swaps, sorted!" },
+      { id: "3", text: "Initial Array: [3, 2, 1]" },
+      { id: "4", text: "Pass 1: Swap 3,2 -> Swap 3,1 -> [2, 1, 3]" }
     ],
-    order: ["1", "2", "3"]
+    order: ["3", "4", "1", "2"]
   }
 ];
