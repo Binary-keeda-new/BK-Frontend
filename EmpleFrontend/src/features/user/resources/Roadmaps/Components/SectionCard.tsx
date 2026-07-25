@@ -218,7 +218,11 @@ const SectionCard: React.FC<SectionCardProps> = ({
           )}
 
           {/* Content */}
-          <div className="roadmap-content" style={{ marginBottom: 24 }} dangerouslySetInnerHTML={{ __html: section.content }} />
+          <style>{`
+            .roadmap-content tr:has(input.problem-checkbox:checked) {
+              background-color: rgba(16, 185, 129, 0.02) !important;
+            }
+          `}</style>
           <div
             className="roadmap-content"
             style={{ marginBottom: 24 }}

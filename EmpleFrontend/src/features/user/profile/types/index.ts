@@ -1,4 +1,4 @@
-export type TemplateType = 'modern-developer' | 'creative-designer' | 'ai-research' | 'student';
+export type TemplateType = 'engineering-blueprint' | 'gamified-arcade' | 'editorial-minimalist' | 'rpg-character-sheet' | 'cyber-developer' | 'hacker-terminal' | 'premium-corporate' | 'modern-personal';
 
 export interface Education {
   institution?: string;

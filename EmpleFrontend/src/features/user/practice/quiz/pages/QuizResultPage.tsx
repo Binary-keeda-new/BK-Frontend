@@ -79,7 +79,13 @@ useEffect(() => {
         correctCount: 0,
         incorrectCount: 0,
         accuracy: 0,
+        averageTimePerQuestion: 0,
       };
+    }
+
+    let totalTimeTaken = 0;
+    if (result.startedAt && result.submittedAt) {
+      totalTimeTaken = Math.max(0, new Date(result.submittedAt).getTime() - new Date(result.startedAt).getTime()) / 1000;
     }
 
     const correctCount = result.answers.filter((answer) => answer.isCorrect).length;
@@ -88,11 +94,17 @@ useEffect(() => {
       result.answers.length > 0
         ? Math.round((correctCount / result.answers.length) * 100)
         : 0;
+        
+    const averageTimePerQuestion =
+      result.totalQuestions > 0
+        ? Math.round(totalTimeTaken / result.totalQuestions)
+        : 0;
 
     return {
       correctCount,
       incorrectCount,
       accuracy,
+      averageTimePerQuestion,
     };
   }, [result]);
 
@@ -145,7 +157,7 @@ useEffect(() => {
           </p>
         </div>
 
-        <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
+        <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
           <div className="rounded-2xl border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface2,#1e2028)] p-4 text-center">
             <p className="text-xs text-[var(--muted2,#8a8a9a)]">Correct</p>
             <p className="mt-2 text-2xl font-bold text-emerald-400">
@@ -164,6 +176,13 @@ useEffect(() => {
             <p className="text-xs text-[var(--muted2,#8a8a9a)]">Accuracy</p>
             <p className="mt-2 text-2xl font-bold text-[var(--text,#f0f0f4)]">
               {stats.accuracy}%
+            </p>
+          </div>
+
+          <div className="rounded-2xl border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface2,#1e2028)] p-4 text-center">
+            <p className="text-xs text-[var(--muted2,#8a8a9a)]">Avg Time / Q</p>
+            <p className="mt-2 text-2xl font-bold text-[var(--text,#f0f0f4)]">
+              {stats.averageTimePerQuestion}s
             </p>
           </div>
         </div>

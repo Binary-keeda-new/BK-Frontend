@@ -31,6 +31,10 @@ export default function VerifyEmailPage() {
         const data = await res.json()
 
         if (res.ok && data.success) {
+          // Set 3 day session after email verification
+          const expiry = Date.now() + 3 * 24 * 60 * 60 * 1000
+          localStorage.setItem('sessionExpiry', expiry.toString())
+
           setStatus('success')
           setTimeout(() => {
             router.replace('/user/dashboard')
@@ -82,7 +86,7 @@ export default function VerifyEmailPage() {
                 </svg>
               </div>
               <h1 className="auth-title">Email <em>verified!</em></h1>
-              <p className="auth-subtitle">Your account is verified. Redirecting to login...</p>
+              <p className="auth-subtitle">Your account is verified. Redirecting to dashboard...</p>
             </>
           )}
 

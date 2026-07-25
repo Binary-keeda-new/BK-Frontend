@@ -13,6 +13,10 @@ import TestCasesSection from '../components/testCasesSection';
 import HintsSection from '../components/hintsSection';
 import EditorialSection from '../components/editorialSection';
 import PublishSection from '../components/publishSection';
+import ExecutionSection from '../components/executionSection';
+
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
 interface Props {
   problemId: string;
@@ -50,6 +54,32 @@ const [codeTemplates, setCodeTemplates] =
     'C++': '',
     C: '',
   });
+
+  const [lockedPrefixTemplates, setLockedPrefixTemplates] = useState({
+  Java: '',
+  Python: '',
+  'C++': '',
+  C: '',
+});
+
+const [lockedSuffixTemplates, setLockedSuffixTemplates] = useState({
+  Java: '',
+  Python: '',
+  'C++': '',
+  C: '',
+});
+
+const [executionConfig, setExecutionConfig] =
+  useState({
+    functionName: '',
+    returnType: '',
+    parameters: [] as {
+      name: string;
+      type: string;
+    }[],
+    timeLimit: 1000,
+    memoryLimit: 256,
+  });  
 
   const DEFAULT_TEMPLATES = {
   Java: `class Solution {
@@ -136,7 +166,7 @@ const [activeTab, setActiveTab] =
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/v1/coding-problems/${problemId}`,
+        `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
         {
           method: 'PATCH',
           headers: {
@@ -181,7 +211,7 @@ const [activeTab, setActiveTab] =
   }
   try {
     const response = await fetch(
-      `http://localhost:5000/api/v1/coding-problems/${problemId}`,
+      `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
       {
         method: 'PATCH',
         headers: {
@@ -242,7 +272,7 @@ if (hasEmptyExample) {
 }
   try {
     const response = await fetch(
-      `http://localhost:5000/api/v1/coding-problems/${problemId}`,
+      `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
       {
         method: 'PATCH',
         headers: {
@@ -295,7 +325,7 @@ if (hasEmptyExample) {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/v1/coding-problems/${problemId}`,
+        `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
         {
           method: 'PATCH',
           headers: {
@@ -349,7 +379,7 @@ if (hasEmptyExample) {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/v1/coding-problems/${problemId}`,
+        `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
         {
           method: 'PATCH',
           headers: {
@@ -358,8 +388,7 @@ if (hasEmptyExample) {
           },
           body: JSON.stringify({
             languages,
-            lastEditedSection:
-              'tests',
+            lastEditedSection: 'execution'
           }),
         }
       );
@@ -419,7 +448,7 @@ if (!updated[key]) {
 }
     try {
       const response = await fetch(
-        `http://localhost:5000/api/v1/coding-problems/${problemId}`,
+        `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
         {
           method: 'PATCH',
           headers: {
@@ -427,11 +456,12 @@ if (!updated[key]) {
               'application/json',
           },
           body: JSON.stringify({
-            templateType,
-            codeTemplates,
-            lastEditedSection:
-              'tests',
-          }),
+  templateType,
+  codeTemplates,
+  lockedPrefixTemplates,
+  lockedSuffixTemplates,
+  lastEditedSection: 'tests',
+}),
         }
       );
 
@@ -449,7 +479,7 @@ if (!updated[key]) {
         'Templates saved successfully'
       );
 
-      setActiveTab('tests');
+      setActiveTab('execution');
     } catch (error) {
       console.error(error);
     }
@@ -496,7 +526,7 @@ if (!updated[key]) {
 
   try {
     const response = await fetch(
-      `http://localhost:5000/api/v1/coding-problems/${problemId}`,
+      `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
       {
         method: 'PATCH',
         headers: {
@@ -546,7 +576,7 @@ const handleSaveHints = async () => {
 
   try {
     const response = await fetch(
-      `http://localhost:5000/api/v1/coding-problems/${problemId}`,
+      `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
       {
         method: 'PATCH',
         headers: {
@@ -592,7 +622,7 @@ const handleSaveEditorial =
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/v1/coding-problems/${problemId}`,
+        `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
         {
           method: 'PATCH',
           headers: {
@@ -632,7 +662,7 @@ const handleSaveEditorial =
   async () => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/v1/coding-problems/${problemId}`,
+        `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
         {
           method: 'PATCH',
           headers: {
@@ -682,7 +712,7 @@ const handlePublish =
 }
     try {
       const response = await fetch(
-        `http://localhost:5000/api/v1/coding-problems/${problemId}`,
+        `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
         {
           method: 'PATCH',
           headers: {
@@ -718,12 +748,45 @@ const handlePublish =
   );
 };
 
+const handleSaveExecution = async () => {
+  try {
+    const response = await fetch(
+      `http://localhost:5000/api/v1/admin/coding-problems/${problemId}`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...executionConfig,
+          lastEditedSection: 'tests',
+        }),
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      alert(data.message);
+      return;
+    }
+
+    setProblem(data.data);
+
+    alert('Execution configuration saved successfully');
+
+    setActiveTab('tests');
+  } catch (error) {
+    console.error(error);
+    alert('Failed to save execution configuration');
+  }
+};
 
   useEffect(() => {
     const fetchProblem = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/v1/coding-problems/${problemId}`
+          `${API_BASE_URL}/api/v1/coding-problems/${problemId}`
         );
 
         const data = await response.json();
@@ -759,6 +822,24 @@ const handlePublish =
           }
         );
 
+       setLockedPrefixTemplates(
+          data.data.lockedPrefixTemplates || {
+            Java: '',
+            Python: '',
+            'C++': '',
+            C: '',
+          }
+        );
+
+        setLockedSuffixTemplates(
+          data.data.lockedSuffixTemplates || {
+            Java: '',
+            Python: '',
+            'C++': '',
+            C: '',
+          }
+        );
+
         setVisibleTestCases(
           data.data.visibleTestCases || []
         );
@@ -774,6 +855,23 @@ const handlePublish =
         setEditorial(
           data.data.editorial || ''
         );
+
+        setExecutionConfig({
+          functionName:
+            data.data.functionName || '',
+        
+          returnType:
+            data.data.returnType || '',
+        
+          parameters:
+            data.data.parameters || [],
+        
+          timeLimit:
+            data.data.timeLimit || 1000,
+        
+          memoryLimit:
+            data.data.memoryLimit || 256,
+        });
 
         
 
@@ -868,20 +966,18 @@ const handlePublish =
   )}
 
   {activeTab === 'templates' && (
-  <CodeTemplatesSection
-    languages={languages}
-    templateType={templateType}
-    setTemplateType={
-      setTemplateType
-    }
-    codeTemplates={codeTemplates}
-    setCodeTemplates={
-      setCodeTemplates
-    }
-    handleSaveTemplates={
-      handleSaveTemplates
-    }
-  />
+ <CodeTemplatesSection
+  languages={languages}
+  templateType={templateType}
+  setTemplateType={setTemplateType}
+  codeTemplates={codeTemplates}
+  setCodeTemplates={setCodeTemplates}
+  lockedPrefixTemplates={lockedPrefixTemplates}
+  setLockedPrefixTemplates={setLockedPrefixTemplates}
+  lockedSuffixTemplates={lockedSuffixTemplates}
+  setLockedSuffixTemplates={setLockedSuffixTemplates}
+  handleSaveTemplates={handleSaveTemplates}
+/>
 )}
 
   {activeTab === 'tests' && (
@@ -901,6 +997,14 @@ const handlePublish =
     handleSaveTestCases={
       handleSaveTestCases
     }
+  />
+)}
+
+{activeTab === 'execution' && (
+  <ExecutionSection
+    executionConfig={executionConfig}
+    setExecutionConfig={setExecutionConfig}
+    handleSaveExecution={handleSaveExecution}
   />
 )}
 
@@ -924,17 +1028,13 @@ const handlePublish =
   />
 )}
 
+  {activeTab === 'publish' && (
   <PublishSection
-  handleSaveDraft={
-    handleSaveDraft
-  }
-  handlePreview={
-    handlePreview
-  }
-  handlePublish={
-    handlePublish
-  }
-/>
+    handleSaveDraft={handleSaveDraft}
+    handlePreview={handlePreview}
+    handlePublish={handlePublish}
+  />
+)}
 </>
     </div>
   );

@@ -1,13 +1,18 @@
-import type { NextConfig } from 'next';
-import path from 'path';
+import type { NextConfig } from "next";
+import path from "path";
 
 const nextConfig: NextConfig = {
-  output: 'standalone',
+  output: "standalone",
 
   poweredByHeader: false,
 
   images: {
-    domains: ['upload.wikimedia.org'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'upload.wikimedia.org',
+      }
+    ],
     localPatterns: [
       {
         pathname: '/logo-final.png',

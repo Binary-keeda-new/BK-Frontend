@@ -14,7 +14,9 @@ export default function ResetPasswordPage() {
   const [showConfirm, setShowConfirm] = useState(false)
   const [loading, setLoading] = useState(false)
   const [verifying, setVerifying] = useState(true)
+  const [readyToReset, setReadyToReset] = useState(false)
   const [error, setError] = useState('')
+  const [passwordError, setPasswordError] = useState('')
   const [success, setSuccess] = useState(false)
 
   const [refreshToken, setRefreshToken] = useState('')
@@ -23,53 +25,57 @@ export default function ResetPasswordPage() {
   const sdk = useDescope()
   const router = useRouter()
 
+  // Only checks that a token is present in the URL — does NOT consume it.
+  // Consuming happens on button click, to avoid email link-scanners
+  // (Outlook Safe Links, Gmail, antivirus) burning the one-time token
+  // before the actual user clicks it.
   useEffect(() => {
-    const verifyResetLink = async () => {
-      try {
-        const params = new URLSearchParams(window.location.search)
-        const token = params.get('t') || ''
-
-        if (!token) {
-          setError('Invalid or expired reset link.')
-          setVerifying(false)
-          return
-        }
-
-        const resp = await sdk.magicLink.verify(token)
-
-        if (!resp?.ok) {
-          setError(
-            resp?.error?.errorDescription ||
-              'Reset link invalid, expired, or already used.'
-          )
-          setVerifying(false)
-          return
-        }
-
-        const resolvedLoginId =
-          resp.data?.user?.loginIds?.[0] ||
-          resp.data?.user?.email ||
-          ''
-
-        const resolvedRefreshToken = resp.data?.refreshJwt || ''
-
-        if (!resolvedLoginId || !resolvedRefreshToken) {
-          setError('Could not validate reset session. Please request a new link.')
-          setVerifying(false)
-          return
-        }
-
-        setLoginId(resolvedLoginId)
-        setRefreshToken(resolvedRefreshToken)
-        setVerifying(false)
-      } catch {
-        setError('Something went wrong while verifying the reset link.')
-        setVerifying(false)
-      }
+    const params = new URLSearchParams(window.location.search)
+    const token = params.get('t') || ''
+    if (!token) {
+      setError('Invalid or expired reset link.')
     }
+    setVerifying(false)
+  }, [])
 
-    verifyResetLink()
-  }, [sdk])
+  const handleVerifyClick = async () => {
+    setVerifying(true)
+    setError('')
+
+    try {
+      const params = new URLSearchParams(window.location.search)
+      const token = params.get('t') || ''
+
+      const resp = await sdk.magicLink.verify(token)
+
+      if (!resp?.ok) {
+        setError(
+          resp?.error?.errorDescription ||
+            'Reset link invalid, expired, or already used.'
+        )
+        setVerifying(false)
+        return
+      }
+
+      const resolvedLoginId =
+        resp.data?.user?.loginIds?.[0] || resp.data?.user?.email || ''
+      const resolvedRefreshToken = resp.data?.refreshJwt || ''
+
+      if (!resolvedLoginId || !resolvedRefreshToken) {
+        setError('Could not validate reset session. Please request a new link.')
+        setVerifying(false)
+        return
+      }
+
+      setLoginId(resolvedLoginId)
+      setRefreshToken(resolvedRefreshToken)
+      setReadyToReset(true)
+    } catch {
+      setError('Something went wrong while verifying the reset link.')
+    } finally {
+      setVerifying(false)
+    }
+  }
 
   const validatePassword = (pass: string) => {
     if (pass.length < 8) return 'Password must be at least 8 characters.'
@@ -85,10 +91,11 @@ export default function ResetPasswordPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
+    setPasswordError('')
 
     const validationError = validatePassword(newPassword)
     if (validationError) {
-      setError(validationError)
+      setPasswordError(validationError)
       return
     }
 
@@ -107,16 +114,22 @@ export default function ResetPasswordPage() {
       const resp = await sdk.password.update(loginId, newPassword, refreshToken)
 
       if (!resp?.ok) {
-        setError(
-          resp?.error?.errorMessage || 'Failed to reset password.'
-        )
+        setError(resp?.error?.errorMessage || 'Failed to reset password.')
         return
       }
 
       setSuccess(true)
       setTimeout(() => router.push('/auth/login'), 2000)
-    } catch {
-      setError('Something went wrong. Please try again.')
+    } catch (err: any) {
+      if (err?.error?.errorCode === 'E062904') {
+        setPasswordError(err.error.errorMessage)
+      } else if (err?.error?.errorMessage) {
+        setError(err.error.errorMessage)
+      } else if (err?.message) {
+        setError(err.message)
+      } else {
+        setError('Something went wrong. Please try again.')
+      }
     } finally {
       setLoading(false)
     }
@@ -158,6 +171,27 @@ export default function ResetPasswordPage() {
                 Please wait while we validate your password reset link.
               </p>
             </div>
+          ) : !readyToReset && !error ? (
+            <div className="auth-success-state">
+              <div className="auth-success-icon">🔑</div>
+              <div className="auth-success-title">Reset your password</div>
+              <p className="auth-success-desc">
+                Click continue to verify this link and set a new password.
+              </p>
+              <button
+                className="auth-submit"
+                onClick={handleVerifyClick}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 8,
+                  borderRadius: 999,
+                }}
+              >
+                Continue →
+              </button>
+            </div>
           ) : error && (!loginId || !refreshToken) ? (
             <div className="auth-success-state">
               <div className="auth-success-icon">⚠️</div>
@@ -182,18 +216,9 @@ export default function ResetPasswordPage() {
           ) : (
             <>
               <div className="auth-header">
-
-                {/*<div className="auth-logo-badge" style={{ background: 'var(--clr-surface2)', border: '1.5px solid var(--clr-border2)', boxShadow: 'none' }}>
-                  <span style={{ fontSize: 22 }}>🔒</span>
-                </div>*/}
-               
-
-                
-
                 <h1 className="auth-title">
                   Reset your <em>password</em>
                 </h1>
-
 
                 <p className="auth-subtitle">
                   Create a strong password you can remember and keep secure.
@@ -230,6 +255,11 @@ export default function ResetPasswordPage() {
                       {showNew ? '🙈' : '👁️'}
                     </button>
                   </div>
+                  {passwordError && (
+                    <div style={{ fontSize: 'var(--text-xs)', color: '#ef4444', marginTop: 4 }}>
+                      ✗ {passwordError}
+                    </div>
+                  )}
                 </div>
 
                 <div className="auth-field">
@@ -280,22 +310,10 @@ export default function ResetPasswordPage() {
                   </div>
 
                   {[
-                    {
-                      label: 'At least 8 characters',
-                      check: newPassword.length >= 8,
-                    },
-                    {
-                      label: 'One uppercase letter',
-                      check: /[A-Z]/.test(newPassword),
-                    },
-                    {
-                      label: 'One number',
-                      check: /[0-9]/.test(newPassword),
-                    },
-                    {
-                      label: 'One special character',
-                      check: /[^a-zA-Z0-9]/.test(newPassword),
-                    },
+                    { label: 'At least 8 characters', check: newPassword.length >= 8 },
+                    { label: 'One uppercase letter', check: /[A-Z]/.test(newPassword) },
+                    { label: 'One number', check: /[0-9]/.test(newPassword) },
+                    { label: 'One special character', check: /[^a-zA-Z0-9]/.test(newPassword) },
                   ].map(({ label, check }) => (
                     <div
                       key={label}
@@ -384,12 +402,8 @@ export default function ResetPasswordPage() {
               gap: 6,
               transition: 'color var(--t-fast)',
             }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.color = 'var(--clr-accent)')
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.color = 'var(--clr-text3)')
-            }
+            onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--clr-accent)')}
+            onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--clr-text3)')}
           >
             ← Back to Emple home
           </Link>

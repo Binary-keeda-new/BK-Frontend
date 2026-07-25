@@ -22,6 +22,10 @@ export default function LoginPage() {
 
   const handleSocialLogin = async (provider: 'google' | 'github' | 'microsoft') => {
     try {
+      
+      sessionStorage.setItem('oauth_intent', 'login')
+      sessionStorage.setItem('oauth_provider', provider)
+
       const redirectUrl = `${window.location.origin}/auth/callback`
       const result = await sdk.oauth.start(provider, redirectUrl)
 
@@ -53,16 +57,30 @@ export default function LoginPage() {
     try {
       const resp = await sdk.password.signIn(email, password)
 
-      if (!resp?.ok) {
-        const errorCode = (resp.error as any)?.errorCode
-        if (errorCode === 'E062108' || errorCode === 'E062001') {
-          setError("You don't have an account. Redirecting to signup...")
-          setTimeout(() => router.replace('/auth/signup'), 2000)
-        } else {
-          setError('Invalid email or password.')
-        }
-        return
-      }
+if (!resp?.ok) {
+  // Descope returns a generic error for both "no account" and "wrong password"
+  // (anti-enumeration). Ask our own backend which case this actually is.
+  try {
+    const checkRes = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/check-auth-provider?email=${encodeURIComponent(email)}`
+    )
+    const checkData = await checkRes.json()
+
+    if (!checkData.exists) {
+      setError("You don't have an account. Redirecting to signup...")
+      setTimeout(() => router.replace('/auth/signup'), 2000)
+    } else if (checkData.authProvider && checkData.authProvider !== 'password') {
+      setError(
+        `This account uses ${checkData.authProvider} sign-in. Please continue with ${checkData.authProvider} instead.`
+      )
+    } else {
+      setError('Invalid email or password.')
+    }
+  } catch {
+    setError('Invalid email or password.')
+  }
+  return
+}
 
       const token = resp.data?.sessionJwt
 
@@ -77,6 +95,7 @@ export default function LoginPage() {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify({ intent: 'login' }),
       })
 
       const syncText = await syncRes.text()
@@ -88,9 +107,18 @@ export default function LoginPage() {
       }
 
       const syncData = JSON.parse(syncText)
+      if (syncData.isNewUser) {
+        localStorage.setItem('show_signup_bonus', 'true')
+      }
+      
       const user = syncData.data?.user || syncData.user
       const role = user?.role
-      const isEmailVerified = user?.isEmailVerified
+
+      // Block unverified users from logging in
+      if (!user?.isEmailVerified) {
+        router.replace(`/auth/check-email?email=${encodeURIComponent(email)}`)
+        return
+      }
 
       localStorage.setItem('token', token)
       localStorage.setItem('role', role || 'user')
@@ -98,15 +126,6 @@ export default function LoginPage() {
       // Store session expiry based on remember me
       const expiry = Date.now() + (remember ? 30 : 3) * 24 * 60 * 60 * 1000
       localStorage.setItem('sessionExpiry', expiry.toString())
-
-      // Block unverified users from logging in
-      if (!isEmailVerified) {
-        router.replace(`/auth/check-email?email=${encodeURIComponent(email)}`)
-        return
-      }
-
-      console.log("Role:", role);
-      console.log("User:", user);
       
       if (role === 'admin') {
         router.replace('/dashboard')

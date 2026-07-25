@@ -4,7 +4,6 @@ import { useEffect, useRef } from 'react'
 
 import {
   Target,
-  Sparkles,
   LineChart,
   Route,
   GraduationCap,
@@ -21,14 +20,7 @@ const features = [
 
     desc: "Upload your resume and get an instant ATS compatibility score. We highlight exactly what recruiters' systems flag and help you fix it.",
   },
-  {
-    icon: Sparkles,
-    title: 'AI Agents',
-    desc: 'Learn faster with AI agents designed to support your goals. Follow structured roadmaps, track progress, and discover the right resources. ',
 
-    
-
-  },
   {
     icon: LineChart,
     title: 'Skill Analytics Dashboard',

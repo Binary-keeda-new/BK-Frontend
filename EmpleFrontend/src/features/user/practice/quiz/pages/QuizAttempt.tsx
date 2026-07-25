@@ -6,6 +6,9 @@ import {
   startQuizAttempt,
   submitQuizAttempt,
 } from "../services/quizAttempt.service";
+import InsufficientCoinsDialog from "@/features/wallet/components/InsufficientCoinsDialog";
+import { useWallet } from "@/providers/WalletProvider";
+import { useNotification } from "@/providers/NotificationProvider";
 import type { QuizAttemptData, AttemptAnswer } from "../types/quizAttempt.types";
 
 type Status = "not-visited" | "not-attempted" | "answered" | "flagged";
@@ -77,6 +80,10 @@ export default function QuizAttemptPage() {
     ? params.quiz[0]
     : (params?.quiz as string);
 
+  const { config, refreshWallet } = useWallet();
+  const { notifyDeduction, notifyReward } = useNotification();
+  const requiredCoins = config?.QUIZ?.ATTEMPT_COST || 5;
+
   const [attemptId, setAttemptId] = useState<string | null>(null);
   const [attempt, setAttempt] = useState<QuizAttemptData | null>(null);
   const [current, setCurrent] = useState(0);
@@ -132,6 +139,13 @@ export default function QuizAttemptPage() {
       }
 
       setAttemptId(startedAttempt._id);
+
+      // Only notify if we just started it (startedAt is recent) to prevent toast on refresh
+      const isNew = Date.now() - new Date(startedAttempt.startedAt).getTime() < 10000;
+      if (isNew) {
+        notifyDeduction("Quiz Attempt", "Good luck!", requiredCoins);
+        refreshWallet();
+      }
       setAttempt(startedAttempt);
 
       const LS_KEY = `quiz_attempt_${quizId}_${startedAttempt._id}`;
@@ -255,6 +269,8 @@ export default function QuizAttemptPage() {
       setSubmitting(true);
       setError(null);
 
+      notifyReward("Quiz Completed", "Great job!", config?.QUIZ?.REWARD || 8);
+      refreshWallet();
       const now = Date.now();
       const prevQ = prevQuestionId.current;
       let finalTimings = { ...timings };
@@ -503,7 +519,32 @@ export default function QuizAttemptPage() {
   }
 
   if (error && !attempt) {
-    return <div className="p-8 text-[#f87171]">{error}</div>;
+    const isInsufficientCoins = error.toLowerCase().includes("insufficient") || error.toLowerCase().includes("balance");
+    
+    if (isInsufficientCoins) {
+      return (
+        <div className="flex items-center justify-center min-h-screen bg-[var(--surface,#161820)]">
+          <InsufficientCoinsDialog 
+            isOpen={true} 
+            requiredCoins={requiredCoins} 
+            onClose={() => router.back()} 
+            onRetry={() => initAttempt()}
+          />
+        </div>
+      );
+    }
+    
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-[var(--surface,#161820)] p-6">
+        <p className="text-[#f87171] mb-4 text-lg font-medium">{error}</p>
+        <button
+          onClick={() => router.back()}
+          className="px-6 py-2 bg-[var(--surface2,#1e2028)] hover:bg-[var(--border,rgba(255,255,255,0.07))] text-white rounded-lg transition"
+        >
+          Go Back
+        </button>
+      </div>
+    );
   }
 
   if (!attempt || !q) {

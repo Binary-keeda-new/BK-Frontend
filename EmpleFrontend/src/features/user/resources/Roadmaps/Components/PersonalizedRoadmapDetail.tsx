@@ -2,9 +2,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { useSession } from '@descope/react-sdk';
+import { useRouter } from 'next/navigation';
 import SectionCard from './SectionCard';
 import { fetchMyRoadmapByIdAPI } from '../services/roadmapAI.service';
 import { GeneratedRoadmap } from '../types/roadmapAI.types';
+import { useWallet } from "@/providers/WalletProvider";
+import { useNotification } from "@/providers/NotificationProvider";
 
 interface PersonalizedRoadmapDetailProps {
   roadmapId: string; // expects raw Mongo _id (without the "personalized-" prefix)
@@ -26,6 +29,9 @@ const PersonalizedRoadmapDetail: React.FC<PersonalizedRoadmapDetailProps> = ({ r
   const [roadmap, setRoadmap] = useState<GeneratedRoadmap | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { notifyReward } = useNotification();
+  const { config, refreshWallet } = useWallet();
+  const rewardCoins = config?.ROADMAP?.COMPLETION_REWARD || 50;
 
   const [completedSections, setCompletedSections] = useState<Set<string>>(new Set());
   const [progressDetails, setProgressDetails] = useState<any>({
@@ -87,6 +93,19 @@ const PersonalizedRoadmapDetail: React.FC<PersonalizedRoadmapDetailProps> = ({ r
     setCompletedSections(newCompleted);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [progressDetails.completedContent, roadmap]);
+
+  useEffect(() => {
+    if (!roadmap) return;
+    const totalSections = roadmap.sections.length;
+    if (totalSections > 0 && completedSections.size === totalSections) {
+      const rewardKey = `roadmap_rewarded_${roadmapId}`;
+      if (!localStorage.getItem(rewardKey)) {
+        notifyReward("Roadmap Completed", "Awesome job!", rewardCoins);
+        refreshWallet();
+        localStorage.setItem(rewardKey, 'true');
+      }
+    }
+  }, [completedSections.size, roadmap, roadmapId, notifyReward, refreshWallet, rewardCoins]);
 
   if (loading) {
     return (

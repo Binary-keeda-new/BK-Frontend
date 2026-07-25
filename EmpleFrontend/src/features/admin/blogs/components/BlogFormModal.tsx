@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Blog, BlogPayload, ContentBlock } from '../types/blogs.types';
+import { uploadAdminImage } from '@/shared/services/upload.service';
 
 interface Props {
   blog?: Blog | null;
@@ -42,6 +43,40 @@ export default function BlogFormModal({ blog, onSave, onClose }: Props) {
   const [published, setPublished]   = useState(blog?.published ?? true);
   const [saving, setSaving]         = useState(false);
   const [error, setError]           = useState('');
+  const [uploadingCover, setUploadingCover] = useState(false);
+  const [toast, setToast] = useState<{msg: string, type: 'success' | 'error'} | null>(null);
+
+  const showToast = (msg: string, type: 'success' | 'error') => {
+    setToast({ msg, type });
+    setTimeout(() => setToast(null), 3000);
+  };
+
+  const handleCoverUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      showToast('Image size should be less than 5MB', 'error');
+      return;
+    }
+
+    const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/jpg'];
+    if (!validTypes.includes(file.type)) {
+      showToast('Invalid file type. Please upload a valid image (jpg, png, webp, gif).', 'error');
+      return;
+    }
+
+    try {
+      setUploadingCover(true);
+      const url = await uploadAdminImage(file, 'blog');
+      setCoverImage(url);
+      showToast('Cover image uploaded successfully!', 'success');
+    } catch (err: any) {
+      showToast(err.message || 'Failed to upload image. Please try again.', 'error');
+    } finally {
+      setUploadingCover(false);
+    }
+  };
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -133,7 +168,14 @@ export default function BlogFormModal({ blog, onSave, onClose }: Props) {
         </div>
 
         {/* Body */}
-        <form onSubmit={handleSubmit} className="bf-scroll" style={{ flex: 1, overflowY: 'auto', padding: '20px 22px' }}>
+        <form onSubmit={handleSubmit} className="bf-scroll" style={{ flex: 1, overflowY: 'auto', padding: '20px 22px', position: 'relative' }}>
+          {toast && (
+            <div style={{ position: 'sticky', top: 0, zIndex: 10, padding: '10px 14px', borderRadius: 9, marginBottom: 16, background: toast.type === 'error' ? 'rgba(239,68,68,0.08)' : 'rgba(16,185,129,0.08)', border: `1px solid ${toast.type === 'error' ? 'rgba(239,68,68,0.2)' : 'rgba(16,185,129,0.2)'}`, color: toast.type === 'error' ? '#f87171' : '#10b981', fontSize: 13, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span>{toast.msg}</span>
+              <button type="button" onClick={() => setToast(null)} style={{ background: 'transparent', border: 'none', color: 'inherit', cursor: 'pointer', fontWeight: 'bold' }}>×</button>
+            </div>
+          )}
+
           <Field label="Title">
             <input className="bf-input" style={inputStyle} value={title} onChange={e => setTitle(e.target.value)} placeholder="Blog title" />
           </Field>
@@ -202,8 +244,48 @@ export default function BlogFormModal({ blog, onSave, onClose }: Props) {
             </Field>
           </div>
 
-          <Field label="Cover Image URL (optional)">
-            <input className="bf-input" style={inputStyle} value={coverImage} onChange={e => setCoverImage(e.target.value)} placeholder="https://..." />
+          <Field label="Cover Image">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              {coverImage && (
+                <div style={{ position: 'relative', width: '100%', height: 160, borderRadius: 12, overflow: 'hidden', border: '1px solid var(--border)' }}>
+                  <img src={coverImage.startsWith('http') ? coverImage : `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}${coverImage.startsWith('/uploads') ? coverImage : '/uploads/' + coverImage}`} alt="Cover preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                </div>
+              )}
+              
+              <label style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                width: '100%', padding: '12px 16px', borderRadius: 9,
+                border: '1px dashed var(--border)', background: 'var(--surface2)',
+                color: uploadingCover ? 'var(--muted)' : 'var(--orange)', fontSize: 13, fontWeight: 600,
+                cursor: uploadingCover ? 'not-allowed' : 'pointer', transition: 'all 0.15s',
+                opacity: uploadingCover ? 0.7 : 1
+              }}>
+                {uploadingCover ? (
+                  <>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ animation: 'spin 1s linear infinite' }}>
+                      <path d="M21 12a9 9 0 1 1-6.219-8.56"></path>
+                    </svg>
+                    Uploading...
+                  </>
+                ) : (
+                  <>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                      <polyline points="17 8 12 3 7 8"></polyline>
+                      <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    {coverImage ? 'Replace Image' : 'Choose Image'}
+                  </>
+                )}
+                <input 
+                  type="file" 
+                  accept="image/jpeg,image/png,image/webp,image/gif,image/jpg" 
+                  style={{ display: 'none' }} 
+                  onChange={handleCoverUpload}
+                  disabled={uploadingCover}
+                />
+              </label>
+            </div>
           </Field>
 
           <Field label="Status">
@@ -234,8 +316,8 @@ export default function BlogFormModal({ blog, onSave, onClose }: Props) {
           <button type="button" onClick={onClose} style={{ flex: 1, padding: '11px 0', borderRadius: 10, fontSize: 13, fontWeight: 600, background: 'var(--surface2)', border: '1px solid var(--border)', color: 'var(--text)', cursor: 'pointer' }}>
             Cancel
           </button>
-          <button onClick={handleSubmit as any} disabled={saving} style={{ flex: 2, padding: '11px 0', borderRadius: 10, fontSize: 13, fontWeight: 700, background: saving ? 'var(--orange-dim)' : 'var(--orange)', border: 'none', color: '#fff', cursor: saving ? 'default' : 'pointer', opacity: saving ? 0.7 : 1 }}>
-            {saving ? 'Saving…' : isEdit ? 'Save Changes' : 'Publish Blog'}
+          <button onClick={handleSubmit as any} disabled={saving || uploadingCover} style={{ flex: 2, padding: '11px 0', borderRadius: 10, fontSize: 13, fontWeight: 700, background: (saving || uploadingCover) ? 'var(--orange-dim)' : 'var(--orange)', border: 'none', color: '#fff', cursor: (saving || uploadingCover) ? 'default' : 'pointer', opacity: (saving || uploadingCover) ? 0.7 : 1 }}>
+            {saving ? 'Saving…' : uploadingCover ? 'Uploading Image...' : isEdit ? 'Save Changes' : 'Publish Blog'}
           </button>
         </div>
       </div>
