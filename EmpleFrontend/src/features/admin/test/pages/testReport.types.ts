@@ -66,4 +66,5 @@ export type ProblemWiseCodingAnalytics = {
   total: number;
   accepted: number;
   acceptanceRate: number;
+  averageTimeTakenSeconds?: number;
 };

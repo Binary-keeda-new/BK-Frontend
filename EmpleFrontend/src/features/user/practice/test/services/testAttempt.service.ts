@@ -34,6 +34,7 @@ export type TestSectionAttemptData = {
 export type TestSectionAnswerPayload = {
   questionId: string;
   selectedOptions: string[];
+  timeTakenSeconds?: number;
 };
 
 export type CodingSubmissionPayload = {
@@ -44,6 +45,7 @@ export type CodingSubmissionPayload = {
   passedCount?: number;
   totalCount?: number;
   results?: unknown[];
+  timeTakenSeconds?: number;
 };
 
 export const getTestSectionAttempt = async (
@@ -74,6 +76,17 @@ export const submitTestSectionAttempt = async (
         answers,
         codingSubmissions,
       }),
+    }
+  );
+
+  return result.data;
+};
+
+export const forceSubmitTestAttempt = async (attemptId: string) => {
+  const result = await apiRequest<ApiResponse<unknown>>(
+    `/api/v1/test-attempts/${attemptId}/force-submit`,
+    {
+      method: 'POST',
     }
   );
 

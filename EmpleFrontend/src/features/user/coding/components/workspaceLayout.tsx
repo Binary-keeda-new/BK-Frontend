@@ -157,6 +157,7 @@ export default function WorkspaceLayout({
                       passedCount: state?.executionResult?.passedCount,
                       totalCount: state?.executionResult?.totalCount,
                       results: state?.executionResult?.results || [],
+                      timeTakenSeconds: state?.timeTakenSeconds || 0,
                     };
                   });
                   onComplete?.(submissions);

@@ -19,6 +19,7 @@ export type ProblemWorkspaceState = {
   executionResult: ExecutionResponseData | null;
   executionError: string;
   submitCompleted: boolean;
+  timeTakenSeconds: number;
 };
 
 export default function useCodingWorkspace(
@@ -44,8 +45,8 @@ export default function useCodingWorkspace(
     if (!activeProblemId) return;
 
     setProblemStates(prev => {
-      // If already initialized with a problem, don't re-fetch/re-initialize
-      if (prev[activeProblemId]?.problem) {
+      // If already initialized (even if just loading), don't re-fetch/re-initialize
+      if (prev[activeProblemId]) {
         return prev;
       }
 
@@ -110,6 +111,7 @@ export default function useCodingWorkspace(
               code: initialCode,
               executionResult: restoredResult,
               submitCompleted: !!savedSubmission,
+              timeTakenSeconds: savedSubmission?.timeTakenSeconds || 0,
             }
           }));
         } catch (err) {
@@ -134,6 +136,7 @@ export default function useCodingWorkspace(
         executionResult: null,
         executionError: '',
         submitCompleted: false,
+        timeTakenSeconds: 0,
       };
 
       void fetchProblemData();
@@ -144,6 +147,28 @@ export default function useCodingWorkspace(
       };
     });
   }, [activeProblemId, problems, safeIndex, initialSubmissions]);
+
+  // Timer: Add 1 second every second to the active problem's timeTakenSeconds
+  useEffect(() => {
+    if (!activeProblemId) return;
+
+    const timer = setInterval(() => {
+      setProblemStates(prev => {
+        const state = prev[activeProblemId];
+        if (!state || state.loading || !state.problem) return prev;
+        
+        return {
+          ...prev,
+          [activeProblemId]: {
+            ...state,
+            timeTakenSeconds: (state.timeTakenSeconds || 0) + 1,
+          }
+        };
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [activeProblemId]);
 
   // Auto-save while typing to localStorage
   useEffect(() => {
@@ -169,6 +194,7 @@ export default function useCodingWorkspace(
     executionResult: null,
     executionError: '',
     submitCompleted: false,
+    timeTakenSeconds: 0,
   };
 
   const updateActiveState = useCallback((updates: Partial<ProblemWorkspaceState>) => {

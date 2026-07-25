@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { getAdminTestReport } from './adminTestReport.service';
 import type { TestReport } from './testReport.types';
 import TestMCQAnalytics from '../components/TestMCQAnalytics';
+import TestOverview from '../components/TestOverview';
 
 type Props = {
   testId: string;
@@ -126,27 +127,7 @@ if (!report) {
       </div>
 
       {activeTab === 'overview' && (
-        <div className="grid gap-5 lg:grid-cols-2">
-          <Card>
-            <h2 className="text-lg font-bold text-[var(--clr-text)]">
-              Overview
-            </h2>
-            <p className="mt-2 text-sm text-[var(--clr-text2)]">
-              This section will show score distribution, completion rate,
-              section-wise performance, and overall assessment health.
-            </p>
-          </Card>
-
-          <Card>
-            <h2 className="text-lg font-bold text-[var(--clr-text)]">
-              AI Summary
-            </h2>
-            <p className="mt-2 text-sm text-[var(--clr-text2)]">
-              AI-generated faculty summary will come here after backend report
-              aggregation is connected.
-            </p>
-          </Card>
-        </div>
+        <TestOverview report={report} />
       )}
 
       {activeTab === 'mcq' && (
@@ -241,6 +222,7 @@ if (!report) {
             'Total Submissions',
             'Accepted',
             'Acceptance Rate',
+            'Average Time',
           ].map((h) => (
             <th
               key={h}
@@ -256,7 +238,7 @@ if (!report) {
         {report.coding.problemWiseAnalytics.length === 0 ? (
           <tr>
             <td
-              colSpan={4}
+              colSpan={5}
               className="px-3 py-6 text-center text-[var(--clr-text2)]"
             >
               No coding submissions yet.
@@ -287,6 +269,16 @@ if (!report) {
 
               <td className="px-3 py-3 font-bold text-[var(--clr-accent)]">
                 {problem.acceptanceRate}%
+              </td>
+
+              <td className="px-3 py-3 text-[var(--clr-text2)]">
+                {problem.averageTimeTakenSeconds
+                  ? `${Math.floor(problem.averageTimeTakenSeconds / 60)
+                      .toString()
+                      .padStart(2, '0')}:${(problem.averageTimeTakenSeconds % 60)
+                      .toString()
+                      .padStart(2, '0')}`
+                  : '00:00'}
               </td>
             </tr>
           ))

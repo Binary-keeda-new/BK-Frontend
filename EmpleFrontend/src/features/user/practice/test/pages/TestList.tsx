@@ -15,6 +15,7 @@ import {
   submitTestFeedback,
   getTestAttemptDetails,
 } from '../services/test.service';
+import { forceSubmitTestAttempt } from '../services/testAttempt.service';
 import TestFullscreenGate from '../components/TestFullscreenGate';
 import TestViolationModal from '../components/TestViolationModal';
 import TestMCQReview from './TestMCQReview';
@@ -74,12 +75,16 @@ const [reviewSectionIndex, setreviewSectionIndex] = useState(0);
 
 
   useEffect(() => {
-  const fullscreenViews = ['fullscreen', 'resume-fullscreen', 'attempt'];
+    const fullscreenViews = ['fullscreen', 'resume-fullscreen', 'attempt'];
+    
+    if (selectedTest?.settings?.noExitScreen) {
+      fullscreenViews.push('instructions', 'sections');
+    }
 
-  onFullscreenModeChange?.(fullscreenViews.includes(view));
+    onFullscreenModeChange?.(fullscreenViews.includes(view));
 
-  return () => onFullscreenModeChange?.(false);
-}, [view, onFullscreenModeChange]);
+    return () => onFullscreenModeChange?.(false);
+  }, [view, onFullscreenModeChange, selectedTest]);
 
   useEffect(() => {
     const loadTests = async () => {
@@ -350,17 +355,30 @@ if (view === 'resume-fullscreen' && selectedTest) {
   console.warn('Test security violation:', type);
 
   setSecurityWarnings((prev) => {
-  const next = prev + 1;
+    const next = prev + 1;
 
-  if (next >= 5) {
-    setActiveViolation(null);
-    handleBackToList();
+    if (next === 5) {
+      setTimeout(async () => {
+        try {
+          if (activeAttemptId) {
+            await forceSubmitTestAttempt(activeAttemptId);
+            setCompletedSectionIds(selectedTest.sections.map((s) => s._id));
+            setView('feedback');
+          }
+        } catch (e) {
+          console.error('Failed to force submit test', e);
+          handleBackToList();
+        }
+      }, 0);
+      setActiveViolation(null);
+      return next;
+    }
+
+    if (next > 5) return prev;
+
+    setActiveViolation(type);
     return next;
-  }
-
-  setActiveViolation(type);
-  return next;
-});
+  });
 
   if (
     type === 'exit_fullscreen' &&
