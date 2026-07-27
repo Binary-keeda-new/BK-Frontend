@@ -141,7 +141,7 @@ export default function ProfileBuilder() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" style={{ background: 'var(--bg)', minHeight: '100vh' }}>
       
       {/* Live Completion Indicator (Sticky) */}
-      <div className="sticky top-4 z-[90] mb-8 bg-surface/90 backdrop-blur-md p-4 md:p-6 rounded-2xl shadow-lg border border-border" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
+      <div className="sticky top-4 z-[30] mb-8 bg-surface/90 backdrop-blur-md p-4 md:p-6 rounded-2xl shadow-lg border border-border" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div className="flex-1 w-full">
             <div className="flex items-center justify-between mb-2">
