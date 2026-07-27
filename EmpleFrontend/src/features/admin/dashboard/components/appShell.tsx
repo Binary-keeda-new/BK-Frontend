@@ -16,12 +16,19 @@ import QuizPreviewContent from '@/features/admin/quiz/pages/quizPreviewContent';
 import QuizzesContent from '../../quiz/pages/quizList';
 import QuizEdit from '../../quiz/components/QuizEdit';
 import QuizForm from '../../quiz/pages/QuizForm';
+import TestsContent from '../../test/pages/TestList';
+import TestEdit from '../../test/pages/TestEdit';
+import CreateTest from '../../test/components/CreateTest';
+import CodingProblemPreviewPage from '@/features/admin/coding-problems/pages/codingProblemPreviewPage';
 import CodingProblemsPage from '@/features/admin/coding-problems/pages/codingProblemsPage';
 import CodingProblemEditorPage from '@/features/admin/coding-problems/pages/codingProblemEditorPage';
 import AdminEventsPage from '@/features/admin/Events/components/AdminEventsPage';
 import AdminNotificationsPage from '@/features/admin/notifications/pages/AdminNotificationsPage';
+import AdminRequestsPage from '@/features/admin/requests/pages/AdminRequestsPage';
 import QuizReportPage from '@/features/admin/quiz/pages/QuizReportPage';
 import AdminQuizReview from '../../quiz/pages/adminQuizReview';
+import EmpleRewardsPage from '@/features/admin/rewards/pages/EmpleRewardsPage';
+import TestReportPage from '@/features/admin/test/pages/TestReportPage';
 
 
 interface AppShellProps {
@@ -37,11 +44,19 @@ export default function AppShell({
   const searchParams = useSearchParams();
 
   const { user, loading, isAdmin } = useAppAuth();
+  console.log({
+  loading,
+  user,
+  isAdmin,
+  });
 
   const sectionFromUrl =
     (searchParams.get('section') as AdminSection) || initialSection;
   const quizIdFromUrl = searchParams.get('quizId');
   const questionBankIdFromUrl = searchParams.get('questionBankId');
+  const testIdFromUrl = searchParams.get('testId');
+  const codingProblemIdFromUrl =
+  searchParams.get('codingProblemId');
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] =
@@ -58,9 +73,14 @@ const [selectedReviewAttemptId, setSelectedReviewAttemptId] = useState<string | 
   const [testListRefreshKey, setTestListRefreshKey] = useState(0);
   const [selectedTestId, setSelectedTestId] = useState<string | null>(null);
   const [selectedProblemId, setSelectedProblemId] = useState<string | null>(null);
-  const [eventsSubPage, setEventsSubPage] = useState<'hackathon' | 'techfest' | 'our-hackathon' | null>(null);
+  const [selectedReportTestId, setSelectedReportTestId] = useState<string | null>(null);
+  const [eventsSubPage, setEventsSubPage] = useState<'hackathon' | 'techfest' | 'our-hackathon' |'research-conference'| null>(null);
 
 
+const [previewProblemId, setPreviewProblemId] =
+  useState<string | null>(
+    codingProblemIdFromUrl
+  );
   useEffect(() => {
     if (loading) return;
     if (!user) {
@@ -73,10 +93,16 @@ const [selectedReviewAttemptId, setSelectedReviewAttemptId] = useState<string | 
   }, [loading, user, isAdmin, router]);
 
   useEffect(() => {
-    setActiveSection(sectionFromUrl);
-    setSelectedQuizId(quizId?.toString() || quizIdFromUrl);
-    setSelectedQuestionBankId(questionBankIdFromUrl);
-  }, [sectionFromUrl, quizIdFromUrl, questionBankIdFromUrl, quizId]);
+  setActiveSection(sectionFromUrl);
+  setSelectedQuizId(quizIdFromUrl);
+  setSelectedQuestionBankId(questionBankIdFromUrl);
+  setSelectedTestId(testIdFromUrl);
+}, [
+  sectionFromUrl,
+  quizIdFromUrl,
+  questionBankIdFromUrl,
+  testIdFromUrl,
+]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -99,15 +125,36 @@ const [selectedReviewAttemptId, setSelectedReviewAttemptId] = useState<string | 
     section,
     quizId,
     questionBankId,
+    testId,
+    codingProblemId,
   }: {
     section: AdminSection;
     quizId?: string | null;
     questionBankId?: string | null;
+    testId?: string | null;
+    codingProblemId?: string | null;
   }) => {
     const params = new URLSearchParams();
     params.set('section', section);
-    if (quizId) params.set('quizId', quizId);
-    if (questionBankId) params.set('questionBankId', questionBankId);
+
+    if (codingProblemId) {
+  params.set(
+    'codingProblemId',
+    codingProblemId
+  );
+}
+
+    if (quizId) {
+      params.set('quizId', quizId);
+    }
+
+    if (questionBankId) {
+      params.set('questionBankId', questionBankId);
+    }
+
+    if (testId) {
+  params.set('testId', testId);
+}
     router.push(`/dashboard?${params.toString()}`);
   };
 
@@ -162,8 +209,56 @@ const [selectedReviewAttemptId, setSelectedReviewAttemptId] = useState<string | 
   const openQuizPreview = (id: string) => {
     setSelectedQuizId(id);
     setActiveSection('quiz-preview');
-    updateUrl({ section: 'quiz-preview', quizId: id });
+
+    updateUrl({
+      section: 'quiz-preview',
+      quizId: id,
+    });
   };
+
+  
+  const openCodingProblemEdit = (id: string) => {
+  setSelectedProblemId(id);
+  setActiveSection('coding-problem-edit');
+
+   updateUrl({
+    section:
+      'coding-problem-edit',
+    codingProblemId: id,
+  });
+};
+   
+   const openCodingProblemPreview = (
+  id: string
+) => {
+  setPreviewProblemId(id);
+
+  setActiveSection(
+    'coding-problem-preview'
+  );
+
+  updateUrl({
+    section:
+      'coding-problem-preview',
+       codingProblemId: id,
+  });
+};
+
+  const openTestEdit = (id: string) => {
+  setSelectedTestId(id);
+  setActiveSection('test-edit');
+
+  updateUrl({
+    section: 'test-edit',
+    testId: id,
+  });
+};
+
+const openTestReport = (id: string) => {
+  setSelectedReportTestId(id);
+  setActiveSection('test-report' as AdminSection);
+};
+
 
   const openQuizReport = (id: string) => {
   setSelectedReportQuizId(id);
@@ -178,19 +273,11 @@ const openAttemptReview = (attemptId: string) => {
   const openQuestionBankDetail = (id: string) => {
     setSelectedQuestionBankId(id);
     setActiveSection('question-bank-detail');
-    updateUrl({ section: 'question-bank-detail', questionBankId: id });
+
+    updateUrl({ section: 'question-bank-detail',
+       questionBankId: id });
   };
 
-  const openCodingProblemEdit = (id: string) => {
-    setSelectedProblemId(id);
-    setActiveSection('coding-problem-edit');
-  };
-
-  const openTestEdit = (id: string) => {
-    setSelectedTestId(id);
-    setActiveSection('test-edit');
-    updateUrl({ section: 'test-edit' });
-  };
 
   const renderContent = () => {
     switch (activeSection) {
@@ -271,6 +358,17 @@ const openAttemptReview = (attemptId: string) => {
           />
         );
 
+        case 'test-create':
+  return (
+    <CreateTest
+      isOpen={true}
+      onClose={() => handleSectionChange('tests')}
+      onSuccess={() => {
+        setTestListRefreshKey((prev) => prev + 1);
+        handleSectionChange('tests');
+      }}
+    />
+  );
         case 'quiz-attempt-review':
   return selectedReviewAttemptId ? (
     <AdminQuizReview
@@ -283,6 +381,7 @@ const openAttemptReview = (attemptId: string) => {
         return (
           <DashboardContent
             onOpenQuestionBank={() => handleSectionChange('question-bank')}
+            onCreateTest={() => handleSectionChange('test-create')}
           />
         );
 
@@ -309,7 +408,10 @@ const openAttemptReview = (attemptId: string) => {
         return <AdminSessionsPage />;
 
       case 'notifications':
-        return <AdminNotificationsPage />;  
+        return <AdminNotificationsPage />;
+
+      case 'requests':
+        return <AdminRequestsPage />;  
 
       case 'practice':
         return (
@@ -319,29 +421,47 @@ const openAttemptReview = (attemptId: string) => {
         );
 
       case 'tests':
-        return (
-          <div className="p-6 text-[var(--clr-text)] md:p-10">
-            test content goes here.
-          </div>
-        );
+  return (
+    <TestsContent
+  refreshKey={testListRefreshKey}
+  onCreateTest={() => handleSectionChange('test-create')}
+  onEditTest={openTestEdit}
+  onPreviewTest={(id) => console.log('Preview test:', id)}
+   onReportTest={openTestReport}
+/>
+  );
 
-      case 'coding-problems':
-        return (
-          <CodingProblemsPage
-            onEditProblem={openCodingProblemEdit}
-          />
-        );
-
-      case 'coding-problem-edit':
-        return selectedProblemId ? (
-          <CodingProblemEditorPage
-            problemId={selectedProblemId}
-          />
-        ) : (
-          <CodingProblemsPage
-            onEditProblem={openCodingProblemEdit}
-          />
-        );
+    case 'test-report':
+  return selectedReportTestId ? (
+    <TestReportPage
+      testId={selectedReportTestId}
+      onBack={() => handleSectionChange('tests')}
+    />
+  ) : (
+    <TestsContent
+      refreshKey={testListRefreshKey}
+      onCreateTest={() => handleSectionChange('test-create')}
+      onEditTest={openTestEdit}
+      onPreviewTest={(id) => console.log('Preview test:', id)}
+      onReportTest={openTestReport}
+    />
+  );
+  case 'test-edit':
+  return selectedTestId ? (
+    <TestEdit
+      testId={selectedTestId}
+      onClose={() => {
+        setTestListRefreshKey((prev) => prev + 1);
+        handleSectionChange('tests');
+      }}
+    />
+  ) : (
+    <TestsContent
+      refreshKey={testListRefreshKey}
+      onEditTest={openTestEdit}
+      onPreviewTest={(id) => console.log('Preview test:', id)}
+    />
+  );
 
       case 'events':
         return (
@@ -350,11 +470,49 @@ const openAttemptReview = (attemptId: string) => {
             onSelectSubPage={setEventsSubPage}
           />
         );
+          
+        /*case 'coding-problems':
+          return <CodingProblemsPage />;*/
+
+        case 'coding-problems':
+           return (
+             <CodingProblemsPage
+               onEditProblem={openCodingProblemEdit}
+               onPreviewProblem={openCodingProblemPreview}
+             />
+           );
+
+        case 'coding-problem-edit':
+            return selectedProblemId ? (
+              <CodingProblemEditorPage
+                problemId={selectedProblemId}
+              />
+            ) : (
+              <CodingProblemsPage
+                onEditProblem={openCodingProblemEdit}
+                onPreviewProblem={openCodingProblemPreview}
+              />
+            );
+          
+        case 'coding-problem-preview':
+            return previewProblemId ? (
+              <CodingProblemPreviewPage
+                problemId={previewProblemId}
+              />
+            ) : (
+              <div className="p-8">
+                No problem selected.
+              </div>
+            );    
+
+      case 'rewards':
+        return <EmpleRewardsPage />;
 
       default:
         return (
           <DashboardContent
             onOpenQuestionBank={() => handleSectionChange('question-bank')}
+            onCreateTest={() => handleSectionChange('test-create')}
           />
         );
     }

@@ -52,7 +52,13 @@ export type Question = {
   imageUrl?: string;
   isPersisted?: boolean;
   solution?: string;
-solutionMedia?: string | null;
+  solutionMedia?: string | null;
+  category: string;
+  subcategory: string;
+  topic: string;
+  subTopic?: string;
+  exam?: string;
+  year?: number | null;
 };
 
 export type QuizEditProps = {

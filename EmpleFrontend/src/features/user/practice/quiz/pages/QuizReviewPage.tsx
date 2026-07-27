@@ -311,7 +311,7 @@ setResult(res.data);
                         {getQuestionLabel(index)}
                       </p>
 
-                      <h3 className="mt-2 text-base font-semibold leading-7 text-[var(--text,#f0f0f4)] md:text-[17px]">
+                      <h3 className="whitespace-pre-wrap mt-2 text-base font-semibold leading-7 text-[var(--text,#f0f0f4)] md:text-[17px]">
                         {answer.question}
                       </h3>
                     </div>

@@ -5,6 +5,7 @@ export type QuizReport = {
     totalQuestions: number;
     maxMarks: number;
     averageScore: number;
+    averageTimeTakenSeconds: number;
   };
   questionAccuracy: {
     questionId: string;
@@ -20,14 +21,17 @@ export type QuizReport = {
     negativeMarks: number;
     correctOptions: string[];
     optionDistribution: Record<string, number>;
+    averageTimeTakenSeconds: number;
   }[];
   leaderboard: {
     rank: number;
     userId: string;
+    name: string;
     score: number;
     email: string;
     totalQuestions: number;
     submittedAt: string | null;
     attemptId: string;
+    totalTimeTakenSeconds: number;
   }[];
 };

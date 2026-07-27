@@ -1,13 +1,13 @@
 'use client'
 
-import { Fragment, useState } from 'react'
-import Image from 'next/image'
+import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useDescope } from '@descope/nextjs-sdk/client'
 import AuthLayout from '@/features/auth/layouts/AuthLayout'
 import '@/features/auth/auth.css'
 import { Eye, EyeOff } from 'lucide-react'
+import { getDeviceId, getDeviceLabel } from '@/shared/utils/deviceId'
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
@@ -23,6 +23,9 @@ export default function LoginPage() {
 
   const handleSocialLogin = async (provider: 'google' | 'github' | 'microsoft') => {
     try {
+      sessionStorage.setItem('oauth_intent', 'login')
+      sessionStorage.setItem('oauth_provider', provider)
+
       const redirectUrl = `${window.location.origin}/auth/callback`
       const result = await sdk.oauth.start(provider, redirectUrl)
 
@@ -55,7 +58,25 @@ export default function LoginPage() {
       const resp = await sdk.password.signIn(email, password)
 
       if (!resp?.ok) {
-        setError('Invalid email or password.')
+        try {
+          const checkRes = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/check-auth-provider?email=${encodeURIComponent(email)}`
+          )
+          const checkData = await checkRes.json()
+
+          if (!checkData.exists) {
+            setError("You don't have an account. Redirecting to signup...")
+            setTimeout(() => router.replace('/auth/signup'), 2000)
+          } else if (checkData.authProvider && checkData.authProvider !== 'password') {
+            setError(
+              `This account uses ${checkData.authProvider} sign-in. Please continue with ${checkData.authProvider} instead.`
+            )
+          } else {
+            setError('Invalid email or password.')
+          }
+        } catch {
+          setError('Invalid email or password.')
+        }
         return
       }
 
@@ -66,13 +87,37 @@ export default function LoginPage() {
         return
       }
 
-      const syncRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/sync`, {
+      let syncRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/sync`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify({
+          intent: 'login',
+          deviceId: getDeviceId(),
+          deviceLabel: getDeviceLabel(),
+        }),
       })
+
+      if (syncRes.status === 404) {
+        const body = await syncRes.json().catch(() => ({}))
+        if (body?.code === 'NO_ACCOUNT_FOUND') {
+          syncRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/sync`, {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              intent: 'login-repair',
+              provider: 'password',
+              deviceId: getDeviceId(),
+              deviceLabel: getDeviceLabel(),
+            }),
+          })
+        }
+      }
 
       const syncText = await syncRes.text()
       console.log('login sync ->', syncRes.status, syncText)
@@ -83,25 +128,24 @@ export default function LoginPage() {
       }
 
       const syncData = JSON.parse(syncText)
+      if (syncData.isNewUser) {
+        sessionStorage.setItem('show_signup_bonus', 'true')
+      }
+
       const user = syncData.data?.user || syncData.user
       const role = user?.role
-      const isEmailVerified = user?.isEmailVerified
 
       localStorage.setItem('token', token)
       localStorage.setItem('role', role || 'user')
 
-      // Block unverified users from logging in
-      if (!isEmailVerified) {
-        router.replace(`/auth/check-email?email=${encodeURIComponent(email)}`)
-        return
-      }
+      const expiry = Date.now() + (remember ? 30 : 3) * 24 * 60 * 60 * 1000
+      localStorage.setItem('sessionExpiry', expiry.toString())
 
       if (role === 'admin') {
         router.replace('/dashboard')
       } else {
         router.replace('/user/dashboard')
       }
-
     } catch (err) {
       console.error('Login error:', err)
       setError('Something went wrong. Please try again.')
@@ -129,12 +173,7 @@ export default function LoginPage() {
           )}
 
           <div className="auth-socials-row">
-            <button
-              className="auth-social-icon-btn google"
-              onClick={() => handleSocialLogin('google')}
-              title="Continue with Google"
-              type="button"
-            >
+            <button className="auth-social-icon-btn google" onClick={() => handleSocialLogin('google')} title="Continue with Google" type="button">
               <svg width="20" height="20" viewBox="0 0 24 24">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
                 <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
@@ -143,23 +182,13 @@ export default function LoginPage() {
               </svg>
             </button>
 
-            <button
-              className="auth-social-icon-btn github"
-              onClick={() => handleSocialLogin('github')}
-              title="Continue with GitHub"
-              type="button"
-            >
+            <button className="auth-social-icon-btn github" onClick={() => handleSocialLogin('github')} title="Continue with GitHub" type="button">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
               </svg>
             </button>
 
-            <button
-              className="auth-social-icon-btn microsoft"
-              onClick={() => handleSocialLogin('microsoft')}
-              title="Continue with Microsoft"
-              type="button"
-            >
+            <button className="auth-social-icon-btn microsoft" onClick={() => handleSocialLogin('microsoft')} title="Continue with Microsoft" type="button">
               <svg width="20" height="20" viewBox="0 0 24 24">
                 <path fill="#f25022" d="M1 1h10v10H1z" />
                 <path fill="#00a4ef" d="M13 1h10v10H13z" />
@@ -173,18 +202,11 @@ export default function LoginPage() {
             <span>or continue with email</span>
           </div>
 
-          <form className="auth-form" onSubmit={handleSubmit}>
+          <form className="auth-form" onSubmit={handleSubmit} suppressHydrationWarning>
             <div className="auth-field">
               <label className="auth-label">Email Address</label>
               <div className="auth-input-wrap">
-                <input
-                  className="auth-input"
-                  type="email"
-                  placeholder="you@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  autoComplete="email"
-                />
+                <input className="auth-input" type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" />
               </div>
             </div>
 
@@ -204,12 +226,7 @@ export default function LoginPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   autoComplete="current-password"
                 />
-                <button
-                  type="button"
-                  className="auth-input-toggle"
-                  onClick={() => setShowPassword(!showPassword)}
-                  aria-label="Toggle password visibility"
-                >
+                <button type="button" className="auth-input-toggle" onClick={() => setShowPassword(!showPassword)} aria-label="Toggle password visibility">
                   {showPassword ? <EyeOff size={18} strokeWidth={1.5} /> : <Eye size={18} strokeWidth={1.5} />}
                 </button>
               </div>

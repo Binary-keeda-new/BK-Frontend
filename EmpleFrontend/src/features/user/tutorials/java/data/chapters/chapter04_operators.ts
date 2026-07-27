@@ -255,4 +255,16 @@ export const chapter04_MCQ = [
   }
 ];
 
-export const chapter04_COMPLETE_EXERCISES = [];
+export const chapter04_COMPLETE_EXERCISES = [
+  {
+    template: `public class Main {
+    public static void main(String[] args) {
+        int a = 10;
+        a ___ 5; // Adds 5 to a
+    }
+}`,
+    blanks: [
+      "+="
+    ]
+  }
+];

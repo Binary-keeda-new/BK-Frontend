@@ -270,4 +270,18 @@ export const chapter05_MCQ = [
   }
 ];
 
-export const chapter05_COMPLETE_EXERCISES = [];
+export const chapter05_COMPLETE_EXERCISES = [
+  {
+    template: `public class Main {
+    public static void main(String[] args) {
+        int x = 10;
+        ___ (x > 5) {
+            System.out.println("x is greater");
+        }
+    }
+}`,
+    blanks: [
+      "if"
+    ]
+  }
+];

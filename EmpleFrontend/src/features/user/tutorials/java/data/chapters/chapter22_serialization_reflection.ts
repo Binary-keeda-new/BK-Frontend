@@ -129,4 +129,14 @@ export const chapter22_MCQ = [
 
 export const chapter22_DEBUG = undefined;
 export const chapter22_DRAG_DROP = undefined;
-export const chapter22_COMPLETE_EXERCISES = [];
+export const chapter22_COMPLETE_EXERCISES = [
+  {
+    template: `import java.io.Serializable;
+class Person implements ___ {
+    String name;
+}`,
+    blanks: [
+      "Serializable"
+    ]
+  }
+];

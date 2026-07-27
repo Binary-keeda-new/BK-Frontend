@@ -7,6 +7,8 @@ import {
   RoadmapAnswers,
 } from "../types/roadmapAI.types";
 import { generateRoadmapAPI, finalizeRoadmapAPI } from "../services/roadmapAI.service";
+import { useNotification } from "@/providers/NotificationProvider";
+import { useWallet } from "@/providers/WalletProvider";
 
 const QUESTIONS: ChatQuestion[] = [
   {
@@ -46,6 +48,9 @@ export const useRoadmapChat = (
   onFinalized: (id: string) => void
 ) => {
   const { sessionToken } = useSession();
+  const { notifyDeduction } = useNotification();
+  const { config, refreshWallet } = useWallet();
+  const cost = config?.ROADMAP?.GENERATION_COST || 25;
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [currentOpts, setCurrentOpts] = useState<string[]>([]);
@@ -98,6 +103,8 @@ export const useRoadmapChat = (
 
     try {
       const roadmap = await generateRoadmapAPI(modifiedAnswers, sessionToken);
+      notifyDeduction("Generating AI Roadmap", "Building your personalized path...", cost);
+      refreshWallet();
       setPreviewRoadmap(roadmap);
       onPreviewReady(roadmap);
       setIsGenerating(false);

@@ -29,6 +29,14 @@ type Question = {
   negativeMarks: number
   questionType?: 'MCQ' | 'MSQ' | 'NAT'
   imageUrl?: string | null
+  solution?: string
+  solutionMedia?: string | null
+  category?: string
+  subcategory?: string
+  topic?: string
+  subTopic?: string
+  exam?: string
+  year?: number | null
 }
 
 type SingleQuestionBankResponse = {
@@ -43,7 +51,12 @@ type QuestionsResponse = {
   data: Question[]
 }
 
-type Toast = { id: number; message: string; type: 'success' | 'error' }
+type Toast = {
+  id: string
+  message: string
+  type: 'success' | 'error'
+}
+
 
 
 const EMPTY_QUESTION: NewQuestion = {
@@ -54,6 +67,14 @@ const EMPTY_QUESTION: NewQuestion = {
   negativeMarks: 1,
   questionType: 'MCQ',
   imageUrl: null,
+  solution: '',
+  solutionMedia: '',
+  category: '',
+  subcategory: '',
+  topic: '',
+  subTopic: '',
+  exam: '',
+  year: null,
 }
 
 function parseAiken(text: string): NewQuestion[] {
@@ -62,50 +83,123 @@ function parseAiken(text: string): NewQuestion[] {
 
   for (const block of blocks) {
     const lines = block
-      .trim()
-      .split('\n')
+      .split("\n")
       .map((line) => line.trim())
       .filter(Boolean)
 
     if (lines.length < 3) continue
 
-    const questionLine = lines[0]
-    const optionLines = lines.slice(1).filter((line) => /^[A-Z]\.\s/.test(line))
-    const answerLine = lines.find((line) =>
-      line.toUpperCase().startsWith('ANSWER:')
+    const typeLine = lines.find((line) => /^TYPE\s*:/i.test(line))
+    const answerLine = lines.find((line) => /^ANSWER\s*:/i.test(line))
+    const positiveLine = lines.find((line) => /^POSITIVE\s*:/i.test(line))
+    const negativeLine = lines.find((line) => /^NEGATIVE\s*:/i.test(line))
+    
+    const imageLine = lines.find((line) => /^IMAGE\s*:/i.test(line))
+    const solutionLine = lines.find((line) => /^SOLUTION\s*:/i.test(line))
+    const solutionMediaLine = lines.find((line) => /^SOLUTION_MEDIA\s*:/i.test(line))
+
+    const categoryLine = lines.find((line) => /^CATEGORY\s*:/i.test(line))
+    const subcategoryLine = lines.find((line) => /^SUBCATEGORY\s*:/i.test(line))
+    const topicLine = lines.find((line) => /^TOPIC\s*:/i.test(line))
+    const subtopicLine = lines.find((line) => /^SUBTOPIC\s*:/i.test(line))
+    const examLine = lines.find((line) => /^EXAM\s*:/i.test(line))
+    const yearLine = lines.find((line) => /^YEAR\s*:/i.test(line))
+
+    const optionLines = lines.filter((line) => /^[A-Z][\.\)]\s+/.test(line))
+
+    const questionText = lines.find(
+      (line) =>
+        !/^TYPE\s*:/i.test(line) &&
+        !/^ANSWER\s*:/i.test(line) &&
+        !/^POSITIVE\s*:/i.test(line) &&
+        !/^NEGATIVE\s*:/i.test(line) &&
+        !/^IMAGE\s*:/i.test(line) &&
+        !/^SOLUTION\s*:/i.test(line) &&
+        !/^SOLUTION_MEDIA\s*:/i.test(line) &&
+        !/^CATEGORY\s*:/i.test(line) &&
+        !/^SUBCATEGORY\s*:/i.test(line) &&
+        !/^TOPIC\s*:/i.test(line) &&
+        !/^SUBTOPIC\s*:/i.test(line) &&
+        !/^EXAM\s*:/i.test(line) &&
+        !/^YEAR\s*:/i.test(line) &&
+        !/^[A-Z][\.\)]\s+/.test(line)
     )
 
-    if (!answerLine || optionLines.length < 2) continue
+    if (!questionText || !answerLine) continue
 
-    const answerKeys = answerLine
-      .replace(/ANSWER:\s*/i, '')
-      .split(',')
-      .map((key) => key.trim().toUpperCase())
-      .filter(Boolean)
+    let parsedType: "MCQ" | "MSQ" | "NAT" | null = null
+    if (typeLine) {
+      const t = typeLine.replace(/^TYPE\s*:/i, "").trim().toUpperCase()
+      if (t === "MSQ") parsedType = "MSQ"
+      else if (t === "NAT") parsedType = "NAT"
+      else if (t === "MCQ") parsedType = "MCQ"
+    }
+
+    if (parsedType !== "NAT" && !optionLines.length) continue
 
     const options = optionLines.map((line) =>
-      line.replace(/^[A-Z]\.\s/, '').trim()
+      line.replace(/^[A-Z][\.\)]\s+/, "").trim()
     )
 
-    
-    const correctOptions = answerKeys
-      .map((key) =>
-        optionLines
-          .find((line) => line.startsWith(`${key}.`))
-          ?.replace(/^[A-Z]\.\s/, '')
-          .trim()
-      )
-      .filter((value): value is string => Boolean(value))
+    let correctOptions: string[] = []
 
-    if (correctOptions.length === 0) continue
+    if (parsedType === "NAT") {
+      correctOptions = [answerLine.replace(/^ANSWER\s*:/i, "").trim()]
+    } else {
+      const correctKeys = answerLine
+        .replace(/^ANSWER\s*:/i, "")
+        .split(",")
+        .map((item) => item.trim().toUpperCase())
+        .filter(Boolean)
+
+      correctOptions = correctKeys
+        .map((key) => {
+          const match = optionLines.find(
+            (line) =>
+              line.toUpperCase().startsWith(`${key}.`) ||
+              line.toUpperCase().startsWith(`${key})`)
+          )
+          return match?.replace(/^[A-Z][\.\)]\s+/, "").trim()
+        })
+        .filter((value): value is string => Boolean(value))
+
+      if (!correctOptions.length) continue
+    }
+
+    const positiveMarks = positiveLine
+      ? Number(positiveLine.replace(/^POSITIVE\s*:/i, "").trim())
+      : 4
+
+    const negativeMarks = negativeLine
+      ? Number(negativeLine.replace(/^NEGATIVE\s*:/i, "").trim())
+      : 1
+
+    const imageUrl = imageLine ? imageLine.replace(/^IMAGE\s*:/i, "").trim() : null
+    const solution = solutionLine ? solutionLine.replace(/^SOLUTION\s*:/i, "").trim() : ''
+    const solutionMedia = solutionMediaLine ? solutionMediaLine.replace(/^SOLUTION_MEDIA\s*:/i, "").trim() : ''
+    const category = categoryLine ? categoryLine.replace(/^CATEGORY\s*:/i, "").trim() : ''
+    const subcategory = subcategoryLine ? subcategoryLine.replace(/^SUBCATEGORY\s*:/i, "").trim() : ''
+    const topic = topicLine ? topicLine.replace(/^TOPIC\s*:/i, "").trim() : ''
+    const subTopic = subtopicLine ? subtopicLine.replace(/^SUBTOPIC\s*:/i, "").trim() : ''
+    const exam = examLine ? examLine.replace(/^EXAM\s*:/i, "").trim() : ''
+    const year = yearLine ? parseInt(yearLine.replace(/^YEAR\s*:/i, "").trim(), 10) || null : null
 
     questions.push({
-      question: questionLine,
+      question: questionText,
       options,
       correctOptions,
-      positiveMarks: 4,
-      negativeMarks: 1,
-      questionType: correctOptions.length > 1 ? 'MSQ' : 'MCQ',
+      positiveMarks: Number.isFinite(positiveMarks) ? positiveMarks : 4,
+      negativeMarks: Number.isFinite(negativeMarks) ? negativeMarks : 1,
+      questionType: parsedType || (correctOptions.length > 1 ? "MSQ" : "MCQ"),
+      imageUrl,
+      solution,
+      solutionMedia,
+      category,
+      subcategory,
+      topic,
+      subTopic,
+      exam,
+      year,
     })
   }
 
@@ -126,6 +220,15 @@ function parseJSON(text: string): NewQuestion[] {
       questionType:
         q.questionType ??
         ((q.correctOptions?.length ?? 0) > 1 ? 'MSQ' : 'MCQ'),
+      imageUrl: q.imageUrl ? String(q.imageUrl).trim() : null,
+      solution: q.solution ? String(q.solution).trim() : '',
+      solutionMedia: q.solutionMedia ? String(q.solutionMedia).trim() : '',
+      category: q.category ?? '',
+      subcategory: q.subcategory ?? '',
+      topic: q.topic ?? '',
+      subTopic: q.subTopic ?? '',
+      exam: q.exam ?? '',
+      year: q.year ?? null,
     }))
   } catch {
     return []
@@ -152,6 +255,14 @@ function parseExcel(rows: Record<string, any>[]): NewQuestion[] {
         negativeMarks: Number(row.negative_marks ?? row.negativeMarks ?? 1),
         questionType: 'NAT',
         imageUrl: row.imageUrl ? String(row.imageUrl).trim() : null,
+        solution: row.solution ? String(row.solution).trim() : '',
+        solutionMedia: row.solutionMedia ? String(row.solutionMedia).trim() : '',
+        category: row.category ? String(row.category).trim() : '',
+        subcategory: row.subcategory ? String(row.subcategory).trim() : '',
+        topic: row.topic ? String(row.topic).trim() : '',
+        subTopic: row.subTopic ? String(row.subTopic).trim() : '',
+        exam: row.exam ? String(row.exam).trim() : '',
+        year: row.year ? Number(row.year) : null,
       })
 
       continue
@@ -198,6 +309,14 @@ function parseExcel(rows: Record<string, any>[]): NewQuestion[] {
       negativeMarks: Number(row.negative_marks ?? row.negativeMarks ?? 1),
       questionType: correctOptions.length > 1 ? 'MSQ' : 'MCQ',
       imageUrl: row.imageUrl ? String(row.imageUrl).trim() : null,
+      solution: row.solution ? String(row.solution).trim() : '',
+      solutionMedia: row.solutionMedia ? String(row.solutionMedia).trim() : '',
+      category: row.category ? String(row.category).trim() : '',
+      subcategory: row.subcategory ? String(row.subcategory).trim() : '',
+      topic: row.topic ? String(row.topic).trim() : '',
+      subTopic: row.subTopic ? String(row.subTopic).trim() : '',
+      exam: row.exam ? String(row.exam).trim() : '',
+      year: row.year ? Number(row.year) : null,
     })
   }
 
@@ -239,7 +358,6 @@ export default function QuestionBankDetailPage({
   const [editLoading, setEditLoading] = useState(false)
 
   const [toasts, setToasts] = useState<Toast[]>([])
-  const toastId = useRef(0)
 
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -249,12 +367,14 @@ export default function QuestionBankDetailPage({
   const [deleteQuestionText, setDeleteQuestionText] = useState('')
 
   const addToast = (message: string, type: Toast['type'] = 'success') => {
-    const id = ++toastId.current
-    setToasts((prev) => [...prev, { id, message, type }])
-    setTimeout(() => {
-      setToasts((prev) => prev.filter((t) => t.id !== id))
-    }, 3500)
-  }
+  const id = crypto.randomUUID()
+
+  setToasts((prev) => [...prev, { id, message, type }])
+
+  setTimeout(() => {
+    setToasts((prev) => prev.filter((t) => t.id !== id))
+  }, 3500)
+}
 
   useEffect(() => {
     if (!id) return
@@ -359,6 +479,10 @@ export default function QuestionBankDetailPage({
   if (invalidCorrect) return 'Correct option must match a filled option'
 
   if (q.positiveMarks < 0) return 'Positive marks must be ≥ 0'
+
+  if (!q.category.trim()) return 'Category is required'
+  if (!q.subcategory.trim()) return 'Subcategory is required'
+  if (!q.topic.trim()) return 'Topic is required'
 
   return null
 }
@@ -516,6 +640,14 @@ export default function QuestionBankDetailPage({
     q.questionType ??
     (q.correctOptions.length > 1 ? 'MSQ' : 'MCQ'),
   imageUrl: q.imageUrl ?? null,
+  solution: q.solution ?? '',
+  solutionMedia: q.solutionMedia ?? '',
+  category: q.category ?? '',
+  subcategory: q.subcategory ?? '',
+  topic: q.topic ?? '',
+  subTopic: q.subTopic ?? '',
+  exam: q.exam ?? '',
+  year: q.year ?? null,
 })
     setIsEditOpen(true)
   }

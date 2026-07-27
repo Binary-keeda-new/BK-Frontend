@@ -29,7 +29,8 @@ const EMPTY_FORM: EventFormData = {
 const TYPE_LABELS: Record<EventType, string> = {
   hackathon: 'Hackathon',
   techfest: 'Techfest',
-  'our-hackathon': 'Our Hackathon',
+  'our-hackathon': 'Emple Events',
+  'research-conference': 'Research Conference',
 }
 
 interface Props {
@@ -137,7 +138,8 @@ export default function AdminEventFormPage({ editTarget, defaultType, onCancel, 
             >
               <option value="hackathon">Hackathon</option>
               <option value="techfest">Techfest</option>
-              <option value="our-hackathon">Our Hackathon</option>
+              <option value="our-hackathon">Emple Events</option>
+              <option value="research-conference">Research Conference</option>
             </select>
           </div>
         </div>

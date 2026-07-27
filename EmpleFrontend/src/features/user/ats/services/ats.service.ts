@@ -31,11 +31,15 @@ async function handleResponse<T>(response: Response): Promise<T> {
 export async function analyzeStandard(
   file: File,
   jobDescription: string,
-  sessionToken?: string
+  sessionToken?: string,
+  idempotencyKey?: string
 ): Promise<StandardATSResult> {
   const formData = new FormData();
   formData.append('resume', file);
   formData.append('jobDescription', jobDescription);
+  if (idempotencyKey) {
+    formData.append('idempotencyKey', idempotencyKey);
+  }
 
   const headers: Record<string, string> = {};
   if (sessionToken) {
@@ -58,11 +62,15 @@ export async function analyzeStandard(
 export async function analyzeAI(
   file: File,
   jobDescription: string,
-  sessionToken?: string
+  sessionToken?: string,
+  idempotencyKey?: string
 ): Promise<AIATSResult> {
   const formData = new FormData();
   formData.append('resume', file);
   formData.append('jobDescription', jobDescription);
+  if (idempotencyKey) {
+    formData.append('idempotencyKey', idempotencyKey);
+  }
 
   const headers: Record<string, string> = {};
   if (sessionToken) {

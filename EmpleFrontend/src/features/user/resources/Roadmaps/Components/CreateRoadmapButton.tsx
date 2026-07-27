@@ -6,12 +6,14 @@ interface CreateRoadmapButtonProps {
   onClick: () => void;
   disabled?: boolean;
   isLoading?: boolean;
+  cost?: number;
 }
 
 const CreateRoadmapButton: React.FC<CreateRoadmapButtonProps> = ({
   onClick,
   disabled = false,
   isLoading = false,
+  cost,
 }) => {
   return (
     <>
@@ -23,6 +25,11 @@ const CreateRoadmapButton: React.FC<CreateRoadmapButtonProps> = ({
           px-[13px] py-[7px] text-[12px] font-medium cursor-pointer
           hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
       >
+        {cost !== undefined && (
+          <span className="flex items-center bg-white/20 px-2 py-0.5 rounded mr-1">
+            🪙 {cost} Coins
+          </span>
+        )}
         {isLoading ? (
           <>
             <svg

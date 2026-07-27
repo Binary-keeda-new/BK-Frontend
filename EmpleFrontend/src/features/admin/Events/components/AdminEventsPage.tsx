@@ -1,13 +1,13 @@
 'use client'
 
 import { useState } from 'react'
-import { Trophy, Sparkles, Rocket } from 'lucide-react'
+import { Trophy, Sparkles, Rocket, BookOpen } from 'lucide-react'
 import EventListPage from './EventListPage'
 import AdminEventPreviewContent from './AdminEventPreviewContent'
 import AdminEventFormPage from './AdminEventFormPage'
 import { Event } from '../types'
 
-type EventSubPage = 'hackathon' | 'techfest' | 'our-hackathon'
+type EventSubPage = 'hackathon' | 'techfest' | 'our-hackathon' | 'research-conference'
 
 interface Props {
   subPage: EventSubPage | null
@@ -39,15 +39,27 @@ const CARDS = [
   },
   {
     id: 'our-hackathon' as const,
-    title: 'Our Hackathons',
+    title: 'Emple Events',
     description: 'Create and manage hackathons hosted directly on the Emple platform.',
-    badge: 'By Emple',
+    badge: 'Emple Events',
     icon: <Rocket size={18} />,
     accentColor: '#10b981',
     badgeClass: 'text-emerald-400 bg-emerald-500/10',
     iconBg: 'bg-emerald-500/10',
     topBar: 'from-emerald-600 to-emerald-400',
   },
+  {
+  id: 'research-conference' as const,
+  title: 'Research Conferences',
+  description:
+    'Manage research conferences available for students and researchers.',
+  badge: 'Research',
+  icon: <BookOpen size={18} />,
+  accentColor: '#3b82f6',
+  badgeClass: 'text-blue-400 bg-blue-500/10',
+  iconBg: 'bg-blue-500/10',
+  topBar: 'from-blue-600 to-blue-400',
+},
 ]
 
 export default function AdminEventsPage({ subPage, onSelectSubPage }: Props) {
@@ -102,7 +114,7 @@ export default function AdminEventsPage({ subPage, onSelectSubPage }: Props) {
     <div className="w-full max-w-[1100px] px-4 py-6 sm:px-6 sm:py-8 lg:px-10 lg:py-10">
       <div className="mb-8">
         <h1 className="text-[22px] font-extrabold leading-tight text-[var(--clr-text)] sm:text-3xl">
-          Admin <span className="text-[var(--clr-accent)]">Events</span>
+          <span className="text-[var(--clr-accent)]">Events</span>
         </h1>
         <p className="mt-1 text-sm text-[var(--clr-text2)]">
           Manage all events visible to users on the platform.

@@ -1,14 +1,20 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { Cpu, Workflow, BookOpen, Users, Star, Search, Clock, ListCollapse, ArrowLeft } from "lucide-react";
-import CTutorialPage from "../c/pages/CTutorialPage"; // Import C tutorial feature directly
-import JavaTutorialPage from "../java/pages/JavaTutorialPage"; // Import Java tutorial feature
+import React, { useState } from "react";
+import { Cpu, Workflow, Search, ListCollapse } from "lucide-react";
+import CTutorialPage from "../c/pages/CTutorialPage";
+import JavaTutorialPage from "../java/pages/JavaTutorialPage";
 import DAATutorialPage from "../daa/pages/DAATutorialPage";
+import DBMSTutorialPage from "../dbms/pages/DBMSTutorialPage";
 import TutorialsLandingPage from "./TutorialsLandingPage";
 import VideosPlaceholderPage from "./VideosPlaceholderPage";
+import Link from "next/link";
 
-// Official stylized programming language logo SVGs
+import { CHAPTERS as cChapters } from "../c/data/cTutorial";
+import { CHAPTERS as javaChapters } from "../java/data/javaTutorial";
+import { CHAPTERS as daaChapters } from "../daa/data/daaTutorial";
+import { CHAPTERS as dbmsChapters } from "../dbms/data/dbmsTutorial";
+
 const CLogo = (props: any) => (
   <svg viewBox="0 0 306 344.35" width="22" height="22" className={props.className} style={props.style}>
     <path fill="#00599C" d="M302.107,258.262c2.401-4.159,3.893-8.845,3.893-13.053V99.14c0-4.208-1.49-8.893-3.892-13.052L153,172.175 L302.107,258.262z"/>
@@ -39,7 +45,7 @@ const SUBJECTS = [
     color: "#ff6b35",
     difficulty: "Beginner",
     duration: "2-4 Weeks",
-    chapters: 12
+    chapters: cChapters.length
   },
   {
     id: "java",
@@ -49,7 +55,7 @@ const SUBJECTS = [
     color: "#e2433b",
     difficulty: "Intermediate",
     duration: "4-8 Weeks",
-    chapters: 18
+    chapters: javaChapters.length
   },
   { 
     id: "daa",
@@ -60,7 +66,7 @@ const SUBJECTS = [
     disabled: false,
     difficulty: "Advanced",
     duration: "6-10 Weeks",
-    chapters: 18
+    chapters: daaChapters.length
   },
   { 
     id: "dbms",
@@ -68,19 +74,17 @@ const SUBJECTS = [
     description: "Database Management Systems - Master SQL, normalization, and database architecture.", 
     icon: Cpu, 
     color: "#6c63ff",
-    disabled: true,
+    disabled: false,
     difficulty: "Intermediate",
     duration: "4-6 Weeks",
-    chapters: 10
+    chapters: dbmsChapters.length
   },
 ];
 
-export function TutorialsNotesPage({ onBackToLanding }: { onBackToLanding: () => void }) {
-  const [activeSubject, setActiveSubject] = useState<string | null>(null);
+export function TutorialsNotesPage() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [progressStatus, setProgressStatus] = useState<Record<string, boolean>>({});
-
-  useEffect(() => {
+  const [progressStatus, setProgressStatus] = useState<Record<string, boolean>>(() => {
+    if (typeof window === 'undefined') return {};
     const status: Record<string, boolean> = {};
     SUBJECTS.forEach(sub => {
       try {
@@ -93,8 +97,8 @@ export function TutorialsNotesPage({ onBackToLanding }: { onBackToLanding: () =>
         }
       } catch (e) {}
     });
-    setProgressStatus(status);
-  }, []);
+    return status;
+  });
 
   const t: Record<string, string> = {
     border: 'var(--border)',
@@ -105,10 +109,6 @@ export function TutorialsNotesPage({ onBackToLanding }: { onBackToLanding: () =>
     brand: 'var(--orange)',
   };
 
-  if (activeSubject === "c") return <CTutorialPage onBack={() => setActiveSubject(null)} />;
-  if (activeSubject === "java") return <JavaTutorialPage onBack={() => setActiveSubject(null)} />;
-  if (activeSubject === "daa") return <DAATutorialPage onBack={() => setActiveSubject(null)} />;
-
   const filteredSubjects = SUBJECTS.filter(s => 
     s.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
     s.description.toLowerCase().includes(searchQuery.toLowerCase())
@@ -116,22 +116,21 @@ export function TutorialsNotesPage({ onBackToLanding }: { onBackToLanding: () =>
 
   return (
     <div className="fade-in" style={{ padding: '24px 0', maxWidth: '1200px', margin: '0 auto', paddingLeft: 24, paddingRight: 24 }}>
-      {/* Back Button */}
-      <button 
-        onClick={onBackToLanding}
-        style={{
-          display: 'inline-flex', alignItems: 'center', gap: 8, background: 'transparent',
-          border: 'none', color: t.muted, cursor: 'pointer', fontSize: '14px',
-          fontWeight: 600, padding: 0, marginBottom: '24px',
-          transition: 'color 0.2s'
-        }}
-        onMouseEnter={e => (e.currentTarget.style.color = t.text)}
-        onMouseLeave={e => (e.currentTarget.style.color = t.muted)}
-      >
-        Back to Tutorials
-      </button>
+      <Link href="/tutorials" passHref>
+        <button 
+          style={{
+            display: 'inline-flex', alignItems: 'center', gap: 8, background: 'transparent',
+            border: 'none', color: t.muted, cursor: 'pointer', fontSize: '14px',
+            fontWeight: 600, padding: 0, marginBottom: '24px',
+            transition: 'color 0.2s'
+          }}
+          onMouseEnter={e => (e.currentTarget.style.color = t.text)}
+          onMouseLeave={e => (e.currentTarget.style.color = t.muted)}
+        >
+          Back to Tutorials
+        </button>
+      </Link>
 
-      {/* Header Section */}
       <div style={{ marginBottom: '2rem' }}>
         <h1 style={{ fontFamily: "var(--font-syne, sans-serif)", fontSize: "28px", fontWeight: 800, color: "var(--text)", marginBottom: '4px', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
           Learning <span style={{ color: t.brand }}>Tutorials</span>
@@ -141,8 +140,6 @@ export function TutorialsNotesPage({ onBackToLanding }: { onBackToLanding: () =>
         </p>
       </div>
 
-
-      {/* Toolbar */}
       <div style={{
         display: 'flex',
         gap: 16,
@@ -183,16 +180,16 @@ export function TutorialsNotesPage({ onBackToLanding }: { onBackToLanding: () =>
         </div>
       </div>
 
-      {/* Grid List */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "24px" }}>
         {filteredSubjects.map((sub) => {
           return (
-            <div
+            <Link
+              href={sub.disabled ? "#" : `/tutorials/${sub.id}`}
               key={sub.id}
-              onClick={() => {
-                if (!sub.disabled) setActiveSubject(sub.id);
-              }}
-              style={{
+              style={{ textDecoration: 'none' }}
+            >
+              <div
+                style={{
                 background: t.surface,
                 border: `1px solid ${t.border}`,
                 borderRadius: '16px',
@@ -221,7 +218,6 @@ export function TutorialsNotesPage({ onBackToLanding }: { onBackToLanding: () =>
                 }
               }}
             >
-              {/* Header */}
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
                 <div style={{
                   width: "56px",
@@ -286,27 +282,10 @@ export function TutorialsNotesPage({ onBackToLanding }: { onBackToLanding: () =>
                 </button>
               </div>
             </div>
+          </Link>
           );
         })}
       </div>
-    </div>
-  );
-}
-
-export default function TutorialsPage() {
-  const [viewMode, setViewMode] = useState<"landing" | "notes" | "videos">("landing");
-
-  if (viewMode === "landing") {
-    return <TutorialsLandingPage onSelect={setViewMode} />;
-  }
-
-  if (viewMode === "videos") {
-    return <VideosPlaceholderPage onBack={() => setViewMode("landing")} />;
-  }
-
-  return (
-    <div style={{ position: 'relative' }}>
-      <TutorialsNotesPage onBackToLanding={() => setViewMode("landing")} />
     </div>
   );
 }

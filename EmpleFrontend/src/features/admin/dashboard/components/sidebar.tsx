@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { LOGO_URL } from '@/shared/constants/assets'
 
 export type AdminSection =
   | 'dashboard'
@@ -13,17 +14,22 @@ export type AdminSection =
   | 'question-bank-detail'
   | 'coding-problems'
   | 'coding-problem-edit'
+  | 'coding-problem-preview'
   | 'jobs'
   | 'blogs'
   | 'sessions'
   | 'notifications'
+  | 'requests'  
   | 'events'
   | 'quiz-preview'
   | 'quiz-edit'
   | 'quiz-create'
   | 'test-edit'
+  | 'test-create'
   | 'quiz-report'
-  |'quiz-attempt-review';
+  | 'quiz-attempt-review'
+  | 'rewards'
+  | 'test-report';
 
 const NAV_ITEMS: {
   label: string;
@@ -179,6 +185,27 @@ const NAV_ITEMS: {
     </svg>
   ),
 },
+  {
+  label: 'Requests',
+  key: 'requests',
+  icon: (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    </svg>
+  ),
+},
+{
+  label: 'Emple Rewards',
+  key: 'rewards',
+  icon: (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="20 12 20 22 4 22 4 12" />
+      <rect x="2" y="7" width="20" height="5" />
+      <line x1="12" y1="22" x2="12" y2="7" />
+      <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z" />
+      <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z" />
+    </svg>
+  ),
+},
 ];
 
 type SidebarProps = {
@@ -206,9 +233,10 @@ export default function Sidebar({
           <div className="relative h-[42px] flex-1">
             {!collapsed ? (
               <Image
-                src="/logo-final.png"
+                src={LOGO_URL}
                 alt="Logo"
                 fill
+                sizes="220px"
                 className="object-contain object-left"
                 priority
               />
@@ -217,6 +245,7 @@ export default function Sidebar({
                 src="/logo-isolated.png"
                 alt="Logo icon"
                 fill
+                sizes="66px"
                 className="object-contain object-left"
                 priority
               />

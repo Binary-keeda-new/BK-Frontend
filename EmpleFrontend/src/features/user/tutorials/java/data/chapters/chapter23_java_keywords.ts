@@ -104,4 +104,14 @@ export const chapter23_MCQ = [
 
 export const chapter23_DEBUG = undefined;
 export const chapter23_DRAG_DROP = undefined;
-export const chapter23_COMPLETE_EXERCISES = [];
+export const chapter23_COMPLETE_EXERCISES = [
+  {
+    template: `public class Main {
+    // A variable that cannot be changed
+    public static ___ int MAX = 100;
+}`,
+    blanks: [
+      "final"
+    ]
+  }
+];

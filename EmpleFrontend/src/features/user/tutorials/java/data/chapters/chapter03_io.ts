@@ -260,4 +260,17 @@ export const chapter03_MCQ = [
   }
 ];
 
-export const chapter03_COMPLETE_EXERCISES = [];
+export const chapter03_COMPLETE_EXERCISES = [
+  {
+    template: `import java.util.Scanner;
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new ___(System.in);
+        int val = sc.nextInt();
+    }
+}`,
+    blanks: [
+      "Scanner"
+    ]
+  }
+];

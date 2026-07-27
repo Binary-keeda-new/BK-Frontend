@@ -42,11 +42,10 @@ export default function QuizEdit({ quizId, onClose }: QuizEditProps) {
   const jsonFileRef = useRef<HTMLInputElement>(null);
 
   const [toasts, setToasts] = useState<
-    { id: number; message: string; type: "success" | "error" }[]
+    { id: string; message: string; type: "success" | "error" }[]
   >([]);
-  const toastId = useRef(0);
 
-  const removeToast = (id: number) => {
+  const removeToast = (id: string) => {
   setToasts((prev) => prev.filter((t) => t.id !== id))
 }
 
@@ -56,7 +55,7 @@ export default function QuizEdit({ quizId, onClose }: QuizEditProps) {
     message: string,
     type: "success" | "error" = "success"
   ) => {
-    const id = ++toastId.current;
+    const id = crypto.randomUUID();
     setToasts((prev) => [...prev, { id, message, type }]);
 
     setTimeout(() => {
@@ -79,6 +78,7 @@ export default function QuizEdit({ quizId, onClose }: QuizEditProps) {
     appendQuestions,
     deleteQuestion,
     saveAllValidQuestions,
+    saveQuestion,
     loadQuiz,
     quiz,
     isQuestionValidForSave,
@@ -124,23 +124,29 @@ setSeconds(String(totalSeconds % 60));
     }));
   };
 
-const handleSaveQuizDetails = async () => {
+const handleSaveQuizDetails = async (publish = false) => {
   setSavingQuizDetails(true);
 
   try {
+    const payload: any = {
+      title: quizForm.title,
+      description: quizForm.description,
+      category: quizForm.category,
+      subcategory: quizForm.subcategory,
+      marks: Number(quizForm.marks),
+      numberOfQuestions: Number(quizForm.numberOfQuestions),
+      duration: Math.ceil(
+        (Number(minutes || 0) * 60 + Number(seconds || 0)) / 60
+      ),
+    };
+
+    if (publish) {
+      payload.status = "published";
+    }
+
     await apiRequest(`/api/v1/admin/quizzes/${quizId}`, {
       method: "PUT",
-      body: JSON.stringify({
-        title: quizForm.title,
-        description: quizForm.description,
-        category: quizForm.category,
-        subcategory: quizForm.subcategory,
-        marks: Number(quizForm.marks),
-        numberOfQuestions: Number(quizForm.numberOfQuestions),
-        duration: Math.ceil(
-          (Number(minutes || 0) * 60 + Number(seconds || 0)) / 60
-        ),
-      }),
+      body: JSON.stringify(payload),
     });
 
     await loadQuiz();
@@ -209,7 +215,7 @@ const handleSaveQuizDetails = async () => {
             marks={quizForm.marks}
             onChange={handleQuizMetaChange}
             onCategoryChange={handleQuizCategoryChange}
-            onSave={handleSaveQuizDetails}
+            onSave={() => handleSaveQuizDetails(false)}
             numberOfQuestions={quizForm.numberOfQuestions}
             saving={savingQuizDetails}
           />
@@ -252,6 +258,8 @@ const handleSaveQuizDetails = async () => {
                   addOption={addOption}
                   setActiveQ={setActiveQ}
                   addQuestion={addQuestion}
+                  saveQuestion={saveQuestion}
+                  addToast={addToast}
                 />
               </div>
             ))}
@@ -276,7 +284,7 @@ const handleSaveQuizDetails = async () => {
 
     await saveAllValidQuestions();
 
-    const metaSaved = await handleSaveQuizDetails();
+    const metaSaved = await handleSaveQuizDetails(true);
     if (!metaSaved) return;
 
     addToast("Quiz published successfully!", "success");

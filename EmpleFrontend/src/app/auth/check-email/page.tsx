@@ -134,8 +134,7 @@ function CheckEmailContent() {
           </p>
 
           <p className="auth-subtitle" style={{ marginBottom: 32 }}>
-            Click the link in the email to verify your account and then sign
-            in.
+            Click the link in the email to verify your account and access your dashboard.
           </p>
 
           {resent && (

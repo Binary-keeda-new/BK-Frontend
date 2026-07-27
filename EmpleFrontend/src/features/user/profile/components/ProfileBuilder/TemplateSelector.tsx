@@ -2,14 +2,66 @@
 
 import React from 'react';
 import { TemplateType } from '../../types';
-import { ExternalLink, AlertCircle } from 'lucide-react';
+import { ExternalLink, AlertCircle, Eye, CheckCircle } from 'lucide-react';
 
 export function TemplateSelector({ selected, onChange, username, isPublished }: { selected: TemplateType, onChange: (t: TemplateType) => void, username?: string, isPublished?: boolean }) {
-  const templates: { id: TemplateType; name: string; desc: string; color: string }[] = [
-    { id: 'modern-developer', name: 'Modern Developer', desc: 'Sleek, dark-mode inspired by Vercel & Linear.', color: 'from-gray-900 to-black' },
-    { id: 'creative-designer', name: 'Creative Designer', desc: 'Visual-first, fluid layout for creatives.', color: 'from-fuchsia-500 to-purple-600' },
-    { id: 'ai-research', name: 'AI / Research', desc: 'Clean, academic layout for publications and projects.', color: 'from-blue-600 to-indigo-700' },
-    { id: 'student', name: 'Student Portfolio', desc: 'Education-focused, bright and welcoming.', color: 'from-emerald-400 to-teal-500' },
+  const templates: { id: TemplateType; name: string; desc: string; color: string; pattern: string }[] = [
+    { 
+      id: 'engineering-blueprint', 
+      name: 'Engineering Blueprint', 
+      desc: 'Tesla meets Apple engineering. Dark navy blueprint backgrounds with technical grids and CAD aesthetics.', 
+      color: 'bg-slate-900',
+      pattern: 'radial-gradient(circle, #3b82f6 1px, transparent 1px)'
+    },
+    { 
+      id: 'gamified-arcade', 
+      name: 'Gamified Arcade', 
+      desc: 'Modern indie game UI. Pixel-art typography, XP progress bars, and treasure chest projects.', 
+      color: 'bg-purple-900',
+      pattern: 'repeating-linear-gradient(45deg, #1e1b4b 25%, transparent 25%, transparent 75%, #1e1b4b 75%, #1e1b4b), repeating-linear-gradient(45deg, #1e1b4b 25%, #2e1065 25%, #2e1065 75%, #1e1b4b 75%, #1e1b4b)'
+    },
+    { 
+      id: 'editorial-minimalist', 
+      name: 'Editorial Minimalist', 
+      desc: 'Swiss Grid layout. Huge typography, large negative space, and magazine-style elegance.', 
+      color: 'bg-gray-100',
+      pattern: 'linear-gradient(to right, #e5e7eb 1px, transparent 1px), linear-gradient(to bottom, #e5e7eb 1px, transparent 1px)'
+    },
+    { 
+      id: 'rpg-character-sheet', 
+      name: 'Character Sheet', 
+      desc: 'Professional RPG dark UI. Character stats, quest timelines, and premium dark gradients.', 
+      color: 'bg-zinc-950',
+      pattern: 'linear-gradient(135deg, #3f3f46 25%, transparent 25%) -50px 0, linear-gradient(225deg, #3f3f46 25%, transparent 25%) -50px 0, linear-gradient(315deg, #3f3f46 25%, transparent 25%), linear-gradient(45deg, #3f3f46 25%, transparent 25%)'
+    },
+    { 
+      id: 'cyber-developer', 
+      name: 'Cyber Developer', 
+      desc: 'Dark futuristic theme with neon cyan glow effects and cyberpunk aesthetics.', 
+      color: 'bg-cyan-950',
+      pattern: 'linear-gradient(rgba(0, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 255, 0.05) 1px, transparent 1px)'
+    },
+    { 
+      id: 'hacker-terminal', 
+      name: 'Hacker Terminal', 
+      desc: 'Classic retro terminal style with green monochrome phosphor fonts and command-line interfaces.', 
+      color: 'bg-black',
+      pattern: 'linear-gradient(to bottom, transparent 50%, rgba(51, 255, 0, 0.05) 50%)'
+    },
+    { 
+      id: 'premium-corporate', 
+      name: 'Premium Corporate', 
+      desc: 'Clean, minimal, high-end professional design with subtle animations for executives.', 
+      color: 'bg-slate-100',
+      pattern: 'linear-gradient(135deg, transparent 40%, rgba(0,0,0,0.02) 40%, rgba(0,0,0,0.02) 60%, transparent 60%)'
+    },
+    { 
+      id: 'modern-personal', 
+      name: 'Modern Personal', 
+      desc: 'Trendy vibrant accents, glassmorphism, and bold personal branding elements.', 
+      color: 'bg-indigo-50',
+      pattern: 'radial-gradient(circle at 100% 0%, rgba(167, 139, 250, 0.1) 0%, transparent 50%), radial-gradient(circle at 0% 100%, rgba(99, 102, 241, 0.1) 0%, transparent 50%)'
+    },
   ];
 
   const canView = username && isPublished;
@@ -19,7 +71,7 @@ export function TemplateSelector({ selected, onChange, username, isPublished }: 
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b pb-4 gap-4" style={{ borderColor: 'var(--border)' }}>
         <div>
           <h2 className="text-2xl font-bold" style={{ color: 'var(--text)' }}>Portfolio Template</h2>
-          <p className="mt-1" style={{ color: 'var(--muted)' }}>Select how your public profile will look to visitors.</p>
+          <p className="mt-1" style={{ color: 'var(--muted)' }}>Select a premium template for your public profile.</p>
         </div>
         
         {canView ? (
@@ -47,8 +99,7 @@ export function TemplateSelector({ selected, onChange, username, isPublished }: 
           return (
             <div 
               key={tpl.id}
-              onClick={() => onChange(tpl.id)}
-              className={`cursor-pointer group relative overflow-hidden rounded-2xl border-2 transition-all duration-300 ${
+              className={`group relative overflow-hidden rounded-2xl border-2 transition-all duration-300 flex flex-col ${
                 isActive ? 'shadow-md ring-2 ring-[var(--orange-dim)]' : 'hover:border-gray-500'
               }`}
               style={{
@@ -56,13 +107,58 @@ export function TemplateSelector({ selected, onChange, username, isPublished }: 
                 background: 'var(--surface2)'
               }}
             >
-              <div className={`h-24 w-full bg-gradient-to-r ${tpl.color} opacity-90 group-hover:opacity-100 transition-opacity`} />
-              <div className="p-5" style={{ background: 'var(--surface2)' }}>
-                <div className="flex justify-between items-center mb-2">
-                  <h3 className="font-bold" style={{ color: 'var(--text)' }}>{tpl.name}</h3>
-                  {isActive && <span className="text-xs px-2 py-1 rounded-full font-semibold" style={{ background: 'var(--orange-dim)', color: 'var(--orange)' }}>Active</span>}
+              {/* Thumbnail Area */}
+              <div 
+                className={`h-36 w-full ${tpl.color} relative overflow-hidden border-b`}
+                style={{ borderColor: 'var(--border)' }}
+              >
+                <div 
+                  className="absolute inset-0 opacity-20"
+                  style={{
+                    backgroundImage: tpl.pattern,
+                    backgroundSize: '20px 20px'
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent flex items-end p-4">
+                  <h3 className="text-lg font-bold text-white tracking-wide shadow-black drop-shadow-md">{tpl.name}</h3>
                 </div>
-                <p className="text-sm" style={{ color: 'var(--muted)' }}>{tpl.desc}</p>
+                {isActive && (
+                  <div className="absolute top-3 right-3 bg-[var(--orange)] text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 shadow-lg">
+                    <CheckCircle className="w-3 h-3" />
+                    Selected
+                  </div>
+                )}
+              </div>
+
+              {/* Description & Actions */}
+              <div className="p-5 flex flex-col flex-1" style={{ background: 'var(--surface2)' }}>
+                <p className="text-sm mb-6 flex-1" style={{ color: 'var(--muted)' }}>{tpl.desc}</p>
+                
+                <div className="flex items-center gap-3 mt-auto">
+                  <button
+                    onClick={() => onChange(tpl.id)}
+                    className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-semibold transition-colors"
+                    style={{ 
+                      background: isActive ? 'var(--orange)' : 'var(--surface)', 
+                      color: isActive ? '#fff' : 'var(--text)',
+                      border: isActive ? 'none' : '1px solid var(--border)'
+                    }}
+                  >
+                    {isActive ? 'Active Template' : 'Select Template'}
+                  </button>
+                  {canView && (
+                    <a
+                      href={`/u/${username}?preview=${tpl.id}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="px-4 py-2.5 rounded-lg border transition-colors flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5"
+                      style={{ borderColor: 'var(--border)', color: 'var(--text)' }}
+                      title="Preview Live"
+                    >
+                      <Eye className="w-4 h-4" />
+                    </a>
+                  )}
+                </div>
               </div>
             </div>
           );

@@ -1,5 +1,5 @@
 "use client";
-
+import { LOGO_URL } from '@/shared/constants/assets'
 import { useState, useRef, useEffect } from "react";
 import {
   Clapperboard,
@@ -14,8 +14,13 @@ import { useDescope, useSession, useUser } from "@descope/nextjs-sdk/client";
 import { useRouter } from "next/navigation";
 import SlideDrawer from "@/shared/components/ui/SlideDrawer";
 import MediaFeedWidget from "@/features/user/dashboard/components/MediaFeedWidget";
-import AIAssistantWidget from "@/features/ai-assistant/components/AIAssistantWidget";
 import EmptyState from "@/shared/components/ui/EmptyState";
+import WalletBadge from "@/features/wallet/components/WalletBadge";
+import { useWallet } from "@/providers/WalletProvider";
+import { useNotification } from "@/providers/NotificationProvider";
+import { MessageCircleQuestion } from "lucide-react";
+import RequestFormDrawer from "@/features/user/requests/components/RequestFormDrawer";
+// import WalletBadge from "@/features/wallet/components/WalletBadge";
 
 type Task = {
   text: string;
@@ -162,25 +167,36 @@ export default function Topbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [todoOpen, setTodoOpen] = useState(false);
   const [mediaOpen, setMediaOpen] = useState(false);
-  const [aiOpen, setAiOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
   const [tasks, setTasks] = useState<Task[]>([{ text: "", done: false }]);
   const [allNotifications, setAllNotifications] = useState<any[]>([]);
-  const [readIds, setReadIds] = useState<Set<string>>(new Set());
+  const [readIds, setReadIds] = useState<Set<string>>(() => {
+  try {
+    const stored = localStorage.getItem('readNotificationIds')
+    return stored ? new Set(JSON.parse(stored)) : new Set()
+  } catch {
+    return new Set()
+  }
+});
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const todoRef = useRef<HTMLDivElement>(null);
-
+  const [requestOpen, setRequestOpen] = useState(false);
   const sdk = useDescope();
   const router = useRouter();
 
   const { session, isAuthenticated } = useSession() as any;
   const { user, isUserLoading } = useUser();
+  const { config, refreshWallet } = useWallet();
+  const { notifyReward } = useNotification();
+  
+  const todoReward = config?.TODO?.COMPLETION_REWARD || 5;
 
   const userEmail = user?.email || session?.user?.email || session?.token?.email;
   const fullName = user?.name || session?.user?.name || session?.token?.name;
   const displayName = fullName || userEmail || "User";
 
+  
   const initials = fullName
     ? fullName
         .split(" ")
@@ -204,7 +220,8 @@ export default function Topbar() {
 
   const handleLogout = async () => {
     await sdk.logout();
-    router.push("/landing");
+    localStorage.clear();
+    router.push("/auth/login");
   };
 
   const handleProfile = () => {
@@ -213,20 +230,23 @@ export default function Topbar() {
   };
 
   const handleToggleRead = (id: string) => {
-    setReadIds(prev => {
-      const next = new Set(prev)
-      if (next.has(id)) {
-        next.delete(id)
-      } else {
-        next.add(id)
-      }
-      return next
-    })
-  }
+  setReadIds(prev => {
+    const next = new Set(prev)
+    if (next.has(id)) {
+      next.delete(id)
+    } else {
+      next.add(id)
+    }
+    localStorage.setItem('readNotificationIds', JSON.stringify([...next]))
+    return next
+  })
+}
 
   const handleMarkAllRead = () => {
-    setReadIds(new Set(allNotifications.map(n => n._id)))
-  }
+  const allIds = new Set(allNotifications.map(n => n._id))
+  setReadIds(allIds)
+  localStorage.setItem('readNotificationIds', JSON.stringify([...allIds]))
+}
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -243,7 +263,7 @@ export default function Topbar() {
   }, []);
 
   return (
-    <header className="relative h-[62px]">
+    <header className="relative h-[62px] shrink-0">
       <nav
         className="fixed top-0 left-0 z-40 w-full h-[62px] flex items-center justify-between px-3 sm:px-6 pr-4 sm:pr-8
         backdrop-blur-md bg-[var(--surface)] border-b border-[var(--border)]
@@ -252,10 +272,10 @@ export default function Topbar() {
         {/* Logo */}
         <div
           className="flex items-center cursor-pointer transition-transform hover:scale-105"
-          onClick={() => router.push(isAuthenticated ? "/user/dashboard" : "/landing")}
+          onClick={() => router.push("/")}
         >
           <img
-            src="/logo-final.png"
+            src={LOGO_URL}
             alt="emple"
             className="h-[75px] w-auto object-contain"
           />
@@ -265,21 +285,7 @@ export default function Topbar() {
         <div className="flex items-center gap-1 sm:gap-3">
 
           {/* Coin Badge */}
-          {isAuthenticated && (
-            <div
-              className="flex items-center gap-2 px-3 py-1.5 rounded-full cursor-pointer
-              bg-yellow-400/10 border border-yellow-400/30 text-yellow-400
-              hover:bg-yellow-400/20 transition hover:-translate-y-[1px]"
-            >
-              <span
-                className="w-[22px] h-[22px] flex items-center justify-center rounded-full text-[9px] font-extrabold
-                bg-yellow-400 text-yellow-900"
-              >
-                E
-              </span>
-              <span className="text-xs font-semibold hidden sm:inline">100</span>
-            </div>
-          )}
+          {isAuthenticated && <WalletBadge />}
 
           {/* Media button */}
           {isAuthenticated && (
@@ -293,17 +299,7 @@ export default function Topbar() {
             </button>
           )}
 
-          {/* AI button */}
-          {isAuthenticated && (
-            <button
-              title="Emple AI"
-              onClick={() => setAiOpen(true)}
-              className="w-11 h-11 flex items-center justify-center rounded-full text-[var(--muted2)]
-                transition-all duration-300 hover:-translate-y-[2px] hover:bg-orange-500/10 hover:text-orange-500"
-            >
-              <Sparkles size={22} />
-            </button>
-          )}
+          {/* AI button removed */}
 
           {/* Bell button with unread badge */}
           {isAuthenticated && (
@@ -353,15 +349,17 @@ export default function Topbar() {
                 <ListTodo size={22} />
               </button>
 
-              <div
-                className={`fixed right-4 top-20 w-[300px] z-50
-                transition-all duration-500 ease-[linear(cubic-bezier(0.22,1,0.36,1))]
-                ${
-                  todoOpen
-                    ? "opacity-100 translate-x-0"
-                    : "opacity-0 translate-x-12 pointer-events-none"
-                }`}
-              >
+              {/* using a explicit class in this div to remove the warning that is coming from the terminal */}
+              <div 
+  className={`fixed right-4 top-20 w-[300px] z-50
+    transition-all duration-500
+    [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] 
+    ${
+      todoOpen
+        ? "opacity-100 translate-x-0"
+        : "opacity-0 translate-x-12 pointer-events-none"
+    }`}
+>
                 <div className="animated-border">
                   <div
                     className="animated-border-inner w-[300px] h-[500px] p-5 overflow-y-auto rounded-xl"
@@ -442,6 +440,37 @@ export default function Topbar() {
             </div>
           )}
 
+          {/* Raise a Request button */}
+{isAuthenticated && (
+  <button
+    title="Raise a Request"
+    onClick={() => setRequestOpen(true)}
+    className="w-11 h-11 flex items-center justify-center rounded-full text-[var(--muted2)]
+      transition-all duration-300 hover:-translate-y-[2px] hover:bg-orange-500/10 hover:text-orange-500"
+  >
+    <MessageCircleQuestion size={20} />
+  </button>
+)}
+
+          {/* Productivity Button */}
+<button
+  onClick={() => router.push("/user/productivity")}
+  className="
+    w-10 h-10
+    rounded-full
+    flex items-center justify-center
+    cursor-pointer
+    text-gray-400
+    transition-all duration-300 ease-out
+    hover:bg-[rgba(249,115,22,0.12)]
+    hover:text-[#f97316]
+    hover:-translate-y-1
+  "
+  title="Productivity Hub"
+>
+  <ListTodo size={22} />
+</button>
+
           {/* Avatar Dropdown */}
           {isAuthenticated ? (
             <div className="relative" ref={dropdownRef}>
@@ -520,17 +549,7 @@ export default function Topbar() {
         </div>
       </SlideDrawer>
 
-      {/* AI Assistant Drawer */}
-      <SlideDrawer
-        isOpen={aiOpen}
-        onClose={() => setAiOpen(false)}
-        width="md"
-        hideHeader={true}
-      >
-        <div className="h-full">
-          <AIAssistantWidget onClose={() => setAiOpen(false)} />
-        </div>
-      </SlideDrawer>
+      {/* AI Assistant Drawer removed */}
 
       {/* Notifications Drawer */}
       <SlideDrawer
@@ -546,6 +565,8 @@ export default function Topbar() {
           onMarkAllRead={handleMarkAllRead}
         />
       </SlideDrawer>
+      {/* Request Drawer */}
+<RequestFormDrawer isOpen={requestOpen} onClose={() => setRequestOpen(false)} />
 
     </header>
   );

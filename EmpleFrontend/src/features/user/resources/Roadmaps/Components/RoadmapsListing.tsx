@@ -1,15 +1,18 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { useSession } from '@descope/react-sdk';
+import { useSession } from '@descope/nextjs-sdk/client';
 import { roadmapsListingData } from '../data/index';
 
 import CreateRoadmapButton from './CreateRoadmapButton';
 import CreateRoadmapPanel from './CreateRoadmapPannel';
 import GeneratedRoadmapView from './GeneratedRoadmapView';
 import { GeneratedRoadmap, PersonalizedRoadmapSummary } from '../types/roadmapAI.types';
-import { fetchMyRoadmapsAPI, deleteMyRoadmapAPI } from '../services/roadmapAI.service';
+import { deleteMyRoadmapAPI, fetchMyRoadmapsAPI } from '../services/roadmapAI.service';
+import { fetchLearnersCountAPI, fetchRoadmapRatingsAPI, fetchActivePathsCountAPI } from '../services/roadmapProgress.service';
 import { Route, Users, Star, Search, Clock, ListCollapse } from 'lucide-react';
+import { useWallet } from "@/providers/WalletProvider";
+import InsufficientCoinsDialog from "@/features/wallet/components/InsufficientCoinsDialog";
 
 interface Roadmap {
   id: string;
@@ -28,6 +31,7 @@ interface Roadmap {
 
 interface RoadmapCardProps {
   roadmap: Roadmap;
+  rating?: number;
   onView: (id: string) => void;
   onDelete?: (mongoId: string) => void;
 }
@@ -36,7 +40,7 @@ interface RoadmapsListingProps {
   onView: (id: string) => void;
 }
 
-const RoadmapCard: React.FC<RoadmapCardProps> = ({ roadmap, onView, onDelete }) => {
+const RoadmapCard: React.FC<RoadmapCardProps> = ({ roadmap, rating, onView, onDelete }) => {
   const t: Record<string, string> = {
     border: 'var(--border)', surface: 'var(--surface)', surface2: 'var(--surface2)',
     text: 'var(--text)', muted: 'var(--muted2)', brand: 'var(--orange)',
@@ -173,6 +177,12 @@ const RoadmapCard: React.FC<RoadmapCardProps> = ({ roadmap, onView, onDelete }) 
           <ListCollapse size={14} style={{ color: roadmapColor }} />
           {roadmap.sections} Sections
         </small>
+        {rating !== undefined && (
+          <small style={{ color: t.muted, display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: '12px', fontWeight: 600 }}>
+            <Star size={14} style={{ color: '#fbbf24' }} fill="#fbbf24" />
+            {rating.toFixed(1)}
+          </small>
+        )}
       </div>
 
       <div style={{ display: 'flex', gap: 12 }}>
@@ -296,25 +306,44 @@ const RoadmapsListing: React.FC<RoadmapsListingProps> = ({ onView }) => {
   
   const { sessionToken } = useSession();
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [sortBy, setSortBy] = useState<string>('popular');
+  const [sortBy, setSortBy] = useState<string>('highest-rated');
   const [category, setCategory] = useState<string>('All');
   const [activePathsCount, setActivePathsCount] = useState<number>(0);
+  const [learnersCount, setLearnersCount] = useState<number>(0);
+  const [globalRating, setGlobalRating] = useState<number>(0);
+  const [roadmapRatings, setRoadmapRatings] = useState<Record<string, any>>({});
+
+  const { balance, config } = useWallet();
+  const [showInsufficientDialog, setShowInsufficientDialog] = useState(false);
+  const generateCost = config?.ROADMAP?.GENERATE_COST || 25;
+
+  const handleCreateClick = () => {
+    if (balance < generateCost) {
+      setShowInsufficientDialog(true);
+    } else {
+      openPanel();
+    }
+  };
   const [isPanelOpen, setIsPanelOpen] = useState<boolean>(false);
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
   const [personalizedRoadmaps, setPersonalizedRoadmaps] = useState<PersonalizedRoadmapSummary[]>([]);
   const [previewRoadmap, setPreviewRoadmap] = useState<GeneratedRoadmap | null>(null);
 
   useEffect(() => {
-    let count = 0;
-    roadmapsListingData.forEach(r => {
-      const legacyData = localStorage.getItem(`roadmap_progress_${r.id}`);
-      const detailsData = localStorage.getItem(`roadmap_progress_details_${r.id}`);
-      if (legacyData || detailsData) {
-        count++;
+    if (sessionToken) {
+      fetchActivePathsCountAPI(sessionToken).then(count => setActivePathsCount(count));
+    } else {
+      setActivePathsCount(0);
+    }
+
+    fetchLearnersCountAPI().then(c => setLearnersCount(c));
+    fetchRoadmapRatingsAPI().then(res => {
+      if (res) {
+        setGlobalRating(res.globalAverage || 0);
+        setRoadmapRatings(res.roadmapRatings || {});
       }
     });
-    setActivePathsCount(count);
-  }, []);
+  }, [sessionToken]);
 
   const openPanel = useCallback(() => setIsPanelOpen(true), []);
   const closePanel = useCallback(() => {
@@ -384,6 +413,12 @@ const RoadmapsListing: React.FC<RoadmapsListingProps> = ({ onView }) => {
   const sortedRoadmaps = [...filteredRoadmaps].sort((a, b) => {
     if (a.isPersonalized && !b.isPersonalized) return -1;
     if (!a.isPersonalized && b.isPersonalized) return 1;
+    if (sortBy === 'highest-rated') {
+      const aRating = roadmapRatings[a.id]?.avg || 0;
+      const bRating = roadmapRatings[b.id]?.avg || 0;
+      if (bRating !== aRating) return bRating - aRating;
+      return b.enrolled - a.enrolled;
+    }
     if (sortBy === 'popular') return b.enrolled - a.enrolled;
     if (sortBy === 'newest') return b.id.localeCompare(a.id);
     if (sortBy === 'alphabetical') return a.name.localeCompare(b.name);
@@ -401,7 +436,7 @@ const RoadmapsListing: React.FC<RoadmapsListingProps> = ({ onView }) => {
           <h1 style={{ fontFamily: "var(--font-syne, sans-serif)", fontSize: "28px", fontWeight: 800, color: "var(--text)", marginBottom: 0, letterSpacing: '-0.02em', lineHeight: 1.1 }}>
             <span style={{ color: t.brand }}>Roadmaps</span>
           </h1>
-          <CreateRoadmapButton onClick={openPanel} disabled={isPanelOpen} isLoading={isGenerating} />
+          <CreateRoadmapButton cost={generateCost} onClick={handleCreateClick} disabled={isPanelOpen} isLoading={isGenerating} />
         </div>
 
         {isGenerating ? (
@@ -422,9 +457,9 @@ const RoadmapsListing: React.FC<RoadmapsListingProps> = ({ onView }) => {
             {/* Stats Overview */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 20, marginBottom: '3rem' }}>
               {[
-                { label: 'Active Paths', value: activePathsCount.toString(), color: '#ff6b35', icon: Route },
-                { label: 'Learners', value: '12.4k', color: '#22c55e', icon: Users },
-                { label: 'Avg Rating', value: '4.9', color: '#fbbf24', icon: Star },
+                ...(sessionToken ? [{ label: 'Active Paths', value: activePathsCount.toString(), color: '#ff6b35', icon: Route }] : []),
+                { label: 'Learners', value: learnersCount > 0 ? learnersCount.toString() : '0', color: '#22c55e', icon: Users },
+                { label: 'Avg Rating', value: globalRating > 0 ? globalRating.toFixed(1) : 'N/A', color: '#fbbf24', icon: Star },
               ].map((s, i) => (
                 <div key={i} style={{ background: t.surface, padding: '20px 24px', borderRadius: 20, border: `1px solid ${t.border}`, display: 'flex', flexDirection: 'column', gap: 8, transition: 'transform 0.3s ease' }} className="stat-card">
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -455,8 +490,9 @@ const RoadmapsListing: React.FC<RoadmapsListingProps> = ({ onView }) => {
                 </select>
                 <select value={sortBy} onChange={e => setSortBy(e.target.value)}
                   style={{ padding: '14px 18px', background: t.surface2, border: `1px solid ${t.border}`, borderRadius: 12, color: t.text, fontSize: 14, cursor: 'pointer', outline: 'none', fontWeight: 500, appearance: 'none', paddingRight: '40px', backgroundImage: `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='gray' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 12px center', backgroundSize: '16px' }}>
+                  <option value="highest-rated" style={{ background: t.surface, color: t.text }}>Highest Rated</option>
                   <option value="popular" style={{ background: t.surface, color: t.text }}>Most Popular</option>
-                  <option value="newest" style={{ background: t.surface, color: t.text }}>Newest</option>
+                  <option value="newest" style={{ background: t.surface, color: t.text }}>Newest First</option>
                   <option value="alphabetical" style={{ background: t.surface, color: t.text }}>Sort A-Z</option>
                   <option value="reverse-alphabetical" style={{ background: t.surface, color: t.text }}>Sort Z-A</option>
                 </select>
@@ -464,8 +500,8 @@ const RoadmapsListing: React.FC<RoadmapsListingProps> = ({ onView }) => {
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px' }}>
-              {sortedRoadmaps.map(roadmap => (
-                <RoadmapCard key={roadmap.id} roadmap={roadmap} onView={onView} onDelete={roadmap.isPersonalized ? handleDelete : undefined} />
+              {sortedRoadmaps.map((roadmap) => (
+                <RoadmapCard key={roadmap.id} roadmap={roadmap} rating={roadmapRatings[roadmap.id]?.avg} onView={onView} onDelete={roadmap.isPersonalized ? handleDelete : undefined} />
               ))}
               {sortedRoadmaps.length === 0 && (
                 <div style={{ gridColumn: '1/-1', textAlign: 'center', padding: '80px', color: t.muted }}>
@@ -487,6 +523,13 @@ const RoadmapsListing: React.FC<RoadmapsListingProps> = ({ onView }) => {
         onPreviewReady={handlePreviewReady}
         onFinalized={handleFinalized}
         onGeneratingChange={setIsGenerating}
+      />
+
+      <InsufficientCoinsDialog
+        isOpen={showInsufficientDialog}
+        onClose={() => setShowInsufficientDialog(false)}
+        requiredCoins={generateCost}
+        onRetry={openPanel}
       />
     </div>
   );

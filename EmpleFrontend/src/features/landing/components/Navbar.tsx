@@ -2,18 +2,21 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
+import { LOGO_URL } from '@/shared/constants/assets'
 
 export default function Navbar() {
   const navItems = [
-  { id: 'about', label: 'About' },
-  { id: 'features', label: 'Features' },
-  { id: 'how', label: 'How It Works' },
-  { id: 'pricing', label: 'Pricing' },
-  /*{ id: 'testimonials', label: 'Testimonials' },*/
-  { id: 'faq', label: 'FAQ' },
-]
+    { id: 'about', label: 'About' },
+    { id: 'features', label: 'Features' },
+    { id: 'how', label: 'How It Works' },
+    { id: 'pricing', label: 'Pricing' },
+    { id: 'faq', label: 'FAQ' },
+  ]
+
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [role, setRole] = useState('user')
 
   const hamburgerRef = useRef<HTMLButtonElement>(null)
   const drawerRef = useRef<HTMLDivElement>(null)
@@ -22,6 +25,27 @@ export default function Navbar() {
     const handleScroll = () => setScrolled(window.scrollY > 10)
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    const expiry = localStorage.getItem('sessionExpiry')
+    const savedRole = localStorage.getItem('role')
+
+    if (token) {
+      // If no expiry set, consider logged in (existing sessions)
+      if (!expiry || Date.now() < parseInt(expiry)) {
+        setIsLoggedIn(true)
+        setRole(savedRole || 'user')
+      } else {
+        // Session expired
+        setIsLoggedIn(false)
+        localStorage.removeItem('token')
+        localStorage.removeItem('sessionExpiry')
+      }
+    } else {
+      setIsLoggedIn(false)
+    }
   }, [])
 
   useEffect(() => {
@@ -50,35 +74,29 @@ export default function Navbar() {
     <>
       <nav
         className="nav"
-        style={{ boxShadow: scrolled ? '0 4px 24px rgba(0,0,0,0.2)' : '',
+        style={{
+          boxShadow: scrolled ? '0 4px 24px rgba(0,0,0,0.2)' : '',
           backgroundColor: scrolled ? '#000' : 'transparent',
           transition: 'background-color 0.3s ease, box-shadow 0.3s ease'
-         }}
+        }}
       >
         <div className="nav-inner nav-container">
 
           {/* Logo */}
-          <div className="flex items-center">
+          <Link href="/" style={{ textDecoration: 'none' }}>
             <img
-              src="/logo-final.png"
+              src={LOGO_URL}
               alt="emple"
               className="h-[75px] w-auto"
-              style={{ objectFit: "contain" }}
+              style={{ objectFit: 'contain' }}
             />
-          </div>
+          </Link>
 
           {/* RIGHT SIDE */}
           <div className="nav-menu">
 
             {/* NAV LINKS */}
             <div className="nav-links">
-              {/*{['about', 'features', 'how', 'pricing', 'testimonials', 'faq'].map((id) => (
-                <button key={id} className="nav-link" onClick={() => scrollTo(id)}>
-                  {id === 'how'
-                    ? 'How It Works'
-                    : id.charAt(0).toUpperCase() + id.slice(1)}
-                </button>
-              ))}*/}
               {navItems.map((item) => (
                 <button
                   key={item.id}
@@ -96,8 +114,13 @@ export default function Navbar() {
 
             {/* ACTIONS */}
             <div className="nav-actions">
-              <Link className="btn-outline" href="/auth/login">Login</Link>
-              <Link className="btn-cta" href="/auth/signup">Sign Up</Link>
+              {isLoggedIn ? (
+                <Link className="btn-cta" href={role === 'admin' ? '/dashboard' : '/user/dashboard'}>Dashboard</Link>) : (
+                <>
+                  <Link className="btn-outline" href="/auth/login">Login</Link>
+                  <Link className="btn-cta" href="/auth/signup">Sign Up</Link>
+                </>
+              )}
 
               <button
                 ref={hamburgerRef}
@@ -119,13 +142,6 @@ export default function Navbar() {
 
       {/* MOBILE DRAWER */}
       <div ref={drawerRef} className={`nav-drawer${drawerOpen ? ' open' : ''}`}>
-        {/*{['about', 'features', 'how', 'pricing', 'testimonials', 'faq'].map((id) => (
-          <button key={id} className="nav-link" onClick={() => scrollTo(id)}>
-            {id === 'how'
-              ? 'How It Works'
-              : id.charAt(0).toUpperCase() + id.slice(1)}
-          </button>
-        ))}*/}
         {navItems.map((item) => (
           <button
             key={item.id}
@@ -133,9 +149,7 @@ export default function Navbar() {
             onClick={() => scrollTo(item.id)}
           >
             {item.label}
-            
           </button>
-          
         ))}
 
         <Link
@@ -145,15 +159,22 @@ export default function Navbar() {
         >
           Team
         </Link>
-        
 
         <div className="drawer-actions">
-          <Link className="btn-outline" href="/auth/login" onClick={closeDrawer}>
-            Login
-          </Link>
-          <Link className="btn-cta" href="/auth/signup" onClick={closeDrawer}>
-            Sign Up
-          </Link>
+          {isLoggedIn ? (
+            <Link className="btn-cta" href={role === 'admin' ? '/dashboard' : '/user/dashboard'} onClick={closeDrawer}>
+              Dashboard
+            </Link>
+          ) : (
+            <>
+              <Link className="btn-outline" href="/auth/login" onClick={closeDrawer}>
+                Login
+              </Link>
+              <Link className="btn-cta" href="/auth/signup" onClick={closeDrawer}>
+                Sign Up
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </>

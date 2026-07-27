@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import "./landing/landing.css";
+import "katex/dist/katex.min.css";
 import { ThemeProvider } from "../providers/ThemeContext";
 import { AuthProvider } from "@descope/nextjs-sdk";
 import { AppAuthProvider } from "@/providers/AppAuthProvider";
+import { WalletProvider } from "@/providers/WalletProvider";
+import { NotificationProvider } from "@/providers/NotificationProvider";
+import { DeviceSessionProvider } from "@/providers/DeviceSessionProvider";
+import HelpChatWidget from "@/shared/components/help-chatbot/HelpChatWidget";
 
 export const dynamic = "force-dynamic";
 
@@ -80,6 +85,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             }),
           }}
         />
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9381184853784761"
+          crossOrigin="anonymous"
+        ></script>
       </head>
       <body>
         <AuthProvider
@@ -90,7 +99,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         >
           <AppAuthProvider>
-            <ThemeProvider>{children}</ThemeProvider>
+            <DeviceSessionProvider>
+              <NotificationProvider>
+                <WalletProvider>
+                  <ThemeProvider>
+                    {children}
+                    <HelpChatWidget />
+                  </ThemeProvider>
+                </WalletProvider>
+              </NotificationProvider>
+            </DeviceSessionProvider>
           </AppAuthProvider>
         </AuthProvider>
       </body>

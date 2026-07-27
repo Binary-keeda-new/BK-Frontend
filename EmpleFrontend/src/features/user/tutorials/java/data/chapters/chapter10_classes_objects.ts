@@ -265,4 +265,16 @@ export const chapter10_MCQ = [
   }
 ];
 
-export const chapter10_COMPLETE_EXERCISES = [];
+export const chapter10_COMPLETE_EXERCISES = [
+  {
+    template: `public class ___ {
+    String name;
+    public void meow() {
+        System.out.println("Meow!");
+    }
+}`,
+    blanks: [
+      "Cat"
+    ]
+  }
+];

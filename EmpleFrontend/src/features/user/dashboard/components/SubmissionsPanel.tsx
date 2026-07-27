@@ -46,23 +46,30 @@ function slugify(value: string) {
   return value.trim().toLowerCase().replace(/\s+/g, "-");
 }
 
-function getReviewPath(item: SubmissionItem) {
+function getReviewPath(item: SubmissionItem, isTest: boolean) {
+  if (isTest) {
+    return `/user/practice/test?attemptId=${item.attemptId}`;
+  }
   return `/user/practice/quiz/${slugify(item.category)}/${slugify(
     item.subcategory
   )}/${item.quizId}/review?attemptId=${item.attemptId}`;
 }
 
-export default function SubmissionsPanel() {
+export default function SubmissionsPanel({
+  isExpanded,
+  onToggleExpand,
+}: {
+  isExpanded?: boolean;
+  onToggleExpand?: () => void;
+}) {
   const router = useRouter();
 
   const [active, setActive] = useState<Tab>("Quiz");
-  const [visibleCount, setVisibleCount] = useState(5);
   const [submissions, setSubmissions] = useState<SubmissionItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   const handleTabChange = (tab: Tab) => {
     setActive(tab);
-    setVisibleCount(5);
   };
 
   useEffect(() => {
@@ -70,14 +77,14 @@ export default function SubmissionsPanel() {
       try {
         setLoading(true);
 
-        if (active === "Test") {
-          setSubmissions([]);
-          return;
-        }
-
         const token = getSessionToken();
 
-        const res = await fetch(`${API_BASE}/api/v1/quiz-attempts`, {
+        const endpoint =
+          active === "Test"
+            ? `${API_BASE}/api/v1/test-attempts`
+            : `${API_BASE}/api/v1/quiz-attempts`;
+
+        const res = await fetch(endpoint, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -105,7 +112,7 @@ export default function SubmissionsPanel() {
     void fetchAttempts();
   }, [active]);
 
-  const visibleSubmissions = submissions.slice(0, visibleCount);
+  const visibleSubmissions = isExpanded ? submissions : submissions.slice(0, 5);
 
   return (
     <div
@@ -187,14 +194,6 @@ export default function SubmissionsPanel() {
           >
             Loading submissions...
           </div>
-        ) : active === "Test" ? (
-          <div className="py-2">
-            <EmptyState
-              title="No Test Submissions"
-              description="Test submissions are not connected yet."
-              icon={<FileText size={20} />}
-            />
-          </div>
         ) : visibleSubmissions.length === 0 ? (
           <div className="py-2">
             <EmptyState
@@ -247,14 +246,14 @@ export default function SubmissionsPanel() {
                     </div>
                   </div>
 
-                  <div
-                    className="text-center font-bold"
-                    style={{
-                      fontSize: "clamp(11px, 2.8vw, 13px)",
-                      color: "#ff9a5c",
-                    }}
-                  >
-                    {score}
+                  <div className="text-center text-[var(--text)]">
+                      {item.totalMarksObtained ?? 0}
+                      <span
+                        className="font-medium"
+                        style={{ color: "var(--muted)" }}
+                      >
+                        /{item.totalMarks ?? 0}
+                      </span>
                   </div>
 
                   <div
@@ -269,7 +268,7 @@ export default function SubmissionsPanel() {
 
                   <div className="text-center">
                     <button
-                      onClick={() => router.push(getReviewPath(item))}
+                      onClick={() => router.push(getReviewPath(item, active === "Test"))}
                       className="rounded-[20px] font-semibold transition-all duration-150 hover:-translate-y-[1px]"
                       style={{
                         fontSize: "clamp(10px, 2.5vw, 11.5px)",
@@ -313,7 +312,7 @@ export default function SubmissionsPanel() {
                   </div>
 
                   <button
-                    onClick={() => router.push(getReviewPath(item))}
+                    onClick={() => router.push(getReviewPath(item, active === "Test"))}
                     className="flex-shrink-0 rounded-[20px] font-semibold transition-all duration-150"
                     style={{
                       fontSize: "11px",
@@ -333,10 +332,10 @@ export default function SubmissionsPanel() {
         )}
       </div>
 
-      {visibleCount < submissions.length && active === "Quiz" && (
+      {(submissions.length > 5 || isExpanded) && (
         <div style={{ marginTop: "clamp(10px, 2.5vw, 14px)" }}>
           <button
-            onClick={() => setVisibleCount((prev) => prev + 5)}
+            onClick={() => onToggleExpand && onToggleExpand()}
             className="rounded-[20px] font-semibold transition-all duration-200 hover:-translate-y-[1px]"
             style={{
               fontSize: "clamp(10px, 2.5vw, 12px)",
@@ -347,7 +346,7 @@ export default function SubmissionsPanel() {
               cursor: "pointer",
             }}
           >
-            View More
+            {isExpanded ? "View Less" : "View All"}
           </button>
         </div>
       )}
