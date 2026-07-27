@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useDescope, getSessionToken } from '@descope/nextjs-sdk/client'
+import { getDeviceId, getDeviceLabel } from '@/shared/utils/deviceId'
 
 export default function CallbackPage() {
   const sdk = useDescope()
@@ -40,7 +41,12 @@ export default function CallbackPage() {
             'Content-Type': 'application/json',
           },
           credentials: 'include',
-          body: JSON.stringify({ intent, provider }),
+          body: JSON.stringify({
+            intent,
+            provider,
+            deviceId: getDeviceId(),
+            deviceLabel: getDeviceLabel(),
+          }),
         })
 
         if (syncRes.status === 404) {

@@ -7,6 +7,7 @@ import { useDescope } from '@descope/nextjs-sdk/client'
 import AuthLayout from '@/features/auth/layouts/AuthLayout'
 import '@/features/auth/auth.css'
 import { Eye, EyeOff } from 'lucide-react'
+import { getDeviceId, getDeviceLabel } from '@/shared/utils/deviceId'
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
@@ -22,7 +23,6 @@ export default function LoginPage() {
 
   const handleSocialLogin = async (provider: 'google' | 'github' | 'microsoft') => {
     try {
-      
       sessionStorage.setItem('oauth_intent', 'login')
       sessionStorage.setItem('oauth_provider', provider)
 
@@ -57,30 +57,28 @@ export default function LoginPage() {
     try {
       const resp = await sdk.password.signIn(email, password)
 
-if (!resp?.ok) {
-  // Descope returns a generic error for both "no account" and "wrong password"
-  // (anti-enumeration). Ask our own backend which case this actually is.
-  try {
-    const checkRes = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/check-auth-provider?email=${encodeURIComponent(email)}`
-    )
-    const checkData = await checkRes.json()
+      if (!resp?.ok) {
+        try {
+          const checkRes = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/check-auth-provider?email=${encodeURIComponent(email)}`
+          )
+          const checkData = await checkRes.json()
 
-    if (!checkData.exists) {
-      setError("You don't have an account. Redirecting to signup...")
-      setTimeout(() => router.replace('/auth/signup'), 2000)
-    } else if (checkData.authProvider && checkData.authProvider !== 'password') {
-      setError(
-        `This account uses ${checkData.authProvider} sign-in. Please continue with ${checkData.authProvider} instead.`
-      )
-    } else {
-      setError('Invalid email or password.')
-    }
-  } catch {
-    setError('Invalid email or password.')
-  }
-  return
-}
+          if (!checkData.exists) {
+            setError("You don't have an account. Redirecting to signup...")
+            setTimeout(() => router.replace('/auth/signup'), 2000)
+          } else if (checkData.authProvider && checkData.authProvider !== 'password') {
+            setError(
+              `This account uses ${checkData.authProvider} sign-in. Please continue with ${checkData.authProvider} instead.`
+            )
+          } else {
+            setError('Invalid email or password.')
+          }
+        } catch {
+          setError('Invalid email or password.')
+        }
+        return
+      }
 
       const token = resp.data?.sessionJwt
 
@@ -89,14 +87,37 @@ if (!resp?.ok) {
         return
       }
 
-      const syncRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/sync`, {
+      let syncRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/sync`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ intent: 'login' }),
+        body: JSON.stringify({
+          intent: 'login',
+          deviceId: getDeviceId(),
+          deviceLabel: getDeviceLabel(),
+        }),
       })
+
+      if (syncRes.status === 404) {
+        const body = await syncRes.json().catch(() => ({}))
+        if (body?.code === 'NO_ACCOUNT_FOUND') {
+          syncRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/sync`, {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              intent: 'login-repair',
+              provider: 'password',
+              deviceId: getDeviceId(),
+              deviceLabel: getDeviceLabel(),
+            }),
+          })
+        }
+      }
 
       const syncText = await syncRes.text()
       console.log('login sync ->', syncRes.status, syncText)
@@ -108,31 +129,23 @@ if (!resp?.ok) {
 
       const syncData = JSON.parse(syncText)
       if (syncData.isNewUser) {
-        localStorage.setItem('show_signup_bonus', 'true')
+        sessionStorage.setItem('show_signup_bonus', 'true')
       }
-      
+
       const user = syncData.data?.user || syncData.user
       const role = user?.role
-
-      // Block unverified users from logging in
-      if (!user?.isEmailVerified) {
-        router.replace(`/auth/check-email?email=${encodeURIComponent(email)}`)
-        return
-      }
 
       localStorage.setItem('token', token)
       localStorage.setItem('role', role || 'user')
 
-      // Store session expiry based on remember me
       const expiry = Date.now() + (remember ? 30 : 3) * 24 * 60 * 60 * 1000
       localStorage.setItem('sessionExpiry', expiry.toString())
-      
+
       if (role === 'admin') {
         router.replace('/dashboard')
       } else {
         router.replace('/user/dashboard')
       }
-
     } catch (err) {
       console.error('Login error:', err)
       setError('Something went wrong. Please try again.')
