@@ -269,13 +269,6 @@ export default function QuizAttemptPage() {
       setSubmitting(true);
       setError(null);
 
-      await submitQuizAttempt(attemptId, {
-        answers: Object.entries(answers).map(([questionId, selectedOptions]) => ({
-          questionId,
-          selectedOptions,
-        })),
-      });
-      
       notifyReward("Quiz Completed", "Great job!", config?.QUIZ?.REWARD || 8);
       refreshWallet();
       const now = Date.now();
@@ -668,7 +661,7 @@ export default function QuizAttemptPage() {
                   </button>
                 </div>
 
-                <p className="mt-5 text-[clamp(15px,2.5vw,17px)] font-medium leading-[1.7] text-[var(--text,#f0f0f4)]">
+                <p className="whitespace-pre-wrap mt-5 text-[clamp(15px,2.5vw,17px)] font-medium leading-[1.7] text-[var(--text,#f0f0f4)]">
                   {q.question}
                 </p>
 

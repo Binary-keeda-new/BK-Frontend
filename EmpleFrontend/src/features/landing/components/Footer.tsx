@@ -50,8 +50,8 @@ export default function Footer() {
           {/* Legal */}
           <div className="flex flex-col gap-4 text-[12px] text-[var(--clr-text2)]">
             <div className="footer-col-head">Legal</div>
-            <Link href="/company/privacy-policy">Privacy Policy</Link>
-            <Link href="/company/terms-and-conditions">Terms & Conditions</Link>
+            <Link href="/privacy-policy">Privacy Policy</Link>
+            <Link href="/terms">Terms & Conditions</Link>
             <Link href="/company/cookies">Cookies</Link>
           </div>
 
@@ -59,7 +59,7 @@ export default function Footer() {
 
         <div className="footer-bottom">
           <div className="footer-copy">
-            © 2026 <em>Emple</em>. All rights reserved.
+            © Binary Keeda Pvt Ltd 2026 <em> </em>. All rights reserved.
           </div>
         </div>
 

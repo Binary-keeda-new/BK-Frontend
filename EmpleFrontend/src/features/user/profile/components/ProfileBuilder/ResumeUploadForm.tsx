@@ -1,21 +1,33 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { UserProfile } from '../../types';
-import { UploadCloud, FileText, Image as ImageIcon, CheckCircle2, Trash2, Eye, RefreshCw, Loader2 } from 'lucide-react';
+import { UploadCloud, FileText, Image as ImageIcon, CheckCircle2, Trash2, Eye, RefreshCw, Loader2, AlertCircle } from 'lucide-react';
 import { uploadAdminImage } from '@/shared/services/upload.service';
 
 export function ResumeUploadForm({ 
   profile, 
-  onChange 
+  onChange,
+  errors = [],
+  autoFocusField
 }: { 
   profile: Partial<UserProfile>, 
-  onChange: (v: Partial<UserProfile>) => void 
+  onChange: (v: Partial<UserProfile>) => void,
+  errors?: string[],
+  autoFocusField?: string
 }) {
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const [uploadingResume, setUploadingResume] = useState(false);
   const [error, setError] = useState('');
   const [localFile, setLocalFile] = useState<File | null>(null);
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  
+  useEffect(() => {
+    if (autoFocusField === 'resumeUrl' && containerRef.current) {
+      containerRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [autoFocusField]);
 
   const handleResumeUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -27,6 +39,7 @@ export function ResumeUploadForm({
     try {
       const formData = new FormData();
       formData.append('document', file);
+      formData.append('module', 'resume');
       
       const token = (await import('@descope/nextjs-sdk/client')).getSessionToken();
       const headers = { ...(token ? { Authorization: `Bearer ${token}` } : {}) };
@@ -58,7 +71,7 @@ export function ResumeUploadForm({
     setUploadingPhoto(true);
     setError('');
     try {
-      const url = await uploadAdminImage(file);
+      const url = await uploadAdminImage(file, 'profile');
       onChange({ profilePhoto: url });
     } catch (err: any) {
       setError(err.message || 'Failed to upload photo');
@@ -85,9 +98,20 @@ export function ResumeUploadForm({
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
 
+  const hasResumeError = errors.includes('resumeUrl');
+
   return (
-    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
-      <h2 className="text-2xl font-bold border-b pb-4" style={{ color: 'var(--text)', borderColor: 'var(--border)' }}>Resume & Media</h2>
+    <div ref={containerRef} className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
+      <div className="border-b pb-4" style={{ borderColor: 'var(--border)' }}>
+        <h2 className="text-2xl font-bold" style={{ color: 'var(--text)' }}>Resume & Media</h2>
+        {hasResumeError && (
+          <div className="flex items-center gap-1 mt-2 text-red-500 text-sm font-medium animate-in fade-in slide-in-from-top-1">
+            <AlertCircle className="w-4 h-4" />
+            <span>Resume upload is required for publishing.</span>
+          </div>
+        )}
+      </div>
+      
       {error && (
         <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm font-medium">
           {error}
@@ -119,7 +143,7 @@ export function ResumeUploadForm({
         </div>
 
         {/* Resume */}
-        <div className="p-6 border rounded-2xl flex flex-col items-center justify-center transition-all shadow-sm hover:shadow-md" style={{ borderColor: 'var(--border)', background: 'var(--surface2)' }}>
+        <div className={`p-6 border rounded-2xl flex flex-col items-center justify-center transition-all shadow-sm hover:shadow-md ${hasResumeError ? 'border-red-500 bg-red-500/5' : ''}`} style={{ borderColor: hasResumeError ? 'red' : 'var(--border)', background: hasResumeError ? undefined : 'var(--surface2)' }}>
           {profile.resumeUrl ? (
             <div className="w-full flex flex-col animate-in zoom-in-95 duration-300">
               <div className="flex flex-col items-center mb-6">
@@ -168,7 +192,7 @@ export function ResumeUploadForm({
               <div className="w-24 h-24 rounded-full flex items-center justify-center mb-6 shadow-inner" style={{ background: 'var(--orange-dim)', color: 'var(--orange)' }}>
                 {uploadingResume ? <Loader2 className="w-10 h-10 animate-spin" /> : <FileText className="w-10 h-10" />}
               </div>
-              <h3 className="font-semibold text-lg mb-1" style={{ color: 'var(--text)' }}>Upload Resume</h3>
+              <h3 className="font-semibold text-lg mb-1" style={{ color: 'var(--text)' }}>Upload Resume <span style={{ color: 'var(--orange)' }}>*</span></h3>
               <p className="text-sm mb-6 text-center" style={{ color: 'var(--muted)' }}>PDF, DOCX (max 10MB)</p>
               
               <label className="cursor-pointer px-6 py-2.5 rounded-xl text-sm font-semibold transition-all hover:opacity-90 flex items-center gap-2" style={{ background: 'var(--orange)', color: '#fff' }}>

@@ -5,6 +5,7 @@ import React, { Dispatch, SetStateAction , useState, useEffect, useRef,} from "r
 import { Trash2 } from "lucide-react";
 import { useWallet } from "@/providers/WalletProvider";
 import { useNotification } from "@/providers/NotificationProvider";
+import { useSession } from "@descope/nextjs-sdk/client";
 type Task = {
   id: number;
   text: string;
@@ -33,6 +34,7 @@ export default function TodoList({
 }: TodoListProps) {
   const { config, refreshWallet } = useWallet();
   const { notifyReward } = useNotification();
+  const { sessionToken } = useSession();
   const todoReward = config?.TODO?.COMPLETION_REWARD || 5;
 
 
@@ -187,7 +189,6 @@ useEffect(() => {
         Task List
       </h2>
     </div>
-    
 
     {/* Add Task Button */}
   <button
@@ -378,18 +379,34 @@ useEffect(() => {
         };
 
         setTasks(updated);
-        
-        if (isNowDone) {
-          const completedCount = updated.filter(t => t.done && t.text.trim() !== "").length;
-          if (completedCount >= 3) {
-            const rewardKey = `todo_reward_${today}`;
-            if (!localStorage.getItem(rewardKey)) {
-              notifyReward("Todo Milestone", "3 tasks completed!", todoReward);
-              refreshWallet();
-              localStorage.setItem(rewardKey, 'true');
+
+        // Notify backend of task state change
+        const checkRewards = async () => {
+          try {
+            if (!sessionToken) return;
+            
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/v1/users/rewards/todo`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${sessionToken}`
+              },
+              body: JSON.stringify({ tasks: updated })
+            });
+            
+            if (res.ok) {
+              const data = await res.json();
+              if (data.rewarded) {
+                notifyReward("Todo Milestone Reached!", data.message || "You earned coins for completing tasks!", data.amount || 5);
+                refreshWallet();
+              }
             }
+          } catch (e) {
+            console.error('Error checking todo rewards:', e);
           }
-        }
+        };
+
+        checkRewards();
         }}
         className="
           w-5

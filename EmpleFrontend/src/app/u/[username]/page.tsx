@@ -1,7 +1,18 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { UserProfile } from '@/features/user/profile/types';
-import { EngineeringBlueprint, GamifiedArcade, EditorialMinimalist, RpgCharacterSheet } from '@/features/user/profile/components/PortfolioTemplates';
+import { ShareProfileButton } from '@/features/user/profile/components/ShareProfileButton';
+import dynamicImport from 'next/dynamic';
+
+// Lazy load all templates to optimize the bundle size
+const EngineeringBlueprint = dynamicImport(() => import('@/features/user/profile/components/PortfolioTemplates/EngineeringBlueprint').then(mod => mod.EngineeringBlueprint), { ssr: true });
+const GamifiedArcade = dynamicImport(() => import('@/features/user/profile/components/PortfolioTemplates/GamifiedArcade').then(mod => mod.GamifiedArcade), { ssr: true });
+const EditorialMinimalist = dynamicImport(() => import('@/features/user/profile/components/PortfolioTemplates/EditorialMinimalist').then(mod => mod.EditorialMinimalist), { ssr: true });
+const RpgCharacterSheet = dynamicImport(() => import('@/features/user/profile/components/PortfolioTemplates/RpgCharacterSheet').then(mod => mod.RpgCharacterSheet), { ssr: true });
+const CyberDeveloper = dynamicImport(() => import('@/features/user/profile/components/PortfolioTemplates/CyberDeveloper'), { ssr: true });
+const HackerTerminal = dynamicImport(() => import('@/features/user/profile/components/PortfolioTemplates/HackerTerminal'), { ssr: true });
+const PremiumCorporate = dynamicImport(() => import('@/features/user/profile/components/PortfolioTemplates/PremiumCorporate'), { ssr: true });
+const ModernPersonal = dynamicImport(() => import('@/features/user/profile/components/PortfolioTemplates/ModernPersonal'), { ssr: true });
 
 async function fetchProfile(username: string): Promise<UserProfile | null> {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
@@ -22,15 +33,27 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
 
   const title = `${profile.personalInfo?.fullName || resolvedParams.username}'s Portfolio | Emple`;
   const description = profile.personalInfo?.headline || profile.about?.bio || `Check out ${resolvedParams.username}'s professional portfolio on Emple.`;
-  const imageUrl = profile.profilePhoto ? `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}${profile.profilePhoto}` : undefined;
+  const imageUrl = profile.profilePhoto 
+    ? (profile.profilePhoto.startsWith('http') 
+        ? profile.profilePhoto 
+        : `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}${profile.profilePhoto}`) 
+    : undefined;
+
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://emple.com';
+  const canonicalUrl = `${appUrl}/u/${resolvedParams.username}`;
 
   return {
     title,
     description,
+    alternates: {
+      canonical: canonicalUrl,
+    },
     openGraph: {
       title,
       description,
       type: 'profile',
+      url: canonicalUrl,
+      siteName: 'Emple',
       images: imageUrl ? [imageUrl] : [],
     },
     twitter: {
@@ -64,11 +87,30 @@ export default async function PublicPortfolioPage({
 
   const Template = (preview || profile.template || 'editorial-minimalist').toLowerCase().trim();
 
-  switch (Template) {
-    case 'engineering-blueprint': return <EngineeringBlueprint profile={profile} />;
-    case 'gamified-arcade': return <GamifiedArcade profile={profile} />;
-    case 'editorial-minimalist': return <EditorialMinimalist profile={profile} />;
-    case 'rpg-character-sheet': return <RpgCharacterSheet profile={profile} />;
-    default: return <EditorialMinimalist profile={profile} />;
-  }
+  return (
+    <>
+      {(() => {
+        switch (Template) {
+          case 'engineering-blueprint': return <EngineeringBlueprint profile={profile} />;
+          case 'gamified-arcade': return <GamifiedArcade profile={profile} />;
+          case 'editorial-minimalist': return <EditorialMinimalist profile={profile} />;
+          case 'rpg-character-sheet': return <RpgCharacterSheet profile={profile} />;
+          case 'cyber-developer': return <CyberDeveloper profile={profile} />;
+          case 'hacker-terminal': return <HackerTerminal profile={profile} />;
+          case 'premium-corporate': return <PremiumCorporate profile={profile} />;
+          case 'modern-personal': return <ModernPersonal profile={profile} />;
+          default: return <EditorialMinimalist profile={profile} />;
+        }
+      })()}
+      
+      {!preview && (
+        <div className="fixed bottom-6 right-6 z-[100]">
+          <ShareProfileButton 
+            title={`${profile.personalInfo?.fullName || profile.username}'s Portfolio`}
+            variant="floating"
+          />
+        </div>
+      )}
+    </>
+  );
 }

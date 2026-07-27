@@ -24,8 +24,34 @@ export default function QuizQuestionForm({
   addOption,
 }: Props) {
   const [uploadingSolutionImage, setUploadingSolutionImage] = useState(false);
+  const [uploadingQuestionImage, setUploadingQuestionImage] = useState(false);
   return (
     <>
+      <div className="mb-6">
+        <QuizEditFieldLabel color={t.labelColor}>
+          Question Type *
+        </QuizEditFieldLabel>
+        <div className="flex gap-4 mt-2">
+          {(["MCQ", "MSQ", "NAT"] as const).map((type) => (
+            <label
+              key={type}
+              className="flex items-center gap-2 cursor-pointer text-sm"
+              style={{ color: t.inputText }}
+            >
+              <input
+                type="radio"
+                name={`qtype-${question.id}`}
+                value={type}
+                checked={question.type === type}
+                onChange={() => updateQ(question.id, { type })}
+                className="accent-[var(--clr-accent)] cursor-pointer"
+              />
+              {type}
+            </label>
+          ))}
+        </div>
+      </div>
+
       <div className="mb-6">
         <QuizEditFieldLabel color={t.labelColor}>
           Question Text *
@@ -43,6 +69,71 @@ export default function QuizQuestionForm({
             color: t.inputText,
           }}
         />
+      </div>
+
+      <div className="mb-6">
+        <QuizEditFieldLabel color={t.labelColor}>
+          Question Photo (Optional)
+        </QuizEditFieldLabel>
+
+        <div className="flex flex-col gap-3">
+          <input
+            type="text"
+            placeholder="Paste question image URL…"
+            value={question.imageUrl || ""}
+            onChange={(e) =>
+              updateQ(question.id, { imageUrl: e.target.value })
+            }
+            className="qph w-full rounded-[10px] border px-4 py-3 outline-none transition-all focus:border-[var(--clr-accent)] focus:shadow-[0_0_0_3px_rgba(241,90,34,0.12)]"
+            style={{
+              background: t.inputBg,
+              borderColor: t.inputBorder,
+              color: t.inputText,
+            }}
+          />
+
+          <label
+            className="flex cursor-pointer items-center justify-center rounded-[10px] border border-dashed px-4 py-3 text-xs font-semibold transition-all hover:border-[var(--clr-accent)] hover:text-[var(--clr-accent)]"
+            style={{
+              borderColor: t.inputBorder,
+              color: t.labelColor,
+              background: t.inputBg,
+            }}
+          >
+            {uploadingQuestionImage ? "Uploading..." : "Upload Question Photo"}
+
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              disabled={uploadingQuestionImage}
+              onChange={async (e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+
+                try {
+                  setUploadingQuestionImage(true);
+                  const imageUrl = await uploadAdminImage(file);
+                  updateQ(question.id, { imageUrl });
+                } catch (error) {
+                  console.error(error);
+                  alert("Failed to upload image");
+                } finally {
+                  setUploadingQuestionImage(false);
+                  e.target.value = "";
+                }
+              }}
+            />
+          </label>
+
+          {question.imageUrl && (
+            <img
+              src={question.imageUrl}
+              alt="Question preview"
+              className="max-h-40 max-w-full rounded-xl border border-[var(--border,rgba(255,255,255,0.07))] object-contain"
+            />
+          )}
+        </div>
       </div>
 
       <div className="mb-6">
@@ -108,7 +199,7 @@ export default function QuizQuestionForm({
           try {
             setUploadingSolutionImage(true);
 
-            const imageUrl = await uploadAdminImage(file);
+            const imageUrl = await uploadAdminImage(file, 'quiz');
 
             updateQ(question.id, {
               solutionMedia: imageUrl,

@@ -119,7 +119,7 @@ export default function JobsTable() {
                   <p className="mt-1 text-xs text-white/40">{job.location}</p>
                 )}
 
-                <p className="mt-3 flex-grow text-sm text-white/60 line-clamp-3">
+                <p className="mt-3 flex-grow text-sm text-white/60 line-clamp-3 whitespace-pre-line">
                   {job.description}
                 </p>
 

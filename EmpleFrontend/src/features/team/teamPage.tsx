@@ -16,67 +16,65 @@ type Member = {
   github: string;
 };
 
-
-
 // ─── Leadership (4 cards) ─────────────────────────────────────────────────────
 
 const LEADERSHIP: Member[] = [
-  { name: "Mausam Chowksey", role: "Founder and CEO ", dept: "Leadership", avatar: "/team/Mausam.jpeg", bio: "", skills: [""], joined: "jun 2026 ", linkedin: "https://linkedin.com", github: "https://github.com" },
-  { name: "Kamakshi Rautela",     role: "Co-Founder and CFO",  dept: "Leadership", avatar: "/team/kamakshi.jpeg", bio: "", skills: [""], joined: "june 2026", linkedin: "https://linkedin.com", github: "https://github.com" },
-  { name: "Dhinesh Ravi",      role: "Operations Head and CTO ", dept: "Leadership", avatar: "/team/dinesh.jpeg", bio: "", skills: [""], joined: "june 2026 ", linkedin: "https://linkedin.com", github: "https://github.com" },
-  { name: "Neelam Sharma",    role: "Counselling",          dept: "Leadership", avatar: "/team/neelam.jpeg", bio: "Dev oversees all product squads. He built the real-time AI interview engine that processes 10k+ sessions per day.", skills: ["Node.js", "WebSockets", "Docker", "OpenAI API"], joined: "Feb 2023", linkedin: "https://linkedin.com", github: "https://github.com" },
+  { name: "Aryan", role: "Founder", dept: "Leadership", avatar: "/team/aryansir.jpeg", bio: "", skills: [""], joined: "June 2026", linkedin: "https://www.linkedin.com/in/aryan-gupta-8767a7161", github: "aryan@binarykeeda.com" },
+  { name: "Mausam Chowksey", role: "CEO", dept: "Leadership", avatar: "/team/Mausam.jpeg", bio: "", skills: [""], joined: "June 2026", linkedin: "https://linkedin.com", github: "https://github.com" },
+  { name: "Kamakshi Rautela", role: "CFO", dept: "Leadership", avatar: "/team/kamakshi.jpeg", bio: "", skills: [""], joined: "June 2026", linkedin: "https://linkedin.com", github: "https://github.com" },
+  { name: "Dhinesh Ravi", role: "CTO", dept: "Leadership", avatar: "/team/dinesh.jpeg", bio: "", skills: [""], joined: "June 2026", linkedin: "https://linkedin.com", github: "https://github.com" },
 ];
 
 // ─── Mentorship (4 cards) ─────────────────────────────────────────────────────
 
 const MENTORSHIP: Member[] = [
-  { name: "Aryan",  role: "Technical Mentor",     dept: "Mentorship", avatar: "/team/aryansir.jpeg", bio: "", skills: [""], joined: "June 2026", linkedin: "https://linkedin.com", github: "https://github.com" },
-  { name: "Dr. Suryakant", role: "Marketing Head",    dept: "Mentorship", avatar: "/team/suryakant.jpeg", bio: "", skills: [""], joined: "June 2026", linkedin: "https://linkedin.com", github: "https://github.com" },
-  { name: "Aryan Bhandari", role: "Ex-Development Lead",   dept: "Mentorship", avatar: "/team/aryanbhandari.jpeg", bio: "", skills: [""], joined: "June 2026", linkedin: "https://linkedin.com", github: "https://github.com" },
-  { name: "Himanshu",  role: "Mentor",    dept: "Mentorship", avatar: "/team/himanshu.jpeg", bio: " ", skills: [""], joined: "jUNE 2026", linkedin: "https://linkedin.com", github: "https://github.com" },
+  { name: "Neelam Sharma", role: "Counselling", dept: "Mentorship", avatar: "/team/neelam.jpeg", bio: "", skills: [""], joined: "June 2026", linkedin: "https://linkedin.com", github: "https://github.com" },
+  { name: "Himanshu", role: "Technical Mentor", dept: "Mentorship", avatar: "/team/himanshu.jpeg", bio: "", skills: [""], joined: "June 2026", linkedin: "https://linkedin.com", github: "https://github.com" },
+  { name: "Dr. Suryakant", role: "Marketing Head", dept: "Mentorship", avatar: "/team/suryakant.jpeg", bio: "", skills: [""], joined: "June 2026", linkedin: "https://linkedin.com", github: "https://github.com" },
+  { name: "Aryan Bhandari", role: "Ex-Development Lead", dept: "Mentorship", avatar: "/team/aryanbhandari.jpeg", bio: "", skills: [""], joined: "June 2026", linkedin: "https://linkedin.com", github: "https://github.com" },
 ];
 
-// ─── Interns / Spines (24 cards) ─────────────────────────────────────────────
+// ─── Interns / Spines ─────────────────────────────────────────────────────────
 
 const INTERNS: Member[] = [
-  { name: "Alisha",     role: "Application Developer",        dept: "Full Stack Developer",        avatar: "/team/alsiha.jpeg", bio: " Alisha is passionate about Computer Science and building modern web applications with React, Next.js, Node.js, and MongoDB. She enjoys turning ideas into complete products by working across frontend, backend, and database layers.", skills: ["React" , "Next.js", "JavaScript","HTML","CSS","tailwind CSS","Node.js","Express.js", "mongoDB","Figma","Python","Docker","git and github"], joined: "June 2026", linkedin: "https://www.linkedin.com/in/alisha-678550374/", github: "https://github.com/alishacreates" },
-  { name: "Palak Sharma ",    role: "Application Developer",        dept: "Full Stack Developer",        avatar: "/team/palak.jpeg", bio: " Palak is a Full Stack Developer focused on creating efficient digital solutions, driven by a love for problem-solving and user-centric design. ", skills: ["Figma", "React.js","Next.js", "Node.js","express.js", "mongoDB"], joined: "June 2026", linkedin: "www.linkedin.com/in/palak-sharma-18667924b", github: "https://github.com/Palak-Sharma05" },
-  { name: "Shreya Gangwar",    role: "Application Developer",        dept: "Mobile App Developer",        avatar: "/team/shreya.jpeg", bio: " Shreya is a Mobile App Developer, Full-Stack Web Developer, and Machine Learning Enthusiast with a passion for building scalable applications and AI-powered solutions. Dedicated to creating innovative technology that solves real-world problems and delivers impactful user experiences. ", skills: ["React.js", "Next.js", "Node.js", "Express.js", "MongoDB", "Firebase", "JavaScript", "Python", "Machine Learning", "AI", "REST APIs", "Git", "GitHub" , "DSA",  "OOP"], joined: "June 2026", linkedin: "https://www.linkedin.com/in/shreya-gangwar-9b50a430b/", github: "https://github.com/Shreya0705-ui" },
-  { name: "Lakshita Deopura",   role: "Application Developer",        dept: "Full Stack Developer",        avatar: "/team/lakshita.jpeg", bio: " Lakshita is a Full Stack Developer skilled in building responsive web applications and AI-driven solutions.Passionate about creating impactful products through clean code, collaboration, and continuous learning.", skills: ["React.js","Node.js", "Python" ,"MongoDB","Generative AI"], joined: "June 2026", linkedin: "www.linkedin.com/in/lakshita-deopura", github: "https://github.com/Lakshita-1408" },
-  { name: "Anika Sen",   role: "Social Media Lead",     dept: "Full Stack Developer",     avatar: "/team/anika.jpeg", bio: " Anika is a Full-stack developer passionate about building web applications and solving real-world problems through technology. ", skills: ["React.js", "Next.js" ,"Node.js" , "Express.js" ,"HTML" ,"Python", "FigmaCSSJava" ], joined: "June 2026", linkedin: "https://www.linkedin.com/in/anika-sen-?utm_source=share_via&utm_content=profile&utm_medium=member_android", github: "https://github.com/anikasen1006" },
-  { name: "Srishti Pundeer",   role: "QA",     dept: "Full Stack Developer",     avatar: "/team/srishti.jpeg", bio: "Srishti is a Computer Science and Engineering student passionate about technology, innovation, and continuous learning. Her interests include software development, artificial intelligence, data science, and algorithmic problem-solving. She enjoys building impactful projects that address real-world challenges and is committed to expanding her technical expertise through hands-on development, research, and collaborative initiatives. ", skills: ["REST APIs", "react", "next.js", "express" , "node.js", "SQL" , "Git and Github", "DSA" ,"mongoDB"], joined: "jun 2026", linkedin: "https://www.linkedin.com/in/srishti-pundeer/", github: "https://github.com/srishtipundeer1116" },
-  { name: "Vridhi Jain",     role: "Application Developer",     dept: "Full Stack Developer",     avatar: "/team/vridhi.jpeg", bio: "", skills: [""], joined: "June 2026", linkedin: "www.linkedin.com/in/vridhijain29", github: "https://github.com/Vridhi29" },
-  { name: "Bhavya Agarwal",     role: "Application Developer", dept: "", avatar: "BA", bio: "", skills: [""], joined: "June 2026", linkedin: "https://linkedin.com", github: "https://github.com" },
-  { name: "Kunal Bubna",    role: "Application Developer",        dept: "Full Stack Developer",        avatar: "/team/kunal.jpeg", bio: " Kunal Bubna is a Full Stack Developer with a strong interest in creating innovative and user-centric digital solutions. Enjoys solving complex problems and building reliable applications across the frontend and backend. ", skills: ["React.js " , "Next.js ", "Node.js" , "Express.js" , "MongoDB"], joined: "June 2026", linkedin: "https://www.linkedin.com/in/kunal-bubna-873036374?utm_source=share_via&utm_content=profile&utm_medium=member_android", github: "kunalbubna263 (Kunal Bubna) https://share.google/GRxElEZsCoixbvktl" },
-  { name: "Bhoomi Tomer",  role: "Application Developer",     dept: "Full Stack Developer",     avatar: "/team/bhoomi.jpeg", bio: " Bhoomi is a Cyber Security enthusiast and Full Stack Developer passionate about building secure, user-friendly web applications and solving real-world problems through technology. Interested in secure software development, web technologies, and i strengthening digital systems through innovative solutions.", skills: ["React.js " ,  "Node.js ", "JavaScript", "Python", "Cyber Security", "Network Security", "Vulnerability Assessment", "Security Analysis", "Git", "GitHub", "DSA"], joined: "June 2026", linkedin: "https://www.linkedin.com/in/tomerbhoomi?utm_source=share_via&utm_content=profile&utm_medium=member_ios", github: "https://github.com/bhoomig9891-hash" },
-  { name: "Amishi",  role: "ML Developer", dept: "", avatar: "A", bio: "", skills: [""], joined: "Jun 2026", linkedin: "https://linkedin.com", github: "https://github.com" },
-  { name: "Hardik Bindal",   role: "Emple Kids Lead",        dept: "Full Stack Developer",        avatar: "/team/hardik.jpeg", bio: "", skills: [""], joined: "Jun 2026", linkedin: "https://linkedin.com", github: "https://github.com" },
-  { name: "Akshat Sharma",   role: "Content Writer",        dept: "Content Writer",        avatar: "/team/akshat.jpeg", bio: " Akshat is a Cybersecurity enthusiast and Computer Science student with a strong interest in ethical hacking, network security, and digital forensics. Passionate about understanding cyber threats, vulnerability assessment, and security best practices. Actively developing practical skills through cybersecurity labs, CTF challenges, and hands-on projects while continuously expanding knowledge of information security. Focused on building secure and resilient digital systems.", skills: ["Java" ,"Dsa" , "Python" ,"Research and Analysis" , "Content Writing"], joined: "Jun 2026", linkedin: "linkedin.com/in/akshat-sharma2087", github: "https://github.com/akshat8710" },
-  { name: "Akriti Joshi",   role: "Content Writer",     dept: "Content Writer",     avatar: "/team/akriti.jpeg", bio: " Akriti is a Passionate student with a strong interest in coding , problem solving , research , and cybersecurity . She enjoys building practical solutions through programming , exploring emerging technologies .", skills: ["Python", "Java" , "DSA" , "OOP" , "Content Writing "], joined: "June 2026", linkedin: "www.linkedin.com/in/ aakriti-joshi-049893363", github: "https://github.com/Aakriti1-joshi" },
-  { name: "Manan Rajoria",  role: "Content Writer", dept: "Content Writer", avatar: "MR", bio: " Manan is  a technology enthusiast with a strong interest in software development, problem-solving, and emerging technologies. He enjoys learning new technical skills, building practical solutions, and continuously expanding my knowledge in the field of computer science. ", skills: ["Java " , " Python " , "Content Writing " , "Research & Analysis"], joined: "June 2026", linkedin: "https://linkedin.com", github: "https://github.com" },
-  { name: "Vanshika Rawat",    role: "Cyber Security Analyst",        dept: "Cyber Security",        avatar: "/team/vanshika.jpeg", bio: "", skills: [""], joined: "Jun 2026", linkedin: "https://www.linkedin.com/in/oneshika/", github: "https://github.com/1shieka" },
-  { name: "Rahul Chaturvedi",  role: "Cyber Security Analyst",     dept: "Cyber Security",     avatar: "RC", bio: " Rahul is a Cyber Security enthusiasts focused on securing digital infrastructure and supporting safe technology environments. Interested in identifying security challenges, assessing potential risks, and contributing to effective security solutions.", skills: ["Cyber Security " , "Penetration Testing ", "Information Security", "Security Analysis", "Threat Assessment", "Risk Management"], joined: "June 2026 ", linkedin: "https://linkedin.com", github: "https://github.com" },
-  { name: "Manya Goel",    role: "ML Developer",        dept: "",        avatar: "/team/manya.jpeg", bio: "", skills: [""], joined: "june 2026", linkedin: "https://www.linkedin.com/in/manya-goel", github: "https://github.com/Manya-Goel" },
-  { name: "Tanish Chopra",   role: "Cyber Security Analyst", dept: "Cyber Security", avatar: "/team/tanish.jpeg", bio: " Tanish is a Cyber Security enthusiast with a keen interest in system and network security, risk identification, and strengthening digital environments. Passionate about security analysis, risk assessment, and enhancing digital protection through structured and proactive security measures.", skills: ["Cyber Security " , "Vulnerability Assessment " , "Penetration Testing " , "Web Application" , " Security Network " , "Security Risk Assessment ", "Security Analysis"], joined: "June 2026", linkedin: "https://www.linkedin.com/in/tanish-chopra15", github: "https://github.com/tanishchopra15" },
-  { name: "Garima",    role: "ML developer",     dept: "Mobile Developer",     avatar: "/team/garima.jpeg", bio: "", skills: [""], joined: "june 2026", linkedin: "https://www.linkedin.com/in/garima-goyal-68869631b?utm_source=share_via&utm_content=profile&utm_medium=member_android", github: "https://github.com/new" },
-  { name: "Aditya Agarwal",  role: "ML Developer",        dept: "Full Stack Developer",        avatar: "/team/aditya.jpeg", bio: " Aditya is an Enthusiastic learner with an interest in technology and problem-solving.  He enjoys building project and continuously improving his skills.", skills: ["Python","java","research and analysis "], joined: "June 2026", linkedin: "www.linkedin.com/in/aditya-agarwal-5b617b339", github: "https://github.com/Adityaagarwal2005" },
-  { name: "Shivanya",   role: "Devops", dept: "", avatar: "S", bio: "", skills: [""], joined: "June 2026", linkedin: "https://linkedin.com", github: "https://github.com" },
-  { name: "Tanya Marwaha",   role: "Innovation Management",        dept: "Mobile Development",        avatar: "/team/tanya.jpeg", bio: "", skills: [""], joined: "june 2026", linkedin: "https://www.linkedin.com/in/tanya-marwaha-abb690330/", github: "https://github.com/Tanya-1806" },
-  { name: "Meghna Dhakad",   role: "Innovation Management",        dept: "Mobile Development",        avatar: "/team/meghna.jpeg", bio: "", skills: [""], joined: "june 2026", linkedin: "https://www.linkedin.com/in/meghna-dhakad?utm_source=share_via&utm_content=profile&utm_medium=member_android", github: "https://github.com/MeghnaDhakad" },
-  { name: "Vaanya Sehrawat",   role: "Innovation Management",        dept: "Social Media",        avatar: "/team/vaanya.jpeg", bio: "", skills: [""], joined: "june 2026", linkedin: "www.linkedin.com/in/vaanya-sehrawat", github: "https://github.com/VaanyaSehrawat" },
-    { name: "Rishika ",   role: "Social Media",        dept: "Social Media",        avatar: "R", bio: "", skills: [""], joined: "june 2026", linkedin: "", github: "" },
-    { name: "Kashish Bhatt  ",   role: "Social Media",        dept: "Social Media",        avatar: "/team/kashish.jpeg", bio: "", skills: [""], joined: "june 2026", linkedin: "https://www.linkedin.com/in/kashish-bhatt-418a98341?utm_source=share_via&utm_content=profile&utm_medium=member_android", github: "https://github.com/Kashish-Bhatt" },
+  { name: "Alisha", role: "Application Developer", dept: "Full Stack Developer", avatar: "/team/alsiha.jpeg", bio: " Alisha is passionate about Computer Science and building modern web applications with React, Next.js, Node.js, and MongoDB. She enjoys turning ideas into complete products by working across frontend, backend, and database layers.", skills: ["React", "Next.js", "JavaScript", "HTML", "CSS", "tailwind CSS", "Node.js", "Express.js", "mongoDB", "Figma", "Python", "Docker", "git and github"], joined: "June 2026", linkedin: "https://www.linkedin.com/in/alisha-678550374/", github: "https://github.com/alishacreates" },
+  { name: "Palak Sharma", role: "Application Developer", dept: "Full Stack Developer", avatar: "/team/palak.jpeg", bio: " Palak is a Full Stack Developer focused on creating efficient digital solutions, driven by a love for problem-solving and user-centric design. ", skills: ["Figma", "React.js", "Next.js", "Node.js", "express.js", "mongoDB"], joined: "June 2026", linkedin: "www.linkedin.com/in/palak-sharma-18667924b", github: "https://github.com/Palak-Sharma05" },
+  { name: "Shreya Gangwar", role: "Application Developer", dept: "Mobile App Developer", avatar: "/team/shreya.jpeg", bio: " Shreya is a Mobile App Developer, Full-Stack Web Developer, and Machine Learning Enthusiast with a passion for building scalable applications and AI-powered solutions. Dedicated to creating innovative technology that solves real-world problems and delivers impactful user experiences. ", skills: ["React.js", "Next.js", "Node.js", "Express.js", "MongoDB", "Firebase", "JavaScript", "Python", "Machine Learning", "AI", "REST APIs", "Git", "GitHub", "DSA", "OOP"], joined: "June 2026", linkedin: "https://www.linkedin.com/in/shreya-gangwar-9b50a430b/", github: "https://github.com/Shreya0705-ui" },
+  { name: "Lakshita Deopura", role: "Application Developer", dept: "Full Stack Developer", avatar: "/team/lakshita.jpeg", bio: " Lakshita is a Full Stack Developer skilled in building responsive web applications and AI-driven solutions. Passionate about creating impactful products through clean code, collaboration, and continuous learning.", skills: ["React.js", "Node.js", "Python", "MongoDB", "Generative AI"], joined: "June 2026", linkedin: "www.linkedin.com/in/lakshita-deopura", github: "https://github.com/Lakshita-1408" },
+  { name: "Anika Sen", role: "Social Media Lead", dept: "Social Media", avatar: "/team/anika.jpeg", bio: " Anika is a Full-stack developer passionate about building web applications and solving real-world problems through technology. ", skills: ["React.js", "Next.js", "Node.js", "Express.js", "HTML", "Python", "FigmaCSSJava"], joined: "June 2026", linkedin: "https://www.linkedin.com/in/anika-sen-?utm_source=share_via&utm_content=profile&utm_medium=member_android", github: "https://github.com/anikasen1006" },
+  { name: "Srishti Pundeer", role: "QA", dept: "Full Stack Developer", avatar: "/team/srishti.jpeg", bio: "Srishti is a Computer Science and Engineering student passionate about technology, innovation, and continuous learning. Her interests include software development, artificial intelligence, data science, and algorithmic problem-solving. She enjoys building impactful projects that address real-world challenges and is committed to expanding her technical expertise through hands-on development, research, and collaborative initiatives. ", skills: ["REST APIs", "react", "next.js", "express", "node.js", "SQL", "Git and Github", "DSA", "mongoDB"], joined: "jun 2026", linkedin: "https://www.linkedin.com/in/srishti-pundeer/", github: "https://github.com/srishtipundeer1116" },
+  { name: "Vridhi Jain", role: "Application Developer", dept: "Full Stack Developer", avatar: "/team/vridhi.jpeg", bio: "", skills: [""], joined: "June 2026", linkedin: "www.linkedin.com/in/vridhijain29", github: "https://github.com/Vridhi29" },
+  { name: "Bhavya Agarwal", role: "Application Developer", dept: "Full Stack Developer", avatar: "BA", bio: "", skills: [""], joined: "June 2026", linkedin: "https://linkedin.com", github: "https://github.com" },
+  { name: "Kunal Bubna", role: "Application Developer", dept: "Full Stack Developer", avatar: "/team/kunal.jpeg", bio: " Kunal Bubna is a Full Stack Developer with a strong interest in creating innovative and user-centric digital solutions. Enjoys solving complex problems and building reliable applications across the frontend and backend. ", skills: ["React.js", "Next.js", "Node.js", "Express.js", "MongoDB"], joined: "June 2026", linkedin: "https://www.linkedin.com/in/kunal-bubna-873036374?utm_source=share_via&utm_content=profile&utm_medium=member_android", github: "kunalbubna263 (Kunal Bubna) https://share.google/GRxElEZsCoixbvktl" },
+  { name: "Bhoomi Tomer", role: "Application Developer", dept: "Full Stack Developer", avatar: "/team/bhoomi.jpeg", bio: " Bhoomi is a Cyber Security enthusiast and Full Stack Developer passionate about building secure, user-friendly web applications and solving real-world problems through technology. Interested in secure software development, web technologies, and strengthening digital systems through innovative solutions.", skills: ["React.js", "Node.js", "JavaScript", "Python", "Cyber Security", "Network Security", "Vulnerability Assessment", "Security Analysis", "Git", "GitHub", "DSA"], joined: "June 2026", linkedin: "https://www.linkedin.com/in/tomerbhoomi?utm_source=share_via&utm_content=profile&utm_medium=member_ios", github: "https://github.com/bhoomig9891-hash" },
+  { name: "Amishi", role: "ML Developer", dept: "Machine Learning", avatar: "A", bio: "", skills: [""], joined: "Jun 2026", linkedin: "https://linkedin.com", github: "https://github.com" },
+  { name: "Hardik Bindal", role: "Emple Kids Lead", dept: "Full Stack Developer", avatar: "/team/hardik.jpeg", bio: "", skills: [""], joined: "Jun 2026", linkedin: "https://linkedin.com", github: "https://github.com" },
+  { name: "Akshat Sharma", role: "Content Writer", dept: "Content Writer", avatar: "/team/akshat.jpeg", bio: " Akshat is a Cybersecurity enthusiast and Computer Science student with a strong interest in ethical hacking, network security, and digital forensics. Passionate about understanding cyber threats, vulnerability assessment, and security best practices. Actively developing practical skills through cybersecurity labs, CTF challenges, and hands-on projects while continuously expanding knowledge of information security. Focused on building secure and resilient digital systems.", skills: ["Java", "Dsa", "Python", "Research and Analysis", "Content Writing"], joined: "Jun 2026", linkedin: "linkedin.com/in/akshat-sharma2087", github: "https://github.com/akshat8710" },
+  { name: "Akriti Joshi", role: "Content Writer", dept: "Content Writer", avatar: "/team/akriti.jpeg", bio: " Akriti is a Passionate student with a strong interest in coding, problem solving, research, and cybersecurity. She enjoys building practical solutions through programming, exploring emerging technologies.", skills: ["Python", "Java", "DSA", "OOP", "Content Writing"], joined: "June 2026", linkedin: "www.linkedin.com/in/aakriti-joshi-049893363", github: "https://github.com/Aakriti1-joshi" },
+  { name: "Manan Rajoria", role: "Content Writer", dept: "Content Writer", avatar: "MR", bio: " Manan is a technology enthusiast with a strong interest in software development, problem-solving, and emerging technologies. He enjoys learning new technical skills, building practical solutions, and continuously expanding my knowledge in the field of computer science. ", skills: ["Java", "Python", "Content Writing", "Research & Analysis"], joined: "June 2026", linkedin: "https://linkedin.com", github: "https://github.com" },
+  { name: "Vanshika Rawat", role: "Cyber Security Analyst", dept: "Cyber Security", avatar: "/team/vanshika.jpeg", bio: "", skills: [""], joined: "Jun 2026", linkedin: "https://www.linkedin.com/in/oneshika/", github: "https://github.com/1shieka" },
+  { name: "Rahul Chaturvedi", role: "Cyber Security Analyst", dept: "Cyber Security", avatar: "RC", bio: " Rahul is a Cyber Security enthusiast focused on securing digital infrastructure and supporting safe technology environments. Interested in identifying security challenges, assessing potential risks, and contributing to effective security solutions.", skills: ["Cyber Security", "Penetration Testing", "Information Security", "Security Analysis", "Threat Assessment", "Risk Management"], joined: "June 2026", linkedin: "https://linkedin.com", github: "https://github.com" },
+  { name: "Manya Goel", role: "ML Developer", dept: "Machine Learning", avatar: "/team/manya.jpeg", bio: "", skills: [""], joined: "june 2026", linkedin: "https://www.linkedin.com/in/manya-goel", github: "https://github.com/Manya-Goel" },
+  { name: "Tanish Chopra", role: "Cyber Security Analyst", dept: "Cyber Security", avatar: "/team/tanish.jpeg", bio: " Tanish is a Cyber Security enthusiast with a keen interest in system and network security, risk identification, and strengthening digital environments. Passionate about security analysis, risk assessment, and enhancing digital protection through structured and proactive security measures.", skills: ["Cyber Security", "Vulnerability Assessment", "Penetration Testing", "Web Application", "Security Network", "Security Risk Assessment", "Security Analysis"], joined: "June 2026", linkedin: "https://www.linkedin.com/in/tanish-chopra15", github: "https://github.com/tanishchopra15" },
+  { name: "Garima", role: "ML developer", dept: "Machine Learning", avatar: "/team/garima.jpeg", bio: "", skills: [""], joined: "june 2026", linkedin: "https://www.linkedin.com/in/garima-goyal-68869631b?utm_source=share_via&utm_content=profile&utm_medium=member_android", github: "https://github.com/new" },
+  { name: "Aditya Agarwal", role: "ML Developer", dept: "Machine Learning", avatar: "/team/aditya.jpeg", bio: " Aditya is an Enthusiastic learner with an interest in technology and problem-solving. He enjoys building projects and continuously improving his skills.", skills: ["Python", "java", "research and analysis"], joined: "June 2026", linkedin: "www.linkedin.com/in/aditya-agarwal-5b617b339", github: "https://github.com/Adityaagarwal2005" },
+  { name: "Shivanya", role: "Devops", dept: "Devops Lead", avatar: "S", bio: "", skills: [""], joined: "June 2026", linkedin: "https://linkedin.com", github: "https://github.com" },
+  { name: "Tanya Marwaha", role: "Innovation Management", dept: "Mobile Development", avatar: "/team/tanya.jpeg", bio: "", skills: [""], joined: "june 2026", linkedin: "https://www.linkedin.com/in/tanya-marwaha-abb690330/", github: "https://github.com/Tanya-1806" },
+  { name: "Meghna Dhakad", role: "Innovation Management", dept: "Mobile Development", avatar: "/team/meghna.jpeg", bio: "", skills: [""], joined: "june 2026", linkedin: "https://www.linkedin.com/in/meghna-dhakad?utm_source=share_via&utm_content=profile&utm_medium=member_android", github: "https://github.com/MeghnaDhakad" },
+  { name: "Vaanya Sehrawat", role: "Innovation Management", dept: "Social Media", avatar: "/team/vaanya.jpeg", bio: "", skills: [""], joined: "june 2026", linkedin: "www.linkedin.com/in/vaanya-sehrawat", github: "https://github.com/VaanyaSehrawat" },
+  { name: "Rishika", role: "Social Media", dept: "Social Media", avatar: "R", bio: "", skills: [""], joined: "june 2026", linkedin: "", github: "" },
+  { name: "Kashish Bhatt", role: "Social Media", dept: "Social Media", avatar: "/team/kashish.jpeg", bio: "", skills: [""], joined: "june 2026", linkedin: "https://www.linkedin.com/in/kashish-bhatt-418a98341?utm_source=share_via&utm_content=profile&utm_medium=member_android", github: "https://github.com/Kashish-Bhatt" },
 ];
 
 // ─── Dept colour map ──────────────────────────────────────────────────────────
 
 const DEPT_COLORS: Record<string, { bg: string; border: string; text: string; badge: string }> = {
-  Leadership:       { bg: "#1a0d00", border: "#FF6B35", text: "#FF8C42", badge: "#FF6B35" },
-  Mentorship:       { bg: "#0d001a", border: "#A855F7", text: "#C084FC", badge: "#A855F7" },
-  Android:          { bg: "#1a1200", border: "#FF6B35", text: "#FF8C42", badge: "#FF6B35" },
-  "Cyber Security": { bg: "#120010", border: "#FF4466", text: "#FF6680", badge: "#FF4466" },
-  "Full Stack":     { bg: "#001218", border: "#35BBFF", text: "#55CCFF", badge: "#35BBFF" },
-  Content:          { bg: "#001208", border: "#35FF8C", text: "#55FFAA", badge: "#35FF8C" },
+  Leadership:            { bg: "#1a0d00", border: "#FF6B35", text: "#FF8C42", badge: "#FF6B35" },
+  Mentorship:            { bg: "#0d001a", border: "#A855F7", text: "#C084FC", badge: "#A855F7" },
+  Android:               { bg: "#1a1200", border: "#FF6B35", text: "#FF8C42", badge: "#FF6B35" },
+  "Cyber Security":      { bg: "#120010", border: "#FF4466", text: "#FF6680", badge: "#FF4466" },
+  "Full Stack":          { bg: "#001218", border: "#35BBFF", text: "#55CCFF", badge: "#35BBFF" },
+  Content:               { bg: "#001208", border: "#35FF8C", text: "#55FFAA", badge: "#35FF8C" },
 };
 
 // ─── LinkedIn SVG ─────────────────────────────────────────────────────────────
@@ -111,17 +109,17 @@ function MemberCard({ member, onClick, showSocial = true }: { member: Member; on
       onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = `0 0 20px ${col.border}33`; (e.currentTarget as HTMLElement).style.borderColor = `${col.border}99`; }}
       onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = "none"; (e.currentTarget as HTMLElement).style.borderColor = `${col.border}44`; }}
     >
-     <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0"
-  style={{ border: `2px solid ${col.badge}` }}>
-  {member.avatar.startsWith("/") ? (
-    <img src={member.avatar} alt={member.name} className="w-full h-full object-cover" />
-  ) : (
-    <div className="w-full h-full flex items-center justify-center text-xl font-black text-white"
-      style={{ background: `linear-gradient(135deg, ${col.badge}, ${col.badge}88)` }}>
-      {member.avatar}
-    </div>
-  )}
-</div>
+      <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0"
+        style={{ border: `2px solid ${col.badge}` }}>
+        {member.avatar.startsWith("/") ? (
+          <img src={member.avatar} alt={member.name} className="w-full h-full object-cover" />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-xl font-black text-white"
+            style={{ background: `linear-gradient(135deg, ${col.badge}, ${col.badge}88)` }}>
+            {member.avatar}
+          </div>
+        )}
+      </div>
       <div className="text-center">
         <p className="font-bold text-white text-sm leading-tight">{member.name}</p>
         <p className="text-xs mt-1" style={{ color: col.text }}>{member.role}</p>
@@ -177,6 +175,7 @@ function Modal({ member, onClose }: { member: Member; onClose: () => void }) {
       <div className="relative w-full max-w-md rounded-3xl overflow-hidden"
         style={{ background: "#111", border: `1px solid ${col.border}77`, boxShadow: `0 0 60px ${col.border}33` }}
         onClick={e => e.stopPropagation()}>
+
         {/* Cover */}
         <div className="h-36 w-full relative flex items-end px-6 pb-0"
           style={{ background: `linear-gradient(135deg, ${col.bg} 0%, #0d0d0d 100%)`, borderBottom: `1px solid ${col.border}22` }}>
@@ -184,22 +183,42 @@ function Modal({ member, onClose }: { member: Member; onClose: () => void }) {
             backgroundImage: "linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)",
             backgroundSize: "24px 24px"
           }} />
-         <div className="relative z-10 w-24 h-24 rounded-full overflow-hidden translate-y-12"
-  style={{ border: `3px solid ${col.badge}`, outline: `4px solid #111`, boxShadow: `0 0 32px ${col.badge}66` }}>
-  {member.avatar.startsWith("/") ? (
-    <img src={member.avatar} alt={member.name} className="w-full h-full object-cover" />
-  ) : (
-    <div className="w-full h-full flex items-center justify-center text-3xl font-black text-white"
-      style={{ background: `linear-gradient(135deg, ${col.badge}, ${col.badge}88)` }}>
-      {member.avatar}
-    </div>
-  )}
-</div>
+          {/* Avatar */}
+          <div className="relative z-10 w-24 h-24 rounded-full overflow-hidden translate-y-12"
+            style={{ border: `3px solid ${col.badge}`, outline: `4px solid #111`, boxShadow: `0 0 32px ${col.badge}66` }}>
+            {member.avatar.startsWith("/") ? (
+              <img src={member.avatar} alt={member.name} className="w-full h-full object-cover" />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-3xl font-black text-white"
+                style={{ background: `linear-gradient(135deg, ${col.badge}, ${col.badge}88)` }}>
+                {member.avatar}
+              </div>
+            )}
+          </div>
+          {/* Aryan's LinkedIn + Gmail pinned to bottom-right of cover */}
+          {member.name === "Aryan" && member.dept === "Leadership" && (
+            <div className="absolute bottom-3 right-6 flex items-center gap-2">
+              <a href={member.linkedin} target="_blank" rel="noopener noreferrer"
+                className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1 rounded-full transition-all hover:scale-105"
+                style={{ background: "#0A66C218", color: "#0A66C2", border: "1px solid #0A66C244" }}>
+                <LinkedInIcon /> LinkedIn
+              </a>
+              <span className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1 rounded-full"
+                style={{ background: "#EA433518", color: "#EA4335", border: "1px solid #EA433544" }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L12 9.64l8.073-6.147C21.69 2.28 24 3.434 24 5.457z"/>
+                </svg>
+                {member.github}
+              </span>
+            </div>
+          )}
         </div>
+
         {/* Close */}
         <button onClick={onClose} className="absolute top-3 right-4 text-gray-500 hover:text-white text-2xl leading-none transition-colors">×</button>
+
         {/* Content */}
-       <div className="px-6 pt-16 pb-6">
+        <div className="px-6 pt-16 pb-6">
           <div className="mb-4">
             <h2 className="text-white text-xl font-black">{member.name}</h2>
             <p className="text-sm mt-0.5" style={{ color: col.text }}>{member.role}</p>
@@ -265,23 +284,19 @@ function CardRow({ members, onSelect, showSocial = true }: { members: Member[]; 
 export default function TeamPage() {
   const [selected, setSelected] = useState<Member | null>(null);
 
-  // Chunk interns into rows of 4
   const internRows: Member[][] = [];
   for (let i = 0; i < INTERNS.length; i += 4) internRows.push(INTERNS.slice(i, i + 4));
 
   return (
     <main className="min-h-screen w-full" style={{ background: "#0d0d0d", fontFamily: "'Inter', sans-serif" }}>
-      {/* Grid bg */}
       <div className="fixed inset-0 pointer-events-none" style={{
         backgroundImage: "linear-gradient(rgba(255,107,53,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,107,53,0.03) 1px, transparent 1px)",
         backgroundSize: "40px 40px"
       }} />
-      {/* Glow */}
       <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] pointer-events-none"
         style={{ background: "radial-gradient(ellipse, rgba(255,107,53,0.06) 0%, transparent 70%)" }} />
 
       <div className="relative z-10 max-w-5xl mx-auto px-4 py-14">
-        {/* Page header */}
         <div className="text-center mb-12">
           <span className="inline-block text-xs font-semibold tracking-widest uppercase px-4 py-1.5 rounded-full mb-5"
             style={{ background: "rgba(255,107,53,0.12)", color: "#FF6B35", border: "1px solid rgba(255,107,53,0.25)" }}>
@@ -293,17 +308,14 @@ export default function TeamPage() {
           <p className="text-sm mt-3" style={{ color: "#555" }}>Click any card to learn more about the team.</p>
         </div>
 
-        {/* Leadership Row */}
         <SectionLabel label="Leadership Team" color="#FF6B35" />
         <CardRow members={LEADERSHIP} onSelect={setSelected} showSocial={false} />
 
-        {/* Mentorship Row */}
         <div className="mt-10">
           <SectionLabel label="Mentorship Team" color="#A855F7" />
           <CardRow members={MENTORSHIP} onSelect={setSelected} showSocial={false} />
         </div>
 
-        {/* Interns / Spines */}
         <div className="mt-10">
           <SectionLabel label="Interns & Spines" color="#35BBFF" />
           {internRows.map((row, i) => (

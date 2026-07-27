@@ -1,11 +1,8 @@
 import React from "react";
 import { BookText, PlaySquare } from "lucide-react";
+import Link from "next/link";
 
-interface TutorialsLandingPageProps {
-  onSelect: (mode: "notes" | "videos") => void;
-}
-
-export default function TutorialsLandingPage({ onSelect }: TutorialsLandingPageProps) {
+export default function TutorialsLandingPage() {
   const t: Record<string, string> = {
     border: 'var(--border)',
     surface: 'var(--surface)',
@@ -93,54 +90,56 @@ export default function TutorialsLandingPage({ onSelect }: TutorialsLandingPageP
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "32px", padding: "16px 0" }}>
         
         {/* Notes Card */}
-        <div
-          className="ai-card"
-          onClick={() => onSelect("notes")}
-          style={{ 
-            '--glow-color': t.brand, 
-            '--glow-color-dim': `${t.brand}40` 
-          } as React.CSSProperties}
-        >
-          <div className="ai-inner">
-            <div className="icon-container" style={{
-              background: `${t.brand}15`,
-              border: `1px solid ${t.brand}30`
-            }}>
-              <BookText size={44} strokeWidth={2} style={{ color: t.brand }} />
+        <Link href="/tutorials/notes" style={{ textDecoration: 'none' }}>
+          <div
+            className="ai-card"
+            style={{ 
+              '--glow-color': t.brand, 
+              '--glow-color-dim': `${t.brand}40` 
+            } as React.CSSProperties}
+          >
+            <div className="ai-inner">
+              <div className="icon-container" style={{
+                background: `${t.brand}15`,
+                border: `1px solid ${t.brand}30`
+              }}>
+                <BookText size={44} strokeWidth={2} style={{ color: t.brand }} />
+              </div>
+              <h2 style={{ marginBottom: '0.75rem', fontSize: '26px', fontWeight: 800, color: 'var(--text)' }}>
+                Notes
+              </h2>
+              <p style={{ color: t.muted, lineHeight: 1.6, fontSize: '15px' }}>
+                Step-by-step programming language guides, roadmaps, and interview questions.
+              </p>
             </div>
-            <h2 style={{ marginBottom: '0.75rem', fontSize: '26px', fontWeight: 800, color: 'var(--text)' }}>
-              Notes
-            </h2>
-            <p style={{ color: t.muted, lineHeight: 1.6, fontSize: '15px' }}>
-              Step-by-step programming language guides, roadmaps, and interview questions.
-            </p>
           </div>
-        </div>
+        </Link>
 
         {/* Videos Card */}
-        <div
-          className="ai-card"
-          onClick={() => onSelect("videos")}
-          style={{ 
-            '--glow-color': '#a855f7', 
-            '--glow-color-dim': '#a855f740' 
-          } as React.CSSProperties}
-        >
-          <div className="ai-inner">
-            <div className="icon-container" style={{
-              background: `#a855f715`,
-              border: `1px solid #a855f730`
-            }}>
-              <PlaySquare size={44} strokeWidth={2} style={{ color: "#a855f7" }} />
+        <Link href="/tutorials/videos" style={{ textDecoration: 'none' }}>
+          <div
+            className="ai-card"
+            style={{ 
+              '--glow-color': '#a855f7', 
+              '--glow-color-dim': '#a855f740' 
+            } as React.CSSProperties}
+          >
+            <div className="ai-inner">
+              <div className="icon-container" style={{
+                background: `#a855f715`,
+                border: `1px solid #a855f730`
+              }}>
+                <PlaySquare size={44} strokeWidth={2} style={{ color: "#a855f7" }} />
+              </div>
+              <h2 style={{ marginBottom: '0.75rem', fontSize: '26px', fontWeight: 800, color: 'var(--text)' }}>
+                Videos
+              </h2>
+              <p style={{ color: t.muted, lineHeight: 1.6, fontSize: '15px' }}>
+                High-quality video tutorials and walkthroughs for deep technical concepts.
+              </p>
             </div>
-            <h2 style={{ marginBottom: '0.75rem', fontSize: '26px', fontWeight: 800, color: 'var(--text)' }}>
-              Videos
-            </h2>
-            <p style={{ color: t.muted, lineHeight: 1.6, fontSize: '15px' }}>
-              High-quality video tutorials and walkthroughs for deep technical concepts.
-            </p>
           </div>
-        </div>
+        </Link>
 
       </div>
     </div>

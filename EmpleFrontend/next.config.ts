@@ -1,13 +1,43 @@
-import type { NextConfig } from 'next';
-import path from 'path';
+import type { NextConfig } from "next";
+import path from "path";
 
 const nextConfig: NextConfig = {
-  output: 'standalone',
+  output: "standalone",
+
+  async redirects() {
+    return [
+      {
+        source: '/user/tutorials',
+        destination: '/tutorials',
+        permanent: true,
+      },
+      {
+        source: '/user/tutorials/:slug',
+        destination: '/tutorials/:slug',
+        permanent: true,
+      },
+      {
+        source: '/resources/tutorials',
+        destination: '/tutorials',
+        permanent: true,
+      },
+      {
+        source: '/resources/tutorials/:slug',
+        destination: '/tutorials/:slug',
+        permanent: true,
+      }
+    ];
+  },
 
   poweredByHeader: false,
 
   images: {
-    domains: ['upload.wikimedia.org'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'upload.wikimedia.org',
+      }
+    ],
     localPatterns: [
       {
         pathname: '/logo-final.png',

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import { CONTENT, CHAPTERS } from "../data/javaTutorial";
 import { Badge } from "../components/CommonComponents";
 import { LearnTab, MCQTab, DebugTab, CompleteTab, ArrangeTab } from "../components/TaskTabs";
@@ -13,7 +14,8 @@ import {
   Target, 
   RotateCcw,
   TrendingUp,
-  ChevronDown
+  ChevronDown,
+  ArrowLeft
 } from "lucide-react";
 
 interface JavaTutorialPageProps {
@@ -29,7 +31,7 @@ const TABS = [
   { id: "roadmap", label: "Progress", icon: TrendingUp },
 ];
 
-export default function JavaTutorialPage({ onBack }: JavaTutorialPageProps) {
+export default function JavaTutorialPage() {
   const [chapter, setChapter] = useState(CHAPTERS[0].id);
   const [activeTab, setActiveTab] = useState("learn");
   const [completedMap, setCompletedMap] = useState<Record<string, boolean>>({});
@@ -72,13 +74,16 @@ export default function JavaTutorialPage({ onBack }: JavaTutorialPageProps) {
           <div className="flex-1 min-w-[300px]">
             {/* Breadcrumb */}
             <div className="flex items-center gap-2 mb-4 text-xs font-semibold" style={{ color: "var(--muted2)" }}>
-              <button 
-                onClick={onBack}
-                className="hover:underline outline-none transition-colors"
-                style={{ color: "var(--orange)" }}
-              >
-                Tutorials
-              </button>
+              <Link href="/tutorials/notes" passHref>
+                <button
+                  style={{
+                    background: "transparent", border: "none", color: "var(--text)", cursor: "pointer",
+                    display: "flex", alignItems: "center", justifyContent: "center", padding: "8px", borderRadius: "8px"
+                  }}
+                >
+                  <ArrowLeft size={20} />
+                </button>
+              </Link>
               <span>/</span>
               <span>Java Programming</span>
             </div>

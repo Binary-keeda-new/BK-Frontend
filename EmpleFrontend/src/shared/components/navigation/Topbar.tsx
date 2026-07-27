@@ -14,7 +14,6 @@ import { useDescope, useSession, useUser } from "@descope/nextjs-sdk/client";
 import { useRouter } from "next/navigation";
 import SlideDrawer from "@/shared/components/ui/SlideDrawer";
 import MediaFeedWidget from "@/features/user/dashboard/components/MediaFeedWidget";
-import AIAssistantWidget from "@/features/ai-assistant/components/AIAssistantWidget";
 import EmptyState from "@/shared/components/ui/EmptyState";
 import WalletBadge from "@/features/wallet/components/WalletBadge";
 import { useWallet } from "@/providers/WalletProvider";
@@ -168,7 +167,6 @@ export default function Topbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [todoOpen, setTodoOpen] = useState(false);
   const [mediaOpen, setMediaOpen] = useState(false);
-  const [aiOpen, setAiOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
   const [tasks, setTasks] = useState<Task[]>([{ text: "", done: false }]);
   const [allNotifications, setAllNotifications] = useState<any[]>([]);
@@ -265,7 +263,7 @@ export default function Topbar() {
   }, []);
 
   return (
-    <header className="relative h-[62px]">
+    <header className="relative h-[62px] shrink-0">
       <nav
         className="fixed top-0 left-0 z-40 w-full h-[62px] flex items-center justify-between px-3 sm:px-6 pr-4 sm:pr-8
         backdrop-blur-md bg-[var(--surface)] border-b border-[var(--border)]
@@ -301,17 +299,7 @@ export default function Topbar() {
             </button>
           )}
 
-          {/* AI button */}
-          {isAuthenticated && (
-            <button
-              title="Emple AI"
-              onClick={() => setAiOpen(true)}
-              className="w-11 h-11 flex items-center justify-center rounded-full text-[var(--muted2)]
-                transition-all duration-300 hover:-translate-y-[2px] hover:bg-orange-500/10 hover:text-orange-500"
-            >
-              <Sparkles size={22} />
-            </button>
-          )}
+          {/* AI button removed */}
 
           {/* Bell button with unread badge */}
           {isAuthenticated && (
@@ -344,6 +332,113 @@ export default function Topbar() {
             </button>
           )}
 
+          {/* Todo Button */}
+          {isAuthenticated && (
+            <div className="relative" ref={todoRef}>
+              <button
+                onClick={() => setTodoOpen((prev) => !prev)}
+                className={`w-10 h-10 rounded-full flex items-center justify-center cursor-pointer
+                transition-all duration-300 ease-out
+                ${
+                  todoOpen
+                    ? "bg-[rgba(249,115,22,0.12)] text-[#f97316] -translate-y-1"
+                    : "text-gray-400 hover:bg-[rgba(249,115,22,0.12)] hover:text-[#f97316] hover:-translate-y-1"
+                }`}
+                title="To Do List"
+              >
+                <ListTodo size={22} />
+              </button>
+
+              {/* using a explicit class in this div to remove the warning that is coming from the terminal */}
+              <div 
+  className={`fixed right-4 top-20 w-[300px] z-50
+    transition-all duration-500
+    [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] 
+    ${
+      todoOpen
+        ? "opacity-100 translate-x-0"
+        : "opacity-0 translate-x-12 pointer-events-none"
+    }`}
+>
+                <div className="animated-border">
+                  <div
+                    className="animated-border-inner w-[300px] h-[500px] p-5 overflow-y-auto rounded-xl"
+                    style={{
+                      backgroundColor: "#0f172a",
+                      backgroundImage: `
+                        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)
+                      `,
+                      backgroundSize: "32px 32px",
+                    }}
+                  >
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="text-white font-semibold text-lg">
+                        To Do List
+                      </h3>
+                      <button
+                        onClick={() => setTasks([{ text: "", done: false }])}
+                        className="w-8 h-8 rounded-full flex items-center justify-center text-gray-400
+                        transition-all duration-300
+                        hover:bg-[rgba(249,115,22,0.12)]
+                        hover:text-[#f97316]
+                        hover:-translate-y-1"
+                        title="Reset Tasks"
+                      >
+                        <RotateCcw size={18} />
+                      </button>
+                    </div>
+
+                    <div className="space-y-4">
+                      {tasks.map((task, index) => (
+                        <div key={index} className="flex items-center gap-3">
+                          <input
+                            type="checkbox"
+                            checked={task.done}
+                            onChange={() => {
+                              const updated = [...tasks];
+                              updated[index].done = !updated[index].done;
+                              setTasks(updated);
+                            }}
+                            className="w-5 h-5 rounded-full accent-orange-500"
+                          />
+                          <input
+                            type="text"
+                            value={task.text}
+                            placeholder="Add a task..."
+                            onFocus={() => {
+                              if (index === tasks.length - 1) {
+                                setTasks([...tasks, { text: "", done: false }]);
+                              }
+                            }}
+                            onChange={(e) => {
+                              const updated = [...tasks];
+                              updated[index].text = e.target.value;
+                              setTasks(updated);
+                            }}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter") {
+                                e.preventDefault();
+                                const nextInput =
+                                  e.currentTarget.parentElement?.nextElementSibling?.querySelector(
+                                    'input[type="text"]'
+                                  ) as HTMLInputElement | null;
+                                nextInput?.focus();
+                              }
+                            }}
+                            className={`bg-transparent outline-none text-gray-300 w-full border-none
+                            ${task.done ? "line-through text-gray-500" : ""}`}
+                          />
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="h-40" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Raise a Request button */}
 {isAuthenticated && (
@@ -454,17 +549,7 @@ export default function Topbar() {
         </div>
       </SlideDrawer>
 
-      {/* AI Assistant Drawer */}
-      <SlideDrawer
-        isOpen={aiOpen}
-        onClose={() => setAiOpen(false)}
-        width="md"
-        hideHeader={true}
-      >
-        <div className="h-full">
-          <AIAssistantWidget onClose={() => setAiOpen(false)} />
-        </div>
-      </SlideDrawer>
+      {/* AI Assistant Drawer removed */}
 
       {/* Notifications Drawer */}
       <SlideDrawer
