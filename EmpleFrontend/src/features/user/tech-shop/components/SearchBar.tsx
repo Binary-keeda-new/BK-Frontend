@@ -1,11 +1,20 @@
 import { HiOutlineMagnifyingGlass } from "react-icons/hi2";
 
-export default function SearchBar() {
+type SearchBarProps = {
+  searchTerm: string;
+  setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
+};
+export default function SearchBar({
+  searchTerm,
+  setSearchTerm,
+}: SearchBarProps) {
   return (
     <div className="relative">
       <input
         type="text"
         placeholder="Search products..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
         className="
         w-full
         bg-[#13141c]
@@ -14,10 +23,10 @@ export default function SearchBar() {
 
         rounded-3xl
 
-        px-3
-        py-2
+        px-2
+        py-1
 
-        pr-12
+        pr-10
 
         text-white
         placeholder:text-gray-400

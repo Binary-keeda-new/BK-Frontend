@@ -23,6 +23,7 @@ import AdminNotificationsPage from '@/features/admin/notifications/pages/AdminNo
 import AdminRequestsPage from '@/features/admin/requests/pages/AdminRequestsPage';
 import QuizReportPage from '@/features/admin/quiz/pages/QuizReportPage';
 import AdminQuizReview from '../../quiz/pages/adminQuizReview';
+import AdminTechShopPage from "@/features/admin/tech-shop/pages/AdminTechShopPage";
 
 
 interface AppShellProps {
@@ -310,6 +311,9 @@ const openAttemptReview = (attemptId: string) => {
 
       case 'blogs':
         return <AdminBlogsPage />;
+
+      case "tech-shop":
+        return <AdminTechShopPage />;  
 
       case 'sessions':
         return <AdminSessionsPage />;

@@ -128,19 +128,20 @@ if (weeklyProgress === 0 && monthlyProgress === 0) {
 
   return (
     <div className="animated-border rounded-[30px] p-[1px] overflow-hidden flex-1 min-w-0">
-  <div
-    className="
-      animated-border-inner
-      h-[300px]
-      w-full
-      bg-[#151a2d]
-      rounded-[29px]
-      overflow-hidden
-      px-6
-      pb-6
-      pt-3
-    "
-  >
+     <div
+  className="
+    animated-border-inner
+    h-[330px]
+    w-full
+    bg-[#151a2d]
+    rounded-[29px]
+    px-6
+    pb-6
+    pt-3
+    flex
+    flex-col
+  "
+>
       {/* Header */}
       <div className="flex items-center gap-2 mb-4 ">
 
@@ -150,7 +151,21 @@ if (weeklyProgress === 0 && monthlyProgress === 0) {
       </div>
 
       {/* Insights */}
-      <div className="flex flex-col gap-4">
+      <div
+  className="
+    flex-1
+    flex
+    flex-col
+    gap-4
+    overflow-y-auto
+    pr-2
+
+    [&::-webkit-scrollbar]:w-[5px]
+    [&::-webkit-scrollbar-track]:bg-transparent
+    [&::-webkit-scrollbar-thumb]:bg-[#3a3d43]
+    [&::-webkit-scrollbar-thumb]:rounded-full
+  "
+>
         {insights.map((insight, index) => (
           <div
             key={index}

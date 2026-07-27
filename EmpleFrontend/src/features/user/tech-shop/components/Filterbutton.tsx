@@ -3,9 +3,30 @@
 import { useState } from "react";
 import { HiOutlineAdjustmentsHorizontal } from "react-icons/hi2";
 
-export default function FilterButton() {
+type FilterButtonProps = {
+  selectedCategories: string[];
+  setSelectedCategories: React.Dispatch<
+    React.SetStateAction<string[]>
+  >;
 
-  const [price, setPrice] = useState(25000);
+  selectedBrands: string[];
+  setSelectedBrands: React.Dispatch<
+    React.SetStateAction<string[]>
+  >;
+
+  selectedPriceRanges: string[];
+setSelectedPriceRanges: React.Dispatch<
+  React.SetStateAction<string[]>
+>;
+};
+export default function FilterButton({
+  selectedCategories,
+  setSelectedCategories,
+  selectedBrands,
+  setSelectedBrands,
+   selectedPriceRanges,
+  setSelectedPriceRanges,
+}: FilterButtonProps) {
 
   const [open, setOpen] = useState(false);
 
@@ -32,7 +53,7 @@ export default function FilterButton() {
         <div
           className="
           absolute
-          top-[68px]
+          top-[57px]
           right-[-150px]
 
           w-[320px]
@@ -69,103 +90,120 @@ export default function FilterButton() {
           </h3>
 
           <div className="space-y-2 text-white mb-4">
-            <label className="flex items-center gap-2">
-              <input type="checkbox" />
-              Laptops
-            </label>
 
-            <label className="flex items-center gap-2">
-              <input type="checkbox" />
-              Monitors
-            </label>
+  {[
+    "Laptop",
+    "Mobile",
+    "Tablet",
+    "Smart Watch",
+    "Earbuds",
+    "Headphones",
+    "Keyboard",
+    "Mouse",
+    "Monitor",
+    "Accessories",
+    "Books",
+  ].map((category) => (
+    <label key={category} className="flex items-center gap-2">
+      <input
+        type="checkbox"
+        checked={selectedCategories.includes(category)}
+        onChange={(e) => {
+          if (e.target.checked) {
+            setSelectedCategories((prev) => [...prev, category]);
+          } else {
+            setSelectedCategories((prev) =>
+              prev.filter((item) => item !== category)
+            );
+          }
+        }}
+      />
+      {category}
+    </label>
+  ))}
 
-            <label className="flex items-center gap-2">
-              <input type="checkbox" />
-              Tablets
-            </label>
-
-            <label className="flex items-center gap-2">
-              <input type="checkbox" />
-              Keyboards
-            </label>
-
-            <label className="flex items-center gap-2">
-              <input type="checkbox" />
-              Headphones
-            </label>
-
-            <label className="flex items-center gap-2">
-              <input type="checkbox" />
-              Accessories
-            </label>
-          </div>
-
+</div>
+ 
           {/* Brands */}
           <h3 className="text-cyan-400 font-semibold mb-3">
             Brands
           </h3>
-
           <div className="space-y-2 text-white mb-4">
-            <label className="flex items-center gap-2">
-              <input type="checkbox" />
-              Apple
-            </label>
 
-            <label className="flex items-center gap-2">
-              <input type="checkbox" />
-              Samsung
-            </label>
+  {[
+    "Apple",
+    "Samsung",
+    "Dell",
+    "HP",
+    "Logitech",
+    "LG",
+    "Sony",
+    "Lenovo",
+    "ASUS",
+    "Noise",
+    "Acer",
+    "MSI",
+    "Nothing",
+    "OnePlus",
+    "Keychron",
+    "boAt",
+    "JBL",
+    "Portronics",
+    "Amazon",
+    "Google",
+    "Anker",
+  ].map((brand) => (
+    <label key={brand} className="flex items-center gap-2">
+      <input
+        type="checkbox"
+        checked={selectedBrands.includes(brand)}
+        onChange={(e) => {
+          if (e.target.checked) {
+            setSelectedBrands((prev) => [...prev, brand]);
+          } else {
+            setSelectedBrands((prev) =>
+              prev.filter((item) => item !== brand)
+            );
+          }
+        }}
+      />
+      {brand}
+    </label>
+  ))}
 
-            <label className="flex items-center gap-2">
-              <input type="checkbox" />
-              Dell
-            </label>
-
-            <label className="flex items-center gap-2">
-              <input type="checkbox" />
-              HP
-            </label>
-
-            <label className="flex items-center gap-2">
-              <input type="checkbox" />
-              Logitech
-            </label>
-
-            <label className="flex items-center gap-2">
-              <input type="checkbox" />
-              Sony
-            </label>
-          </div>
-
-           {/* Price Range */}
-<h3 className="text-green-400 font-semibold mb-3">
-  Price Range
-</h3>
-
-<div className="mb-6">
-  <input
-    type="range"
-    min="500"
-    max="50000"
-    value={price}
-    onChange={(e) => setPrice(Number(e.target.value))}
-    className="
-    w-full
-    accent-orange-500
-    cursor-pointer
-    "
-  />
-
-  <div className="flex justify-between text-sm text-gray-400 mt-2">
-    <span>₹500</span>
-    <span>₹50,000</span>
-  </div>
-
-  <p className="text-white mt-2">
-    Up to: <span className="text-orange-400">₹{price}</span>
-  </p>
 </div>
 
+          {/* Price */}
+<h3 className="text-green-400 font-semibold mb-3">
+  Price
+</h3>
+
+<div className="space-y-2 text-white mb-4">
+  {[
+    "Under ₹5,000",
+    "₹5,000 – ₹20,000",
+    "₹20,000 – ₹50,000",
+    "₹50,000 – ₹1,00,000",
+    "Above ₹1,00,000",
+  ].map((range) => (
+    <label key={range} className="flex items-center gap-2">
+      <input
+        type="checkbox"
+        checked={selectedPriceRanges.includes(range)}
+        onChange={(e) => {
+          if (e.target.checked) {
+            setSelectedPriceRanges((prev) => [...prev, range]);
+          } else {
+            setSelectedPriceRanges((prev) =>
+              prev.filter((item) => item !== range)
+            );
+          }
+        }}
+      />
+      {range}
+    </label>
+  ))}
+</div>
 
         </div>
         </div>

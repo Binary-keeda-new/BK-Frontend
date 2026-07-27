@@ -3,8 +3,23 @@
 import { useState } from "react";
 import { TbTargetArrow } from "react-icons/tb";
 
-export default function GoalsButton() {
+type GoalsButtonProps = {
+  products: any[];
+  selectedGoals: string[];
+  setSelectedGoals: React.Dispatch<React.SetStateAction<string[]>>;
+};
+
+export default function GoalsButton({
+  products,
+  selectedGoals,
+  setSelectedGoals,
+}: GoalsButtonProps) {
   const [open, setOpen] = useState(false);
+  const goals = [
+  ...new Set(
+    products.flatMap((product) => product.goals || [])
+  ),
+];
   return (
   <div className="relative">
   <button
@@ -32,7 +47,7 @@ export default function GoalsButton() {
   <div
     className="
     absolute
-    top-[74px]
+    top-[57px]
     right-0
 
     w-[320px]
@@ -61,45 +76,25 @@ export default function GoalsButton() {
       </h3>
 
       <div className="space-y-4 text-white">
-        <label className="flex items-center gap-3">
-          <input type="checkbox" />
-          Machine Learning
-        </label>
-
-        <label className="flex items-center gap-3">
-          <input type="checkbox" />
-          Gaming
-        </label>
-
-        <label className="flex items-center gap-3">
-          <input type="checkbox" />
-          Full Stack Development
-        </label>
-
-        <label className="flex items-center gap-3">
-          <input type="checkbox" />
-          Data Science
-        </label>
-
-        <label className="flex items-center gap-3">
-          <input type="checkbox" />
-          Cyber Security
-        </label>
-
-        <label className="flex items-center gap-3">
-          <input type="checkbox" />
-          UI/UX Design
-        </label>
-
-        <label className="flex items-center gap-3">
-          <input type="checkbox" />
-          Video Editing
-        </label>
-
-        <label className="flex items-center gap-3">
-          <input type="checkbox" />
-          Competitive Programming
-        </label>
+        
+        {goals.map((goal) => (
+  <label key={goal} className="flex items-center gap-3">
+    <input
+      type="checkbox"
+      checked={selectedGoals.includes(goal)}
+      onChange={(e) => {
+        if (e.target.checked) {
+          setSelectedGoals((prev) => [...prev, goal]);
+        } else {
+          setSelectedGoals((prev) =>
+            prev.filter((item) => item !== goal)
+          );
+        }
+      }}
+    />
+    {goal}
+  </label>
+))}
       </div>
     </div>
   </div>

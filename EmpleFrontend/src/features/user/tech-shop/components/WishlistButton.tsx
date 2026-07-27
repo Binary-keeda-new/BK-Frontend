@@ -1,6 +1,6 @@
 "use client";
 
-import { HiOutlineHeart } from "react-icons/hi2";
+import { HiOutlineHeart, HiHeart } from "react-icons/hi2";
 
 type WishlistButtonProps = {
   showWishlist: boolean;
@@ -26,11 +26,11 @@ export default function WishlistButton({
           hover:-translate-y-1
   "
 >
-  <HiOutlineHeart
-  className={`text-3xl ${
-    showWishlist ? "text-red-500" : ""
-  }`}
-/>
+  {showWishlist ? (
+  <HiHeart className="text-3xl text-red-500" />
+) : (
+  <HiOutlineHeart className="text-3xl" />
+)}
 </button>
   );
 }
