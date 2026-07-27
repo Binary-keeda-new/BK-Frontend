@@ -9,8 +9,8 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@monaco-editor/react": "^4.7.0",
     "@descope/nextjs-sdk": "^0.15.57",
+    "@monaco-editor/react": "^4.7.0",
     "acorn": "^8.17.0",
     "dayjs": "^1.11.21",
     "framer-motion": "^12.42.2",
