@@ -3,7 +3,6 @@ import { apiRequest } from "@/shared/utils/api";
 export interface WalletStats {
   balance: number;
   lifetimeEarned: number;
-  lifetimeEarned: number;
   lifetimeSpent: number;
   status: "active" | "locked";
   hasUnseenRewards?: boolean;
