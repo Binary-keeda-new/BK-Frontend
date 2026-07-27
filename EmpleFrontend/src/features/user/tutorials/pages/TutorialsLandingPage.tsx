@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { BookText, PlaySquare } from "lucide-react";
 
