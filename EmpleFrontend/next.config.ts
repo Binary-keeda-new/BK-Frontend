@@ -7,23 +7,23 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
-        source: '/tutorials',
-        destination: '/user/tutorials',
+        source: '/user/tutorials',
+        destination: '/tutorials',
         permanent: false,
       },
       {
-        source: '/tutorials/:slug',
-        destination: '/user/tutorials/:slug',
+        source: '/user/tutorials/:slug',
+        destination: '/tutorials/:slug',
         permanent: false,
       },
       {
         source: '/resources/tutorials',
-        destination: '/user/tutorials',
+        destination: '/tutorials',
         permanent: false,
       },
       {
         source: '/resources/tutorials/:slug',
-        destination: '/user/tutorials/:slug',
+        destination: '/tutorials/:slug',
         permanent: false,
       }
     ];

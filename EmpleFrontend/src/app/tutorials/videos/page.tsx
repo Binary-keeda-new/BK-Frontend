@@ -5,5 +5,5 @@ import VideosPlaceholderPage from "@/features/user/tutorials/pages/VideosPlaceho
 
 export default function TutorialsVideosRoute() {
   const router = useRouter();
-  return <VideosPlaceholderPage onBack={() => router.push("/user/tutorials")} />;
+  return <VideosPlaceholderPage onBack={() => router.push("/tutorials")} />;
 }

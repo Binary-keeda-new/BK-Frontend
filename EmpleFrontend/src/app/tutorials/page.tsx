@@ -7,7 +7,7 @@ export default function TutorialsRoute() {
   const router = useRouter();
   return (
     <TutorialsLandingPage 
-      onSelect={(mode) => router.push(`/user/tutorials/${mode}`)} 
+      onSelect={(mode) => router.push(`/tutorials/${mode}`)} 
     />
   );
 }
