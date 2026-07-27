@@ -22,7 +22,7 @@ const NAV_ITEMS = [
     icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>,
   },
   {
-    label: "Tutorials", tip: "Tutorials", href: "/user/tutorials",
+    label: "Tutorials", tip: "Tutorials", href: "/tutorials",
     icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>,
   },
   {
@@ -168,7 +168,7 @@ export default function Sidebar() {
           let isActive = pathname === item.href;
           if (item.label === "Resources" && pathname.startsWith("/resources")) isActive = true;
           if (item.label === "Jobs" && pathname.startsWith("/jobs")) isActive = true;
-          if (item.label === "Tutorials" && pathname.startsWith("/user/tutorials")) isActive = true;
+          if (item.label === "Tutorials" && pathname.startsWith("/tutorials")) isActive = true;
           if (item.label === "Sessions" && pathname.startsWith("/user/sessions")) isActive = true;
           if (item.label === "Transactions" && pathname.startsWith("/user/wallet/transactions")) isActive = true;
           const isPremium = !["Resources", "Jobs", "Tech Shop", "Events", "Counselling", "Tutorials", "Transactions"].includes(item.label);

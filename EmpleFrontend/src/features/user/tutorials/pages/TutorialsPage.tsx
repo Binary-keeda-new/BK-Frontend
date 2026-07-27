@@ -8,6 +8,7 @@ import DAATutorialPage from "../daa/pages/DAATutorialPage";
 import DBMSTutorialPage from "../dbms/pages/DBMSTutorialPage";
 import TutorialsLandingPage from "./TutorialsLandingPage";
 import VideosPlaceholderPage from "./VideosPlaceholderPage";
+import Link from "next/link";
 
 // Official stylized programming language logo SVGs
 const CLogo = (props: any) => (
@@ -76,8 +77,7 @@ const SUBJECTS = [
   },
 ];
 
-export function TutorialsNotesPage({ onBackToLanding }: { onBackToLanding: () => void }) {
-  const [activeSubject, setActiveSubject] = useState<string | null>(null);
+export function TutorialsNotesPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [progressStatus, setProgressStatus] = useState<Record<string, boolean>>(() => {
     if (typeof window === 'undefined') return {};
@@ -105,10 +105,6 @@ export function TutorialsNotesPage({ onBackToLanding }: { onBackToLanding: () =>
     brand: 'var(--orange)',
   };
 
-  if (activeSubject === "c") return <CTutorialPage onBack={() => setActiveSubject(null)} />;
-  if (activeSubject === "java") return <JavaTutorialPage onBack={() => setActiveSubject(null)} />;
-  if (activeSubject === "daa") return <DAATutorialPage onBack={() => setActiveSubject(null)} />;
-  if (activeSubject === "dbms") return <DBMSTutorialPage onBack={() => setActiveSubject(null)} />;
 
   const filteredSubjects = SUBJECTS.filter(s => 
     s.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -118,19 +114,20 @@ export function TutorialsNotesPage({ onBackToLanding }: { onBackToLanding: () =>
   return (
     <div className="fade-in" style={{ padding: '24px 0', maxWidth: '1200px', margin: '0 auto', paddingLeft: 24, paddingRight: 24 }}>
       {/* Back Button */}
-      <button 
-        onClick={onBackToLanding}
-        style={{
-          display: 'inline-flex', alignItems: 'center', gap: 8, background: 'transparent',
-          border: 'none', color: t.muted, cursor: 'pointer', fontSize: '14px',
-          fontWeight: 600, padding: 0, marginBottom: '24px',
-          transition: 'color 0.2s'
-        }}
-        onMouseEnter={e => (e.currentTarget.style.color = t.text)}
-        onMouseLeave={e => (e.currentTarget.style.color = t.muted)}
-      >
-        Back to Tutorials
-      </button>
+      <Link href="/tutorials" passHref>
+        <button 
+          style={{
+            display: 'inline-flex', alignItems: 'center', gap: 8, background: 'transparent',
+            border: 'none', color: t.muted, cursor: 'pointer', fontSize: '14px',
+            fontWeight: 600, padding: 0, marginBottom: '24px',
+            transition: 'color 0.2s'
+          }}
+          onMouseEnter={e => (e.currentTarget.style.color = t.text)}
+          onMouseLeave={e => (e.currentTarget.style.color = t.muted)}
+        >
+          Back to Tutorials
+        </button>
+      </Link>
 
       {/* Header Section */}
       <div style={{ marginBottom: '2rem' }}>
@@ -188,12 +185,13 @@ export function TutorialsNotesPage({ onBackToLanding }: { onBackToLanding: () =>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "24px" }}>
         {filteredSubjects.map((sub) => {
           return (
-            <div
+            <Link
+              href={sub.disabled ? "#" : `/tutorials/${sub.id}`}
               key={sub.id}
-              onClick={() => {
-                if (!sub.disabled) setActiveSubject(sub.id);
-              }}
-              style={{
+              style={{ textDecoration: 'none' }}
+            >
+              <div
+                style={{
                 background: t.surface,
                 border: `1px solid ${t.border}`,
                 borderRadius: '16px',
@@ -287,27 +285,10 @@ export function TutorialsNotesPage({ onBackToLanding }: { onBackToLanding: () =>
                 </button>
               </div>
             </div>
+          </Link>
           );
         })}
       </div>
     </div>
   );
-}
-
-export default function TutorialsPage() {
-  const [viewMode, setViewMode] = useState<"landing" | "notes" | "videos">("landing");
-
-  if (viewMode === "landing") {
-    return <TutorialsLandingPage onSelect={setViewMode} />;
-  }
-
-  if (viewMode === "videos") {
-    return <VideosPlaceholderPage onBack={() => setViewMode("landing")} />;
-  }
-
-  return (
-    <div style={{ position: 'relative' }}>
-      <TutorialsNotesPage onBackToLanding={() => setViewMode("landing")} />
-    </div>
-  );
-}
+}

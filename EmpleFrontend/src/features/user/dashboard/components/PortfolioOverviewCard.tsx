@@ -231,7 +231,7 @@ export default function PortfolioOverviewCard() {
             {/* Actions */}
             <div className="flex flex-col gap-2 mt-auto pt-2">
               <Link 
-                href={isPublished ? `/u/${profile.username}` : "/dashboard/profile"}
+                href={isPublished ? `/u/${profile.username}` : "/user/profile"}
                 target={isPublished ? "_blank" : undefined}
                 className="w-full flex items-center justify-center gap-2 py-2.5 rounded-[8px] font-bold transition-all shadow-sm hover:opacity-90"
                 style={{ background: "var(--orange)", color: "#fff", fontSize: "clamp(12px, 3vw, 13px)" }}
@@ -244,7 +244,7 @@ export default function PortfolioOverviewCard() {
               </Link>
               
               <Link 
-                href="/dashboard/profile"
+                href="/user/profile"
                 className="w-full flex items-center justify-center gap-2 py-2 rounded-[8px] font-semibold transition-all hover:bg-[rgba(255,255,255,0.05)]"
                 style={{ color: "var(--muted)", fontSize: "clamp(11px, 2.8vw, 12px)" }}
               >

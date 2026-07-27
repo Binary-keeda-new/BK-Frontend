@@ -23,6 +23,7 @@ import AdminNotificationsPage from '@/features/admin/notifications/pages/AdminNo
 import AdminRequestsPage from '@/features/admin/requests/pages/AdminRequestsPage';
 import QuizReportPage from '@/features/admin/quiz/pages/QuizReportPage';
 import AdminQuizReview from '../../quiz/pages/adminQuizReview';
+import EmpleRewardsPage from '@/features/admin/rewards/pages/EmpleRewardsPage';
 
 
 interface AppShellProps {
@@ -359,6 +360,9 @@ const openAttemptReview = (attemptId: string) => {
             onSelectSubPage={setEventsSubPage}
           />
         );
+
+      case 'rewards':
+        return <EmpleRewardsPage />;
 
       default:
         return (
