@@ -116,7 +116,7 @@ export function TutorialsNotesPage() {
 
   return (
     <div className="fade-in" style={{ padding: '24px 0', maxWidth: '1200px', margin: '0 auto', paddingLeft: 24, paddingRight: 24 }}>
-      <Link href="/tutorials" passHref>
+      <Link href="/user/tutorials" passHref>
         <button 
           style={{
             display: 'inline-flex', alignItems: 'center', gap: 8, background: 'transparent',
