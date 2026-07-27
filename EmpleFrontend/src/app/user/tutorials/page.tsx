@@ -1,4 +1,13 @@
-import TutorialsPage from "@/features/user/tutorials/pages/TutorialsPage";
+"use client";
+
+import { useRouter } from "next/navigation";
+import TutorialsLandingPage from "@/features/user/tutorials/pages/TutorialsLandingPage";
+
 export default function TutorialsRoute() {
-  return <TutorialsPage />;
+  const router = useRouter();
+  return (
+    <TutorialsLandingPage 
+      onSelect={(mode) => router.push(`/user/tutorials/${mode}`)} 
+    />
+  );
 }
