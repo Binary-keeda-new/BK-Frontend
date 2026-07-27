@@ -89,14 +89,9 @@ export default function DashboardPage() {
           const activityData = JSON.parse(activityText)
           setActivity(activityData.data)
           
-          const todayStr = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata' }).format(new Date());
-          if (activityData.data.lastVisitedDate === todayStr) {
-            const shownKey = `daily_reward_shown_${todayStr}`;
-            if (!localStorage.getItem(shownKey)) {
-              notifyReward("Daily Login Reward", "Welcome back!", config?.LOGIN?.DAILY_REWARD || 1);
-              localStorage.setItem(shownKey, 'true');
-              refreshWallet();
-            }
+          if (activityData.data.rewardGranted) {
+            notifyReward("Daily Login Reward", "Welcome back!", config?.LOGIN?.DAILY_REWARD || 1);
+            refreshWallet();
           }
         }
       } catch (error) {

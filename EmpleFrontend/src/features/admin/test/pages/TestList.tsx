@@ -297,13 +297,6 @@ export default function TestsContent({
                       <td className="px-4 py-3">
                         <div className="flex justify-end gap-2">
                           <button
-                            onClick={() => onPreviewTest?.(test._id)}
-                            className="flex h-8 w-8 items-center justify-center rounded-md border border-[var(--clr-border2)] text-[var(--clr-text3)] transition hover:border-[var(--clr-accent)] hover:bg-[var(--clr-accent3)] hover:text-[var(--clr-accent)]"
-                          >
-                            <EyeIcon className="h-4 w-4" />
-                          </button>
-
-                          <button
                             onClick={() => onEditTest?.(test._id)}
                             className="flex h-8 w-8 items-center justify-center rounded-md border border-[var(--clr-border2)] text-blue-500 transition hover:bg-blue-100"
                           >

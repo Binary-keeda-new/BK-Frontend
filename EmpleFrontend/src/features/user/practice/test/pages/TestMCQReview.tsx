@@ -182,7 +182,7 @@ export default function TestMCQReview({
                         Question {index + 1}
                       </p>
 
-                      <h3 className="mt-2 text-base font-semibold leading-7 text-[var(--text)] md:text-[17px]">
+                      <h3 className="whitespace-pre-wrap mt-2 text-base font-semibold leading-7 text-[var(--text)] md:text-[17px]">
                         {question.question}
                       </h3>
                     </div>

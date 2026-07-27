@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import { CONTENT, CHAPTERS } from "../data/daaTutorial";
 import { Badge } from "../components/CommonComponents";
 import { LearnTab, MCQTab, DebugTab, CompleteTab, ArrangeTab } from "../components/TaskTabs";
@@ -31,7 +32,7 @@ const TABS = [
   { id: "roadmap", label: "Progress", icon: TrendingUp },
 ];
 
-export default function DAATutorialPage({ onBack }: DAATutorialPageProps) {
+export default function DAATutorialPage() {
   const [chapter, setChapter] = useState(CHAPTERS[0]?.id || "module1");
   const [activeTab, setActiveTab] = useState("learn");
   const [completedMap, setCompletedMap] = useState<Record<string, boolean>>({});
@@ -82,13 +83,16 @@ export default function DAATutorialPage({ onBack }: DAATutorialPageProps) {
           <div className="flex-1 min-w-[300px]">
             {/* Breadcrumb */}
             <div className="flex items-center gap-2 mb-4 text-xs font-semibold" style={{ color: "var(--muted2)" }}>
-              <button 
-                onClick={onBack}
-                className="hover:underline outline-none transition-colors"
-                style={{ color: "var(--orange)" }}
-              >
-                Tutorials
-              </button>
+              <Link href="/tutorials/notes" passHref>
+                <button
+                  style={{
+                    background: "transparent", border: "none", color: "var(--orange)", cursor: "pointer",
+                    display: "flex", alignItems: "center", justifyContent: "center", padding: "0", borderRadius: "8px"
+                  }}
+                >
+                  <ArrowLeft size={16} />
+                </button>
+              </Link>
               <span>/</span>
               <span>Design and Analysis of Algorithms</span>
             </div>
