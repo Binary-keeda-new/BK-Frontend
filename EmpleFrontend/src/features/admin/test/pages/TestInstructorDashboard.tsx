@@ -6,6 +6,8 @@ import { getAdminTestReport } from './adminTestReport.service';
 import type { TestReport } from './testReport.types';
 import TestMCQAnalytics from '../components/TestMCQAnalytics';
 import TestOverview from '../components/TestOverview';
+import ScoreDistributionChart from '../components/ScoreDistributionChart';
+import SubmissionTimelineChart from '../components/SubmissionTimelineChart'; 
 
 type Props = {
   testId: string;
@@ -51,6 +53,15 @@ function MetricCard({
     </div>
   );
 }
+
+function formatDuration(seconds: number) {
+  if (!seconds) return '0m';
+  const hrs = Math.floor(seconds / 3600);
+  const mins = Math.floor((seconds % 3600) / 60);
+  if (hrs > 0) return `${hrs}h ${mins}m`;
+  return `${mins}m`;
+}
+
 
 export default function TestInstructorDashboard({
   testId,
@@ -102,12 +113,13 @@ if (!report) {
         </p>
       </div>
 
-      <div className="mb-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+      <div className="mb-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-6">
         <MetricCard label="Total Attempts" value={report.summary.totalAttempts} sub="All attempts" />
         <MetricCard label="MCQ Sections" value={report.summary.mcqSections} sub="Question-based sections" />
         <MetricCard label="Coding Sections" value={report.summary.codingSections} sub="Coding rounds" />
         <MetricCard label="Average Score" value={report.summary.averageScore} sub="Across attempts" />
         <MetricCard label="Completion" value={`${report.summary.completionRate}%`} sub={`${report.summary.submittedAttempts} submitted`} />
+        <MetricCard label="Avg Duration" value={formatDuration(report.summary.averageDurationSeconds)} sub="Per attempt" />
       </div>
 
       <div className="mb-5 flex flex-wrap gap-2 rounded-2xl border border-[var(--clr-border)] bg-[var(--clr-surface)] p-2">
@@ -127,8 +139,25 @@ if (!report) {
       </div>
 
       {activeTab === 'overview' && (
-        <TestOverview report={report} />
-      )}
+  <div className="flex flex-col gap-5">
+    <TestOverview report={report} />
+
+    <div className="grid gap-5 lg:grid-cols-2">
+      <Card>
+        <ScoreDistributionChart leaderboard={report.leaderboard} />
+      </Card>
+      <Card>
+        <h2 className="text-lg font-bold text-[var(--clr-text)]">
+          AI Summary
+        </h2>
+        <p className="mt-2 text-sm text-[var(--clr-text2)]">
+          AI-generated faculty summary will come here after backend report
+          aggregation is connected.
+        </p>
+      </Card>
+    </div>
+  </div>
+)}
 
       {activeTab === 'mcq' && (
   <TestMCQAnalytics
@@ -138,7 +167,7 @@ if (!report) {
 
       {activeTab === 'coding' && (
   <div className="flex flex-col gap-5">
-    <div className="grid gap-4 md:grid-cols-3">
+    <div className="grid gap-4 md:grid-cols-6">
       <MetricCard
         label="Coding Submissions"
         value={report.coding.totalSubmissions}
@@ -156,7 +185,29 @@ if (!report) {
         value={`${report.coding.acceptanceRate}%`}
         sub="Across all coding problems"
       />
+
+      <MetricCard
+        label="Avg Exec Time"
+        value={`${report.coding.avgExecTimeMs}s`}
+        sub="Per test case"
+      />
+
+      <MetricCard
+        label="Avg Memory"
+        value={`${report.coding.avgMemoryKb}KB`}
+        sub="Per test case"
+      />
+
+      <MetricCard
+        label="Avg Attempts"
+        value={report.coding.avgAttemptsPerProblem}
+        sub="Per problem"
+      />
     </div>
+    
+    <Card>
+      <SubmissionTimelineChart timeline={report.coding.submissionTimeline} />
+    </Card>
 
     <Card>
       <h2 className="text-lg font-bold text-[var(--clr-text)]">
@@ -170,7 +221,6 @@ if (!report) {
               <th className="px-3 py-3 text-left text-xs font-bold uppercase tracking-wider text-[var(--clr-text3)]">
                 Language
               </th>
-
               <th className="px-3 py-3 text-left text-xs font-bold uppercase tracking-wider text-[var(--clr-text3)]">
                 Submissions
               </th>

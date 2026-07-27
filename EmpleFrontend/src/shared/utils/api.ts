@@ -1,4 +1,5 @@
 import { getSessionToken } from '@descope/nextjs-sdk/client'
+import { getDeviceId } from './deviceId'
 
 export const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
@@ -20,6 +21,12 @@ export const parseJsonResponse = async <T>(res: Response): Promise<T> => {
   const data = await res.json()
 
   if (!res.ok) {
+    if (data?.code === 'FORCE_LOGOUT') {
+      localStorage.removeItem('token')
+      localStorage.removeItem('role')
+      localStorage.removeItem('sessionExpiry')
+      window.location.replace('/auth/login?notice=force_logout')
+    }
     throw new Error(data?.message || 'Request failed')
   }
 
@@ -41,6 +48,8 @@ export function getAuthHeaders(): Record<string, string> {
     if (token) {
       headers.Authorization = `Bearer ${token}`
     }
+
+    headers['x-device-id'] = getDeviceId()
   }
 
   return headers

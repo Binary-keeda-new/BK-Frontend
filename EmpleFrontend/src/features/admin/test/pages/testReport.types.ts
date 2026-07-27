@@ -25,6 +25,11 @@ export type LanguageDistributionItem = {
   count: number;
 };
 
+export type SubmissionTimelineItem = {
+  hour: number;
+  count: number;
+};
+
 export type TestReport = {
   test: {
     _id: string;
@@ -40,6 +45,7 @@ export type TestReport = {
     mcqSections: number;
     codingSections: number;
     averageScore: number;
+    averageDurationSeconds: number;
     completionRate: number;
   };
 
@@ -51,6 +57,11 @@ export type TestReport = {
     totalSubmissions: number;
     acceptedSubmissions: number;
     acceptanceRate: number;
+    avgExecTimeMs: number;
+    avgMemoryKb: number;
+    avgTestCasesPassedRate: number;
+    submissionTimeline: SubmissionTimelineItem[];
+    avgAttemptsPerProblem: number;
     languageDistribution: LanguageDistributionItem[];
     submissions: CodingSubmissionAnalytics[];
     problemWiseAnalytics: ProblemWiseCodingAnalytics[];
