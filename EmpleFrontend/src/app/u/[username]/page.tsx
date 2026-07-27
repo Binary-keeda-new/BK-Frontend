@@ -2,17 +2,17 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { UserProfile } from '@/features/user/profile/types';
 import { ShareProfileButton } from '@/features/user/profile/components/ShareProfileButton';
-import dynamic from 'next/dynamic';
+import dynamicImport from 'next/dynamic';
 
 // Lazy load all templates to optimize the bundle size
-const EngineeringBlueprint = dynamic(() => import('@/features/user/profile/components/PortfolioTemplates/EngineeringBlueprint'), { ssr: true });
-const GamifiedArcade = dynamic(() => import('@/features/user/profile/components/PortfolioTemplates/GamifiedArcade'), { ssr: true });
-const EditorialMinimalist = dynamic(() => import('@/features/user/profile/components/PortfolioTemplates/EditorialMinimalist'), { ssr: true });
-const RpgCharacterSheet = dynamic(() => import('@/features/user/profile/components/PortfolioTemplates/RpgCharacterSheet'), { ssr: true });
-const CyberDeveloper = dynamic(() => import('@/features/user/profile/components/PortfolioTemplates/CyberDeveloper'), { ssr: true });
-const HackerTerminal = dynamic(() => import('@/features/user/profile/components/PortfolioTemplates/HackerTerminal'), { ssr: true });
-const PremiumCorporate = dynamic(() => import('@/features/user/profile/components/PortfolioTemplates/PremiumCorporate'), { ssr: true });
-const ModernPersonal = dynamic(() => import('@/features/user/profile/components/PortfolioTemplates/ModernPersonal'), { ssr: true });
+const EngineeringBlueprint = dynamicImport(() => import('@/features/user/profile/components/PortfolioTemplates/EngineeringBlueprint').then(mod => mod.EngineeringBlueprint), { ssr: true });
+const GamifiedArcade = dynamicImport(() => import('@/features/user/profile/components/PortfolioTemplates/GamifiedArcade').then(mod => mod.GamifiedArcade), { ssr: true });
+const EditorialMinimalist = dynamicImport(() => import('@/features/user/profile/components/PortfolioTemplates/EditorialMinimalist').then(mod => mod.EditorialMinimalist), { ssr: true });
+const RpgCharacterSheet = dynamicImport(() => import('@/features/user/profile/components/PortfolioTemplates/RpgCharacterSheet').then(mod => mod.RpgCharacterSheet), { ssr: true });
+const CyberDeveloper = dynamicImport(() => import('@/features/user/profile/components/PortfolioTemplates/CyberDeveloper'), { ssr: true });
+const HackerTerminal = dynamicImport(() => import('@/features/user/profile/components/PortfolioTemplates/HackerTerminal'), { ssr: true });
+const PremiumCorporate = dynamicImport(() => import('@/features/user/profile/components/PortfolioTemplates/PremiumCorporate'), { ssr: true });
+const ModernPersonal = dynamicImport(() => import('@/features/user/profile/components/PortfolioTemplates/ModernPersonal'), { ssr: true });
 
 async function fetchProfile(username: string): Promise<UserProfile | null> {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';

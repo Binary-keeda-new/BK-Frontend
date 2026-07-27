@@ -1,20 +1,22 @@
 export const CHAPTER8_DRAG = [
   {
-    instructions: "Arrange these algorithms based on auxiliary space complexity from lowest (O(1)) to highest (O(n)).",
+    instructions: "Order the algorithmic paradigms used in sorting.",
     lines: [
-      { id: "1", text: "Bubble Sort (O(1))" },
-      { id: "2", text: "Heap Sort (O(1))" },
-      { id: "3", text: "Merge Sort (O(n))" }
+      { id: "1", text: "Iterative Comparison (e.g., Bubble, Selection)" },
+      { id: "2", text: "Divide and Conquer (e.g., Merge, Quick Sort)" },
+      { id: "3", text: "Incremental Insertion (e.g., Insertion Sort)" },
+      { id: "4", text: "Non-Comparison Counting (e.g., Radix, Counting Sort)" }
     ],
-    order: ["1", "2", "3"]
+    order: ["1", "3", "2", "4"]
   },
   {
-    instructions: "Match the concept to its definition by arranging them: (1) Stability, (2) In-place, (3) Comparison-based.",
+    instructions: "Match the sorting terminology from most to least memory-efficient.",
     lines: [
-      { id: "1", text: "1. Preserves relative order of equal keys." },
-      { id: "2", text: "2. Uses O(1) extra auxiliary space." },
-      { id: "3", text: "3. Sorts by comparing elements against each other." }
+      { id: "1", text: "Iterative Sorting (O(1) but variable overhead)" },
+      { id: "2", text: "Out-of-place Sorting (O(n) auxiliary array)" },
+      { id: "3", text: "Recursive Sorting (O(log n) call stack)" },
+      { id: "4", text: "In-place Sorting (O(1) auxiliary space)" }
     ],
-    order: ["1", "2", "3"]
+    order: ["4", "1", "3", "2"]
   }
 ];

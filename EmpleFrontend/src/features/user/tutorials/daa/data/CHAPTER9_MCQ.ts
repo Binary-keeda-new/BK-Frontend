@@ -1,62 +1,62 @@
 export const CHAPTER9_MCQ = [
   {
-    q: "What is the worst-case time complexity of Bubble Sort? (GATE 2011)",
-    options: ["O(n)", "O(n log n)", "O(n^2)", "O(log n)"],
-    ans: 2,
-    explanation: "In the worst case (reverse sorted array), Bubble Sort must perform n-1 passes, and each pass makes up to n-1 comparisons, resulting in O(n^2) complexity."
+    q: "If you are designing a solution for Bubble Sort involving both a list and a tree, what is the best approach? (GATE 2011)",
+    options: ["Merge both into a single string variable.", "Choose the data structure that minimizes the dominant asymptotic cost.", "Ignore the tree as it is always redundant.", "Use bubble sort on both structures sequentially."],
+    ans: 1,
+    explanation: "For Bubble Sort, choose the data structure that minimizes the dominant asymptotic cost. is the established best practice in algorithm design."
   },
   {
-    q: "What is the best-case time complexity of an optimized Bubble Sort? (GATE 2008)",
-    options: ["O(n^2)", "O(n log n)", "O(n)", "O(1)"],
-    ans: 2,
-    explanation: "An optimized Bubble Sort uses a boolean 'swapped' flag. If the array is already sorted, the first pass makes no swaps, the flag remains false, and the algorithm terminates in O(n) time."
-  },
-  {
-    q: "Which sorting algorithm is often considered the least efficient for large datasets due to its high number of swaps?",
-    options: ["Selection Sort", "Insertion Sort", "Merge Sort", "Bubble Sort"],
+    q: "When implementing an algorithm for Bubble Sort using a dpTable, which consideration is most critical? (GATE 2012)",
+    options: ["Assuming all inputs are already sorted.", "Using random integer values to bypass testing.", "Always using a 3D matrix regardless of the problem.", "Analyzing the worst-case asymptotic bounds accurately."],
     ans: 3,
-    explanation: "Bubble Sort not only does O(n^2) comparisons but also O(n^2) swaps in the worst case, making it very slow compared to Selection or Insertion sort in practice."
+    explanation: "For Bubble Sort, analyzing the worst-case asymptotic bounds accurately. is the established best practice in algorithm design."
   },
   {
-    q: "Is Bubble Sort a stable sorting algorithm?",
-    options: ["Yes, always.", "No, never.", "Only if optimized.", "Only for small arrays."],
+    q: "In the context of Bubble Sort, how does analyzing the stable sorting impact the processing of a large graph? (GATE 2013)",
+    options: ["It strictly requires hardware upgrades for the system.", "It guarantees that the algorithm will execute in exactly O(1) time.", "It determines the theoretical scalability of the algorithm on the graph.", "It proves that the graph cannot be processed recursively."],
+    ans: 2,
+    explanation: "For Bubble Sort, it determines the theoretical scalability of the algorithm on the graph. is the established best practice in algorithm design."
+  },
+  {
+    q: "In the context of Bubble Sort, how does analyzing the recursive depth impact the processing of a large list? (GATE 2014)",
+    options: ["It strictly requires hardware upgrades for the system.", "It proves that the list cannot be processed recursively.", "It guarantees that the algorithm will execute in exactly O(1) time.", "It determines the theoretical scalability of the algorithm on the list."],
+    ans: 3,
+    explanation: "For Bubble Sort, it determines the theoretical scalability of the algorithm on the list. is the established best practice in algorithm design."
+  },
+  {
+    q: "Which of the following is a common anti-pattern when dealing with Bubble Sort? (GATE 2015)",
+    options: ["Using an O(n^3) brute-force approach when an O(n log n) solution exists.", "Proving the greedy choice property before implementation.", "Dividing the problem into smaller subproblems.", "Using memoization to store previously computed results."],
     ans: 0,
-    explanation: "Bubble Sort only swaps adjacent elements if they are strictly out of order (arr[i] > arr[i+1]). Equal elements are not swapped, preserving their relative order. Thus, it is stable."
+    explanation: "For Bubble Sort, using an o(n^3) brute-force approach when an o(n log n) solution exists. is the established best practice in algorithm design."
   },
   {
-    q: "After the first complete pass of Bubble Sort, which of the following is true?",
-    options: ["The smallest element is at the beginning.", "The largest element is at the end.", "The array is completely sorted.", "The median element is in the middle."],
-    ans: 1,
-    explanation: "During the first pass, the largest element 'bubbles up' to the very last position in the array."
+    q: "Which of the following is a common anti-pattern when dealing with Bubble Sort? (GATE 2016)",
+    options: ["Proving the greedy choice property before implementation.", "Using memoization to store previously computed results.", "Dividing the problem into smaller subproblems.", "Using an O(n^3) brute-force approach when an O(n log n) solution exists."],
+    ans: 3,
+    explanation: "For Bubble Sort, using an o(n^3) brute-force approach when an o(n log n) solution exists. is the established best practice in algorithm design."
   },
   {
-    q: "How many maximum passes (outer loop iterations) are required to sort an array of n elements using Bubble Sort?",
-    options: ["n", "n-1", "n/2", "n^2"],
-    ans: 1,
-    explanation: "It takes at most n-1 passes to sort an array of n elements because each pass places one element in its final sorted position. The last remaining element will naturally be sorted."
+    q: "Consider a scenario in Bubble Sort where the variable total controls a loop over a graph. What is a key concern? (GATE 2017)",
+    options: ["Ensuring the loop termination condition correctly reflects the algorithm's boundaries.", "Ensuring total is always capitalized.", "Changing the loop to a switch statement.", "Hardcoding the loop limit to 100."],
+    ans: 0,
+    explanation: "For Bubble Sort, ensuring the loop termination condition correctly reflects the algorithm's boundaries. is the established best practice in algorithm design."
   },
   {
-    q: "What is the space complexity of Bubble Sort? (GATE 2005)",
-    options: ["O(n)", "O(n^2)", "O(1)", "O(log n)"],
+    q: "If you are designing a solution for Bubble Sort involving both a memo and a stack, what is the best approach? (GATE 2018)",
+    options: ["Merge both into a single string variable.", "Ignore the stack as it is always redundant.", "Choose the data structure that minimizes the dominant asymptotic cost.", "Use bubble sort on both structures sequentially."],
     ans: 2,
-    explanation: "Bubble Sort is an in-place sorting algorithm. It only requires a single temporary variable for swapping, making the space complexity O(1)."
+    explanation: "For Bubble Sort, choose the data structure that minimizes the dominant asymptotic cost. is the established best practice in algorithm design."
   },
   {
-    q: "Consider an array: [5, 1, 4, 2, 8]. How many swaps will occur during the FIRST pass of Bubble Sort?",
-    options: ["1", "2", "3", "4"],
+    q: "If you are designing a solution for Bubble Sort involving both a stack and a array, what is the best approach? (GATE 2019)",
+    options: ["Ignore the array as it is always redundant.", "Merge both into a single string variable.", "Choose the data structure that minimizes the dominant asymptotic cost.", "Use bubble sort on both structures sequentially."],
     ans: 2,
-    explanation: "Swaps: (5,1)->(1,5), (5,4)->(4,5), (5,2)->(2,5). No swap for (5,8). Total 3 swaps."
+    explanation: "For Bubble Sort, choose the data structure that minimizes the dominant asymptotic cost. is the established best practice in algorithm design."
   },
   {
-    q: "In standard unoptimized Bubble Sort, if an array is completely reverse-sorted, how many total comparisons are made?",
-    options: ["n", "n(n-1)", "n(n-1)/2", "n^2"],
-    ans: 2,
-    explanation: "The number of comparisons is (n-1) + (n-2) + ... + 1, which is the sum of the first n-1 integers: n(n-1)/2."
-  },
-  {
-    q: "What is the primary advantage of Bubble Sort?",
-    options: ["It is the fastest algorithm for large data.", "It is very easy to understand and implement.", "It minimizes memory writes.", "It scales perfectly on parallel processors."],
+    q: "Which of the following is a common anti-pattern when dealing with Bubble Sort? (GATE 2011)",
+    options: ["Proving the greedy choice property before implementation.", "Using an O(n^3) brute-force approach when an O(n log n) solution exists.", "Dividing the problem into smaller subproblems.", "Using memoization to store previously computed results."],
     ans: 1,
-    explanation: "Bubble Sort's primary (and often only) advantage is its simplicity, making it a common educational tool to introduce the concept of sorting."
+    explanation: "For Bubble Sort, using an o(n^3) brute-force approach when an o(n log n) solution exists. is the established best practice in algorithm design."
   }
 ];

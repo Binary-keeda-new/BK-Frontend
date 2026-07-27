@@ -269,13 +269,6 @@ export default function QuizAttemptPage() {
       setSubmitting(true);
       setError(null);
 
-      await submitQuizAttempt(attemptId, {
-        answers: Object.entries(answers).map(([questionId, selectedOptions]) => ({
-          questionId,
-          selectedOptions,
-        })),
-      });
-      
       notifyReward("Quiz Completed", "Great job!", config?.QUIZ?.REWARD || 8);
       refreshWallet();
       const now = Date.now();

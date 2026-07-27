@@ -46,7 +46,10 @@ function slugify(value: string) {
   return value.trim().toLowerCase().replace(/\s+/g, "-");
 }
 
-function getReviewPath(item: SubmissionItem) {
+function getReviewPath(item: SubmissionItem, isTest: boolean) {
+  if (isTest) {
+    return `/user/practice/test?attemptId=${item.attemptId}`;
+  }
   return `/user/practice/quiz/${slugify(item.category)}/${slugify(
     item.subcategory
   )}/${item.quizId}/review?attemptId=${item.attemptId}`;
@@ -74,14 +77,14 @@ export default function SubmissionsPanel({
       try {
         setLoading(true);
 
-        if (active === "Test") {
-          setSubmissions([]);
-          return;
-        }
-
         const token = getSessionToken();
 
-        const res = await fetch(`${API_BASE}/api/v1/quiz-attempts`, {
+        const endpoint =
+          active === "Test"
+            ? `${API_BASE}/api/v1/test-attempts`
+            : `${API_BASE}/api/v1/quiz-attempts`;
+
+        const res = await fetch(endpoint, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -191,14 +194,6 @@ export default function SubmissionsPanel({
           >
             Loading submissions...
           </div>
-        ) : active === "Test" ? (
-          <div className="py-2">
-            <EmptyState
-              title="No Test Submissions"
-              description="Test submissions are not connected yet."
-              icon={<FileText size={20} />}
-            />
-          </div>
         ) : visibleSubmissions.length === 0 ? (
           <div className="py-2">
             <EmptyState
@@ -251,14 +246,14 @@ export default function SubmissionsPanel({
                     </div>
                   </div>
 
-                  <div
-                    className="text-center font-bold"
-                    style={{
-                      fontSize: "clamp(11px, 2.8vw, 13px)",
-                      color: "#ff9a5c",
-                    }}
-                  >
-                    {score}
+                  <div className="text-center text-[var(--text)]">
+                      {item.totalMarksObtained ?? 0}
+                      <span
+                        className="font-medium"
+                        style={{ color: "var(--muted)" }}
+                      >
+                        /{item.totalMarks ?? 0}
+                      </span>
                   </div>
 
                   <div
@@ -273,7 +268,7 @@ export default function SubmissionsPanel({
 
                   <div className="text-center">
                     <button
-                      onClick={() => router.push(getReviewPath(item))}
+                      onClick={() => router.push(getReviewPath(item, active === "Test"))}
                       className="rounded-[20px] font-semibold transition-all duration-150 hover:-translate-y-[1px]"
                       style={{
                         fontSize: "clamp(10px, 2.5vw, 11.5px)",
@@ -317,7 +312,7 @@ export default function SubmissionsPanel({
                   </div>
 
                   <button
-                    onClick={() => router.push(getReviewPath(item))}
+                    onClick={() => router.push(getReviewPath(item, active === "Test"))}
                     className="flex-shrink-0 rounded-[20px] font-semibold transition-all duration-150"
                     style={{
                       fontSize: "11px",
@@ -337,7 +332,7 @@ export default function SubmissionsPanel({
         )}
       </div>
 
-      {(submissions.length > 5 || isExpanded) && active === "Quiz" && (
+      {(submissions.length > 5 || isExpanded) && (
         <div style={{ marginTop: "clamp(10px, 2.5vw, 14px)" }}>
           <button
             onClick={() => onToggleExpand && onToggleExpand()}

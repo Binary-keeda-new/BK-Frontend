@@ -107,7 +107,7 @@ export default function Sidebar() {
   return (
     <aside
       className={`
-        relative z-20 flex flex-col flex-shrink-0
+        relative z-20 flex flex-col flex-shrink-0 h-full
         transition-all duration-300 ease-in-out
         ${collapsed ? "w-[66px]" : "w-[215px]"}
       `}

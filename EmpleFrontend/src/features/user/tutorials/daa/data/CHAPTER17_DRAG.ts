@@ -1,22 +1,23 @@
 export const CHAPTER17_DRAG = [
   {
-    instructions: "Arrange the steps to solve the Fractional Knapsack problem using a Greedy approach.",
+    instructions: "Order the steps for solving a problem using Dynamic Programming.",
     lines: [
-      { id: "1", text: "1. Calculate the value/weight ratio for every item." },
-      { id: "2", text: "2. Sort the items in descending order based on this ratio." },
-      { id: "3", text: "3. Iterate through the sorted items." },
-      { id: "4", text: "4. If an item fits fully, add its full value and subtract its weight from capacity." },
-      { id: "5", text: "5. If it doesn't fit fully, add the fractional value that fits and terminate." }
+      { id: "1", text: "Identify the Base Cases" },
+      { id: "2", text: "Choose Memoization or Tabulation" },
+      { id: "3", text: "Extract the final answer from the DP table" },
+      { id: "4", text: "Define the State variables" },
+      { id: "5", text: "Formulate the State Transition relation" }
     ],
-    order: ["1", "2", "3", "4", "5"]
+    order: ["4", "5", "1", "2", "3"]
   },
   {
-    instructions: "Arrange the properties required for a Greedy Algorithm to work.",
+    instructions: "Contrast the features of Memoization vs Tabulation by mapping the workflow.",
     lines: [
-      { id: "1", text: "Optimal Substructure: The optimal solution contains optimal solutions to subproblems." },
-      { id: "2", text: "Greedy Choice Property: A global optimum can be reached by making a local optimum choice." },
-      { id: "3", text: "Result: The greedy algorithm is guaranteed to find the global optimum." }
+      { id: "1", text: "Start from the target state (Top-Down)" },
+      { id: "2", text: "Iteratively build up to the target state" },
+      { id: "3", text: "Start from the base cases (Bottom-Up)" },
+      { id: "4", text: "Recursively break into subproblems" }
     ],
-    order: ["1", "2", "3"]
+    order: ["1", "4", "3", "2"]
   }
 ];
