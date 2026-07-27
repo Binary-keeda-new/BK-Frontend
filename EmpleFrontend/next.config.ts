@@ -9,22 +9,22 @@ const nextConfig: NextConfig = {
       {
         source: '/user/tutorials',
         destination: '/tutorials',
-        permanent: false,
+        permanent: true,
       },
       {
         source: '/user/tutorials/:slug',
         destination: '/tutorials/:slug',
-        permanent: false,
+        permanent: true,
       },
       {
         source: '/resources/tutorials',
         destination: '/tutorials',
-        permanent: false,
+        permanent: true,
       },
       {
         source: '/resources/tutorials/:slug',
         destination: '/tutorials/:slug',
-        permanent: false,
+        permanent: true,
       }
     ];
   },
