@@ -152,6 +152,7 @@ const optionDistData = questionAccuracy.map((q) => ({
                     'Question',
                     'Type',
                     'Accuracy',
+                    'Average Time',
                     'Attempted',
                     'Correct',
                     'Incorrect',
@@ -207,6 +208,16 @@ const optionDistData = questionAccuracy.map((q) => ({
                             {row.accuracy}%
                           </span>
                         </div>
+                      </td>
+
+                      <td className="px-3 py-3 text-[var(--clr-text2)]">
+                        {row.averageTimeTakenSeconds
+                          ? `${Math.floor(row.averageTimeTakenSeconds / 60)
+                              .toString()
+                              .padStart(2, '0')}:${(row.averageTimeTakenSeconds % 60)
+                              .toString()
+                              .padStart(2, '0')}`
+                          : '00:00'}
                       </td>
 
                       <td className="px-3 py-3 text-[var(--clr-text2)]">

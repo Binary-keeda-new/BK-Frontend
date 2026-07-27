@@ -12,6 +12,7 @@ type CodingSubmission = {
   passedCount?: number;
   totalCount?: number;
   results?: unknown[];
+  timeTakenSeconds?: number;
 };
 
 type Props = {

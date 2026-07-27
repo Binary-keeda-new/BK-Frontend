@@ -97,7 +97,7 @@ function QuestionCard({
           {index + 1}
         </div>
 
-        <p className="flex-1 text-sm font-semibold leading-relaxed text-[var(--clr-text)]">
+        <p className="flex-1 whitespace-pre-wrap text-sm font-semibold leading-relaxed text-[var(--clr-text)]">
           {question.question}
         </p>
 

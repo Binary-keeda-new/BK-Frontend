@@ -49,6 +49,8 @@ export default function TestAttempt({
   const [answers, setAnswers] = useState<Record<string, string[]>>({});
   const [visited, setVisited] = useState<Record<number, boolean>>({ 0: true });
   const [flagged, setFlagged] = useState<Record<number, boolean>>({});
+  const [timings, setTimings] = useState<Record<string, number>>({});
+  const [currentQuestionStartedAt, setCurrentQuestionStartedAt] = useState<number>(Date.now());
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -97,11 +99,17 @@ export default function TestAttempt({
       setData(result);
 
       const answerMap: Record<string, string[]> = {};
+      const initialTimings: Record<string, number> = {};
+      
       for (const answer of result.answers || []) {
         answerMap[answer.questionId] = answer.selectedOptions ?? [];
+        // Optional: restore existing timings if the backend provided them in the answer object
+        // if (answer.timeTakenSeconds) initialTimings[answer.questionId] = answer.timeTakenSeconds;
       }
 
       setAnswers(answerMap);
+      setTimings(initialTimings);
+      setCurrentQuestionStartedAt(Date.now());
       setCurrent(0);
       setVisited({ 0: true });
       setFlagged({});
@@ -123,13 +131,24 @@ export default function TestAttempt({
       setSubmitting(true);
       setError(null);
 
+      const finalAnswers = Object.entries(answers).map(([questionId, selectedOptions]) => {
+        // Calculate time for the question we're currently on when submitting
+        let extraTime = 0;
+        if (q && q.questionId === questionId) {
+          extraTime = Math.floor((Date.now() - currentQuestionStartedAt) / 1000);
+        }
+        
+        return {
+          questionId,
+          selectedOptions,
+          timeTakenSeconds: (timings[questionId] || 0) + extraTime,
+        };
+      });
+
       await submitTestSectionAttempt(
         attemptId,
         section._id,
-        Object.entries(answers).map(([questionId, selectedOptions]) => ({
-          questionId,
-          selectedOptions,
-        }))
+        finalAnswers
       );
 
       onSectionCompleted(section._id);
@@ -214,15 +233,25 @@ export default function TestAttempt({
     (idx: number) => {
       if (idx < 0 || idx >= totalQuestions) return;
 
+      // Update timing for the question we are leaving
+      if (q) {
+        const timeSpent = Math.floor((Date.now() - currentQuestionStartedAt) / 1000);
+        setTimings((prev) => ({
+          ...prev,
+          [q.questionId]: (prev[q.questionId] || 0) + timeSpent,
+        }));
+      }
+
       setVisited((prev) => ({
         ...prev,
         [idx]: true,
       }));
 
       setCurrent(idx);
+      setCurrentQuestionStartedAt(Date.now());
       setSidebarOpen(false);
     },
-    [totalQuestions]
+    [totalQuestions, q, currentQuestionStartedAt]
   );
 
   const toggleFlag = useCallback(() => {
