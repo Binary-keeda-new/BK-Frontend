@@ -7,6 +7,7 @@ import { useDescope } from '@descope/nextjs-sdk/client'
 import AuthLayout from '@/features/auth/layouts/AuthLayout'
 import '@/features/auth/auth.css'
 import { Eye, EyeOff } from 'lucide-react'
+import { getDeviceId, getDeviceLabel } from '@/shared/utils/deviceId'
 
 function getPasswordStrength(pwd: string): { level: number; label: string; color: string } {
   let score = 0
@@ -45,8 +46,6 @@ export default function SignupPage() {
     setForm((f) => ({ ...f, [field]: value }))
   }, [])
 
-  // Auto-completes signup when arriving here from CallbackPage after a
-  // "login attempted with no existing account" redirect (OAuth flows only).
   useEffect(() => {
     const notice = sessionStorage.getItem('auth_notice')
     if (notice) {
@@ -171,7 +170,13 @@ export default function SignupPage() {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ isManualSignup: true, intent: 'signup', provider: 'password' }),
+        body: JSON.stringify({
+          isManualSignup: true,
+          intent: 'signup',
+          provider: 'password',
+          deviceId: getDeviceId(),
+          deviceLabel: getDeviceLabel(),
+        }),
       })
 
       if (!syncRes.ok) {
@@ -202,8 +207,7 @@ export default function SignupPage() {
       router.replace(`/auth/check-email?email=${encodeURIComponent(form.email)}`)
     } catch (err: any) {
       console.error('Signup error:', err)
-      
-      // Handle Descope specific errors thrown as exceptions
+
       if (err?.error?.errorCode === 'E062107') {
         setError('You already have an account! Redirecting to login...')
         setTimeout(() => router.replace('/auth/login'), 2000)
