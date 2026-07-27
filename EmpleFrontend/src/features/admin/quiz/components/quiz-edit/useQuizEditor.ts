@@ -220,11 +220,11 @@ const mapEditorQuestionToPayload = (quizId: string, q: Question) => {
     imageUrl: q.imageUrl?.trim() || null,
     solution: q.solution?.trim() || null,
     solutionMedia: q.solutionMedia?.trim() || null,
-    category: q.category?.trim() || '',
-    subcategory: q.subcategory?.trim() || '',
-    topic: q.topic?.trim() || '',
-    subTopic: q.subTopic?.trim() || '',
-    exam: q.exam?.trim() || '',
+    category: q.category?.trim() || undefined,
+    subcategory: q.subcategory?.trim() || undefined,
+    topic: q.topic?.trim() || undefined,
+    subTopic: q.subTopic?.trim() || undefined,
+    exam: q.exam?.trim() || undefined,
     year: q.year ?? null,
   };
 };
@@ -248,10 +248,8 @@ export function useQuizEditor(quizId: string) {
 
   const isQuestionValidForSave = useCallback((q: Question) => {
     if (!q.question?.trim()) return false;
-    
-    if (!q.category?.trim()) return false;
-    if (!q.subcategory?.trim()) return false;
-    if (!q.topic?.trim()) return false;
+
+    // Metadata is optional or inherited, so we don't strictly require it here to save.
 
     if (q.type === 'NAT') {
       return !!q.natAnswer?.trim();

@@ -4,6 +4,31 @@ import path from "path";
 const nextConfig: NextConfig = {
   output: "standalone",
 
+  async redirects() {
+    return [
+      {
+        source: '/user/tutorials',
+        destination: '/tutorials',
+        permanent: true,
+      },
+      {
+        source: '/user/tutorials/:slug',
+        destination: '/tutorials/:slug',
+        permanent: true,
+      },
+      {
+        source: '/resources/tutorials',
+        destination: '/tutorials',
+        permanent: true,
+      },
+      {
+        source: '/resources/tutorials/:slug',
+        destination: '/tutorials/:slug',
+        permanent: true,
+      }
+    ];
+  },
+
   poweredByHeader: false,
 
   images: {

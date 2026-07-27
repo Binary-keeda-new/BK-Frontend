@@ -27,6 +27,7 @@ import AdminNotificationsPage from '@/features/admin/notifications/pages/AdminNo
 import AdminRequestsPage from '@/features/admin/requests/pages/AdminRequestsPage';
 import QuizReportPage from '@/features/admin/quiz/pages/QuizReportPage';
 import AdminQuizReview from '../../quiz/pages/adminQuizReview';
+import EmpleRewardsPage from '@/features/admin/rewards/pages/EmpleRewardsPage';
 import TestReportPage from '@/features/admin/test/pages/TestReportPage';
 
 
@@ -430,7 +431,7 @@ const openAttemptReview = (attemptId: string) => {
 />
   );
 
-  case 'test-report':
+    case 'test-report':
   return selectedReportTestId ? (
     <TestReportPage
       testId={selectedReportTestId}
@@ -503,6 +504,9 @@ const openAttemptReview = (attemptId: string) => {
                 No problem selected.
               </div>
             );    
+
+      case 'rewards':
+        return <EmpleRewardsPage />;
 
       default:
         return (

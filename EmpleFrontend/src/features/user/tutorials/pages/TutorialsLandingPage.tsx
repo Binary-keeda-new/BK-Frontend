@@ -1,8 +1,9 @@
 import React from "react";
 import { BookText, PlaySquare } from "lucide-react";
+import Link from "next/link";
 
 interface TutorialsLandingPageProps {
-  onSelect: (mode: "notes" | "videos") => void;
+  onSelect?: (mode: "notes" | "videos") => void;
 }
 
 const TUTORIAL_CARDS = [
@@ -25,32 +26,29 @@ const TUTORIAL_CARDS = [
 ];
 
 export default function TutorialsLandingPage({ onSelect }: TutorialsLandingPageProps) {
+  const t: Record<string, string> = {
+    border: 'var(--border)',
+    surface: 'var(--surface)',
+    surface2: 'var(--surface2)',
+    text: 'var(--text)',
+    muted: 'var(--muted2)',
+    brand: 'var(--orange)',
+  };
+
   return (
-    <div className="p-6">
-      <div className="mb-8">
-        <h1 style={{
-          fontFamily: "var(--font-syne, sans-serif)",
-          fontSize: "24px",
-          fontWeight: 800,
-          color: "var(--text)",
-        }}>
-          Tutorials
+    <div className="fade-in" style={{ padding: '48px 24px', maxWidth: '900px', margin: '0 auto', textAlign: 'center' }}>
+      <div style={{ marginBottom: '3rem' }}>
+        <h1 style={{ fontFamily: "var(--font-syne, sans-serif)", fontSize: "36px", fontWeight: 800, color: "var(--text)", marginBottom: '8px', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+          <span style={{ color: t.brand }}>Tutorials</span>
         </h1>
-        <p style={{ color: "var(--muted2)", fontSize: "14px", marginTop: "4px" }}>
-          Choose how you'd like to learn
+        <p style={{ color: t.muted, fontSize: "16px", marginTop: "4px" }}>
+          Choose how you'd like to learn.
         </p>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 360px))", gap: "20px" }}>
-        {TUTORIAL_CARDS.map((card) => (
-          <div
-            key={card.id}
-            onClick={() => onSelect(card.id as "notes" | "videos")}
-            style={{
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 360px))", gap: "20px", justifyContent: "center" }}>
+        {TUTORIAL_CARDS.map((card) => {
+          const CardContent = (
             <div
               style={{
                 background: "var(--surface)",
@@ -64,6 +62,7 @@ export default function TutorialsLandingPage({ onSelect }: TutorialsLandingPageP
                 height: "100%",
                 display: "flex",
                 flexDirection: "column",
+                textAlign: "left"
               }}
               onMouseEnter={e => {
                 (e.currentTarget as HTMLElement).style.border = `1px solid ${card.color}`;
@@ -123,8 +122,30 @@ export default function TutorialsLandingPage({ onSelect }: TutorialsLandingPageP
                 ))}
               </div>
             </div>
-          </div>
-        ))}
+          );
+
+          if (onSelect) {
+            return (
+              <div
+                key={card.id}
+                onClick={() => onSelect(card.id as "notes" | "videos")}
+                style={{ display: "flex", flexDirection: "column" }}
+              >
+                {CardContent}
+              </div>
+            );
+          }
+
+          return (
+            <Link
+              key={card.id}
+              href={`/tutorials/${card.id}`}
+              style={{ textDecoration: 'none', display: "flex", flexDirection: "column" }}
+            >
+              {CardContent}
+            </Link>
+          );
+        })}
       </div>
     </div>
   );

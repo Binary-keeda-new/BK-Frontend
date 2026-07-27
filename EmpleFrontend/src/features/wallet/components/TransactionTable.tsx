@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { fetchTransactions, Transaction } from "@/features/wallet/api/wallet.api";
 import dayjs from "dayjs";
 import { ArrowUpRight, ArrowDownRight, RefreshCcw, Info, Trophy, CalendarCheck, Bot, FileSearch, Route, GraduationCap, CheckSquare, Coins, Gift } from "lucide-react";
+import { useWallet } from "@/providers/WalletProvider";
 import EmptyState from "@/shared/components/ui/EmptyState";
 
 const getCategoryDetails = (category: string, isCredit: boolean) => {
@@ -34,6 +35,8 @@ const getCategoryDetails = (category: string, isCredit: boolean) => {
       return { label: "AI ATS Scanner", icon: Bot, color: "text-red-400" };
     case "refund_ai_failure":
       return { label: "AI Failure Refund", icon: RefreshCcw, color: "text-green-400" };
+    case "emple_reward":
+      return { label: "Emple Reward", icon: Gift, color: "text-emerald-400" };
     default:
       return {
         label: category.replace(/_/g, " "),
@@ -44,6 +47,7 @@ const getCategoryDetails = (category: string, isCredit: boolean) => {
 };
 
 export default function TransactionTable() {
+  const { refreshWallet } = useWallet();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -63,7 +67,8 @@ export default function TransactionTable() {
 
   useEffect(() => {
     loadTransactions();
-  }, []);
+    refreshWallet();
+  }, [refreshWallet]);
 
   if (error) {
     return (

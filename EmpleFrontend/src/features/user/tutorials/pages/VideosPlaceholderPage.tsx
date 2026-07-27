@@ -1,11 +1,14 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { ArrowLeft, Play, FileText, Trophy, Search, Clock, Calendar, ArrowUpDown, ChevronDown, Brain, GraduationCap, Database, Network, Cpu, GitBranch, VideoOff } from "lucide-react";
 import { fetchTutorials } from "../services/tutorials.service";
 
+// interface removed
+
 interface VideosPlaceholderPageProps {
-  onBack: () => void;
+  onBack?: () => void;
 }
 
 interface HackathonItem {
@@ -38,6 +41,7 @@ interface TutorialVideo {
 type SubViewType = "categories" | "aiml" | "placement-categories" | "dbms" | "networks" | "os" | "dsa";
 
 export default function VideosPlaceholderPage({ onBack }: VideosPlaceholderPageProps) {
+  const router = useRouter();
   const [subView, setSubView] = useState<SubViewType>("categories");
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("newest"); // newest or oldest
@@ -56,7 +60,6 @@ export default function VideosPlaceholderPage({ onBack }: VideosPlaceholderPageP
         setLoading(false);
       });
   }, []);
-
   const t: Record<string, string> = {
     border: 'var(--border)',
     surface: 'var(--surface)',
@@ -68,7 +71,11 @@ export default function VideosPlaceholderPage({ onBack }: VideosPlaceholderPageP
 
   const handleBackNavigation = () => {
     if (subView === "categories") {
-      onBack();
+      if (onBack) {
+        onBack();
+      } else {
+        router.push("/tutorials");
+      }
     } else if (subView === "aiml" || subView === "placement-categories") {
       setSubView("categories");
       setSearchQuery("");
@@ -295,7 +302,7 @@ export default function VideosPlaceholderPage({ onBack }: VideosPlaceholderPageP
         onMouseEnter={e => (e.currentTarget.style.color = t.text)}
         onMouseLeave={e => (e.currentTarget.style.color = t.muted)}
       >
-        Back {subView === "categories" ? "to Tutorials" : subView === "placement-categories" ? "to Categories" : (subView === "aiml" ? "to Categories" : "to Subjects")}
+        <ArrowLeft size={16} /> Back {subView === "categories" ? "to Tutorials" : subView === "placement-categories" ? "to Categories" : (subView === "aiml" ? "to Categories" : "to Subjects")}
       </button>
 
       {/* Header Section */}
@@ -306,6 +313,7 @@ export default function VideosPlaceholderPage({ onBack }: VideosPlaceholderPageP
         <p style={{ color: t.muted, fontSize: "15px", marginTop: "4px" }}>
           {headerInfo.desc}
         </p>
+
       </div>
 
       {/* --- LEVEL 1: VIDEOS MAIN CATEGORIES --- */}

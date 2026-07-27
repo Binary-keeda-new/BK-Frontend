@@ -10,7 +10,7 @@ const subjects: Subject[] = [
   { name: "Combinatorics", shortName: "COMB", file: "/gate-notes/Combinatorics.pdf" },
   { name: "Design & Analysis of Algorithms", shortName: "DAA", file: "/gate-notes/DAA.pdf" },
   { name: "Digital Logic Design", shortName: "DLD", file: "/gate-notes/DLD.pdf" },
-  { name: "Data Structures", shortName: "DS", file: "/gate-notes/DS.pdf" },
+  { name: "C & Data Structure", shortName: "DS", file: "/gate-notes/DS.pdf" },
   { name: "Engineering Mathematics", shortName: "MATH", file: "/gate-notes/Maths.pdf" },
   { name: "Graph Theory", shortName: "GT", file: "/gate-notes/GraphTheory.pdf" },
   { name: "Operating Systems", shortName: "OS", file: "/gate-notes/OS.pdf" },
