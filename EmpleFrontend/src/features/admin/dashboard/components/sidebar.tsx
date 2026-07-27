@@ -27,7 +27,8 @@ export type AdminSection =
   | 'test-edit'
   | 'test-create'
   | 'quiz-report'
-  |'quiz-attempt-review'
+  | 'quiz-attempt-review'
+  | 'rewards'
   | 'test-report';
 
 const NAV_ITEMS: {
@@ -189,7 +190,19 @@ const NAV_ITEMS: {
   key: 'requests',
   icon: (
     <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+    </svg>
+  ),
+},
+{
+  label: 'Emple Rewards',
+  key: 'rewards',
+  icon: (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="20 12 20 22 4 22 4 12" />
+      <rect x="2" y="7" width="20" height="5" />
+      <line x1="12" y1="22" x2="12" y2="7" />
+      <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z" />
+      <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z" />
     </svg>
   ),
 },

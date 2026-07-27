@@ -1,11 +1,10 @@
 import React from "react";
-import { ArrowLeft, PlaySquare, Clock } from "lucide-react";
+import Link from "next/link";
+import { PlaySquare, ArrowLeft, Clock, Search, Filter } from "lucide-react";
 
-interface VideosPlaceholderPageProps {
-  onBack: () => void;
-}
+// interface removed
 
-export default function VideosPlaceholderPage({ onBack }: VideosPlaceholderPageProps) {
+export default function VideosPlaceholderPage() {
   const t: Record<string, string> = {
     border: 'var(--border)',
     surface: 'var(--surface)',
@@ -18,19 +17,20 @@ export default function VideosPlaceholderPage({ onBack }: VideosPlaceholderPageP
   return (
     <div className="fade-in" style={{ padding: '24px 0', maxWidth: '1200px', margin: '0 auto', paddingLeft: 24, paddingRight: 24 }}>
       {/* Back Button */}
-      <button 
-        onClick={onBack}
-        style={{
-          display: 'flex', alignItems: 'center', gap: 8, background: 'transparent',
-          border: 'none', color: t.muted, cursor: 'pointer', fontSize: '14px',
-          fontWeight: 600, padding: 0, marginBottom: '32px',
-          transition: 'color 0.2s'
-        }}
-        onMouseEnter={e => (e.currentTarget.style.color = t.text)}
-        onMouseLeave={e => (e.currentTarget.style.color = t.muted)}
-      >
-        <ArrowLeft size={16} /> Back to Tutorials
-      </button>
+      <Link href="/tutorials" passHref>
+        <button 
+          style={{
+            display: 'inline-flex', alignItems: 'center', gap: 8, background: 'transparent',
+            border: 'none', color: t.muted, cursor: 'pointer', fontSize: '14px',
+            fontWeight: 600, padding: 0, marginBottom: '24px',
+            transition: 'color 0.2s'
+          }}
+          onMouseEnter={e => (e.currentTarget.style.color = t.text)}
+          onMouseLeave={e => (e.currentTarget.style.color = t.muted)}
+        >
+          <ArrowLeft size={16} /> Back to Tutorials
+        </button>
+      </Link>
 
       {/* Main Content */}
       <div style={{
@@ -86,32 +86,33 @@ export default function VideosPlaceholderPage({ onBack }: VideosPlaceholderPageP
           Check back soon for deep technical walkthroughs, animations, and in-depth explanations!
         </p>
 
-        <button 
-          onClick={onBack}
-          style={{
-            marginTop: '32px',
-            background: t.brand,
-            border: 'none',
-            padding: '12px 24px',
-            borderRadius: '12px',
-            color: 'white',
-            fontWeight: 700,
-            cursor: 'pointer',
-            fontSize: '15px',
-            transition: 'all 0.2s',
-            boxShadow: `0 4px 12px ${t.brand}40`
-          }}
-          onMouseEnter={e => {
-            e.currentTarget.style.transform = 'translateY(-2px)';
-            e.currentTarget.style.boxShadow = `0 6px 16px ${t.brand}60`;
-          }}
-          onMouseLeave={e => {
-            e.currentTarget.style.transform = 'translateY(0)';
-            e.currentTarget.style.boxShadow = `0 4px 12px ${t.brand}40`;
-          }}
-        >
-          Return to Tutorials
-        </button>
+        <Link href="/tutorials" passHref>
+          <button 
+            style={{
+              marginTop: '32px',
+              background: t.brand,
+              border: 'none',
+              padding: '12px 24px',
+              borderRadius: '12px',
+              color: 'white',
+              fontWeight: 700,
+              cursor: 'pointer',
+              fontSize: '15px',
+              transition: 'all 0.2s',
+              boxShadow: `0 4px 12px ${t.brand}40`
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = `0 6px 16px ${t.brand}60`;
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = `0 4px 12px ${t.brand}40`;
+            }}
+          >
+            Return to Tutorials
+          </button>
+        </Link>
       </div>
     </div>
   );
