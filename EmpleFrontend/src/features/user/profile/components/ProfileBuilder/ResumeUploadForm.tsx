@@ -70,7 +70,7 @@ export function ResumeUploadForm({
   };
 
   const removeResume = () => {
-    onChange({ resumeUrl: undefined });
+    onChange({ resumeUrl: '' });
     setLocalFile(null);
   };
 
@@ -108,7 +108,7 @@ export function ResumeUploadForm({
           {profile.profilePhoto ? (
             <div className="relative mb-6 group">
               <img src={getImageUrl(profile.profilePhoto)} alt="Profile" className="w-32 h-32 rounded-full object-cover border-4 shadow-lg transition-transform group-hover:scale-105" style={{ borderColor: 'var(--surface)' }} />
-              <button onClick={() => onChange({ profilePhoto: undefined })} className="absolute bottom-0 right-0 rounded-full p-2.5 shadow-lg transition-colors bg-red-500 text-white hover:bg-red-600">
+              <button onClick={() => onChange({ profilePhoto: '' })} className="absolute bottom-0 right-0 rounded-full p-2.5 shadow-lg transition-colors bg-red-500 text-white hover:bg-red-600">
                 <Trash2 className="w-4 h-4" />
               </button>
             </div>
