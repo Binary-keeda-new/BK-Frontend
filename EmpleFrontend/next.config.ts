@@ -52,6 +52,28 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: path.resolve(__dirname),
   },
+
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'X-Frame-Options',
+            value: 'SAMEORIGIN',
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'Content-Security-Policy',
+            value: "frame-ancestors 'self'",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
