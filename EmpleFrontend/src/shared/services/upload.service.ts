@@ -35,8 +35,74 @@ export async function uploadAdminImage(file: File, moduleName: string = 'misc'):
 
   const result = await parseJsonResponse<UploadImageResponse>(res);
 
-  if (!result.data?.url) {
-    throw new Error("Image upload failed");
+  if (!result.success || !result.data?.url) {
+    throw new Error(result.message || "Image upload failed");
+  }
+
+  if (result.data.url.startsWith("http")) {
+    return result.data.url;
+  }
+
+  return `${API_BASE_URL}${result.data.url}`;
+}
+
+export async function uploadUserImage(file: File, moduleName: string = 'misc'): Promise<string> {
+  const formData = new FormData();
+  formData.append("image", file);
+  formData.append("module", moduleName);
+
+  const headers: Record<string, string> = {};
+
+  const token = getSessionToken();
+
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  const res = await fetch(`${API_BASE_URL}/api/v1/uploads/image`, {
+    method: "POST",
+    headers,
+    body: formData,
+    credentials: "include",
+  });
+
+  const result = await parseJsonResponse<UploadImageResponse>(res);
+
+  if (!result.success || !result.data?.url) {
+    throw new Error(result.message || "Image upload failed");
+  }
+
+  if (result.data.url.startsWith("http")) {
+    return result.data.url;
+  }
+
+  return `${API_BASE_URL}${result.data.url}`;
+}
+
+export async function uploadUserDocument(file: File, moduleName: string = 'resume'): Promise<string> {
+  const formData = new FormData();
+  formData.append("document", file);
+  formData.append("module", moduleName);
+
+  const headers: Record<string, string> = {};
+
+  const token = getSessionToken();
+
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  const res = await fetch(`${API_BASE_URL}/api/v1/uploads/document`, {
+    method: "POST",
+    headers,
+    body: formData,
+    credentials: "include",
+  });
+
+  const result = await parseJsonResponse<UploadImageResponse>(res);
+
+  if (!result.success || !result.data?.url) {
+    throw new Error(result.message || "Document upload failed");
   }
 
   if (result.data.url.startsWith("http")) {
