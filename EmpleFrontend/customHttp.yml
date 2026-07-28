@@ -1,5 +1,8 @@
-customHeaders:
-  - pattern: '**'
-    headers:
-      - key: Strict-Transport-Security
-        value: max-age=31536000; includeSubDomains
+version: 1
+applications:
+  - appRoot: EmpleFrontend
+    customHeaders:
+      - pattern: '**'
+        headers:
+          - key: Strict-Transport-Security
+            value: max-age=31536000; includeSubDomains
