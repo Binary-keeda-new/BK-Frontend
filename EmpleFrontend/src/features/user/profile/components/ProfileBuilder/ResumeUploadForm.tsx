@@ -3,7 +3,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { UserProfile } from '../../types';
 import { UploadCloud, FileText, Image as ImageIcon, CheckCircle2, Trash2, Eye, RefreshCw, Loader2, AlertCircle } from 'lucide-react';
-import { uploadAdminImage } from '@/shared/services/upload.service';
+import { uploadUserImage, uploadUserDocument } from '@/shared/services/upload.service';
+import { UploadLoadingButton } from '@/shared/components/ui/UploadLoadingButton';
 
 export function ResumeUploadForm({ 
   profile, 
@@ -37,28 +38,11 @@ export function ResumeUploadForm({
     setError('');
     
     try {
-      const formData = new FormData();
-      formData.append('document', file);
-      formData.append('module', 'resume');
-      
-      const token = (await import('@descope/nextjs-sdk/client')).getSessionToken();
-      const headers = { ...(token ? { Authorization: `Bearer ${token}` } : {}) };
-      
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/v1/admin/uploads/document`, {
-        method: 'POST',
-        headers,
-        body: formData,
-      });
-      const data = await res.json();
-      
-      if (!data.success) {
-        throw new Error(data.message || 'Upload failed');
-      }
+      const url = await uploadUserDocument(file, 'resume');
       
       setLocalFile(file);
-      onChange({ resumeUrl: data.data.url });
+      onChange({ resumeUrl: url });
     } catch (err: any) {
-      console.error(err);
       setError(err.message || 'Failed to upload resume');
     } finally {
       setUploadingResume(false);
@@ -71,7 +55,7 @@ export function ResumeUploadForm({
     setUploadingPhoto(true);
     setError('');
     try {
-      const url = await uploadAdminImage(file, 'profile');
+      const url = await uploadUserImage(file, 'profile');
       onChange({ profilePhoto: url });
     } catch (err: any) {
       setError(err.message || 'Failed to upload photo');
@@ -135,11 +119,12 @@ export function ResumeUploadForm({
           )}
           <h3 className="font-semibold text-lg mb-1" style={{ color: 'var(--text)' }}>Profile Photo</h3>
           <p className="text-sm mb-6 text-center" style={{ color: 'var(--muted)' }}>JPG, PNG (max 5MB)</p>
-          <label className="cursor-pointer px-6 py-2.5 rounded-xl text-sm font-semibold transition-all hover:opacity-90 flex items-center gap-2" style={{ background: 'var(--orange)', color: '#fff' }}>
-            {uploadingPhoto ? <Loader2 className="w-4 h-4 animate-spin" /> : <UploadCloud className="w-4 h-4" />}
-            {uploadingPhoto ? 'Uploading...' : 'Browse Image'}
-            <input type="file" className="hidden" accept="image/*" onChange={handlePhotoUpload} disabled={uploadingPhoto} />
-          </label>
+          <UploadLoadingButton
+            isLoading={uploadingPhoto}
+            label="Browse Image"
+            accept="image/*"
+            onChange={handlePhotoUpload}
+          />
         </div>
 
         {/* Resume */}
@@ -178,10 +163,15 @@ export function ResumeUploadForm({
                 <a href={getImageUrl(profile.resumeUrl)} target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-sm font-semibold border transition-colors hover:bg-opacity-50" style={{ borderColor: 'var(--border)', color: 'var(--text)', background: 'var(--surface)' }}>
                   <Eye className="w-4 h-4" /> Preview
                 </a>
-                <label className="cursor-pointer flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-sm font-semibold border transition-colors hover:bg-opacity-50" style={{ borderColor: 'var(--border)', color: 'var(--text)', background: 'var(--surface)' }}>
-                  <RefreshCw className="w-4 h-4" /> Replace
-                  <input type="file" className="hidden" accept=".pdf,.doc,.docx,application/pdf,application/msword" onChange={handleResumeUpload} disabled={uploadingResume} />
-                </label>
+                <UploadLoadingButton
+                  isLoading={uploadingResume}
+                  label="Replace"
+                  accept=".pdf,.doc,.docx,application/pdf,application/msword"
+                  onChange={handleResumeUpload}
+                  icon={<RefreshCw className="w-4 h-4" />}
+                  className="border transition-colors hover:bg-opacity-50"
+                  style={{ borderColor: 'var(--border)', color: 'var(--text)', background: 'var(--surface)' }}
+                />
               </div>
               <button onClick={removeResume} className="mt-3 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-sm font-semibold text-red-500 hover:bg-red-500/10 transition-colors w-full">
                 <Trash2 className="w-4 h-4" /> Remove Resume
@@ -190,16 +180,17 @@ export function ResumeUploadForm({
           ) : (
             <div className="flex flex-col items-center w-full">
               <div className="w-24 h-24 rounded-full flex items-center justify-center mb-6 shadow-inner" style={{ background: 'var(--orange-dim)', color: 'var(--orange)' }}>
-                {uploadingResume ? <Loader2 className="w-10 h-10 animate-spin" /> : <FileText className="w-10 h-10" />}
+                <FileText className="w-10 h-10" />
               </div>
               <h3 className="font-semibold text-lg mb-1" style={{ color: 'var(--text)' }}>Upload Resume <span style={{ color: 'var(--orange)' }}>*</span></h3>
               <p className="text-sm mb-6 text-center" style={{ color: 'var(--muted)' }}>PDF, DOCX (max 10MB)</p>
               
-              <label className="cursor-pointer px-6 py-2.5 rounded-xl text-sm font-semibold transition-all hover:opacity-90 flex items-center gap-2" style={{ background: 'var(--orange)', color: '#fff' }}>
-                {uploadingResume ? <Loader2 className="w-4 h-4 animate-spin" /> : <UploadCloud className="w-4 h-4" />}
-                {uploadingResume ? 'Uploading...' : 'Browse File'}
-                <input type="file" className="hidden" accept=".pdf,.doc,.docx,application/pdf,application/msword" onChange={handleResumeUpload} disabled={uploadingResume} />
-              </label>
+              <UploadLoadingButton
+                isLoading={uploadingResume}
+                label="Browse File"
+                accept=".pdf,.doc,.docx,application/pdf,application/msword"
+                onChange={handleResumeUpload}
+              />
             </div>
           )}
         </div>
