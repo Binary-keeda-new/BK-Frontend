@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import { UserTestSection } from '../types/test.types';
 import {
   getTestSectionAttempt,
@@ -107,12 +107,31 @@ export default function TestAttempt({
         // if (answer.timeTakenSeconds) initialTimings[answer.questionId] = answer.timeTakenSeconds;
       }
 
-      setAnswers(answerMap);
+      let initialAnswers = answerMap;
+      let initialVisited = { 0: true };
+      let initialFlagged: Record<number, boolean> = {};
+
+      try {
+        const localRaw = localStorage.getItem(`emple_test_progress_${attemptId}_${section._id}`);
+        if (localRaw) {
+          const localData = JSON.parse(localRaw);
+          if (localData.answers) initialAnswers = localData.answers;
+          if (localData.timings) {
+            Object.assign(initialTimings, localData.timings);
+          }
+          if (localData.visited) initialVisited = localData.visited;
+          if (localData.flagged) initialFlagged = localData.flagged;
+        }
+      } catch (e) {
+        console.error('Failed to parse local storage progress', e);
+      }
+
+      setAnswers(initialAnswers);
       setTimings(initialTimings);
       setCurrentQuestionStartedAt(Date.now());
       setCurrent(0);
-      setVisited({ 0: true });
-      setFlagged({});
+      setVisited(initialVisited);
+      setFlagged(initialFlagged);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load test section');
     } finally {
@@ -123,6 +142,22 @@ export default function TestAttempt({
   useEffect(() => {
     void loadSection();
   }, [loadSection]);
+
+  useEffect(() => {
+    if (!data || section.type === 'coding') return;
+    try {
+      const stateToSave = {
+        answers,
+        visited,
+        flagged,
+        timings,
+        timestamp: Date.now()
+      };
+      localStorage.setItem(`emple_test_progress_${attemptId}_${section._id}`, JSON.stringify(stateToSave));
+    } catch (e) {
+      console.error('Failed to save progress to local storage', e);
+    }
+  }, [answers, visited, flagged, timings, data, attemptId, section._id, section.type]);
 
   const handleSubmit = useCallback(async () => {
     if (submitting) return;
@@ -153,7 +188,12 @@ export default function TestAttempt({
 
       onSectionCompleted(section._id);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to submit section');
+      const msg = err instanceof Error ? err.message : 'Failed to submit section';
+      if (hasAutoSubmitted.current || msg.toLowerCase().includes('expired')) {
+        onSectionCompleted(section._id);
+      } else {
+        setError(msg);
+      }
     } finally {
       setSubmitting(false);
       setShowSubmitConfirm(false);
@@ -211,11 +251,13 @@ export default function TestAttempt({
 
   const formattedTimeLeft = useMemo(() => formatTimeLeft(timeLeftMs), [timeLeftMs]);
 
+  const hasAutoSubmitted = useRef(false);
   useEffect(() => {
-    if (timeLeftMs === 0 && !submitting) {
+    if (timeLeftMs === 0 && !submitting && section.type !== 'coding' && !hasAutoSubmitted.current) {
+      hasAutoSubmitted.current = true;
       void handleSubmit();
     }
-  }, [timeLeftMs, submitting, handleSubmit]);
+  }, [timeLeftMs, submitting, handleSubmit, section.type]);
 
   const handleNatChange = useCallback(
     (value: string) => {
@@ -294,13 +336,23 @@ if (section.type === 'coding') {
       formattedTimeLeft={formattedTimeLeft}
       timeLeftMs={timeLeftMs}
       onComplete={async (submissions) => {
-        await submitTestSectionAttempt(
-          attemptId,
-          section._id,
-          [],
-          submissions
-        );
-
+        try {
+          await submitTestSectionAttempt(
+            attemptId,
+            section._id,
+            [],
+            submissions
+          );
+        } catch (err) {
+          const msg = err instanceof Error ? err.message : '';
+          if (!msg.toLowerCase().includes('expired')) {
+            console.error('Failed to submit coding section', err);
+          }
+        }
+        // Clean up local drafts on complete
+        submissions.forEach(sub => {
+          localStorage.removeItem(`emple_draft_${sub.problemId}_${sub.language}`);
+        });
         onSectionCompleted(section._id);
       }}
     />

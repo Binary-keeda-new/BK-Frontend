@@ -10,6 +10,7 @@ import {
   PanelGroup,
   PanelResizeHandle,
 } from 'react-resizable-panels';
+import { useEffect, useRef } from 'react';
 
 type CodingSubmission = {
   problemId: string;
@@ -66,6 +67,27 @@ export default function WorkspaceLayout({
   const allProblemsSubmitted = problems.every(
     (p) => problemStates[p._id]?.submitCompleted
   );
+
+  const hasAutoSubmitted = useRef(false);
+  useEffect(() => {
+    if (timeLeftMs === 0 && mode === 'test' && !allProblemsSubmitted && !hasAutoSubmitted.current) {
+      hasAutoSubmitted.current = true;
+      const submissions = problems.map((p) => {
+        const state = problemStates[p._id];
+        return {
+          problemId: p._id,
+          language: state?.selectedLanguage || 'Java',
+          sourceCode: state?.code || '',
+          accepted: state?.executionResult?.accepted,
+          passedCount: state?.executionResult?.passedCount,
+          totalCount: state?.executionResult?.totalCount,
+          results: state?.executionResult?.results || [],
+          timeTakenSeconds: state?.timeTakenSeconds || 0,
+        };
+      });
+      void onComplete?.(submissions);
+    }
+  }, [timeLeftMs, mode, allProblemsSubmitted, problems, problemStates, onComplete]);
 
   if (loading) {
     return (

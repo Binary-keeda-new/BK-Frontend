@@ -78,7 +78,7 @@ const [reviewSectionIndex, setreviewSectionIndex] = useState(0);
     const fullscreenViews = ['fullscreen', 'resume-fullscreen', 'attempt'];
     
     if (selectedTest?.settings?.noExitScreen) {
-      fullscreenViews.push('instructions', 'sections');
+      fullscreenViews.push('instructions', 'sections', 'feedback');
     }
 
     onFullscreenModeChange?.(fullscreenViews.includes(view));
@@ -435,6 +435,16 @@ if (view === 'resume-fullscreen' && selectedTest) {
             if (nextCompleted.length === selectedTest.sections.length) {
               setView('feedback');
               return;
+            }
+
+            // If the global timer has expired, force to feedback instead of allowing next section
+            if (attemptExpiresAt) {
+              const expiresMs = new Date(attemptExpiresAt).getTime();
+              // Allow a small grace period for execution delay
+              if (Date.now() >= expiresMs - 2000) {
+                setView('feedback');
+                return;
+              }
             }
 
             setEnabledSectionIndex((prev) => {
