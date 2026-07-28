@@ -1,6 +1,6 @@
 'use client';
-
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import ToastContainer from '@/features/admin/question-bank/components/ToastContainer';
 import { useSearchParams, useRouter } from 'next/navigation';
 import TestInstructionsView from '../components/TestInstructionsView';
 import TestSectionsPreview from '../components/TestSectionsPreview';
@@ -73,7 +73,18 @@ export default function TestList({ onFullscreenModeChange }: Props) {
   const [reviewSection, setreviewSection] = useState<UserTestSection | null>(null);
 const [reviewSectionIndex, setreviewSectionIndex] = useState(0);
 
+  const [toasts, setToasts] = useState<{ id: string; message: string; type: 'success' | 'error' }[]>([]);
+  const hasAutoSubmittedGlobal = useRef(false);
+  const warnedAutoSubmit = useRef(false);
 
+  const addToast = (message: string, type: 'success' | 'error' = 'success') => {
+    const id = Date.now().toString();
+    setToasts((prev) => [...prev, { id, message, type }]);
+
+    setTimeout(() => {
+      setToasts((prev) => prev.filter((toast) => toast.id !== id));
+    }, 4000);
+  };
   useEffect(() => {
     const fullscreenViews = ['fullscreen', 'resume-fullscreen', 'attempt'];
     
@@ -85,6 +96,38 @@ const [reviewSectionIndex, setreviewSectionIndex] = useState(0);
 
     return () => onFullscreenModeChange?.(false);
   }, [view, onFullscreenModeChange, selectedTest]);
+
+  useEffect(() => {
+    if (!attemptExpiresAt || !activeAttemptId) return;
+
+    const interval = setInterval(async () => {
+      const expiresMs = new Date(attemptExpiresAt).getTime();
+      const now = Date.now();
+      const timeLeft = expiresMs - now;
+
+      if (timeLeft <= 4000 && timeLeft > 0 && !warnedAutoSubmit.current) {
+        warnedAutoSubmit.current = true;
+        addToast('Time is almost up! The test will auto-submit shortly...', 'error');
+      }
+
+      if (timeLeft <= 0 && !hasAutoSubmittedGlobal.current) {
+        hasAutoSubmittedGlobal.current = true;
+        clearInterval(interval);
+        
+        try {
+          await forceSubmitTestAttempt(activeAttemptId);
+          if (selectedTest) {
+             setCompletedSectionIds(selectedTest.sections.map((s) => s._id));
+          }
+          setView('feedback');
+        } catch (e) {
+          console.error('Failed to auto submit test', e);
+        }
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [attemptExpiresAt, activeAttemptId, selectedTest]);
 
   useEffect(() => {
     const loadTests = async () => {
@@ -517,9 +560,10 @@ if (view === 'resume-fullscreen' && selectedTest) {
             <input
               type="password"
               value={passwordInput}
+              autoComplete="new-password"
               onChange={(e) => setPasswordInput(e.target.value)}
               placeholder="Enter password"
-              className="mt-5 w-full rounded-2xl border border-[var(--border)] bg-[var(--surface2)] px-4 py-3 text-sm text-[var(--text)] outline-none"
+              className="mt-5 w-full rounded-2xl border border-[var(--border)] bg-[var(--surface2)] px-4 py-3 text-sm text-[var(--text)] outline-none focus:border-[var(--orange)] transition-colors"
             />
 
             {passwordError && (
@@ -623,6 +667,7 @@ if (view === 'resume-fullscreen' && selectedTest) {
           })}
         </div>
       </div>
+      <ToastContainer toasts={toasts} />
     </>
   );
 }

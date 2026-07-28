@@ -14,7 +14,7 @@ export type PreviewCodingProblem = {
   constraints: string[];
   examples: Example[];
   topics: string[];
-  recommendedTime?: number;
+  status?: 'draft' | 'published';
 
   editorial: string;
   hints: string[];

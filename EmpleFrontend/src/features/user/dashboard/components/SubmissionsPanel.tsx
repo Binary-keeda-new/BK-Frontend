@@ -279,7 +279,7 @@ export default function SubmissionsPanel({
                         cursor: "pointer",
                       }}
                     >
-                      View →
+                      Preview
                     </button>
                   </div>
                 </div>
@@ -323,7 +323,7 @@ export default function SubmissionsPanel({
                       cursor: "pointer",
                     }}
                   >
-                    View →
+                    Preview
                   </button>
                 </div>
               </div>

@@ -98,7 +98,7 @@ export default function TestCodingReview({
                   </h2>
 
                   <p className="mt-2 text-sm text-[var(--muted2)]">
-                    {problem.difficulty} · {problem.recommendedTime} min
+                    {problem.difficulty}
                   </p>
 
                   {!submission ? (

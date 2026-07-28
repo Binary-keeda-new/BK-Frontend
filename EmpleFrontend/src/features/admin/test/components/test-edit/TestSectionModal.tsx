@@ -82,21 +82,6 @@ export default function TestSectionModal({
             />
           </div>
 
-          <div>
-            <label className="mb-2 block text-sm font-medium text-[var(--clr-text)]">
-              Total Duration
-            </label>
-
-            <input
-              name="duration"
-              type="number"
-              value={sectionForm.duration}
-              onChange={onChange}
-              placeholder="Duration in minutes"
-              className="w-full rounded-2xl bg-[var(--clr-surface2)] px-4 py-3 text-sm text-[var(--clr-text)] outline-none ring-1 ring-white/10"
-            />
-          </div>
-
           {sectionForm.type === 'coding' && (
             <CodingProblemSelector
               codingProblems={codingProblems}

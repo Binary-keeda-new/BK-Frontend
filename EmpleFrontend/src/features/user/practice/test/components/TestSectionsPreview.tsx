@@ -116,8 +116,7 @@ export default function TestSectionsPreview({
 
                     <p className="mt-1 text-sm text-[var(--muted2)]">
                       {section.type === 'mcq' ? 'MCQ / Quiz' : 'Coding'} ·{' '}
-                      {section.numberOfQuestions} questions · {section.duration}{' '}
-                      mins
+                      {section.numberOfQuestions} questions
                     </p>
 
                     <p className="mt-2 text-xs font-semibold">

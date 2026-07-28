@@ -18,8 +18,6 @@ export interface CodingProblem {
 
   topics: string[];
 
-  recommendedTime: number;
-
   statement: string;
 
   examples: Example[];

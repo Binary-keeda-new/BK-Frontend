@@ -13,6 +13,7 @@ interface Test {
   title: string;
   description?: string;
   totalSections: number;
+  actualSectionsCount?: number;
   status?: 'draft' | 'published';
   createdAt?: string;
   updatedAt?: string;
@@ -286,7 +287,7 @@ export default function TestsContent({
 
                       <td className="px-4 py-3">
                         <span className="rounded-md bg-[var(--clr-accent3)] px-2 py-1 text-xs font-bold text-[var(--clr-accent)]">
-                          {test.totalSections ?? 0}
+                          {test.actualSectionsCount ?? 0}
                         </span>
                       </td>
 

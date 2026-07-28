@@ -35,7 +35,7 @@ export default function TestSectionCard({
           </h3>
 
           <p className="mt-1 text-sm text-[var(--clr-text2)]">
-            {section.numberOfQuestions} questions · {section.duration} minutes
+            {section.numberOfQuestions} questions
           </p>
         </div>
 
@@ -127,8 +127,7 @@ export default function TestSectionCard({
                     </p>
 
                     <p className="mt-1 text-xs text-[var(--clr-text2)]">
-                      {problem.difficulty || 'Easy'} ·{' '}
-                      {problem.recommendedTime || 0} min
+                      {problem.difficulty || 'Easy'}
                     </p>
 
                     {problem.topics?.length ? (

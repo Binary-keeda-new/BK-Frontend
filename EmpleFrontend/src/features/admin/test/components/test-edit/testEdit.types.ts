@@ -7,7 +7,6 @@ export type CodingProblemOption = {
   title: string;
   difficulty?: 'Easy' | 'Medium' | 'Hard';
   topics?: string[];
-  recommendedTime?: number;
   status?: 'draft' | 'published';
 };
 

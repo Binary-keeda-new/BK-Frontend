@@ -38,10 +38,6 @@ export default function ProblemHeader({
 
           <Clock3 size={16} />
 
-          <span className="text-sm">
-            {problem.recommendedTime} mins
-          </span>
-
         </div>
 
       </div>

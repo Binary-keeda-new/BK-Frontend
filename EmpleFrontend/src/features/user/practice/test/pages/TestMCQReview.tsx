@@ -57,6 +57,16 @@ export default function TestMCQReview({
 
   const questions = useMemo(() => data?.answers ?? [], [data]);
 
+  const { score, maxScore } = useMemo(() => {
+    let score = 0;
+    let maxScore = 0;
+    for (const q of questions) {
+      score += q.marksAwarded || 0;
+      maxScore += q.positiveMarks || 0;
+    }
+    return { score, maxScore };
+  }, [questions]);
+
   useEffect(() => {
     const loadReview = async () => {
       try {
@@ -142,9 +152,9 @@ export default function TestMCQReview({
           </div>
 
           <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface2)] p-4">
-            <p className="text-xs text-[var(--muted2)]">Duration</p>
+            <p className="text-xs text-[var(--muted2)]">Score</p>
             <p className="mt-2 text-2xl font-bold text-[var(--text)]">
-              {section.duration} min
+              {score} / {maxScore}
             </p>
           </div>
 

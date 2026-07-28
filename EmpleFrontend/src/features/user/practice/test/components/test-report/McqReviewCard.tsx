@@ -37,32 +37,38 @@ export default function McqReviewCard({ item, index, isExpanded, onToggle }: Pro
   // Render Marks securely
   const marksColor = item.marks > 0 ? 'text-emerald-500' : (item.marks < 0 ? 'text-red-500' : 'text-[var(--muted2)]');
 
-  // Resolve selected options (they could be exact text, or an ID).
-  // In this system they are usually text strings natively, but we handle both securely.
-  const renderSelectedOptions = () => {
-    if (isSkipped) {
-      return (
-        <div className="mt-2 text-sm text-[var(--muted2)] italic">
-          No option selected
-        </div>
-      );
-    }
-    
+  const renderOptions = () => {
     return (
-      <div className="mt-3 space-y-2">
-        <p className="text-sm font-semibold text-[var(--text)]">Your Answer{item.selectedOptions.length > 1 ? 's' : ''}:</p>
-        <ul className="space-y-1">
-          {item.selectedOptions.map((opt, i) => {
-            // Usually opt is the text itself. If it matches an ID in item.options we could resolve it, 
-            // but if options is an array of strings, it's just the text.
-            const resolvedText = opt;
-            return (
-              <li key={i} className="rounded-lg  bg-[var(--surface)] p-3 text-sm text-[var(--text)]">
-                {resolvedText || "Selected option unavailable"}
-              </li>
-            );
-          })}
-        </ul>
+      <div className="mt-3 grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="space-y-2">
+          <p className="text-sm font-semibold text-[var(--text)]">Your Answer{item.selectedOptions?.length > 1 ? 's' : ''}:</p>
+          {isSkipped ? (
+            <div className="mt-2 text-sm text-[var(--muted2)] italic">
+              No option selected
+            </div>
+          ) : (
+            <ul className="space-y-1">
+              {item.selectedOptions.map((opt, i) => (
+                <li key={i} className="rounded-lg border border-[var(--border)] bg-[var(--surface)] p-3 text-sm text-[var(--text)]">
+                  {opt || "Selected option unavailable"}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        {item.correctOptions && item.correctOptions.length > 0 && (
+          <div className="space-y-2">
+            <p className="text-sm font-semibold text-[var(--text)]">Correct Answer{item.correctOptions.length > 1 ? 's' : ''}:</p>
+            <ul className="space-y-1">
+              {item.correctOptions.map((opt, i) => (
+                <li key={i} className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 p-3 text-sm font-medium text-emerald-600 dark:text-emerald-400">
+                  {opt || "Option unavailable"}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     );
   };
@@ -138,7 +144,7 @@ export default function McqReviewCard({ item, index, isExpanded, onToggle }: Pro
             </div>
 
             {/* Selected Options */}
-            {renderSelectedOptions()}
+            {renderOptions()}
           </div>
         </div>
       </div>

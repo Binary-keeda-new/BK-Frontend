@@ -25,7 +25,7 @@ export default function QuestionPanel({
   onSubmit,
 }: Props) {
   return (
-    <aside className="flex h-full flex-col gap-4 rounded-2xl border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface,#161820)] p-5">
+    <aside className="flex flex-1 w-full flex-col gap-4 rounded-2xl border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface,#161820)] p-5">
       <div>
         <p className="m-0 text-[11px] font-semibold tracking-[0.08em] text-[var(--muted,#666)]">
           QUESTIONS

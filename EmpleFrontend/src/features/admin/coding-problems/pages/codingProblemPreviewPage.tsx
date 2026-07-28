@@ -32,9 +32,6 @@ export default function CodingProblemPreviewPage({
 
   topics: p.topics || [],
 
-  recommendedTime:
-    p.recommendedTime || 15,
-
   statement:
     p.statement || '',
 

@@ -15,104 +15,104 @@ const buildRules = (test: UserTest) => {
 
   rules.push({
     title: 'General Conduct & Preparation',
-    desc: 'Read all instructions carefully before starting the assessment. Ensure you have a stable internet connection and a quiet environment. Do not refresh or close the tab during the test, as it may result in an automatic submission.',
+    desc: 'Read all instructions carefully before starting the assessment to ensure you are fully prepared for the tasks ahead. Ensure you have a stable, high-speed internet connection and a quiet environment free from any external distractions. Do not refresh or close the browser tab during the test under any circumstances, as this will immediately result in an automatic and irreversible submission of your assessment.',
   });
 
   if (test.settings?.duration) {
     rules.push({
       title: 'Time Management',
-      desc: `The total allocated duration for this assessment is ${test.settings.duration} minutes. Keep an eye on the countdown timer visible at the top of your screen, as the test will automatically submit when the time expires.`,
+      desc: `The total allocated duration for this assessment is strictly set to ${test.settings.duration} minutes without any possibility for extensions. Please keep a close eye on the countdown timer permanently visible at the top of your screen, as the system will automatically submit your test exactly when the time expires, saving whatever progress you have made up to that point.`,
     });
   }
 
   if (test.settings?.navigationMode === 'sequential') {
     rules.push({
       title: 'Sequential Navigation',
-      desc: 'You are required to complete the sections strictly in the order they are presented. You will not be able to skip ahead to future sections or return to previous sections once submitted.',
+      desc: 'You are strictly required to complete the test sections in the exact sequential order in which they are presented to you. Please note that you will absolutely not be able to skip ahead to future sections, nor will you be permitted to return and modify previous sections once they have been submitted.',
     });
   }
 
   if (test.settings?.navigationMode === 'free') {
     rules.push({
       title: 'Free Navigation',
-      desc: 'You have the freedom to attempt the available sections in any order. You can easily switch back and forth between different sections and review your answers before final submission.',
+      desc: 'You have the complete freedom to attempt the available sections in any order that you prefer or find most comfortable. You can easily navigate back and forth between different sections to verify, review, and adjust your selected answers at any point before making your final, official test submission.',
     });
   }
 
   if (test.settings?.minTimeBeforeSubmit) {
     rules.push({
       title: 'Early Submission Restriction',
-      desc: `To ensure adequate time is spent, the final submit button will remain locked for the first ${test.settings.minTimeBeforeSubmit} minute(s) of the assessment.`,
+      desc: `To ensure that adequate and meaningful time is spent on the questions, the final submit button will remain securely locked for the first ${test.settings.minTimeBeforeSubmit} minute(s) of the assessment. You will only be allowed to voluntarily finalize and submit your assessment once this mandatory minimum time threshold has fully elapsed.`,
     });
   }
 
   if (test.settings?.passwordProtected) {
     rules.push({
       title: 'Password Authorization',
-      desc: 'This assessment is securely password-protected. Ensure you have the correct access credentials provided by your instructor before attempting to proceed.',
+      desc: 'This particular assessment is securely password-protected to maintain privacy and restrict unauthorized attempts. Please ensure that you have received the correct, case-sensitive access credentials provided directly by your instructor or administrator before attempting to proceed any further.',
     });
   }
 
   if (test.settings?.noExitScreen) {
     rules.push({
       title: 'Fullscreen Enforcement',
-      desc: 'You are required to remain in fullscreen mode for the entire duration of the test. Any attempt to exit fullscreen may be flagged as a violation by the proctoring system.',
+      desc: 'You are strictly required to remain in full-screen mode for the entire continuous duration of this test to ensure fairness. Any unauthorized attempt to exit full-screen mode, minimize the browser, or switch displays will be immediately detected and permanently flagged as a serious violation by our automated proctoring system.',
     });
   }
 
   if (test.settings?.noCopyPaste) {
     rules.push({
       title: 'Clipboard Restrictions',
-      desc: 'Copying, pasting, and cutting text are strictly disabled within the assessment window to maintain the integrity of the test. All answers must be typed manually.',
+      desc: 'The actions of copying, pasting, and cutting text have been strictly disabled across the entire assessment window in order to maintain the utmost integrity and originality of the test. As a result, all of your answers and code snippets must be typed entirely manually from scratch without relying on external clipboards.',
     });
   }
 
   if (test.settings?.blockKeyboard) {
     rules.push({
       title: 'Keyboard Shortcuts Blocked',
-      desc: 'Certain restricted keyboard shortcuts (like Alt+Tab, Ctrl+C, etc.) have been disabled. Please rely solely on the provided on-screen navigation buttons.',
+      desc: 'A wide range of restricted keyboard shortcuts—including but not limited to Alt+Tab, Ctrl+C, and Ctrl+V—have been intentionally disabled by the platform. You must rely solely on the provided on-screen navigation buttons and native interface controls to move through the assessment safely.',
     });
   }
 
   if (test.settings?.noLostFocus) {
     rules.push({
       title: 'Window Focus Tracking',
-      desc: 'The system actively monitors your window activity. Switching away from the active test window to other applications or browsers will be recorded and flagged for review.',
+      desc: "Our advanced proctoring system continuously and actively monitors your browser's window focus activity throughout the entire test. Switching away from the active test window to check other applications, search engines, or secondary browsers will be instantly recorded, documented, and flagged for manual academic review.",
     });
   }
 
   if (test.settings?.noMinimize) {
     rules.push({
       title: 'Tab & Application Monitoring',
-      desc: 'Minimizing the browser window, opening new tabs, or hiding the assessment screen is strictly prohibited and will be recorded as suspicious activity.',
+      desc: 'Minimizing the main browser window, opening new unrelated browser tabs, or attempting to hide the primary assessment screen is strictly prohibited by our test guidelines. Any such actions will be immediately logged and recorded as highly suspicious activity, which could ultimately lead to the disqualification of your test attempt.',
     });
   }
 
   if (test.settings?.noDevTools) {
     rules.push({
       title: 'Developer Tools Blocked',
-      desc: 'Accessing browser developer tools (Inspect Element, Console, etc.) is not allowed. Attempting to open these tools may result in immediate termination of the test.',
+      desc: 'Accessing or interacting with any built-in browser developer tools—such as Inspect Element, the JavaScript Console, or the Network tab—is entirely forbidden during the assessment. Attempting to force-open or utilize these hidden tools may result in the immediate and permanent termination of your active test session.',
     });
   }
 
   if (test.settings?.allowCalculator) {
     rules.push({
       title: 'Calculator Permitted',
-      desc: 'An on-screen calculator is enabled for this assessment. You may use it for complex calculations where necessary.',
+      desc: 'A fully functional on-screen digital calculator has been explicitly enabled for your convenience during this specific assessment. You are highly encouraged to utilize this built-in tool to solve complex mathematical equations and calculations whenever necessary, rather than relying on unapproved external devices.',
     });
   }
 
   if (test.settings?.allowVirtualKeyboard) {
     rules.push({
       title: 'Virtual Keyboard Available',
-      desc: 'A virtual keyboard is provided for supported input fields to assist with typing complex characters or symbols.',
+      desc: 'An integrated virtual on-screen keyboard is provided alongside supported input fields to seamlessly assist you with typing complex characters, foreign layouts, or special mathematical symbols. You may activate and use this feature at any time to ensure your responses are perfectly accurate and formatted correctly.',
     });
   }
 
   if (test.settings?.ipBinding) {
     rules.push({
       title: 'IP Address Binding',
-      desc: 'Your current IP address is being recorded. This attempt is securely bound to your current network to prevent unauthorized access from other locations.',
+      desc: 'For enhanced security tracking, your current active IP address and network details are being recorded by our servers. This specific test attempt is now securely and permanently bound to your current network connection in order to strictly prevent any unauthorized access or dual-logins from other geographic locations.',
     });
   }
 
@@ -174,8 +174,8 @@ export default function TestInstructionsView({
           <ul className="m-0 flex flex-col gap-4 md:gap-5">
             {rules.map((rule, idx) => (
               <li key={idx} className="flex items-start gap-3 md:gap-4">
-                <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--orange)] text-xs font-bold text-white shadow-sm">
-                  {idx + 1}
+                <div className="mt-0.5 text-[15px] font-bold text-white">
+                  {idx + 1}.
                 </div>
                 <div className="flex-1">
                   <p className="text-[15px] font-semibold text-[var(--text)]">
@@ -221,7 +221,7 @@ export default function TestInstructionsView({
           <button
             disabled={!agreed}
             onClick={onPreview}
-            className="rounded-xl px-5 py-3 text-sm font-bold"
+            className="rounded-xl px-5 py-3 text-sm font-bold transition-all duration-300"
             style={{
               background: agreed ? 'var(--orange)' : 'transparent',
               border: `1px solid ${agreed ? 'var(--orange)' : 'var(--border)'}`,
@@ -230,7 +230,7 @@ export default function TestInstructionsView({
               opacity: agreed ? 1 : 0.5,
             }}
           >
-            Preview Test
+            Start Test
           </button>
         </div>
       </div>

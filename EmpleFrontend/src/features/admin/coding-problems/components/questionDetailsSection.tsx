@@ -5,8 +5,6 @@ interface Props {
     title: string;
     difficulty: string;
     topics: string;
-    recommendedTime: number,
-    
   };
   handleChange: (
     e: React.ChangeEvent<
@@ -74,20 +72,6 @@ export default function QuestionDetailsSection({
           />
         </div>
 
-        <div>
-           <label className="mb-2 block text-sm font-medium">
-             Recommended Time (minutes)
-           </label>
-         
-           <input
-             type="number"
-             name="recommendedTime"
-             value={detailsForm.recommendedTime}
-             onChange={handleChange}
-             min={1}
-             className="w-full rounded-xl border border-[var(--clr-border)] bg-transparent px-4 py-3 outline-none"
-           />
-         </div>
 
         <div className="flex justify-end">
           <button

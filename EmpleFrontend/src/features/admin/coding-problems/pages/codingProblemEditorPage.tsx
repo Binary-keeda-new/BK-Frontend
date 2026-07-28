@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import ToastContainer from '@/features/admin/question-bank/components/ToastContainer';
 
 import CodingProblemTabs from '../components/codingProblemTabs';
 import QuestionDetailsSection from '../components/questionDetailsSection';
@@ -15,8 +16,22 @@ import EditorialSection from '../components/editorialSection';
 import PublishSection from '../components/publishSection';
 import ExecutionSection from '../components/executionSection';
 
+import { getAuthHeaders } from '@/shared/utils/api';
+
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+
+const apiFetch = async (url: string, options?: RequestInit) => {
+  const headers = getAuthHeaders();
+  return fetch(url.replace('/api/v1/coding-problems', '/api/v1/admin/coding-problems'), {
+    ...options,
+    headers: {
+      ...headers,
+      ...(options?.headers || {}),
+    },
+    credentials: 'include',
+  });
+};
 
 interface Props {
   problemId: string;
@@ -26,7 +41,20 @@ export default function CodingProblemEditorPage({
   problemId,
 }: Props) {
   const [problem, setProblem] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
   const [statement, setStatement] = useState('');
+
+  const [toasts, setToasts] = useState<{ id: string; message: string; type: 'success' | 'error' }[]>([]);
+
+  const addToast = (message: string, type: 'success' | 'error' = 'success') => {
+    const id = Date.now().toString();
+    setToasts((prev) => [...prev, { id, message, type }]);
+
+    setTimeout(() => {
+      setToasts((prev) => prev.filter((toast) => toast.id !== id));
+    }, 3000);
+  };
+  
 
   const [examples, setExamples] = useState<
   {
@@ -130,7 +158,6 @@ const [activeTab, setActiveTab] =
     title: '',
     difficulty: 'Easy',
     topics: '',
-    recommendedTime: 15,
   });
 
   const handleChange = (
@@ -150,22 +177,15 @@ const [activeTab, setActiveTab] =
     if (
     !detailsForm.title.trim() ||
     !detailsForm.difficulty.trim() ||
-    !detailsForm.topics.trim() ||
-    !detailsForm.recommendedTime 
+    !detailsForm.topics.trim()
   ) {
-    alert('Please fill all fields');
+    addToast('Please fill all fields', 'error');
     return;
   }
 
-  if (Number(detailsForm.recommendedTime) <= 0) {
-  alert(
-    'Recommended time must be greater than 0'
-  );
-  return;
-}
 
     try {
-      const response = await fetch(
+      const response = await apiFetch(
         `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
         {
           method: 'PATCH',
@@ -180,8 +200,6 @@ const [activeTab, setActiveTab] =
               .split(',')
               .map((topic) => topic.trim())
               .filter(Boolean),
-            recommendedTime:
-              Number(detailsForm.recommendedTime),  
             lastEditedSection: 'statement'  
           }),
         }
@@ -190,14 +208,14 @@ const [activeTab, setActiveTab] =
       const data = await response.json();
 
       if (!response.ok) {
-        alert(data.message);
+        addToast(data.message, 'error');
         return;
       }
 
       setProblem(data.data);
       
 
-      alert('Details saved successfully'); 
+      addToast('Details saved successfully', 'success'); 
       setActiveTab('statement');
     } catch (error) {
       console.error(error);
@@ -206,11 +224,11 @@ const [activeTab, setActiveTab] =
 
   const handleSaveStatement = async () => {
   if (!statement.trim()) {
-    alert('Problem statement is required');
+    addToast('Problem statement is required', 'error');
     return;
   }
   try {
-    const response = await fetch(
+    const response = await apiFetch(
       `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
       {
         method: 'PATCH',
@@ -228,13 +246,13 @@ const [activeTab, setActiveTab] =
     const data = await response.json();
 
     if (!response.ok) {
-       alert(data.message);
+       addToast(data.message, 'error');
        return;
      }
 
     setProblem(data.data);
 
-    alert('Problem statement saved successfully');
+    addToast('Problem statement saved successfully', 'success');
     setActiveTab('examples');
   } catch (error) {
     console.error(error);
@@ -267,11 +285,11 @@ const handleSaveExamples = async () => {
 );
 
 if (hasEmptyExample) {
-  alert('Please complete all examples');
+  addToast('Please complete all examples', 'error');
   return;
 }
   try {
-    const response = await fetch(
+    const response = await apiFetch(
       `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
       {
         method: 'PATCH',
@@ -288,13 +306,13 @@ if (hasEmptyExample) {
     const data = await response.json();
 
     if (!response.ok) {
-       alert(data.message);
+       addToast(data.message, 'error');
        return;
      }
 
     setProblem(data.data);
 
-    alert('Examples saved successfully');
+    addToast('Examples saved successfully', 'success');
     setActiveTab('constraints');
   } catch (error) {
     console.error(error);
@@ -317,14 +335,12 @@ if (hasEmptyExample) {
       );
 
     if (hasEmptyConstraint) {
-      alert(
-        'Please complete all constraints'
-      );
+      addToast('Please complete all constraints', 'error');
       return;
     }
 
     try {
-      const response = await fetch(
+      const response = await apiFetch(
         `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
         {
           method: 'PATCH',
@@ -344,15 +360,13 @@ if (hasEmptyExample) {
         await response.json();
 
       if (!response.ok) {
-        alert(data.message);
+        addToast(data.message, 'error');
         return;
       }
 
       setProblem(data.data);
 
-      alert(
-        'Constraints saved successfully'
-      );
+      addToast('Constraints saved successfully', 'success');
 
       setActiveTab('languages');
     } catch (error) {
@@ -371,14 +385,12 @@ if (hasEmptyExample) {
    const handleSaveLanguages =
   async () => {
     if (languages.length === 0) {
-      alert(
-        'Please select at least one language'
-      );
+      addToast('Please select at least one language', 'error');
       return;
     }
 
     try {
-      const response = await fetch(
+      const response = await apiFetch(
         `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
         {
           method: 'PATCH',
@@ -397,15 +409,13 @@ if (hasEmptyExample) {
         await response.json();
 
       if (!response.ok) {
-        alert(data.message);
+        addToast(data.message, 'error');
         return;
       }
 
       setProblem(data.data);
 
-      alert(
-        'Languages saved successfully'
-      );
+      addToast('Languages saved successfully', 'success');
 
       setCodeTemplates((prev) => {
   const updated = { ...prev };
@@ -440,14 +450,12 @@ if (!updated[key]) {
   );
 
   if (hasEmptyTemplate) {
-    alert(
-      'Please provide templates for all selected languages'
-    );
+    addToast('Please provide templates for all selected languages', 'error');
     return;
   }
 }
     try {
-      const response = await fetch(
+      const response = await apiFetch(
         `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
         {
           method: 'PATCH',
@@ -469,15 +477,13 @@ if (!updated[key]) {
         await response.json();
 
       if (!response.ok) {
-        alert(data.message);
+        addToast(data.message, 'error');
         return;
       }
 
       setProblem(data.data);
 
-      alert(
-        'Templates saved successfully'
-      );
+      addToast('Templates saved successfully', 'success');
 
       setActiveTab('execution');
     } catch (error) {
@@ -487,16 +493,12 @@ if (!updated[key]) {
 
   const handleSaveTestCases = async () => {
   if (visibleTestCases.length === 0) {
-    alert(
-      'Add at least one visible test case'
-    );
+    addToast('Add at least one visible test case', 'error');
     return;
   }
 
   if (hiddenTestCases.length === 0) {
-    alert(
-      'Add at least one hidden test case'
-    );
+    addToast('Add at least one hidden test case', 'error');
     return;
   }
 
@@ -518,14 +520,12 @@ if (!updated[key]) {
     hasEmptyVisible ||
     hasEmptyHidden
   ) {
-    alert(
-      'Please complete all test cases'
-    );
+    addToast('Please complete all test cases', 'error');
     return;
   }
 
   try {
-    const response = await fetch(
+    const response = await apiFetch(
       `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
       {
         method: 'PATCH',
@@ -546,15 +546,13 @@ if (!updated[key]) {
       await response.json();
 
     if (!response.ok) {
-      alert(data.message);
+      addToast(data.message, 'error');
       return;
     }
 
     setProblem(data.data);
 
-    alert(
-      'Test cases saved successfully'
-    );
+    addToast('Test cases saved successfully', 'success');
 
     setActiveTab('hints');
   } catch (error) {
@@ -568,14 +566,12 @@ const handleSaveHints = async () => {
     );
 
   if (hasEmptyHint) {
-    alert(
-      'Please complete all hints'
-    );
+    addToast('Please complete all hints', 'error');
     return;
   }
 
   try {
-    const response = await fetch(
+    const response = await apiFetch(
       `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
       {
         method: 'PATCH',
@@ -595,15 +591,13 @@ const handleSaveHints = async () => {
       await response.json();
 
     if (!response.ok) {
-      alert(data.message);
+      addToast(data.message, 'error');
       return;
     }
 
     setProblem(data.data);
 
-    alert(
-      'Hints saved successfully'
-    );
+    addToast('Hints saved successfully', 'success');
 
     setActiveTab('editorial');
   } catch (error) {
@@ -614,14 +608,12 @@ const handleSaveHints = async () => {
 const handleSaveEditorial =
   async () => {
     if (!editorial.trim()) {
-      alert(
-        'Editorial is required'
-      );
+      addToast('Editorial is required', 'error');
       return;
     }
 
     try {
-      const response = await fetch(
+      const response = await apiFetch(
         `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
         {
           method: 'PATCH',
@@ -641,15 +633,13 @@ const handleSaveEditorial =
         await response.json();
 
       if (!response.ok) {
-        alert(data.message);
+        addToast(data.message, 'error');
         return;
       }
 
       setProblem(data.data);
 
-      alert(
-        'Editorial saved successfully'
-      );
+      addToast('Editorial saved successfully', 'success');
 
       setActiveTab('publish');
     } catch (error) {
@@ -661,7 +651,7 @@ const handleSaveEditorial =
   const handleSaveDraft =
   async () => {
     try {
-      const response = await fetch(
+      const response = await apiFetch(
         `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
         {
           method: 'PATCH',
@@ -679,15 +669,13 @@ const handleSaveEditorial =
         await response.json();
 
       if (!response.ok) {
-        alert(data.message);
+        addToast(data.message, 'error');
         return;
       }
 
       setProblem(data.data);
 
-      alert(
-        'Draft saved successfully'
-      );
+      addToast('Draft saved successfully', 'success');
     } catch (error) {
       console.error(error);
     }
@@ -705,13 +693,11 @@ const handlePublish =
   problem.hints.length === 0 ||
   !problem.editorial
 ) {
-  alert(
-    'Please complete all sections before publishing'
-  );
+  addToast('Please complete all sections before publishing', 'error');
   return;
 }
     try {
-      const response = await fetch(
+      const response = await apiFetch(
         `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
         {
           method: 'PATCH',
@@ -729,28 +715,24 @@ const handlePublish =
         await response.json();
 
       if (!response.ok) {
-        alert(data.message);
+        addToast(data.message, 'error');
         return;
       }
 
       setProblem(data.data);
 
-      alert(
-        'Problem published successfully'
-      );
+      addToast('Problem published successfully', 'success');
     } catch (error) {
       console.error(error);
     }
   };
   const handlePreview = () => {
-  alert(
-    'Preview page coming next'
-  );
+  addToast('Preview page coming next', 'error');
 };
 
 const handleSaveExecution = async () => {
   try {
-    const response = await fetch(
+    const response = await apiFetch(
       `http://localhost:5000/api/v1/admin/coding-problems/${problemId}`,
       {
         method: 'PATCH',
@@ -767,29 +749,35 @@ const handleSaveExecution = async () => {
     const data = await response.json();
 
     if (!response.ok) {
-      alert(data.message);
+      addToast(data.message, 'error');
       return;
     }
 
     setProblem(data.data);
 
-    alert('Execution configuration saved successfully');
+    addToast('Execution configuration saved successfully', 'success');
 
     setActiveTab('tests');
   } catch (error) {
     console.error(error);
-    alert('Failed to save execution configuration');
+    addToast('Failed to save execution configuration', 'error');
   }
 };
 
   useEffect(() => {
     const fetchProblem = async () => {
       try {
-        const response = await fetch(
+        const response = await apiFetch(
           `${API_BASE_URL}/api/v1/coding-problems/${problemId}`
         );
 
         const data = await response.json();
+        
+        if (!response.ok || !data.data) {
+          console.error(data.message || 'Failed to fetch problem');
+          setError(data.message || 'Failed to fetch problem');
+          return;
+        }
 
         setProblem(data.data);
         setActiveTab(
@@ -879,20 +867,28 @@ const handleSaveExecution = async () => {
           title: data.data.title || '',
           difficulty: data.data.difficulty || 'Easy',
           topics: data.data.topics?.join(', ') || '',
-          recommendedTime: data.data.recommendedTime || 15,
-          
         });
-      } catch (error) {
+      } catch (error: any) {
         console.error(error);
+        setError(error.message || 'An error occurred while fetching');
       }
     };
 
     fetchProblem();
   }, [problemId]);
 
+  if (error) {
+    return (
+      <div className="p-6 md:p-10 text-red-500 font-medium">
+        Error: {error}
+      </div>
+    );
+  }
+
   if (!problem) {
     return (
       <div className="p-6 md:p-10">
+      <ToastContainer toasts={toasts} />
         Loading problem...
       </div>
     );

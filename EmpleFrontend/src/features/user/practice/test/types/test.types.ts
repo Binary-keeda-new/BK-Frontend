@@ -66,6 +66,7 @@ export interface UserTestReport {
     questionId: string;
     question: string;
     options: string[];
+    correctOptions?: string[];
     difficulty: string;
     topic: string;
     selectedOptions: string[];
@@ -126,6 +127,6 @@ export type UserCodingProblem = {
   title: string;
   difficulty: 'Easy' | 'Medium' | 'Hard';
   topics: string[];
-  recommendedTime: number;
+  points: number;
   status?: 'draft' | 'published';
 };

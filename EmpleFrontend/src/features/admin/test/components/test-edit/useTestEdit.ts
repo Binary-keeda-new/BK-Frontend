@@ -224,6 +224,8 @@ export function useTestEdit(testId: string) {
         settings,
       });
 
+      await fetchSections(); // Refetch sections to reflect any dynamic duration redistributions from the backend
+
       addToast('Test details saved successfully.', 'success');
     } catch (error) {
       addToast(
@@ -237,9 +239,9 @@ export function useTestEdit(testId: string) {
 
   const handleSaveSection = async () => {
     const numberOfQuestions = Number(sectionForm.numberOfQuestions);
-    const duration = Number(sectionForm.duration);
+    const duration = 0; // Section duration is no longer used; rely on global test duration
 
-    if (!sectionForm.type || numberOfQuestions <= 0 || duration <= 0) {
+    if (!sectionForm.type || numberOfQuestions <= 0) {
       addToast('Please fill all section fields correctly.', 'error');
       return;
     }

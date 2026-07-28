@@ -66,8 +66,7 @@ export default function CodingProblemSelector({
                     </p>
 
                     <p className="mt-1 text-xs text-[var(--clr-text2)]">
-                      {problem.difficulty || 'Easy'} ·{' '}
-                      {problem.recommendedTime || 0} min
+                      {problem.difficulty || 'Easy'}
                     </p>
 
                     {problem.topics?.length ? (

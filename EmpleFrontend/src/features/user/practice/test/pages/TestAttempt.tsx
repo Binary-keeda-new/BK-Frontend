@@ -410,7 +410,7 @@ if (section.type === 'coding') {
           onOpenVirtualKeyboard={() => setShowVirtualKeyboard(true)}
         />
 
-        <div className="grid min-h-[calc(100vh-2rem)] grid-cols-1 gap-5 md:grid-cols-[minmax(0,1fr)_16rem]">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-[minmax(0,1fr)_16rem]">
           <section className="min-w-0">
             <div className="flex min-w-0 flex-col">
               <QuestionCard
@@ -432,7 +432,7 @@ if (section.type === 'coding') {
                   disabled={current === 0}
                   className="rounded-[10px] border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface,#161820)] px-6 py-2.5 text-sm font-semibold text-[var(--text,#f0f0f4)] transition disabled:cursor-not-allowed disabled:opacity-40"
                 >
-                  ← Previous
+                  Previous
                 </button>
 
                 {current === totalQuestions - 1 ? (
@@ -457,8 +457,8 @@ if (section.type === 'coding') {
             </div>
           </section>
 
-          <div className="hidden md:block">
-            <div className="sticky top-4 h-[calc(100vh-2rem)]">{panel}</div>
+          <div className="hidden md:flex flex-col h-full">
+            {panel}
           </div>
         </div>
       </main>
