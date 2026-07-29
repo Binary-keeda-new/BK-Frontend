@@ -111,6 +111,11 @@ const [reviewSectionIndex, setreviewSectionIndex] = useState(0);
       }
 
       if (timeLeft <= 0 && !hasAutoSubmittedGlobal.current) {
+        // If user is actively attempting a section, let TestAttempt submit the answers first
+        if (view === 'attempt') {
+          return;
+        }
+
         hasAutoSubmittedGlobal.current = true;
         clearInterval(interval);
         
@@ -127,7 +132,7 @@ const [reviewSectionIndex, setreviewSectionIndex] = useState(0);
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [attemptExpiresAt, activeAttemptId, selectedTest]);
+  }, [attemptExpiresAt, activeAttemptId, selectedTest, view]);
 
   useEffect(() => {
     const loadTests = async () => {
@@ -485,6 +490,10 @@ if (view === 'resume-fullscreen' && selectedTest) {
               const expiresMs = new Date(attemptExpiresAt).getTime();
               // Allow a small grace period for execution delay
               if (Date.now() >= expiresMs - 2000) {
+                if (!hasAutoSubmittedGlobal.current) {
+                  hasAutoSubmittedGlobal.current = true;
+                  forceSubmitTestAttempt(activeAttemptId!).catch(console.error);
+                }
                 setView('feedback');
                 return;
               }
