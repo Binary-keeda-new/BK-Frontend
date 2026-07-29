@@ -188,25 +188,6 @@ useEffect(() => {
       <h2 className="text-white text-xl font-bold">
         Task List
       </h2>
-
-      <button
-         onClick={restoreLastDeleted}
-          className="
-            w-8
-            h-8
-            rounded-full
-            flex
-            items-center
-            justify-center
-            bg-[rgba(249,115,22,0.12)]
-            text-[#f97316]
-            hover:scale-110
-            transition-all
-            duration-300
-          "
-        >
-        <RotateCcw size={22} />
-        </button>
     </div>
 
     {/* Add Task Button */}

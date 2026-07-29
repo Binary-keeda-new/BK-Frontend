@@ -42,11 +42,6 @@ export default function Cards({
       value: `${yearlyProgress}%`, 
       color: "#ec4899",
     },
-    {
-      title: "REWARDS",
-      value: "10",
-      color: "#6366f1",
-    },
   ];
 
   return (

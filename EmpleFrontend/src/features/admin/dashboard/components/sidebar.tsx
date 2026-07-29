@@ -17,6 +17,8 @@ export type AdminSection =
   | 'coding-problem-preview'
   | 'jobs'
   | 'blogs'
+  | 'tech-shop'
+  | "tech-shop-add-product"
   | 'sessions'
   | 'notifications'
   | 'requests'  
@@ -110,6 +112,25 @@ const NAV_ITEMS: {
       </svg>
     ),
   },
+  {
+  label: 'Tech Shop',
+  key: 'tech-shop',
+  icon: (
+    <svg
+      width="17"
+      height="17"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M6 2L3 6v2a3 3 0 003 3 3 3 0 003-3 3 3 0 006 0 3 3 0 003 3 3 3 0 003-3V6l-3-4H6z" />
+      <path d="M5 10v10h14V10" />
+    </svg>
+  ),
+},
  {
   label: 'Events',
   key: 'events',
