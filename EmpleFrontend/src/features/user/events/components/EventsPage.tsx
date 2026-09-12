@@ -166,7 +166,7 @@ export default function EventsPage() {
 
       {/* Grid */}
       {loading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', alignItems: 'stretch' }}>
           {[...Array(6)].map((_, i) => (
             <div key={i} className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-xl p-5 h-64 animate-pulse" />
           ))}
@@ -174,75 +174,82 @@ export default function EventsPage() {
       ) : filtered.length === 0 ? (
         <p className="text-[#555] text-sm mt-10 text-center">No events found.</p>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', alignItems: 'stretch' }}>
           {paginated.map(event => {
             const config = TYPE_CONFIG[event.type] ?? TYPE_CONFIG['hackathon'];
             const Icon = config.Icon;
             const isEmple = event.type === 'our-hackathon';
 
             return (
-              <div key={event._id} className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-xl overflow-hidden flex flex-col">
-
-                {/* Banner */}
-                {event.banner ? (
-                  <div className="w-full h-36 bg-[#111] flex items-center justify-center overflow-hidden">
-                    <img src={event.banner} alt={event.title} className="w-full h-full object-contain" />
-                  </div>
-                ) : (
-                  <div className={`w-full h-36 flex items-center justify-center ${config.iconBg}`}>
-                    <Icon size={40} className={config.color} />
-                  </div>
-                )}
-
-                <div className="p-5 flex flex-col gap-3 flex-1">
-                  {/* Header */}
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="min-w-0">
-                      <p className="text-sm font-medium text-white truncate">{event.title}</p>
-                      <p className="text-xs text-[#777] truncate">{event.organiser}</p>
+              <div 
+                key={event._id} 
+                className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-2xl overflow-hidden flex flex-col transition-all duration-200 hover:border-[#f26522]/35 hover:shadow-[0_4px_24px_rgba(241,90,34,0.08)]"
+              >
+                {/* Banner - Larger Image Area */}
+                <div className="relative w-full h-[145px] bg-[#1a1a1a] overflow-hidden flex-shrink-0">
+                  {event.banner ? (
+                    <img src={event.banner} alt={event.title} className="w-full h-full object-cover block" />
+                  ) : (
+                    <div className={`w-full h-full flex items-center justify-center ${config.iconBg}`}>
+                      <Icon size={40} className={config.color} />
                     </div>
-                    <span className={`text-[11px] font-medium px-2.5 py-0.5 rounded-full whitespace-nowrap flex-shrink-0 ${
+                  )}
+                </div>
+
+                <div className="px-4 py-3 flex flex-col flex-1">
+                  {/* Header */}
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <div className="min-w-0 flex-1">
+                      <h3 className="text-[15px] font-bold text-white truncate leading-tight">{event.title}</h3>
+                      <p className="text-[12px] font-medium text-[#777] truncate mt-0.5">{event.organiser}</p>
+                    </div>
+                    <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap flex-shrink-0 flex items-center gap-1 ${
                       event.registrationOpen
-                        ? 'bg-[#0d2a14] text-[#2ecc71] border border-[#1a4a24]'
-                        : 'bg-[#2a1010] text-[#e74c3c] border border-[#4a1a1a]'
+                        ? 'bg-[rgba(34,197,94,0.1)] text-[#22c55e] border border-[#22c55e]/20'
+                        : 'bg-[rgba(245,158,11,0.1)] text-[#f59e0b] border border-[#f59e0b]/20'
                     }`}>
-                      {event.registrationOpen ? '● Open' : '● Closed'}
+                      <span className={`w-1.5 h-1.5 rounded-full ${event.registrationOpen ? 'bg-[#22c55e]' : 'bg-[#f59e0b]'}`} />
+                      {event.registrationOpen ? 'Open' : 'Closed'}
                     </span>
                   </div>
 
                   {/* Description */}
-                  <p className="text-xs text-[#777] line-clamp-2">{event.description}</p>
+                  <p className="text-[13px] text-[#888] line-clamp-1 mb-2 leading-relaxed">
+                    {event.description}
+                  </p>
 
-                  <hr className="border-[#222]" />
+                  {/* Meta - Compact Multi-row/Wrapped */}
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[12px] text-[#777] mb-3">
+                    <span className="flex items-center gap-1">
+                      📅 {formatDate(event.startDate, event.endDate, event.date)}
+                    </span>
 
-                  {/* Meta */}
-                  <div className="flex flex-col gap-1.5 text-xs text-[#777]">
-                    <span className="flex items-center gap-2">
-                      <Calendar size={13} />
-                      {formatDate(event.startDate, event.endDate, event.date)}
+                    {!isEmple && (
+                      <span className="flex items-center gap-1">
+                        📍 TBA
+                      </span>
+                    )}
+                    
+                    <span className="flex items-center gap-1">
+                      💼 <span className={config.color}>{config.label}</span>
                     </span>
 
                     {isEmple && event.rewards && (
-                      <span className="flex items-center gap-2">
-                        <Gift size={13} /> {event.rewards}
+                      <span className="flex items-center gap-1 text-[#2ecc71]">
+                        🏆 <span className="font-semibold">{event.rewards}</span>
                       </span>
                     )}
-
-                    {!isEmple && (
-                      <span className="flex items-center gap-2">
-                        <MapPin size={13} /> TBA
-                      </span>
-                    )}
-
-                    <span className={config.color}>{config.label}</span>
                   </div>
 
+                  {/* Spacer to push actions to bottom */}
+                  <div className="flex-1" />
+
                   {/* Actions */}
-                  <div className="flex gap-2 mt-auto pt-1">
+                  <div className="flex gap-2 mt-auto">
                     {isEmple ? (
                       <button
                         onClick={() => router.push(`/user/events/${event._id}`)}
-                        className="flex-1 py-2 rounded-lg bg-[#f26522] text-white text-sm font-medium hover:bg-[#d4561e] transition"
+                        className="flex-1 h-[36px] rounded-[9px] border border-[#333] bg-[#1a1a1a] text-[#ccc] text-[13px] font-semibold hover:border-[#f26522] hover:text-[#f26522] transition-colors"
                       >
                         View Details
                       </button>
@@ -251,13 +258,13 @@ export default function EventsPage() {
                         <button
                           disabled={!event.registrationOpen}
                           onClick={() => event.registrationLink && window.open(event.registrationLink, '_blank')}
-                          className="flex-1 py-2 rounded-lg bg-[#f26522] text-white text-sm font-medium disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-1"
+                          className="flex-1 h-[36px] rounded-[9px] bg-[#f26522] text-white text-[13px] font-bold disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center transition-opacity hover:opacity-90"
                         >
-                          <ExternalLink size={13} /> Apply
+                          Apply
                         </button>
                         <button
                           onClick={() => router.push(`/user/events/${event._id}`)}
-                          className="flex-1 py-2 rounded-lg border border-[#333] text-[#ccc] text-sm hover:border-[#555]"
+                          className="flex-1 h-[36px] rounded-[9px] border border-[#333] bg-[#1a1a1a] text-[#ccc] text-[13px] font-semibold hover:border-[#f26522] hover:text-[#f26522] transition-colors"
                         >
                           View
                         </button>

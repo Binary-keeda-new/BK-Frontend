@@ -8,8 +8,14 @@ import type {
   QuizAttemptResultData,
 } from "../types/quizAttempt.types";
 import { getAdminQuizAttemptReview } from '@/features/admin/quiz/components/report/adminQuizAttemptReview.service';
+import QuestionImage from "@/shared/components/ui/QuestionImage";
+import { QuestionCodeBlock } from "../components/QuestionCodeBlock";
 
-type ReviewFilter = "all" | "correct" | "incorrect";
+type ReviewFilter = "all" | "correct" | "incorrect" | "unattempted";
+
+function isUnattemptedAnswer(answer: QuizAttemptResultAnswer) {
+  return !answer.selectedOptions || answer.selectedOptions.length === 0 || answer.selectedOptions.every(opt => opt.trim() === '');
+}
 
 function getQuestionMode(questionType?: string | null) {
   if (questionType === "MCQ") return "Single correct";
@@ -100,12 +106,14 @@ setResult(res.data);
       return {
         correctCount: 0,
         incorrectCount: 0,
+        unattemptedCount: 0,
         accuracy: 0,
       };
     }
 
     const correctCount = result.answers.filter((answer) => answer.isCorrect).length;
-    const incorrectCount = result.answers.length - correctCount;
+    const unattemptedCount = result.answers.filter(isUnattemptedAnswer).length;
+    const incorrectCount = result.answers.length - correctCount - unattemptedCount;
     const accuracy =
       result.answers.length > 0
         ? Math.round((correctCount / result.answers.length) * 100)
@@ -114,6 +122,7 @@ setResult(res.data);
     return {
       correctCount,
       incorrectCount,
+      unattemptedCount,
       accuracy,
     };
   }, [result]);
@@ -126,7 +135,11 @@ setResult(res.data);
     }
 
     if (filter === "incorrect") {
-      return result.answers.filter((answer) => !answer.isCorrect);
+      return result.answers.filter((answer) => !answer.isCorrect && !isUnattemptedAnswer(answer));
+    }
+
+    if (filter === "unattempted") {
+      return result.answers.filter(isUnattemptedAnswer);
     }
 
     return result.answers;
@@ -137,8 +150,9 @@ setResult(res.data);
       all: result?.answers.length ?? 0,
       correct: stats.correctCount,
       incorrect: stats.incorrectCount,
+      unattempted: stats.unattemptedCount,
     };
-  }, [result, stats.correctCount, stats.incorrectCount]);
+  }, [result, stats.correctCount, stats.incorrectCount, stats.unattemptedCount]);
 
   if (loading) {
     return (
@@ -214,7 +228,7 @@ setResult(res.data);
           </button>
         </div>
 
-        <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-4">
+        <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-5">
           <div className="rounded-2xl border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface2,#1e2028)] p-4">
             <p className="text-xs text-[var(--muted2,#8a8a9a)]">Score</p>
             <p className="mt-2 text-2xl font-bold text-[var(--text,#f0f0f4)]">
@@ -233,6 +247,13 @@ setResult(res.data);
             <p className="text-xs text-[var(--muted2,#8a8a9a)]">Incorrect</p>
             <p className="mt-2 text-2xl font-bold text-red-400">
               {stats.incorrectCount}
+            </p>
+          </div>
+
+          <div className="rounded-2xl border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface2,#1e2028)] p-4">
+            <p className="text-xs text-[var(--muted2,#8a8a9a)]">Unattempted</p>
+            <p className="mt-2 text-2xl font-bold text-orange-400">
+              {stats.unattemptedCount}
             </p>
           </div>
 
@@ -292,6 +313,18 @@ setResult(res.data);
             >
               Incorrect ({filterCounts.incorrect})
             </button>
+
+            <button
+              type="button"
+              onClick={() => setFilter("unattempted")}
+              className={
+                filter === "unattempted"
+                  ? "rounded-full border border-[var(--orange,#f15a22)] bg-[var(--orange,#f15a22)] px-4 py-2 text-sm font-semibold text-white"
+                  : "rounded-full border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface2,#1e2028)] px-4 py-2 text-sm font-semibold text-[var(--muted2,#8a8a9a)]"
+              }
+            >
+              Unattempted ({filterCounts.unattempted})
+            </button>
           </div>
         </div>
 
@@ -316,14 +349,22 @@ setResult(res.data);
                       </h3>
                     </div>
 
+                    {answer.hasCodeBlock && answer.codeBlock && (
+                      <div className="w-full mt-2">
+                        <QuestionCodeBlock code={answer.codeBlock} />
+                      </div>
+                    )}
+
                     <span
                       className={
                         answer.isCorrect
                           ? "inline-flex items-center rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1.5 text-xs font-bold text-emerald-400"
+                          : isUnattemptedAnswer(answer)
+                          ? "inline-flex items-center rounded-full border border-orange-500/30 bg-orange-500/10 px-3 py-1.5 text-xs font-bold text-orange-400"
                           : "inline-flex items-center rounded-full border border-red-500/30 bg-red-500/10 px-3 py-1.5 text-xs font-bold text-red-400"
                       }
                     >
-                      {answer.isCorrect ? "Correct" : "Incorrect"} ·{" "}
+                      {answer.isCorrect ? "Correct" : isUnattemptedAnswer(answer) ? "Unattempted" : "Incorrect"} ·{" "}
                       {getMarksText(answer)}
                     </span>
                   </div>
@@ -339,7 +380,7 @@ setResult(res.data);
                   </div>
 
                   {answer.imageUrl && (
-                    <img
+                    <QuestionImage
                       src={answer.imageUrl}
                       alt="Question"
                       className="max-w-full rounded-xl border border-[var(--border,rgba(255,255,255,0.07))]"
@@ -414,25 +455,14 @@ setResult(res.data);
                     </div>
                   )}
 
-                  {(answer.solution || answer.solutionMedia) && (
-  <div className="rounded-2xl border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface,#161820)] p-4">
+                  {answer.solution && (
+  <div className="rounded-2xl border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface,#161820)] p-5 w-full">
     <p className="text-xs font-semibold tracking-[0.08em] text-[var(--orange,#f15a22)]">
       SOLUTION
     </p>
-
-    {answer.solution && (
-      <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-[var(--muted2,#8a8a9a)]">
-        {answer.solution}
-      </p>
-    )}
-
-    {answer.solutionMedia && (
-      <img
-        src={answer.solutionMedia}
-        alt="Solution"
-        className="mt-3 max-w-full rounded-xl border border-[var(--border,rgba(255,255,255,0.07))]"
-      />
-    )}
+    <div className="mt-3 w-full rounded-xl bg-[var(--surface2,#1e2028)] border border-[var(--border,rgba(255,255,255,0.07))] p-4 text-[14.5px] leading-relaxed text-[var(--text,#f0f0f4)] whitespace-pre-wrap break-words">
+      {answer.solution}
+    </div>
   </div>
 )}
                 </div>

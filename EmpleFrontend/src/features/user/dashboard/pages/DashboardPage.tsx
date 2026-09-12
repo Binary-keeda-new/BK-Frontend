@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useWallet } from '@/providers/WalletProvider'
 import ActivityCalendar from '@/features/user/dashboard/components/ActivityCalendar'
 import Leaderboard from '@/features/user/dashboard/components/Leaderboard'
-import PortfolioOverviewCard from '@/features/user/dashboard/components/PortfolioOverviewCard'
+import PortfolioCard from '@/features/user/dashboard/components/PortfolioCard'
 import SubmissionsPanel from '@/features/user/dashboard/components/SubmissionsPanel'
 import { useNotification } from '@/providers/NotificationProvider'
 
@@ -89,9 +89,14 @@ export default function DashboardPage() {
           const activityData = JSON.parse(activityText)
           setActivity(activityData.data)
           
-          if (activityData.data.rewardGranted) {
-            notifyReward("Daily Login Reward", "Welcome back!", config?.LOGIN?.DAILY_REWARD || 1);
-            refreshWallet();
+          const todayStr = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata' }).format(new Date());
+          if (activityData.data.lastVisitedDate === todayStr) {
+            const shownKey = `daily_reward_shown_${todayStr}`;
+            if (!localStorage.getItem(shownKey)) {
+              notifyReward("Daily Login Reward", "Welcome back!", config?.LOGIN?.DAILY_REWARD || 1);
+              localStorage.setItem(shownKey, 'true');
+              refreshWallet();
+            }
           }
         }
       } catch (error) {
@@ -146,7 +151,7 @@ export default function DashboardPage() {
             <Leaderboard />
 
             <div className="md:col-span-2 xl:col-span-1">
-              <PortfolioOverviewCard />
+              <PortfolioCard />
             </div>
           </>
         )}

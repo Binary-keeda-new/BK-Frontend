@@ -219,7 +219,7 @@ export default function EventDetailPage({ id }: { id: string }) {
             <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-2xl p-5 flex items-start gap-4">
               <div className={`w-16 h-16 rounded-xl flex-shrink-0 flex items-center justify-center overflow-hidden ${config?.bg}`}>
                 {event.banner ? (
-                  <img src={event.banner} alt={event.title} className="w-full h-full object-contain" />
+                  <img src={event.banner} alt={event.title} className="w-full h-full object-cover" />
                 ) : (
                   config && <config.Icon size={28} className={config.color} />
                 )}

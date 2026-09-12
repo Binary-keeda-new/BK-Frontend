@@ -319,7 +319,7 @@ const CreateRoadmapPanel: React.FC<CreateRoadmapPanelProps> = ({
               opacity: isFinalizing ? 0.6 : 1, transition: "opacity 0.15s",
             }}
           >
-            {isFinalizing ? "Saving…" : "✓ Finalize & Save Roadmap"}
+            {isFinalizing ? "Publishing & Starting..." : "✓ Publish & Start"}
           </button>
         </div>
       )}

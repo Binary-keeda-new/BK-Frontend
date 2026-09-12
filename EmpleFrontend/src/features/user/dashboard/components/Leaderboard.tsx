@@ -122,7 +122,7 @@ export default function Leaderboard() {
               <div className="mb-1.5 font-bold text-orange-400">
                 How is the leaderboard calculated?
               </div>
-              <ul className="list-disc space-y-1.5 pl-4">
+              <ul className="list-disc space-y-1.5 pl-4 text-white">
                 <li>Rankings are based on your quiz and test performance.</li>
                 <li>Higher scores improve your global rank.</li>
                 <li>Your position updates as you complete more assessments.</li>

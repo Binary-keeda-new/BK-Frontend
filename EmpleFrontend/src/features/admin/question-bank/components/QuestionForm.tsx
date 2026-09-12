@@ -324,18 +324,8 @@ export default function QuestionForm({
             value={draft.solution ?? ''}
             onChange={(e) => setDraft((prev) => ({ ...prev, solution: e.target.value }))}
             placeholder="Explain the correct answer..."
-            rows={2}
-            className="w-full resize-none rounded-xl bg-[rgb(10,11,14)] px-3 py-2 text-sm text-white ring-1 ring-white/10 focus:outline-none focus:ring-[rgb(241,90,34)]"
-          />
-        </div>
-        <div>
-          <label className="mb-1 block text-xs text-white/50">Solution Media URL</label>
-          <input
-            type="text"
-            value={draft.solutionMedia ?? ''}
-            onChange={(e) => setDraft((prev) => ({ ...prev, solutionMedia: e.target.value }))}
-            placeholder="URL for video or image solution"
-            className="w-full rounded-xl bg-[rgb(10,11,14)] px-3 py-2 text-sm text-white ring-1 ring-white/10 focus:outline-none focus:ring-[rgb(241,90,34)]"
+            rows={6}
+            className="w-full resize-y rounded-xl bg-[rgb(10,11,14)] px-3 py-2 text-sm text-white ring-1 ring-white/10 focus:outline-none focus:ring-[rgb(241,90,34)] leading-relaxed whitespace-pre-wrap break-words"
           />
         </div>
       </div>
