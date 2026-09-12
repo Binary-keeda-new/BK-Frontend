@@ -24,6 +24,7 @@ export default function QuizQuestionForm({
   addOption,
 }: Props) {
   const [uploadingSolutionImage, setUploadingSolutionImage] = useState(false);
+  const [uploadingQuestionImage, setUploadingQuestionImage] = useState(false);
   return (
     <>
       <div className="mb-6">
@@ -71,18 +72,148 @@ export default function QuizQuestionForm({
       </div>
 
       <div className="mb-6">
+        <div className="flex items-center gap-3 mb-3">
+          <QuizEditFieldLabel color={t.labelColor}>
+            Code Block
+          </QuizEditFieldLabel>
+          <label className="relative inline-flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              checked={question.hasCodeBlock || false}
+              onChange={(e) =>
+                updateQ(question.id, { hasCodeBlock: e.target.checked })
+              }
+              className="sr-only peer"
+            />
+            <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-[var(--clr-accent)]"></div>
+            <span className="ml-3 text-sm font-medium" style={{ color: t.subText }}>
+              Add Code Block
+            </span>
+          </label>
+        </div>
+
+        {question.hasCodeBlock && (
+          <textarea
+            rows={6}
+            placeholder="Enter code here..."
+            value={question.codeBlock || ""}
+            onChange={(e) => updateQ(question.id, { codeBlock: e.target.value })}
+            onKeyDown={(e) => {
+              if (e.key === "Tab") {
+                e.preventDefault();
+                const target = e.target as HTMLTextAreaElement;
+                const start = target.selectionStart;
+                const end = target.selectionEnd;
+                const newCode =
+                  (question.codeBlock || "").substring(0, start) +
+                  "    " +
+                  (question.codeBlock || "").substring(end);
+                
+                updateQ(question.id, { codeBlock: newCode });
+                
+                setTimeout(() => {
+                  target.selectionStart = target.selectionEnd = start + 4;
+                }, 0);
+              }
+            }}
+            className="w-full resize-y rounded-[10px] border px-4 py-3 outline-none transition-all font-mono text-sm whitespace-pre"
+            style={{
+              background: t.inputBg,
+              borderColor: t.inputBorder,
+              color: t.inputText,
+            }}
+          />
+        )}
+      </div>
+
+      <div className="mb-6">
+        <QuizEditFieldLabel color={t.labelColor}>
+          Question Image (Optional)
+        </QuizEditFieldLabel>
+
+        <div className="flex flex-col gap-3">
+          <input
+            type="text"
+            placeholder="Paste question image URL…"
+            value={question.imageUrl || ""}
+            onChange={(e) => updateQ(question.id, { imageUrl: e.target.value })}
+            className="qph w-full rounded-[10px] border px-4 py-3 outline-none transition-all focus:border-[var(--clr-accent)] focus:shadow-[0_0_0_3px_rgba(241,90,34,0.12)]"
+            style={{
+              background: t.inputBg,
+              borderColor: t.inputBorder,
+              color: t.inputText,
+            }}
+          />
+
+          <label
+            className="flex cursor-pointer items-center justify-center rounded-[10px] border border-dashed px-4 py-3 text-xs font-semibold transition-all hover:border-[var(--clr-accent)] hover:text-[var(--clr-accent)]"
+            style={{
+              borderColor: t.inputBorder,
+              color: t.labelColor,
+              background: t.inputBg,
+            }}
+          >
+            {uploadingQuestionImage ? "Uploading..." : "Upload Question Image"}
+
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              disabled={uploadingQuestionImage}
+              onChange={async (e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+
+                try {
+                  setUploadingQuestionImage(true);
+                  const imageUrl = await uploadAdminImage(file);
+                  updateQ(question.id, { imageUrl });
+                } catch (error) {
+                  console.error(error);
+                  alert("Failed to upload image");
+                } finally {
+                  setUploadingQuestionImage(false);
+                  e.target.value = "";
+                }
+              }}
+            />
+          </label>
+
+          {question.imageUrl && (
+            <div className="relative inline-block w-full">
+              <img
+                src={question.imageUrl}
+                alt="Question preview"
+                className="max-h-40 max-w-full rounded-xl border border-[var(--border,rgba(255,255,255,0.07))] object-contain"
+              />
+              <button
+                type="button"
+                onClick={() => updateQ(question.id, { imageUrl: "" })}
+                className="absolute top-2 right-2 rounded-lg bg-black/60 p-1.5 text-white hover:bg-red-500/80 transition-colors"
+                title="Remove Image"
+              >
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="mb-6">
   <QuizEditFieldLabel color={t.labelColor}>
     Solution
   </QuizEditFieldLabel>
 
   <textarea
-    rows={4}
+    rows={6}
     placeholder="Add solution / explanation for this question…"
     value={question.solution || ""}
     onChange={(e) =>
       updateQ(question.id, { solution: e.target.value })
     }
-    className="qph w-full resize-none rounded-[10px] border px-4 py-3 outline-none transition-all focus:border-[var(--clr-accent)] focus:shadow-[0_0_0_3px_rgba(241,90,34,0.12)]"
+    className="qph w-full resize-y rounded-[10px] border px-4 py-3 outline-none transition-all focus:border-[var(--clr-accent)] focus:shadow-[0_0_0_3px_rgba(241,90,34,0.12)] text-[14.5px] leading-relaxed whitespace-pre-wrap break-words"
     style={{
       background: t.inputBg,
       borderColor: t.inputBorder,
@@ -90,74 +221,7 @@ export default function QuizQuestionForm({
     }}
   />
 </div>
-<div className="mb-6">
-  <QuizEditFieldLabel color={t.labelColor}>
-    Solution Photo
-  </QuizEditFieldLabel>
 
-  <div className="flex flex-col gap-3">
-    <input
-      type="text"
-      placeholder="Paste solution image URL…"
-      value={question.solutionMedia || ""}
-      onChange={(e) =>
-        updateQ(question.id, { solutionMedia: e.target.value })
-      }
-      className="qph w-full rounded-[10px] border px-4 py-3 outline-none transition-all focus:border-[var(--clr-accent)] focus:shadow-[0_0_0_3px_rgba(241,90,34,0.12)]"
-      style={{
-        background: t.inputBg,
-        borderColor: t.inputBorder,
-        color: t.inputText,
-      }}
-    />
-
-    <label
-      className="flex cursor-pointer items-center justify-center rounded-[10px] border border-dashed px-4 py-3 text-xs font-semibold transition-all hover:border-[var(--clr-accent)] hover:text-[var(--clr-accent)]"
-      style={{
-        borderColor: t.inputBorder,
-        color: t.labelColor,
-        background: t.inputBg,
-      }}
-    >
-      {uploadingSolutionImage ? "Uploading..." : "Upload Solution Photo"}
-
-      <input
-        type="file"
-        accept="image/*"
-        className="hidden"
-        disabled={uploadingSolutionImage}
-        onChange={async (e) => {
-          const file = e.target.files?.[0];
-          if (!file) return;
-
-          try {
-            setUploadingSolutionImage(true);
-
-            const imageUrl = await uploadAdminImage(file);
-
-            updateQ(question.id, {
-              solutionMedia: imageUrl,
-            });
-          } catch (error) {
-            console.error(error);
-            alert("Failed to upload image");
-          } finally {
-            setUploadingSolutionImage(false);
-            e.target.value = "";
-          }
-        }}
-      />
-    </label>
-
-    {question.solutionMedia && (
-      <img
-        src={question.solutionMedia}
-        alt="Solution preview"
-        className="max-h-40 max-w-full rounded-xl border border-[var(--border,rgba(255,255,255,0.07))] object-contain"
-      />
-    )}
-  </div>
-</div>
 
       <div className="mb-6">
         <QuizEditFieldLabel color={t.labelColor}>Metadata</QuizEditFieldLabel>

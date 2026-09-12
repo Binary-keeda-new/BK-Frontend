@@ -48,7 +48,7 @@ export const useRoadmapChat = (
   onFinalized: (id: string) => void
 ) => {
   const { sessionToken } = useSession();
-  const { notifyDeduction } = useNotification();
+  const { notifyDeduction, notifyError } = useNotification();
   const { config, refreshWallet } = useWallet();
   const cost = config?.ROADMAP?.GENERATION_COST || 25;
 
@@ -103,13 +103,11 @@ export const useRoadmapChat = (
 
     try {
       const roadmap = await generateRoadmapAPI(modifiedAnswers, sessionToken);
-      notifyDeduction("Generating AI Roadmap", "Building your personalized path...", cost);
-      refreshWallet();
       setPreviewRoadmap(roadmap);
       onPreviewReady(roadmap);
       setIsGenerating(false);
       showTypingThenSpeak(
-        roadmap.intro || "Here's your updated roadmap! Check it on the left. Happy with it? Hit Finalize to save.",
+        roadmap.intro || "Here's your updated roadmap! Check it on the left. Happy with it? Hit Publish & Start to save.",
         () => setInputDisabled(false)
       );
     } catch (err) {
@@ -123,13 +121,13 @@ export const useRoadmapChat = (
   const finalize = useCallback(() => {
     if (!previewRoadmap || !sessionToken) return;
 
-    addMessage("user", "Looks good — save this roadmap!");
+    addMessage("user", "Looks good — publish and start this roadmap!");
     setAwaitingStarRating(true);
     setCurrentOpts([]);
     setInputDisabled(true);
 
     showTypingThenSpeak(
-      "Before I save — how would you rate this roadmap? ⭐",
+      "Before I publish — how would you rate this roadmap? ⭐",
       () => {
         setCurrentOpts(["⭐ 1 — Poor", "⭐⭐ 2 — Fair", "⭐⭐⭐ 3 — Good", "⭐⭐⭐⭐ 4 — Great", "⭐⭐⭐⭐⭐ 5 — Excellent"]);
         setInputDisabled(false);
@@ -146,7 +144,7 @@ export const useRoadmapChat = (
     setInputDisabled(true);
     setIsFinalizing(true);
     addMessage("user", starRating);
-    showTypingThenSpeak("Thanks for your rating! Saving your roadmap…");
+    showTypingThenSpeak("Thanks for your rating! Publishing your roadmap…");
 
     try {
       const saved = await finalizeRoadmapAPI(
@@ -159,19 +157,28 @@ export const useRoadmapChat = (
         },
         sessionToken
       );
+      
+      // Update wallet after successful backend publish
+      refreshWallet();
+      
       setIsFinalizing(false);
       showTypingThenSpeak(
-        `🎉 Saved! "${saved.title}" is now on your Roadmaps page.`,
+        `🎉 Published! "${saved.title}" is now on your Roadmaps page.`,
         () => onFinalized(saved.id)
       );
-    } catch (err) {
+    } catch (err: unknown) {
       console.error("[RoadmapAI] finalize() failed:", err);
       setIsFinalizing(false);
-      showTypingThenSpeak("Couldn't save the roadmap. Please try again.");
+      
+      // Keep the preview visible, don't clear it
+      setInputDisabled(false); 
+      
+      // Show error toast
+      const errorMsg = err instanceof Error ? err.message : "Couldn't publish the roadmap. Please try again.";
+      notifyError("Publish Failed", errorMsg);
+      showTypingThenSpeak("Failed to publish: " + errorMsg);
     }
-  }, [previewRoadmap, sessionToken, addMessage, showTypingThenSpeak, onFinalized]);
-
-  // ── Question flow ─────────────────────────────────────────────────────────
+  }, [previewRoadmap, sessionToken, addMessage, showTypingThenSpeak, onFinalized, refreshWallet, notifyError]);
   const askStep = useCallback((idx: number) => {
     if (idx >= QUESTIONS.length) {
       generate();

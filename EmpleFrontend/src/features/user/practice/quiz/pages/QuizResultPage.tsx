@@ -78,6 +78,7 @@ useEffect(() => {
       return {
         correctCount: 0,
         incorrectCount: 0,
+        unattemptedCount: 0,
         accuracy: 0,
         averageTimePerQuestion: 0,
       };
@@ -89,7 +90,10 @@ useEffect(() => {
     }
 
     const correctCount = result.answers.filter((answer) => answer.isCorrect).length;
-    const incorrectCount = result.answers.length - correctCount;
+    const unattemptedCount = result.answers.filter(
+      (answer) => !answer.selectedOptions || answer.selectedOptions.length === 0 || answer.selectedOptions.every(opt => opt.trim() === '')
+    ).length;
+    const incorrectCount = result.answers.length - correctCount - unattemptedCount;
     const accuracy =
       result.answers.length > 0
         ? Math.round((correctCount / result.answers.length) * 100)
@@ -103,6 +107,7 @@ useEffect(() => {
     return {
       correctCount,
       incorrectCount,
+      unattemptedCount,
       accuracy,
       averageTimePerQuestion,
     };
@@ -157,7 +162,7 @@ useEffect(() => {
           </p>
         </div>
 
-        <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-5">
           <div className="rounded-2xl border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface2,#1e2028)] p-4 text-center">
             <p className="text-xs text-[var(--muted2,#8a8a9a)]">Correct</p>
             <p className="mt-2 text-2xl font-bold text-emerald-400">
@@ -169,6 +174,13 @@ useEffect(() => {
             <p className="text-xs text-[var(--muted2,#8a8a9a)]">Incorrect</p>
             <p className="mt-2 text-2xl font-bold text-red-400">
               {stats.incorrectCount}
+            </p>
+          </div>
+
+          <div className="rounded-2xl border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface2,#1e2028)] p-4 text-center">
+            <p className="text-xs text-[var(--muted2,#8a8a9a)]">Unattempted</p>
+            <p className="mt-2 text-2xl font-bold text-orange-400">
+              {stats.unattemptedCount}
             </p>
           </div>
 

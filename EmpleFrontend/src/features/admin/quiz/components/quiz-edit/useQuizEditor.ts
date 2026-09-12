@@ -21,6 +21,8 @@ type BackendQuizQuestion = {
   subTopic?: string;
   exam?: string;
   year?: number | null;
+  hasCodeBlock?: boolean;
+  codeBlock?: string | null;
 };
 
 type BackendQuizResponse = {
@@ -74,6 +76,8 @@ export type ImportedQuestionInput = {
   subTopic?: string;
   exam?: string;
   year?: number | null;
+  hasCodeBlock?: boolean;
+  codeBlock?: string | null;
 };
 
 const mapBackendQuestionToEditor = (q: BackendQuizQuestion): Question => {
@@ -108,6 +112,8 @@ solutionMedia: q.solutionMedia || '',
     subTopic: q.subTopic || '',
     exam: q.exam || '',
     year: q.year ?? null,
+    hasCodeBlock: q.hasCodeBlock || false,
+    codeBlock: q.codeBlock || null,
     isPersisted: true,
   };
 };
@@ -136,6 +142,8 @@ const createImportedQuestion = (q: ImportedQuestionInput): Question => {
       subTopic: q.subTopic || '',
       exam: q.exam || '',
       year: q.year ?? null,
+      hasCodeBlock: q.hasCodeBlock || false,
+      codeBlock: q.codeBlock || null,
       isPersisted: false,
     };
   }
@@ -176,6 +184,8 @@ const createImportedQuestion = (q: ImportedQuestionInput): Question => {
     subTopic: q.subTopic || '',
     exam: q.exam || '',
     year: q.year ?? null,
+    hasCodeBlock: q.hasCodeBlock || false,
+    codeBlock: q.codeBlock || null,
     isPersisted: false,
   };
 };
@@ -199,6 +209,8 @@ const mapEditorQuestionToPayload = (quizId: string, q: Question) => {
       subTopic: q.subTopic?.trim() || '',
       exam: q.exam?.trim() || '',
       year: q.year ?? null,
+      hasCodeBlock: q.hasCodeBlock || false,
+      codeBlock: q.codeBlock || null,
     };
   }
 
@@ -226,6 +238,8 @@ const mapEditorQuestionToPayload = (quizId: string, q: Question) => {
     subTopic: q.subTopic?.trim() || '',
     exam: q.exam?.trim() || '',
     year: q.year ?? null,
+    hasCodeBlock: q.hasCodeBlock || false,
+    codeBlock: q.codeBlock || null,
   };
 };
 

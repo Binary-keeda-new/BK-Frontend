@@ -4,6 +4,8 @@ export interface AttemptQuestion {
   questionId: string;
   question: string;
   questionType: QuizQuestionType;
+  hasCodeBlock?: boolean;
+  codeBlock?: string | null;
   options: string[];
   imageUrl: string | null;
   positiveMarks: number;
@@ -46,6 +48,8 @@ export interface QuizAttemptResultAnswer {
   questionId: string;
   question: string | null;
   questionType: QuizQuestionType | null;
+  hasCodeBlock?: boolean;
+  codeBlock?: string | null;
   options: string[];
   correctOptions: string[];
   selectedOptions: string[];

@@ -10,6 +10,8 @@ import InsufficientCoinsDialog from "@/features/wallet/components/InsufficientCo
 import { useWallet } from "@/providers/WalletProvider";
 import { useNotification } from "@/providers/NotificationProvider";
 import type { QuizAttemptData, AttemptAnswer } from "../types/quizAttempt.types";
+import QuestionImage from "@/shared/components/ui/QuestionImage";
+import { QuestionCodeBlock } from "../components/QuestionCodeBlock";
 
 type Status = "not-visited" | "not-attempted" | "answered" | "flagged";
 
@@ -21,23 +23,23 @@ type QuestionTiming = {
 
 const SC: Record<Status, { bg: string; color: string; border: string }> = {
   "not-visited": {
-    bg: "transparent",
-    color: "var(--text)",
+    bg: "var(--surface2, #1e2028)",
+    color: "var(--text, #f0f0f4)",
     border: "var(--border, rgba(255,255,255,0.07))",
   },
   "not-attempted": {
-    bg: "#1e3a5f",
-    color: "#60a5fa",
+    bg: "#3b82f6",
+    color: "#ffffff",
     border: "#3b82f6",
   },
   answered: {
-    bg: "#14532d",
-    color: "#4ade80",
+    bg: "#22c55e",
+    color: "#ffffff",
     border: "#22c55e",
   },
   flagged: {
-    bg: "#450a0a",
-    color: "#f87171",
+    bg: "#ef4444",
+    color: "#ffffff",
     border: "#ef4444",
   },
 };
@@ -387,6 +389,16 @@ export default function QuizAttemptPage() {
   );
 
 
+  const handleClearAnswer = useCallback(() => {
+    if (!q) return;
+
+    setAnswers((prev) => {
+      const updated = { ...prev };
+      updated[q.questionId] = [];
+      return updated;
+    });
+  }, [q]);
+
   const goTo = useCallback(
     (idx: number) => {
       if (idx < 0 || idx >= totalQuestions) return;
@@ -456,19 +468,19 @@ export default function QuizAttemptPage() {
   const mode = q ? getQuestionMode(q.questionType) : "mcq";
 
   const Panel = () => (
-    <aside className="flex flex-1 w-full flex-col gap-4 rounded-2xl border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface,#161820)] p-5">
+    <aside className="flex w-full flex-col gap-6 rounded-2xl border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface2,#1e2028)] p-6 h-fit">
       <div>
-        <p className="m-0 text-[11px] font-semibold tracking-[0.08em] text-[var(--muted,#666)]">
+        <p className="m-0 text-[13px] font-semibold tracking-[0.08em] text-[var(--muted2,#8a8a9a)]">
           QUESTIONS
         </p>
-        <p className="mt-2 text-xs text-[var(--muted2,#8a8a9a)]">
+        <p className="mt-2 text-[15px] font-medium text-[var(--text,#f0f0f4)]">
           Answered:{" "}
-          <strong className="text-[var(--text,#f0f0f4)]">{answeredCount}</strong>{" "}
+          <strong className="font-bold">{answeredCount}</strong>{" "}
           / {totalQuestions}
         </p>
       </div>
 
-      <div className="grid grid-cols-5 gap-2">
+      <div className="grid grid-cols-5 gap-2.5">
         {questions.map((_, idx) => {
           const status = getStatus(idx);
           const colors = SC[status];
@@ -481,9 +493,8 @@ export default function QuizAttemptPage() {
               onClick={() => goTo(idx)}
               aria-label={`Go to question ${idx + 1}`}
               aria-current={active ? "true" : undefined}
-              className="aspect-square rounded-lg text-[13px] font-medium transition"
+              className="aspect-square rounded-[8px] text-[13px] font-semibold transition hover:scale-105"
               style={{
-                fontWeight: active ? 700 : 500,
                 background: active ? "var(--orange, #f15a22)" : colors.bg,
                 color: active ? "#fff" : colors.color,
                 border: `1px solid ${
@@ -497,20 +508,20 @@ export default function QuizAttemptPage() {
         })}
       </div>
 
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-3 mt-2">
         {LEGEND.map(({ label, status }) => {
           const colors = SC[status];
 
           return (
-            <div key={label} className="flex items-center gap-2">
+            <div key={label} className="flex items-center gap-2.5">
               <div
-                className="h-3 w-3 shrink-0 rounded-[3px]"
+                className="h-3.5 w-3.5 shrink-0 rounded-[4px]"
                 style={{
                   background: colors.bg || "var(--surface2, #1e2028)",
                   border: `1px solid ${colors.border}`,
                 }}
               />
-              <span className="text-xs text-[var(--muted2,#8a8a9a)]">
+              <span className="text-[13px] font-medium text-[var(--muted2,#8a8a9a)]">
                 {label}
               </span>
             </div>
@@ -564,84 +575,89 @@ export default function QuizAttemptPage() {
 
   return (
     <>
-      <main className="mx-auto w-full max-w-7xl px-4 py-4 md:px-6">
-        <div className="mb-4 rounded-2xl border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface,#161820)] px-4 py-4 md:px-5">
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <div className="min-w-0">
-              <p className="text-xs font-semibold tracking-[0.08em] text-[var(--orange,#f15a22)]">
-                QUIZ ATTEMPT
-              </p>
-              <h1 className="mt-1 truncate text-lg font-bold text-[var(--text,#f0f0f4)]">
-                Question {current + 1} of {totalQuestions}
-              </h1>
-              <p className="mt-1 text-sm text-[var(--muted2,#8a8a9a)]">
-                {answeredCount} answered · {totalQuestions - answeredCount}{" "}
-                remaining
-              </p>
-            </div>
+      <main className="mx-auto w-full max-w-[1400px] px-4 py-6 md:px-8 md:py-8">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_16rem]">
+          
+          {/* Left Column: Header + Question Card */}
+          <div className="flex flex-col gap-6 min-w-0">
+            {/* Header Block */}
+            <div className="rounded-2xl border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface,#161820)] px-6 py-5 md:px-8 md:py-6">
+              <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+                <div className="min-w-0">
+                  <p className="text-sm font-bold tracking-[0.08em] text-[var(--orange,#f15a22)]">
+                    QUIZ ATTEMPT
+                  </p>
+                  <h1 className="mt-1.5 truncate text-2xl md:text-3xl font-bold text-[var(--text,#f0f0f4)]">
+                    Question {current + 1} of {totalQuestions}
+                  </h1>
+                  <p className="mt-1.5 text-sm md:text-base text-[var(--muted2,#8a8a9a)]">
+                    {answeredCount} answered · {totalQuestions - answeredCount}{" "}
+                    remaining
+                  </p>
+                </div>
 
-            <div className="flex flex-wrap items-center gap-2">
-              {submitting && (
-                <span className="rounded-full border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface2,#1e2028)] px-3 py-2 text-xs font-medium text-[var(--muted2,#8a8a9a)]">
-                  Submitting...
-                </span>
-              )}
+                <div className="flex flex-wrap items-center gap-3">
+                  {submitting && (
+                    <span className="rounded-full border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface2,#1e2028)] px-4 py-2 text-sm font-medium text-[var(--muted2,#8a8a9a)]">
+                      Submitting...
+                    </span>
+                  )}
 
-              {formattedTimeLeft && (
-                <div
-                  className="rounded-xl border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface2,#1e2028)] px-3 py-2 text-sm font-bold"
-                  style={{
-                    color:
-                      timeLeftMs !== null && timeLeftMs < 60_000
-                        ? "#f87171"
-                        : "var(--text, #f0f0f4)",
-                  }}
-                >
-                  ⏱ {formattedTimeLeft}
+                  {formattedTimeLeft && (
+                    <div
+                      className="rounded-xl border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface2,#1e2028)] px-3 py-2 text-sm font-bold"
+                      style={{
+                        color:
+                          timeLeftMs !== null && timeLeftMs < 60_000
+                            ? "#f87171"
+                            : "var(--text, #f0f0f4)",
+                      }}
+                    >
+                      ⏱ {formattedTimeLeft}
+                    </div>
+                  )}
+
+                  <button
+                    type="button"
+                    onClick={() => setSidebarOpen(true)}
+                    className="rounded-xl border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface2,#1e2028)] px-3 py-2 text-sm font-semibold text-[var(--text,#f0f0f4)] md:hidden"
+                  >
+                    Questions
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={openSubmitConfirm}
+                    disabled={submitting || loading}
+                    className="rounded-xl bg-[var(--orange,#f15a22)] px-6 py-2.5 text-base md:text-[17px] font-bold text-white transition disabled:cursor-not-allowed disabled:opacity-70 shadow-lg shadow-orange-500/20"
+                  >
+                    {submitting ? "Submitting..." : "Submit"}
+                  </button>
+                </div>
+              </div>
+
+              {timeLeftMs === 0 && (
+                <div className="mt-3 rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-400">
+                  Time is over. Submitting your quiz...
                 </div>
               )}
-
-              <button
-                type="button"
-                onClick={() => setSidebarOpen(true)}
-                className="rounded-xl border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface2,#1e2028)] px-3 py-2 text-sm font-semibold text-[var(--text,#f0f0f4)] md:hidden"
-              >
-                Questions
-              </button>
-
-              <button
-                type="button"
-                onClick={openSubmitConfirm}
-                disabled={submitting || loading}
-                className="rounded-xl bg-[var(--orange,#f15a22)] px-4 py-2 text-sm font-bold text-white transition disabled:cursor-not-allowed disabled:opacity-70"
-              >
-                {submitting ? "Submitting..." : "Submit"}
-              </button>
             </div>
-          </div>
 
-          {timeLeftMs === 0 && (
-            <div className="mt-3 rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-400">
-              Time is over. Submitting your quiz...
-            </div>
-          )}
-        </div>
-
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-[minmax(0,1fr)_16rem]">
-          <section className="min-w-0">
+            {/* Question Section */}
+            <section className="min-w-0">
             <div className="flex min-w-0 flex-col">
-              <div className="rounded-2xl border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface,#161820)] p-[clamp(16px,4vw,28px)]">
+              <div className="rounded-2xl border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface,#161820)] p-5 md:p-6 lg:p-8">
                 <div className="flex flex-wrap items-center justify-between gap-3">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="rounded-full border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface2,#1e2028)] px-3 py-1 text-[11px] font-semibold text-[var(--orange,#f15a22)]">
+                  <div className="flex flex-wrap items-center gap-3">
+                    <span className="rounded-lg border border-[var(--orange,#f15a22)] bg-transparent px-3 py-1 text-xs md:text-sm font-semibold text-[var(--orange,#f15a22)]">
                       Q{current + 1}
                     </span>
 
-                    <span className="rounded-full border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface2,#1e2028)] px-3 py-1 text-[11px] font-medium text-[var(--muted2,#8a8a9a)]">
+                    <span className="rounded-lg border border-[var(--border,rgba(255,255,255,0.1))] bg-transparent px-3 py-1 text-xs md:text-sm font-semibold text-[var(--muted2,#8a8a9a)]">
                       {mode === "mcq" ? "MCQ" : mode === "multi" ? "MSQ" : "NAT"}
                     </span>
 
-                    <span className="rounded-full border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface2,#1e2028)] px-3 py-1 text-[11px] font-medium text-[var(--muted2,#8a8a9a)]">
+                    <span className="rounded-lg border border-[var(--border,rgba(255,255,255,0.1))] bg-transparent px-3 py-1 text-xs md:text-sm font-semibold text-[var(--muted2,#8a8a9a)]">
                       +{q.positiveMarks} / -{q.negativeMarks}
                     </span>
                   </div>
@@ -649,7 +665,7 @@ export default function QuizAttemptPage() {
                   <button
                     type="button"
                     onClick={toggleFlag}
-                    className="rounded-lg px-3 py-[5px] text-xs font-semibold transition"
+                    className="rounded-lg px-3 py-1 text-xs md:text-sm font-semibold transition"
                     style={{
                       background: flagged[current]
                         ? "rgba(239,68,68,0.1)"
@@ -657,7 +673,7 @@ export default function QuizAttemptPage() {
                       border: `1px solid ${
                         flagged[current]
                           ? "#ef4444"
-                          : "var(--border, rgba(255,255,255,0.07))"
+                          : "var(--border, rgba(255,255,255,0.1))"
                       }`,
                       color: flagged[current]
                         ? "#ef4444"
@@ -668,19 +684,23 @@ export default function QuizAttemptPage() {
                   </button>
                 </div>
 
-                <p className="mt-5 text-[clamp(15px,2.5vw,17px)] font-medium leading-[1.7] text-[var(--text,#f0f0f4)]">
+                <p className="mt-6 text-[15px] md:text-[17px] font-medium leading-[1.6] text-[var(--text,#f0f0f4)]">
                   {q.question}
                 </p>
 
+                {q.hasCodeBlock && q.codeBlock && (
+                  <QuestionCodeBlock code={q.codeBlock} />
+                )}
+
                 {q.imageUrl && (
-                  <img
+                  <QuestionImage
                     src={q.imageUrl}
                     alt="Question"
                     className="mt-5 max-w-full rounded-xl border border-[var(--border,rgba(255,255,255,0.07))]"
                   />
                 )}
 
-                <div className="mt-6">
+                <div className="mt-8">
                   {mode === "nat" ? (
                     <input
                       type="text"
@@ -688,10 +708,10 @@ export default function QuizAttemptPage() {
                       value={selected[0] ?? ""}
                       onChange={(e) => handleNatChange(e.target.value)}
                       placeholder="Enter your answer"
-                      className="w-full rounded-xl border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface2,#1e2028)] px-4 py-[14px] text-[15px] text-[var(--text,#f0f0f4)] outline-none transition focus:border-[var(--orange,#f15a22)] focus:shadow-[0_0_0_3px_rgba(241,90,34,0.12)]"
+                      className="w-full rounded-xl border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface2,#1e2028)] px-4 py-3.5 md:py-[14px] text-[15px] md:text-base text-[var(--text,#f0f0f4)] outline-none transition focus:border-[var(--orange,#f15a22)] focus:shadow-[0_0_0_3px_rgba(241,90,34,0.12)]"
                     />
                   ) : (
-                    <div className="flex flex-col gap-2.5">
+                    <div className="flex flex-col gap-4">
                       {q.options.map((opt, i) => {
                         const sel = selected.includes(opt);
 
@@ -700,20 +720,20 @@ export default function QuizAttemptPage() {
                             key={i}
                             type="button"
                             onClick={() => handleOption(opt)}
-                            className="flex w-full items-center gap-[14px] rounded-xl border px-[18px] py-[14px] text-left transition hover:border-[var(--orange,#f15a22)] hover:bg-[rgba(241,90,34,0.07)]"
+                            className="flex w-full items-center gap-3.5 md:gap-4 rounded-xl border px-4 py-3.5 md:px-[20px] md:py-[16px] text-left transition hover:border-[var(--orange,#f15a22)] hover:bg-[rgba(241,90,34,0.07)]"
                             style={{
                               borderColor: sel
                                 ? "var(--orange, #f15a22)"
                                 : "var(--border, rgba(255,255,255,0.07))",
                               background: sel
                                 ? "rgba(241,90,34,0.08)"
-                                : "var(--surface2, #1e2028)",
+                                : "rgba(255,255,255,0.02)",
                             }}
                             aria-pressed={sel}
                           >
                             {mode === "mcq" ? (
                               <div
-                                className="flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full transition"
+                                className="flex h-[18px] w-[18px] md:h-5 md:w-5 shrink-0 items-center justify-center rounded-full transition"
                                 style={{
                                   border: `2px solid ${
                                     sel
@@ -726,12 +746,12 @@ export default function QuizAttemptPage() {
                                 }}
                               >
                                 {sel && (
-                                  <div className="h-[6px] w-[6px] rounded-full bg-white" />
+                                  <div className="h-[6px] w-[6px] md:h-[8px] md:w-[8px] rounded-full bg-white" />
                                 )}
                               </div>
                             ) : (
                               <div
-                                className="flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-[4px] transition"
+                                className="flex h-[18px] w-[18px] md:h-5 md:w-5 shrink-0 items-center justify-center rounded-[4px] transition"
                                 style={{
                                   border: `2px solid ${
                                     sel
@@ -745,8 +765,8 @@ export default function QuizAttemptPage() {
                               >
                                 {sel && (
                                   <svg
-                                    width="10"
-                                    height="10"
+                                    width="11"
+                                    height="11"
                                     viewBox="0 0 10 10"
                                     fill="none"
                                   >
@@ -763,11 +783,9 @@ export default function QuizAttemptPage() {
                             )}
 
                             <span
-                              className="text-sm leading-[1.4]"
+                              className="text-[15px] md:text-base leading-[1.6]"
                               style={{
-                                color: sel
-                                  ? "var(--text, #f0f0f4)"
-                                  : "var(--muted2, #8a8a9a)",
+                                color: "var(--text, #f0f0f4)",
                               }}
                             >
                               {opt}
@@ -784,29 +802,43 @@ export default function QuizAttemptPage() {
                 )}
               </div>
 
-              <div className="flex justify-between pt-4">
-                <button
-                  type="button"
-                  onClick={() => goTo(current - 1)}
-                  disabled={current === 0}
-                  className="rounded-[10px] border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface,#161820)] px-6 py-2.5 text-sm font-semibold text-[var(--text,#f0f0f4)] transition disabled:cursor-not-allowed disabled:opacity-40"
-                >
-                  Previous
-                </button>
+              <div className="flex justify-between pt-5">
+                <div className="flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => goTo(current - 1)}
+                    disabled={current === 0}
+                    className="rounded-xl border border-[var(--border,rgba(255,255,255,0.07))] bg-[rgba(255,255,255,0.03)] px-6 py-2.5 text-sm md:text-[15px] font-semibold text-[var(--text,#f0f0f4)] transition disabled:cursor-not-allowed disabled:opacity-40 hover:bg-[rgba(255,255,255,0.08)]"
+                  >
+                    Previous
+                  </button>
+
+                  {selected.length > 0 && !selected.every((o) => o.trim() === "") && (
+                    <button
+                      type="button"
+                      onClick={handleClearAnswer}
+                      className="rounded-xl border border-[var(--border,rgba(255,255,255,0.07))] bg-[rgba(255,255,255,0.03)] px-6 py-2.5 text-sm md:text-[15px] font-semibold text-[var(--text,#f0f0f4)] transition hover:bg-[rgba(255,255,255,0.08)]"
+                    >
+                      Clear Answer
+                    </button>
+                  )}
+                </div>
 
                 <button
                   type="button"
                   onClick={() => goTo(current + 1)}
                   disabled={current === totalQuestions - 1}
-                  className="rounded-[10px] border border-[var(--border,rgba(255,255,255,0.07))] bg-[var(--surface,#161820)] px-6 py-2.5 text-sm font-semibold text-[var(--text,#f0f0f4)] transition disabled:cursor-not-allowed disabled:opacity-40"
+                  className="rounded-xl border border-[var(--border,rgba(255,255,255,0.07))] bg-[rgba(255,255,255,0.03)] px-8 py-2.5 text-sm md:text-[15px] font-semibold text-[var(--text,#f0f0f4)] transition disabled:cursor-not-allowed disabled:opacity-40 hover:bg-[rgba(255,255,255,0.08)]"
                 >
                   Next
                 </button>
               </div>
             </div>
           </section>
+        </div>
 
-          <div className="hidden md:flex flex-col h-full">
+          {/* Right Column: Sidebar */}
+          <div className="hidden md:flex flex-col h-fit self-start">
             <Panel />
           </div>
         </div>

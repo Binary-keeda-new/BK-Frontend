@@ -131,7 +131,7 @@ if (weeklyProgress === 0 && monthlyProgress === 0) {
   <div
     className="
       animated-border-inner
-      h-[300px]
+      h-[440px]
       w-full
       bg-[#151a2d]
       rounded-[29px]

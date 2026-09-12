@@ -2,11 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import { apiRequest } from '@/shared/utils/api';
+import QuestionImage from '@/shared/components/ui/QuestionImage';
 
 interface PreviewQuestion {
   _id: string;
   question: string;
   questionType: 'MCQ' | 'MSQ' | 'NAT';
+  imageUrl?: string;
   options: string[];
   correctOptions: string[];
   positiveMarks: number;
@@ -105,6 +107,15 @@ function QuestionCard({
           +{question.positiveMarks} / -{question.negativeMarks}
         </span>
       </div>
+
+      {question.imageUrl && (
+        <div className="px-5 py-4 border-b border-[var(--clr-border)] bg-[var(--clr-surface)]">
+          <QuestionImage
+            src={question.imageUrl}
+            className="max-h-60 max-w-full rounded-xl border border-[var(--clr-border)] object-contain"
+          />
+        </div>
+      )}
 
       {question.questionType === 'NAT' ? (
         <div className="px-5 py-4">

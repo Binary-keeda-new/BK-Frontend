@@ -231,7 +231,7 @@ const yearlyProgress =
       <Cards streak={streak} progress={progress}  weeklyProgress={weeklyProgress} monthlyProgress={monthlyProgress}  yearlyProgress={yearlyProgress}/>
       </div>  
 
-      <div className="flex items-stretch w-full py-2">
+      <div className="flex items-stretch w-full py-2 mb-8">
 
   {/* LEFT SIDEBAR */}
   <div className=" w-[260px] flex-shrink-0 self-stretch bg-[#161721] rounded-[30px] overflow-hidden mt-1">
@@ -251,7 +251,7 @@ const yearlyProgress =
 
     <ProductivityTrend tasks={tasks} />
 
-    <div className="flex gap-5 items-start pb-8">
+    <div className="flex gap-5 items-stretch">
 
   <div className="w-[300px] flex-shrink-0">
     <CategorySplit tasks={tasks} />

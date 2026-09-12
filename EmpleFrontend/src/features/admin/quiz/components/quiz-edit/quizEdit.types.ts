@@ -44,6 +44,8 @@ export type Question = {
   id: string;
   question: string;
   type: QuestionType;
+  hasCodeBlock?: boolean;
+  codeBlock?: string;
   options: Option[];
   correct: string[];
   natAnswer?: string;

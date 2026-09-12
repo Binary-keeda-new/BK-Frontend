@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useWallet } from '@/providers/WalletProvider'
 import ActivityCalendar from '@/features/user/dashboard/components/ActivityCalendar'
 import Leaderboard from '@/features/user/dashboard/components/Leaderboard'
-import HealthFinanceCard from '@/features/user/dashboard/components/HealthFinanceCard'
+import PortfolioCard from '@/features/user/dashboard/components/PortfolioCard'
 import SubmissionsPanel from '@/features/user/dashboard/components/SubmissionsPanel'
 import { useNotification } from '@/providers/NotificationProvider'
 
@@ -151,7 +151,7 @@ export default function DashboardPage() {
             <Leaderboard />
 
             <div className="md:col-span-2 xl:col-span-1">
-              <HealthFinanceCard />
+              <PortfolioCard />
             </div>
           </>
         )}

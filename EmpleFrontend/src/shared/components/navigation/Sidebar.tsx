@@ -113,24 +113,9 @@ export default function Sidebar() {
       `}
       style={{ background: "var(--surface)", borderRight: "1px solid var(--border)" }}
     >
-      {/* Logo */}
-      <div className={`flex items-center ${collapsed ? "justify-center" : "justify-start"} px-[16px] py-5 min-h-[64px] flex-shrink-0`}>
-        <Link href="/" className={`flex items-center gap-2 ${collapsed ? "hidden" : "flex"}`} style={{ textDecoration: 'none' }}>
-          <div
-            className="w-9 h-9 rounded-[10px] flex items-center justify-center flex-shrink-0 font-extrabold text-base text-white italicfont-syne transition-all duration-200 hover:scale-[1.07] hover:-rotate-3"
-            style={{ background: "var(--orange)", boxShadow: "0 4px14px rgba(241,90,34,0.35)" }}
-          >
-          e
-          </div>
-          <span
-            className="font-syne text-xl font-extrabold tracking-tight whitespace-nowrap"
-            style={{ color: "var(--text)" }}
-          >
-            <em className="not-italic" style={{ color: "var(--orange)" }}>e</em>mple
-          </span>
-        </Link>
-      </div>
 
+      {/* Spacer to align with Topbar and replace removed logo */}
+      <div className="min-h-[64px] flex-shrink-0" />
 
       {/* Collapsed */}
      <button

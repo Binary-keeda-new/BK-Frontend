@@ -363,12 +363,11 @@ export default function QuizList() {
           </div>
         )}
 
-        <div className="mb-3 hidden grid-cols-[minmax(300px,1fr)_160px_160px_160px_140px] xl:gap-x-4 items-center border-b border-[var(--border)] px-6 pb-3 xl:grid">
+        <div className="mb-3 hidden grid-cols-[minmax(300px,1fr)_160px_160px_140px] xl:gap-x-4 items-center border-b border-[var(--border)] px-6 pb-3 xl:grid">
           {[
             "TITLE",
             "DURATION",
             "ENTRY FEE",
-            "MAX REWARD",
             "STATUS",
           ].map((heading) => (
             <span
@@ -406,7 +405,7 @@ export default function QuizList() {
               return (
                 <div
                   key={quiz._id}
-                  className="grid grid-cols-[1fr_auto] gap-x-4 gap-y-4 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-4 transition duration-200 hover:border-[var(--orange)]/50 hover:shadow-[0_4px_16px_rgba(241,90,34,0.08)] xl:grid-cols-[minmax(300px,1fr)_160px_160px_160px_140px] xl:items-center xl:px-6 xl:py-5"
+                  className="grid grid-cols-[1fr_auto] gap-x-4 gap-y-4 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-4 transition duration-200 hover:border-[var(--orange)]/50 hover:shadow-[0_4px_16px_rgba(241,90,34,0.08)] xl:grid-cols-[minmax(300px,1fr)_160px_160px_140px] xl:items-center xl:px-6 xl:py-5"
                 >
                   {/* Title */}
                   <div className="min-w-0 xl:col-start-1">
@@ -434,7 +433,7 @@ export default function QuizList() {
                   </div>
 
                   {/* Mobile details */}
-                  <div className="col-span-2 grid grid-cols-3 gap-3 border-t border-[var(--border)] pt-4 xl:hidden">
+                  <div className="col-span-2 grid grid-cols-2 gap-3 border-t border-[var(--border)] pt-4 xl:hidden">
                     <div>
                       <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.06em] text-[var(--muted)]">
                         Duration
@@ -453,16 +452,6 @@ export default function QuizList() {
                         <span>{quizCost} Coins</span>
                       </div>
                     </div>
-
-                    <div>
-                      <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.06em] text-[var(--muted)]">
-                        Max reward
-                      </p>
-                      <div className="flex items-center gap-1.5 text-[13px] font-semibold text-emerald-400">
-                      <Coins className="size-4" strokeWidth={1.8} />
-                        <span>{maxReward} Coins</span>
-                      </div>
-                    </div>
                   </div>
 
                   {/* Desktop duration */}
@@ -476,14 +465,8 @@ export default function QuizList() {
                     <span>{quizCost} Coins</span>
                   </div>
 
-                  {/* Desktop max reward */}
-                  <div className="hidden items-center gap-1.5 text-[13px] font-semibold text-emerald-400 xl:col-start-4 xl:flex">
-                    <Coins className="size-4" strokeWidth={1.8} />
-                    <span>{maxReward} Coins</span>
-                  </div>
-
                   {/* Desktop status */}
-                  <div className="hidden justify-start xl:col-start-5 xl:flex">
+                  <div className="hidden justify-start xl:col-start-4 xl:flex">
                     <button
                       type="button"
                       onClick={() => handleQuizAction(quiz)}
@@ -548,7 +531,7 @@ export default function QuizList() {
               </button>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 gap-3">
               <div className="rounded-xl border border-orange-500/20 bg-orange-500/5 p-3">
                 <p className="mb-1 text-[11px] text-[var(--muted2)]">
                   Entry fee
@@ -557,17 +540,6 @@ export default function QuizList() {
                 <div className="flex items-center gap-1.5 text-sm font-semibold text-orange-400">
                   <Coins className="size-4" />
                   {quizCost} Coins
-                </div>
-              </div>
-
-              <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-3">
-                <p className="mb-1 text-[11px] text-[var(--muted2)]">
-                  Maximum reward
-                </p>
-
-                <div className="flex items-center gap-1.5 text-sm font-semibold text-emerald-400">
-                  <Coins className="size-4" />
-                  {maxReward} Coins
                 </div>
               </div>
             </div>
