@@ -1,4 +1,27 @@
+
+//  TEMPORARILY DISABLED — Health & Finance Card                                
+                                                 
+
+
 "use client";
+
+// ── Active imports (only what the blank placeholder needs)
+// import type { ReactNode } from "react";
+
+// ── DISABLED IMPORTS (kept for reference) 
+// import { Activity, Wallet, CircleDollarSign } from "lucide-react";
+// import { useHealthFinance } from "../hooks/useHealthFinance";
+// import type { HealthStats, FinanceSummary } from "../hooks/useHealthFinance";
+
+// ── DISABLED CONSTANTS 
+// const RING_SIZE = 82;
+// const STROKE_WIDTH = 6;
+// const RADIUS = (RING_SIZE - STROKE_WIDTH) / 2;
+// const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
+// function fmt(n: number) { return n.toLocaleString("en-IN"); }
+
+// ORIGINAL CARD CODE 
+/*
 
 import type { ReactNode } from "react";
 import { Activity, Wallet, CircleDollarSign } from "lucide-react";
@@ -320,106 +343,131 @@ function CardError({ message }: { message: string }) {
 }
 
 
+// ORIGINAL DEFAULT EXPORT (DISABLED):
+//
+// export default function HealthFinanceCard() {
+//   const { health, finance, loading, error } = useHealthFinance();
+//
+//   const bothFailed = error && !health && !finance;
+//
+//   return (
+//     <div className="animated-border h-full">
+//       <div
+//         className="animated-border-inner overflow-hidden h-full flex flex-col"
+//         style={{ padding: "clamp(14px, 4vw, 20px)" }}
+//       >
+//         { }
+//         <div
+//           className="flex items-center justify-between"
+//           style={{ marginBottom: "clamp(10px, 3vw, 14px)" }}
+//         >
+//           <div
+//             className="font-syne font-bold"
+//             style={{ fontSize: "clamp(13px, 3.5vw, 15px)", color: "var(--text)" }}
+//           >
+//             Health &amp; Finance
+//           </div>
+//
+//           { }
+//           <div className="group relative">
+//             <button
+//               type="button"
+//               className="flex h-[18px] w-[18px] cursor-help items-center justify-center rounded-full border border-[var(--border)] bg-[var(--surface2)] text-[11px] text-[var(--muted2)]"
+//             >
+//               i
+//             </button>
+//
+//             <div className="absolute right-0 top-7 z-50 hidden w-60 rounded-xl border border-[var(--border)] bg-[rgba(20,20,20,0.96)] p-3 text-[11px] leading-relaxed text-[var(--text)] shadow-2xl group-hover:block">
+//               <div className="mb-1.5 font-semibold text-[#ff9a5c]">
+//                 How are coins earned?
+//               </div>
+//
+//               <ul className="list-disc space-y-1 pl-4">
+//                 <li>
+//                   Health data is collected from your phone through the Emple app.
+//                   Complete your daily step goal to earn 1 Coin.
+//                 </li>
+//                 <li>
+//                   Finance activity is tracked through expenses added in the Emple
+//                   app. Stay within your monthly budget to earn 10 Coins.
+//                 </li>
+//               </ul>
+//             </div>
+//           </div>
+//         </div>
+//
+//         { }
+//         {loading ? (
+//           <CardSkeleton />
+//         ) : bothFailed ? (
+//           <CardError message={error!} />
+//         ) : (
+//           <div className="flex-1 flex flex-col" style={{ gap: "clamp(10px, 2.5vw, 14px)" }}>
+//
+//             { }
+//             {health ? (
+//               <HealthSection data={health} />
+//             ) : (
+//               <div
+//                 className="text-center rounded-[10px]"
+//                 style={{
+//                   padding: "clamp(8px, 2vw, 12px)",
+//                   fontSize: "clamp(10px, 2.5vw, 11px)",
+//                   color: "var(--muted)",
+//                   border: "1px dashed var(--border)",
+//                   background: "var(--surface2)",
+//                 }}
+//               >
+//                 Health data unavailable
+//               </div>
+//             )}
+//
+//             { }
+//             <div style={{ height: 1, background: "var(--border)", flexShrink: 0 }} />
+//
+//             { }
+//             {finance ? (
+//               <FinanceSection data={finance} />
+//             ) : (
+//               <div
+//                 className="text-center rounded-[10px]"
+//                 style={{
+//                   padding: "clamp(8px, 2vw, 12px)",
+//                   fontSize: "clamp(10px, 2.5vw, 11px)",
+//                   color: "var(--muted)",
+//                   border: "1px dashed var(--border)",
+//                   background: "var(--surface2)",
+//                 }}
+//               >
+//                 Finance data unavailable
+//               </div>
+//             )}
+//
+//           </div>
+//         )}
+//       </div>
+//     </div>
+//   );
+// }
+
+*/
+// ── ORIGINAL CARD CODE END ─────────────────────────────────────────────────────
+
+// ── TEMPORARY BLANK PLACEHOLDER ───────────────────────────────────────────────
+// Renders an empty card with identical dimensions, styling, border, shadow,
+// spacing, animations, and responsiveness as the original HealthFinanceCard.
+// No health content, no finance content, no loading state, no error state,
+// no tooltips, no charts, no progress rings, no coins, no budget information.
+// ──────────────────────────────────────────────────────────────────────────────
+
 export default function HealthFinanceCard() {
-  const { health, finance, loading, error } = useHealthFinance();
-
-  const bothFailed = error && !health && !finance;
-
   return (
     <div className="animated-border h-full">
       <div
         className="animated-border-inner overflow-hidden h-full flex flex-col"
         style={{ padding: "clamp(14px, 4vw, 20px)" }}
       >
-        { }
-        <div
-          className="flex items-center justify-between"
-          style={{ marginBottom: "clamp(10px, 3vw, 14px)" }}
-        >
-          <div
-            className="font-syne font-bold"
-            style={{ fontSize: "clamp(13px, 3.5vw, 15px)", color: "var(--text)" }}
-          >
-            Health &amp; Finance
-          </div>
-
-          { }
-          <div className="group relative">
-            <button
-              type="button"
-              className="flex h-[18px] w-[18px] cursor-help items-center justify-center rounded-full border border-[var(--border)] bg-[var(--surface2)] text-[11px] text-[var(--muted2)]"
-            >
-              i
-            </button>
-
-            <div className="absolute right-0 top-7 z-50 hidden w-60 rounded-xl border border-[var(--border)] bg-[rgba(20,20,20,0.96)] p-3 text-[11px] leading-relaxed text-[var(--text)] shadow-2xl group-hover:block">
-              <div className="mb-1.5 font-semibold text-[#ff9a5c]">
-                How are coins earned?
-              </div>
-
-              <ul className="list-disc space-y-1 pl-4">
-                <li>
-                  Health data is collected from your phone through the Emple app.
-                  Complete your daily step goal to earn 1 Coin.
-                </li>
-                <li>
-                  Finance activity is tracked through expenses added in the Emple
-                  app. Stay within your monthly budget to earn 10 Coins.
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        { }
-        {loading ? (
-          <CardSkeleton />
-        ) : bothFailed ? (
-          <CardError message={error!} />
-        ) : (
-          <div className="flex-1 flex flex-col" style={{ gap: "clamp(10px, 2.5vw, 14px)" }}>
-
-            { }
-            {health ? (
-              <HealthSection data={health} />
-            ) : (
-              <div
-                className="text-center rounded-[10px]"
-                style={{
-                  padding: "clamp(8px, 2vw, 12px)",
-                  fontSize: "clamp(10px, 2.5vw, 11px)",
-                  color: "var(--muted)",
-                  border: "1px dashed var(--border)",
-                  background: "var(--surface2)",
-                }}
-              >
-                Health data unavailable
-              </div>
-            )}
-
-            { }
-            <div style={{ height: 1, background: "var(--border)", flexShrink: 0 }} />
-
-            { }
-            {finance ? (
-              <FinanceSection data={finance} />
-            ) : (
-              <div
-                className="text-center rounded-[10px]"
-                style={{
-                  padding: "clamp(8px, 2vw, 12px)",
-                  fontSize: "clamp(10px, 2.5vw, 11px)",
-                  color: "var(--muted)",
-                  border: "1px dashed var(--border)",
-                  background: "var(--surface2)",
-                }}
-              >
-                Finance data unavailable
-              </div>
-            )}
-
-          </div>
-        )}
+        {/* Blank placeholder — no content rendered */}
       </div>
     </div>
   );

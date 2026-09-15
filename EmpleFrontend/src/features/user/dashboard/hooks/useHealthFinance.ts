@@ -1,9 +1,10 @@
+
+//  TEMPORARILY DISABLED — Health & Finance Data Fetching                      
+
+
 "use client";
 
-import { useEffect, useState, useCallback, useRef } from "react";
-import { apiRequest } from "@/shared/utils/api";
-
-// ── Types ──────────────────────────────────────────────────────────────────────
+// ── Types 
 
 export interface HealthStats {
   /** Steps logged today (synced from mobile app) */
@@ -36,9 +37,18 @@ export interface HealthFinanceState {
   error: string | null;
 }
 
-// ── Constants ──────────────────────────────────────────────────────────────────
 
-/** Poll every 30 s to stay in sync with backend / mobile app */
+
+
+/*
+// ORIGINAL HOOK BELOW
+
+import { useEffect, useState, useCallback, useRef } from "react";
+import { apiRequest } from "@/shared/utils/api";
+
+// ── Constants 
+
+// Poll every 30 s to stay in sync with backend / mobile app
 const POLL_MS = 30_000;
 
 // ── Hook ───────────────────────────────────────────────────────────────────────
@@ -106,4 +116,18 @@ export function useHealthFinance(): HealthFinanceState {
   }, [fetchAll]);
 
   return { health, finance, loading, error };
+}
+
+// ORIGINAL HOOK END
+*/
+
+// ── DISABLED BLOCK END ─────────────────────────────────────────────────────────
+
+export function useHealthFinance(): HealthFinanceState {
+  return {
+    health: null,
+    finance: null,
+    loading: false,
+    error: null,
+  };
 }

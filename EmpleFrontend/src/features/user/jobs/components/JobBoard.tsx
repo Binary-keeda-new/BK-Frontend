@@ -395,10 +395,11 @@ export default function JobBoard({ initialJobId }: { initialJobId?: string }) {
     if (govFilters.length > 0) params.set('gov', govFilters.join(','));
     
     const query = params.toString();
-    const newUrl = query ? `${pathname}?${query}` : pathname;
+    const currentQuery = searchParams?.toString() || '';
     
-    // Prevent history clutter by only replacing if actually changed
-    if (`${pathname}?${searchParams.toString()}` !== newUrl && `${pathname}?` !== newUrl) {
+    // Prevent history clutter and infinite loops by only replacing if query actually changed
+    if (query !== currentQuery) {
+      const newUrl = query ? `${pathname}?${query}` : pathname;
       router.replace(newUrl, { scroll: false });
     }
   }, [filter, locFilter, typeFilter, sort, govFilters, pathname, router, searchParams]);

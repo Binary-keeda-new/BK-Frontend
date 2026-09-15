@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import Sidebar from "@/shared/components/navigation/Sidebar";
 import Topbar from "@/shared/components/navigation/Topbar";
-import HelpChatWidget from "@/shared/components/help-chatbot/HelpChatWidget";
+
 
 export default function UserLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -24,7 +24,6 @@ export default function UserLayout({ children }: { children: React.ReactNode }) 
         <Topbar />
         <main className="flex-1 overflow-y-auto min-h-0">
           {children}
-          <HelpChatWidget />
         </main>
       </div>
     </div>

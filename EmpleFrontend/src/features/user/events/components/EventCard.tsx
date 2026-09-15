@@ -67,38 +67,25 @@ export default function EventCard({ event }: Props) {
       }}
     >
       {/* Banner / Fallback */}
-      {event.banner ? (
-        <div style={{
-          width: '100%',
-          height: 200,
-          background: '#0a0a0a',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          overflow: 'hidden',
-        }}>
+      <div style={{ position: 'relative', width: '100%', aspectRatio: '16/9', background: 'var(--surface2)', overflow: 'hidden' }}>
+        {event.banner ? (
           <img
             src={event.banner}
             alt={event.title}
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'contain',
-              display: 'block',
-            }}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
           />
-        </div>
-      ) : (
-        <div style={{
-          width: '100%', height: 200,
-          background: colors.bg,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: 32, fontWeight: 800, color: colors.color,
-          letterSpacing: '-0.02em', fontFamily: "'Inter', sans-serif",
-        }}>
-          {event.title.slice(0, 2).toUpperCase()}
-        </div>
-      )}
+        ) : (
+          <div style={{
+            width: '100%', height: '100%',
+            background: colors.bg,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: 32, fontWeight: 800, color: colors.color,
+            letterSpacing: '-0.02em', fontFamily: "'Inter', sans-serif",
+          }}>
+            {event.title.slice(0, 2).toUpperCase()}
+          </div>
+        )}
+      </div>
 
       <div style={{ padding: '20px 22px', display: 'flex', flexDirection: 'column', flex: 1 }}>
 
