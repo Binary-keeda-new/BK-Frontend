@@ -113,7 +113,7 @@ solutionMedia: q.solutionMedia || '',
     exam: q.exam || '',
     year: q.year ?? null,
     hasCodeBlock: q.hasCodeBlock || false,
-    codeBlock: q.codeBlock || null,
+    codeBlock: q.codeBlock ?? undefined,
     isPersisted: true,
   };
 };
@@ -143,7 +143,7 @@ const createImportedQuestion = (q: ImportedQuestionInput): Question => {
       exam: q.exam || '',
       year: q.year ?? null,
       hasCodeBlock: q.hasCodeBlock || false,
-      codeBlock: q.codeBlock || null,
+     codeBlock: q.codeBlock ?? undefined,
       isPersisted: false,
     };
   }
@@ -185,7 +185,7 @@ const createImportedQuestion = (q: ImportedQuestionInput): Question => {
     exam: q.exam || '',
     year: q.year ?? null,
     hasCodeBlock: q.hasCodeBlock || false,
-    codeBlock: q.codeBlock || null,
+    codeBlock: q.codeBlock ?? undefined,
     isPersisted: false,
   };
 };
