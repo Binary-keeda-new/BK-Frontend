@@ -4,17 +4,15 @@ frontend:
     preBuild:
       commands:
         - nvm use 20 || nvm install 20 || true
-        - cd EmpleFrontend
         - npm ci
     build:
       commands:
-        - cd EmpleFrontend
         - npm run build
   artifacts:
-    baseDirectory: EmpleFrontend/.next
+    baseDirectory: .next
     files:
       - '**/*'
   cache:
     paths:
-      - EmpleFrontend/.next/cache/**/*
-      - EmpleFrontend/node_modules/**/*
+      - .next/cache/**/*
+      - node_modules/**/*
