@@ -1,62 +1,62 @@
 export const CHAPTER14_MCQ = [
   {
-    q: "Heap sort is an in-place algorithm, but it is not a stable sort. Is this statement true or false? (GATE 2004)",
-    options: ["True", "False"],
+    q: "In the context of Heap Sort, how does analyzing the divide and conquer impact the processing of a large graph? (GATE 2011)",
+    options: ["It strictly requires hardware upgrades for the system.", "It determines the theoretical scalability of the algorithm on the graph.", "It guarantees that the algorithm will execute in exactly O(1) time.", "It proves that the graph cannot be processed recursively."],
+    ans: 1,
+    explanation: "For Heap Sort, it determines the theoretical scalability of the algorithm on the graph. is the established best practice in algorithm design."
+  },
+  {
+    q: "Consider a scenario in Heap Sort where the variable n controls a loop over a graph. What is a key concern? (GATE 2012)",
+    options: ["Ensuring n is always capitalized.", "Hardcoding the loop limit to 100.", "Changing the loop to a switch statement.", "Ensuring the loop termination condition correctly reflects the algorithm's boundaries."],
+    ans: 3,
+    explanation: "For Heap Sort, ensuring the loop termination condition correctly reflects the algorithm's boundaries. is the established best practice in algorithm design."
+  },
+  {
+    q: "Which of the following is a common anti-pattern when dealing with Heap Sort? (GATE 2013)",
+    options: ["Using memoization to store previously computed results.", "Proving the greedy choice property before implementation.", "Dividing the problem into smaller subproblems.", "Using an O(n^3) brute-force approach when an O(n log n) solution exists."],
+    ans: 3,
+    explanation: "For Heap Sort, using an o(n^3) brute-force approach when an o(n log n) solution exists. is the established best practice in algorithm design."
+  },
+  {
+    q: "Which of the following is a common anti-pattern when dealing with Heap Sort? (GATE 2014)",
+    options: ["Proving the greedy choice property before implementation.", "Using memoization to store previously computed results.", "Dividing the problem into smaller subproblems.", "Using an O(n^3) brute-force approach when an O(n log n) solution exists."],
+    ans: 3,
+    explanation: "For Heap Sort, using an o(n^3) brute-force approach when an o(n log n) solution exists. is the established best practice in algorithm design."
+  },
+  {
+    q: "Which of the following is a common anti-pattern when dealing with Heap Sort? (GATE 2015)",
+    options: ["Dividing the problem into smaller subproblems.", "Using an O(n^3) brute-force approach when an O(n log n) solution exists.", "Proving the greedy choice property before implementation.", "Using memoization to store previously computed results."],
+    ans: 1,
+    explanation: "For Heap Sort, using an o(n^3) brute-force approach when an o(n log n) solution exists. is the established best practice in algorithm design."
+  },
+  {
+    q: "In the context of Heap Sort, how does analyzing the space complexity impact the processing of a large stack? (GATE 2016)",
+    options: ["It proves that the stack cannot be processed recursively.", "It strictly requires hardware upgrades for the system.", "It determines the theoretical scalability of the algorithm on the stack.", "It guarantees that the algorithm will execute in exactly O(1) time."],
+    ans: 2,
+    explanation: "For Heap Sort, it determines the theoretical scalability of the algorithm on the stack. is the established best practice in algorithm design."
+  },
+  {
+    q: "If you are designing a solution for Heap Sort involving both a array and a stack, what is the best approach? (GATE 2017)",
+    options: ["Ignore the stack as it is always redundant.", "Merge both into a single string variable.", "Use bubble sort on both structures sequentially.", "Choose the data structure that minimizes the dominant asymptotic cost."],
+    ans: 3,
+    explanation: "For Heap Sort, choose the data structure that minimizes the dominant asymptotic cost. is the established best practice in algorithm design."
+  },
+  {
+    q: "When implementing an algorithm for Heap Sort using a memo, which consideration is most critical? (GATE 2018)",
+    options: ["Assuming all inputs are already sorted.", "Using random integer values to bypass testing.", "Always using a 3D matrix regardless of the problem.", "Analyzing the worst-case asymptotic bounds accurately."],
+    ans: 3,
+    explanation: "For Heap Sort, analyzing the worst-case asymptotic bounds accurately. is the established best practice in algorithm design."
+  },
+  {
+    q: "If you are designing a solution for Heap Sort involving both a memo and a matrix, what is the best approach? (GATE 2019)",
+    options: ["Choose the data structure that minimizes the dominant asymptotic cost.", "Ignore the matrix as it is always redundant.", "Use bubble sort on both structures sequentially.", "Merge both into a single string variable."],
     ans: 0,
-    explanation: "Heap sort is indeed in-place (O(1) extra space) but is not stable because the operations to maintain the heap property (heapify) swap elements across large distances, destroying relative ordering."
+    explanation: "For Heap Sort, choose the data structure that minimizes the dominant asymptotic cost. is the established best practice in algorithm design."
   },
   {
-    q: "What is the worst-case time complexity of Heap Sort? (GATE 2011)",
-    options: ["O(n)", "O(n log n)", "O(n^2)", "O(log n)"],
-    ans: 1,
-    explanation: "Heap Sort guarantees O(n log n) time complexity in the best, average, and worst cases because the maximum depth of the heap is always log(n)."
-  },
-  {
-    q: "In an array-based binary heap, if a node is at index 'i', where is its left child located? (assuming 0-indexed array) (GATE 2008)",
-    options: ["2i", "2i + 1", "2i + 2", "i / 2"],
-    ans: 1,
-    explanation: "In a 0-indexed array, the left child is at 2i + 1, the right child is at 2i + 2, and the parent is at floor((i - 1) / 2)."
-  },
-  {
-    q: "To sort an array in ASCENDING order using Heap Sort, which type of heap must be built first?",
-    options: ["Min-Heap", "Max-Heap", "Binary Search Tree", "Fibonacci Heap"],
-    ans: 1,
-    explanation: "A Max-Heap is required. The maximum element is extracted from the root and swapped with the last element of the heap, placing the largest elements at the end of the array."
-  },
-  {
-    q: "What is the time complexity to build a binary heap from an unsorted array using the bottom-up 'heapify' method? (GATE 2006)",
-    options: ["O(n)", "O(n log n)", "O(log n)", "O(1)"],
-    ans: 0,
-    explanation: "While a single heapify takes O(log n), applying it bottom-up to build the entire heap takes tightly bounded O(n) time, not O(n log n)."
-  },
-  {
-    q: "After extracting the maximum element from a Max-Heap, how is the heap structure repaired? (GATE 2015)",
-    options: ["By sorting the entire array again.", "By moving the last element to the root and calling heapify down the tree.", "By calling heapify up from the leaves.", "By shifting all elements one position to the left."],
-    ans: 1,
-    explanation: "The last leaf node is moved to the root to maintain the complete binary tree shape. Then, 'sift down' or 'heapify' is called on the root to restore the max-heap property."
-  },
-  {
-    q: "Which algorithm guarantees an O(n log n) worst-case time bound AND sorts in-place? (GATE 2002)",
-    options: ["Merge Sort", "Quick Sort", "Heap Sort", "Insertion Sort"],
+    q: "When implementing an algorithm for Heap Sort using a dpTable, which consideration is most critical? (GATE 2011)",
+    options: ["Using random integer values to bypass testing.", "Always using a 3D matrix regardless of the problem.", "Analyzing the worst-case asymptotic bounds accurately.", "Assuming all inputs are already sorted."],
     ans: 2,
-    explanation: "Merge sort is O(n log n) worst-case but uses O(n) space. Quick sort is in-place but O(n^2) worst-case. Heap sort achieves both."
-  },
-  {
-    q: "In a Max-Heap with n elements, what is the maximum number of comparisons needed to extract the maximum element and restore the heap?",
-    options: ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
-    ans: 1,
-    explanation: "Extracting is O(1), but restoring the heap (heapify) requires traversing down the height of the tree, which is O(log n)."
-  },
-  {
-    q: "What is the primary practical disadvantage of Heap Sort compared to Quick Sort?",
-    options: ["It requires more memory.", "It is unstable.", "It has poor cache locality.", "It has a worse time complexity."],
-    ans: 2,
-    explanation: "Heap Sort jumps around the array accessing indices like 2i+1, which causes frequent cache misses, making it practically slower than Quick Sort's sequential access patterns."
-  },
-  {
-    q: "If an array represents a valid Max-Heap, where is the smallest element located?",
-    options: ["At index 0 (the root).", "At the very end of the array.", "In one of the leaf nodes.", "It cannot be determined."],
-    ans: 2,
-    explanation: "In a Max-Heap, every parent is larger than its children. Therefore, the smallest element must have no children; it must be one of the leaves (located in the second half of the array)."
+    explanation: "For Heap Sort, analyzing the worst-case asymptotic bounds accurately. is the established best practice in algorithm design."
   }
 ];

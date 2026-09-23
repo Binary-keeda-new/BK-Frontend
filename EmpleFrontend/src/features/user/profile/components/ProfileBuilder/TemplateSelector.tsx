@@ -34,6 +34,34 @@ export function TemplateSelector({ selected, onChange, username, isPublished }: 
       color: 'bg-zinc-950',
       pattern: 'linear-gradient(135deg, #3f3f46 25%, transparent 25%) -50px 0, linear-gradient(225deg, #3f3f46 25%, transparent 25%) -50px 0, linear-gradient(315deg, #3f3f46 25%, transparent 25%), linear-gradient(45deg, #3f3f46 25%, transparent 25%)'
     },
+    { 
+      id: 'cyber-developer', 
+      name: 'Cyber Developer', 
+      desc: 'Dark futuristic theme with neon cyan glow effects and cyberpunk aesthetics.', 
+      color: 'bg-cyan-950',
+      pattern: 'linear-gradient(rgba(0, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 255, 0.05) 1px, transparent 1px)'
+    },
+    { 
+      id: 'hacker-terminal', 
+      name: 'Hacker Terminal', 
+      desc: 'Classic retro terminal style with green monochrome phosphor fonts and command-line interfaces.', 
+      color: 'bg-black',
+      pattern: 'linear-gradient(to bottom, transparent 50%, rgba(51, 255, 0, 0.05) 50%)'
+    },
+    { 
+      id: 'premium-corporate', 
+      name: 'Premium Corporate', 
+      desc: 'Clean, minimal, high-end professional design with subtle animations for executives.', 
+      color: 'bg-slate-100',
+      pattern: 'linear-gradient(135deg, transparent 40%, rgba(0,0,0,0.02) 40%, rgba(0,0,0,0.02) 60%, transparent 60%)'
+    },
+    { 
+      id: 'modern-personal', 
+      name: 'Modern Personal', 
+      desc: 'Trendy vibrant accents, glassmorphism, and bold personal branding elements.', 
+      color: 'bg-indigo-50',
+      pattern: 'radial-gradient(circle at 100% 0%, rgba(167, 139, 250, 0.1) 0%, transparent 50%), radial-gradient(circle at 0% 100%, rgba(99, 102, 241, 0.1) 0%, transparent 50%)'
+    },
   ];
 
   const canView = username && isPublished;

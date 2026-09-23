@@ -17,6 +17,7 @@ import {
 import { getAdminQuizReport } from './adminQuizReport.service';
 import type { QuizReport } from './quizReport.types';
 import { Eye } from 'lucide-react';
+import ExportLeaderboardButton from './ExportLeaderboardButton';
 
 type Props = {
   quizId: string;
@@ -176,13 +177,17 @@ export default function InstructorDashboard({ quizId, onBack, onReviewAttempt }:
         Back to quizzes
       </button>
 
-      <div className="mb-6">
-        <h1 className="text-2xl font-extrabold text-[var(--clr-text)] sm:text-3xl">
-          Quiz <span className="text-[#F97316]">Report</span>
-        </h1>
-        <p className="mt-1 text-sm text-[var(--clr-text2)]">
-          Student attempt analytics and question-wise performance.
-        </p>
+      <div className="mb-6 flex items-start justify-between gap-4" >
+        <div>
+          <h1 className="text-2xl font-extrabold text-[var(--clr-text)] sm:text-3xl">
+            Quiz <span className="text-[#F97316]">Report</span>
+          </h1>
+          <p className="mt-1 text-sm text-[var(--clr-text2)]">
+            Student attempt analytics and question-wise performance.
+          </p>
+        </div>
+
+        <ExportLeaderboardButton report={report} />
       </div>
 
       <div className="mb-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">

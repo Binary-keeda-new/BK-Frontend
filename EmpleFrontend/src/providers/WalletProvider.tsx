@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState, useCallback, ReactNode } from "react";
-import { fetchWalletBalance, fetchWalletConfig, WalletStats } from "@/features/wallet/api/wallet.api";
+import { fetchWalletBalance, fetchWalletConfig, WalletStats, fetchUnseenRewards, acknowledgeTransaction } from "@/features/wallet/api/wallet.api";
 import { useSession } from "@descope/nextjs-sdk/client";
 import PurchaseDialog from "@/features/wallet/components/PurchaseDialog";
 import { useNotification } from "@/providers/NotificationProvider";
@@ -32,7 +32,7 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [isPurchaseModalOpen, setIsPurchaseModalOpen] = useState(false);
-  const { notifyReward } = useNotification();
+  const { notifyReward, notifyCelebration } = useNotification();
 
   const openPurchaseModal = useCallback(() => setIsPurchaseModalOpen(true), []);
   const closePurchaseModal = useCallback(() => setIsPurchaseModalOpen(false), []);
@@ -64,6 +64,23 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
           ]);
           setStats(data);
           setConfig(configData);
+
+          if (data.hasUnseenRewards) {
+            fetchUnseenRewards().then(unseen => {
+              unseen.forEach(reward => {
+                notifyCelebration(
+                  reward.metadata?.title || "Emple Reward",
+                  reward.metadata?.description || "You have received a new reward.",
+                  reward.amount,
+                  reward._id,
+                  () => {
+                    acknowledgeTransaction(reward._id).catch(console.error);
+                  }
+                );
+              });
+            }).catch(console.error);
+          }
+
           queue.forEach(q => q.resolve());
         } catch (err: any) {
           console.error("Failed to refresh wallet:", err.message || "Unknown error");

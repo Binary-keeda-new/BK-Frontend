@@ -1,107 +1,23 @@
 export const CHAPTER12_DEBUG = [
   {
-    instructions: "This Merge function merges two sorted arrays but loses stability. Fix the comparison.",
-    buggy: `void merge(int arr[], int l, int m, int r) {
-    // ... setup temporary arrays L and R ...
-    int i = 0, j = 0, k = l;
-    while (i < n1 && j < n2) {
-        // Bug: Using '<' instead of '<=' destroys stability
-        if (L[i] < R[j]) {
-            arr[k] = L[i];
-            i++;
-        } else {
-            arr[k] = R[j];
-            j++;
-        }
-        k++;
-    }
-    // ... copy remaining elements ...
-}`,
-    fixed: `void merge(int arr[], int l, int m, int r) {
-    // ... setup temporary arrays L and R ...
-    int i = 0, j = 0, k = l;
-    while (i < n1 && j < n2) {
-        // Fix: Use '<=' to favor the left array for equal elements
-        if (L[i] <= R[j]) {
-            arr[k] = L[i];
-            i++;
-        } else {
-            arr[k] = R[j];
-            j++;
-        }
-        k++;
-    }
-    // ... copy remaining elements ...
-}`,
-    hints: [
-      "Stability means equal elements retain their original relative order.",
-      "If L[i] == R[j], which one came first in the original array?",
-      "The one in L (the left half) came first! You must pick L[i] if they are equal."
-    ],
-    expectedOutput: "The array is correctly sorted and remains stable."
+    instructions: "Fix the bounds calculation in the Divide step of Merge Sort.",
+    buggy: "void merge_sort(int arr[], int l, int r) {\n    if (l < r) {\n        int m = (l + r) / 2;\n        merge_sort(arr, l, m);\n        merge_sort(arr, m, r);\n        merge(arr, l, m, r);\n    }\n}",
+    fixed: "void merge_sort(int arr[], int l, int r) {\n    if (l < r) {\n        int m = l + (r - l) / 2;\n        merge_sort(arr, l, m);\n        merge_sort(arr, m + 1, r);\n        merge(arr, l, m, r);\n    }\n}",
+    hints: ["The second recursive call is overlapping with the first one by including 'm'.", "Pass m + 1 to the right subarray."],
+    expectedOutput: "Subarrays divide evenly without infinite recursion."
   },
   {
-    instructions: "This recursive mergeSort function causes a Stack Overflow due to a missing base case.",
-    buggy: `void mergeSort(int arr[], int l, int r) {
-    // Bug: No base case! It will endlessly divide.
-    int m = l + (r - l) / 2;
-    
-    mergeSort(arr, l, m);
-    mergeSort(arr, m + 1, r);
-    
-    merge(arr, l, m, r);
-}`,
-    fixed: `void mergeSort(int arr[], int l, int r) {
-    // Fix: Base case to stop recursion when the sub-array has 1 or 0 elements.
-    if (l >= r) return;
-    
-    int m = l + (r - l) / 2;
-    
-    mergeSort(arr, l, m);
-    mergeSort(arr, m + 1, r);
-    
-    merge(arr, l, m, r);
-}`,
-    hints: [
-      "Recursive functions must have a condition to stop calling themselves.",
-      "When is an array conceptually 'sorted'?",
-      "When it has only 1 element (l == r)."
-    ],
-    expectedOutput: "Terminates successfully and sorts the array."
+    instructions: "Correct the merging logic to properly exhaust elements from both subarrays.",
+    buggy: "void merge(int arr[], int l, int m, int r) {\n    // Arrays L and R created and filled...\n    int i=0, j=0, k=l;\n    while(i < n1 && j < n2) {\n        if(L[i] <= R[j]) { arr[k] = L[i]; i++; }\n        else { arr[k] = R[j]; j++; }\n    }\n    // Missing remainder copy loops\n}",
+    fixed: "void merge(int arr[], int l, int m, int r) {\n    // Arrays L and R created and filled...\n    int i=0, j=0, k=l;\n    while(i < n1 && j < n2) {\n        if(L[i] <= R[j]) { arr[k] = L[i]; i++; }\n        else { arr[k] = R[j]; j++; }\n        k++;\n    }\n    while(i < n1) { arr[k] = L[i]; i++; k++; }\n    while(j < n2) { arr[k] = R[j]; j++; k++; }\n}",
+    hints: ["First, k is never incremented in the while loop!", "Second, if one array is exhausted, the remaining elements of the other must be copied over."],
+    expectedOutput: "Elements merge correctly into the original array."
   },
   {
-    instructions: "This merge function copies remaining elements from L, but forgets to copy remaining elements from R.",
-    buggy: `void merge(int arr[], int l, int m, int r) {
-    // ... while loop merges elements ...
-    
-    // Copy remaining elements of L[]
-    while (i < n1) {
-        arr[k] = L[i];
-        i++; k++;
-    }
-    
-    // Bug: Missing logic to copy remaining elements of R[]!
-}`,
-    fixed: `void merge(int arr[], int l, int m, int r) {
-    // ... while loop merges elements ...
-    
-    // Copy remaining elements of L[]
-    while (i < n1) {
-        arr[k] = L[i];
-        i++; k++;
-    }
-    
-    // Fix: Copy remaining elements of R[]
-    while (j < n2) {
-        arr[k] = R[j];
-        j++; k++;
-    }
-}`,
-    hints: [
-      "The first while loop stops as soon as ONE of the arrays (L or R) is exhausted.",
-      "What if R has elements left over?",
-      "You must have a while loop for R just like you do for L."
-    ],
-    expectedOutput: "All elements are merged, none are left behind."
+    instructions: "Fix the memory allocation step inside the merge function.",
+    buggy: "void merge(int arr[], int l, int m, int r) {\n    int n1 = m - l + 1;\n    int n2 = r - m;\n    int L[n1], R[n2];\n    for(int i=0; i<n1; i++) L[i] = arr[l + i + 1];\n    for(int j=0; j<n2; j++) R[j] = arr[m + 1 + j];\n    // ... merge logic\n}",
+    fixed: "void merge(int arr[], int l, int m, int r) {\n    int n1 = m - l + 1;\n    int n2 = r - m;\n    int L[n1], R[n2];\n    for(int i=0; i<n1; i++) L[i] = arr[l + i];\n    for(int j=0; j<n2; j++) R[j] = arr[m + 1 + j];\n    // ... merge logic\n}",
+    hints: ["L array should copy elements starting from index l, not l+1."],
+    expectedOutput: "Temporary arrays constructed accurately."
   }
 ];

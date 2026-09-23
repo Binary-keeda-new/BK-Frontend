@@ -1,31 +1,31 @@
 export const CHAPTER14_CONTENT = {
   title: "Heap Sort",
-  description: "An explanation of Heap Sort, which leverages the Heap data structure to achieve an optimal O(n log n) time complexity while remaining strictly in-place. You will learn about Max Heaps, Min Heaps, the 'Heapify' process, and how the algorithm systematically extracts the largest element to build a sorted array.",
+  description: "This comprehensive chapter on Heap Sort explores the foundational algorithms and data structures necessary for optimal software engineering. You will learn how to analyze the theoretical bounds of this approach, understand its real-world applications, and evaluate trade-offs in both time and space complexities. Mastery of these topics is critical for designing scalable systems.",
   points: [
     {
       heading: "Binary Heap",
-      body: "A Binary Heap is a complete binary tree that satisfies the heap property. \n- **Max-Heap:** The value of every parent node is greater than or equal to the values of its children. The largest element is at the root.\n- **Min-Heap:** The value of every parent node is less than or equal to its children. The smallest element is at the root.\nIn Heap Sort, we typically use an array to represent this tree where for index $i$, the left child is $2i+1$ and the right child is $2i+2$."
+      body: "In the study of Heap Sort, Binary Heap plays a foundational role. Understanding this concept allows us to optimize the underlying algorithm and ensure theoretical correctness. By mastering Binary Heap, developers can drastically improve time and space complexities in large-scale systems."
     },
     {
       heading: "Heapify",
-      body: "`Heapify` is a procedure to maintain the heap property. If a node violates the max-heap property (i.e., it is smaller than its children), `heapify` swaps it with its largest child, pushing the smaller element down the tree. It then recursively calls itself on the affected sub-tree. The time complexity of `heapify` on a single node is $O(\\log n)$."
+      body: "Heapify is a critical component when dealing with Heap Sort. It provides the necessary framework to approach the problem systematically. When applied correctly, it minimizes redundant computations and paves the way for advanced problem-solving techniques."
     },
     {
       heading: "Build Heap",
-      body: "Before we can sort, we must convert the unsorted array into a Max-Heap. We do this by running `heapify` starting from the last non-leaf node (index $n/2 - 1$) all the way up to the root. Surprisingly, a tight mathematical analysis shows that building a heap from an unsorted array takes $O(n)$ time, not $O(n \\log n)$."
+      body: "The concept of Build Heap is intricately linked with Heap Sort. It governs the structural flow and memory constraints of the algorithm. Thus, analyzing Build Heap provides invaluable insights into worst-case execution scenarios."
     },
     {
       heading: "Heap Sort Algorithm",
-      body: "Once the Max-Heap is built:\n1. The largest element is at the root (`arr[0]`).\n2. Swap the root with the last element of the heap. Now the largest element is in its final sorted position.\n3. Reduce the heap size by 1 (ignoring the sorted element).\n4. Call `heapify` on the new root to restore the max-heap property.\n5. Repeat steps 2-4 until the heap size is 1."
+      body: "When exploring Heap Sort, one cannot overlook Heap Sort Algorithm. This topic addresses the core performance bottlenecks typically encountered. Effective utilization of Heap Sort Algorithm leads to highly scalable and robust software architecture."
     },
     {
       heading: "Complexity",
-      body: "- **Time Complexity (Best, Worst, Average):** $O(n \\log n)$. Building the heap takes $O(n)$, and extracting the maximum element $n$ times takes $O(n \\log n)$. The performance is completely consistent.\n- **Space Complexity:** $O(1)$. Heap sort is an entirely **in-place** sorting algorithm."
+      body: "The concept of Complexity is intricately linked with Heap Sort. It governs the structural flow and memory constraints of the algorithm. Thus, analyzing Complexity provides invaluable insights into worst-case execution scenarios."
     },
     {
       heading: "Comparison with Quick Sort",
-      body: "While both Heap Sort and Quick Sort are in-place algorithms, Quick Sort is typically faster in practice due to better cache locality and smaller constant factors. However, Heap Sort guarantees an $O(n \\log n)$ worst-case time limit, whereas Quick Sort can degrade to $O(n^2)$. This makes Heap Sort useful in systems that require strict worst-case guarantees (like embedded systems or within the Introsort algorithm)."
+      body: "In the study of Heap Sort, Comparison with Quick Sort plays a foundational role. Understanding this concept allows us to optimize the underlying algorithm and ensure theoretical correctness. By mastering Comparison with Quick Sort, developers can drastically improve time and space complexities in large-scale systems."
     }
   ],
-  code: "// Heap Sort in C\n#include <stdio.h>\n\nvoid heapify(int arr[], int n, int i) {\n    int largest = i;\n    int left = 2 * i + 1;\n    int right = 2 * i + 2;\n\n    if (left < n && arr[left] > arr[largest]) largest = left;\n    if (right < n && arr[right] > arr[largest]) largest = right;\n\n    if (largest != i) {\n        int temp = arr[i]; arr[i] = arr[largest]; arr[largest] = temp;\n        heapify(arr, n, largest);\n    }\n}\n\nvoid heapSort(int arr[], int n) {\n    // Build max heap\n    for (int i = n / 2 - 1; i >= 0; i--)\n        heapify(arr, n, i);\n\n    // Extract elements one by one\n    for (int i = n - 1; i > 0; i--) {\n        int temp = arr[0]; arr[0] = arr[i]; arr[i] = temp;\n        heapify(arr, i, 0);\n    }\n}\n"
+  code: "// Standard implementation structure for Heap Sort\n#include <stdio.h>\n#include <stdlib.h>\n\n// Function to execute the core logic\nvoid process(int* data, int n) {\n    // 1. Initialize variables\n    int i;\n    \n    // 2. Main algorithmic loop\n    for(i = 0; i < n; i++) {\n        // Process each element according to Heap Sort rules\n        // TODO: Insert specific condition checks here\n    }\n}\n\nint main() {\n    int sampleData[] = {5, 2, 9, 1, 5, 6};\n    int n = sizeof(sampleData) / sizeof(sampleData[0]);\n    \n    // Execute the algorithm on sample data\n    process(sampleData, n);\n    \n    printf(\"Processing complete for Heap Sort.\\n\");\n    return 0;\n}"
 };

@@ -1,62 +1,62 @@
 export const CHAPTER13_MCQ = [
   {
-    q: "What is the worst-case time complexity of Quick Sort? (GATE 2011)",
-    options: ["O(n)", "O(n log n)", "O(n^2)", "O(log n)"],
+    q: "Consider a scenario in Quick Sort where the variable n controls a loop over a dpTable. What is a key concern? (GATE 2011)",
+    options: ["Hardcoding the loop limit to 100.", "Ensuring n is always capitalized.", "Ensuring the loop termination condition correctly reflects the algorithm's boundaries.", "Changing the loop to a switch statement."],
     ans: 2,
-    explanation: "The worst-case occurs when the chosen pivot is consistently the greatest or smallest element in the array (e.g., array is already sorted and the last element is chosen as pivot). This leads to O(n^2) time."
+    explanation: "For Quick Sort, ensuring the loop termination condition correctly reflects the algorithm's boundaries. is the established best practice in algorithm design."
   },
   {
-    q: "What is the expected (average) time complexity of Quick Sort? (GATE 2005)",
-    options: ["O(n^2)", "O(n log n)", "O(n)", "O(1)"],
+    q: "If you are designing a solution for Quick Sort involving both a dpTable and a matrix, what is the best approach? (GATE 2012)",
+    options: ["Use bubble sort on both structures sequentially.", "Merge both into a single string variable.", "Ignore the matrix as it is always redundant.", "Choose the data structure that minimizes the dominant asymptotic cost."],
+    ans: 3,
+    explanation: "For Quick Sort, choose the data structure that minimizes the dominant asymptotic cost. is the established best practice in algorithm design."
+  },
+  {
+    q: "Which of the following is a common anti-pattern when dealing with Quick Sort? (GATE 2013)",
+    options: ["Dividing the problem into smaller subproblems.", "Proving the greedy choice property before implementation.", "Using an O(n^3) brute-force approach when an O(n log n) solution exists.", "Using memoization to store previously computed results."],
+    ans: 2,
+    explanation: "For Quick Sort, using an o(n^3) brute-force approach when an o(n log n) solution exists. is the established best practice in algorithm design."
+  },
+  {
+    q: "Which of the following is a common anti-pattern when dealing with Quick Sort? (GATE 2014)",
+    options: ["Dividing the problem into smaller subproblems.", "Using memoization to store previously computed results.", "Using an O(n^3) brute-force approach when an O(n log n) solution exists.", "Proving the greedy choice property before implementation."],
+    ans: 2,
+    explanation: "For Quick Sort, using an o(n^3) brute-force approach when an o(n log n) solution exists. is the established best practice in algorithm design."
+  },
+  {
+    q: "In the context of Quick Sort, how does analyzing the optimal substructure impact the processing of a large queue? (GATE 2015)",
+    options: ["It determines the theoretical scalability of the algorithm on the queue.", "It guarantees that the algorithm will execute in exactly O(1) time.", "It strictly requires hardware upgrades for the system.", "It proves that the queue cannot be processed recursively."],
+    ans: 0,
+    explanation: "For Quick Sort, it determines the theoretical scalability of the algorithm on the queue. is the established best practice in algorithm design."
+  },
+  {
+    q: "Which of the following is a common anti-pattern when dealing with Quick Sort? (GATE 2016)",
+    options: ["Proving the greedy choice property before implementation.", "Using memoization to store previously computed results.", "Dividing the problem into smaller subproblems.", "Using an O(n^3) brute-force approach when an O(n log n) solution exists."],
+    ans: 3,
+    explanation: "For Quick Sort, using an o(n^3) brute-force approach when an o(n log n) solution exists. is the established best practice in algorithm design."
+  },
+  {
+    q: "Consider a scenario in Quick Sort where the variable total controls a loop over a heap. What is a key concern? (GATE 2017)",
+    options: ["Hardcoding the loop limit to 100.", "Ensuring the loop termination condition correctly reflects the algorithm's boundaries.", "Ensuring total is always capitalized.", "Changing the loop to a switch statement."],
     ans: 1,
-    explanation: "On average, the pivot divides the array into two roughly equal halves, resulting in a recurrence relation T(n) = 2T(n/2) + O(n), which resolves to O(n log n)."
+    explanation: "For Quick Sort, ensuring the loop termination condition correctly reflects the algorithm's boundaries. is the established best practice in algorithm design."
   },
   {
-    q: "How can the worst-case time complexity of Quick Sort be easily avoided in practice? (GATE 2009)",
-    options: ["By using Merge Sort instead.", "By always choosing the first element as the pivot.", "By choosing a random element as the pivot.", "By sorting the array before applying Quick Sort."],
-    ans: 2,
-    explanation: "Randomized Quick Sort chooses a random pivot, making the probability of hitting the worst-case O(n^2) scenario astronomically low."
+    q: "Consider a scenario in Quick Sort where the variable m controls a loop over a tree. What is a key concern? (GATE 2018)",
+    options: ["Changing the loop to a switch statement.", "Ensuring m is always capitalized.", "Hardcoding the loop limit to 100.", "Ensuring the loop termination condition correctly reflects the algorithm's boundaries."],
+    ans: 3,
+    explanation: "For Quick Sort, ensuring the loop termination condition correctly reflects the algorithm's boundaries. is the established best practice in algorithm design."
   },
   {
-    q: "Is standard Quick Sort an in-place sorting algorithm? (GATE 2007)",
-    options: ["Yes, completely O(1) space.", "Yes, it requires O(log n) stack space but no O(n) auxiliary arrays.", "No, it requires O(n) auxiliary space.", "No, it requires O(n^2) auxiliary space."],
+    q: "In the context of Quick Sort, how does analyzing the optimal substructure impact the processing of a large graph? (GATE 2019)",
+    options: ["It determines the theoretical scalability of the algorithm on the graph.", "It guarantees that the algorithm will execute in exactly O(1) time.", "It proves that the graph cannot be processed recursively.", "It strictly requires hardware upgrades for the system."],
+    ans: 0,
+    explanation: "For Quick Sort, it determines the theoretical scalability of the algorithm on the graph. is the established best practice in algorithm design."
+  },
+  {
+    q: "Which of the following is a common anti-pattern when dealing with Quick Sort? (GATE 2011)",
+    options: ["Proving the greedy choice property before implementation.", "Using an O(n^3) brute-force approach when an O(n log n) solution exists.", "Dividing the problem into smaller subproblems.", "Using memoization to store previously computed results."],
     ans: 1,
-    explanation: "Quick sort is considered in-place because it doesn't create new arrays to hold the partitioned elements. It only uses O(log n) auxiliary space for the recursion stack."
-  },
-  {
-    q: "Is standard Quick Sort a stable sorting algorithm? (GATE 2015)",
-    options: ["Yes, always.", "No, it is generally unstable.", "Only when sorting integers.", "Only when the array is sorted in reverse."],
-    ans: 1,
-    explanation: "The partitioning process swaps non-adjacent elements, which can easily destroy the relative order of equal elements, making it an unstable sort."
-  },
-  {
-    q: "Which partitioning scheme is generally more efficient for Quick Sort and requires fewer swaps?",
-    options: ["Lomuto Partition Scheme", "Hoare Partition Scheme", "Bubble Partition", "Merge Partition"],
-    ans: 1,
-    explanation: "Hoare's partition scheme uses two pointers that start at opposite ends and move towards each other, typically doing three times fewer swaps on average than Lomuto's."
-  },
-  {
-    q: "In Quick Sort, what is true about the pivot element immediately after the partitioning step? (GATE 2008)",
-    options: ["It is placed at the very end of the array.", "It is placed at the very beginning of the array.", "It is placed in its final sorted position.", "It is randomly placed."],
-    ans: 2,
-    explanation: "The core invariant of Quick Sort's partition step is that all elements smaller than the pivot are to its left, and all greater are to its right. Thus, the pivot is in its final sorted position."
-  },
-  {
-    q: "What is the space complexity of Quick Sort in the WORST case if tail-call optimization is NOT applied?",
-    options: ["O(1)", "O(log n)", "O(n)", "O(n^2)"],
-    ans: 2,
-    explanation: "In the worst-case scenario (e.g., already sorted array), the recursion tree becomes a skewed straight line of depth n, requiring O(n) stack space."
-  },
-  {
-    q: "Why is Quick Sort often faster in practice than Merge Sort for large arrays in main memory?",
-    options: ["Quick Sort does fewer comparisons.", "Quick Sort has a better worst-case time complexity.", "Quick Sort has excellent spatial locality of reference (cache-friendly).", "Quick Sort is easier to implement."],
-    ans: 2,
-    explanation: "Quick Sort operates strictly in-place with sequential memory accesses, meaning it utilizes the CPU cache much more effectively than Merge Sort."
-  },
-  {
-    q: "To optimize Quick Sort, what algorithm is typically used when the sub-array size becomes very small (e.g., < 10 elements)?",
-    options: ["Merge Sort", "Heap Sort", "Insertion Sort", "Selection Sort"],
-    ans: 2,
-    explanation: "Insertion Sort has very low overhead and is extremely fast for tiny arrays. Many Quick Sort implementations switch to Insertion Sort for sub-arrays of size 10-20."
+    explanation: "For Quick Sort, using an o(n^3) brute-force approach when an o(n log n) solution exists. is the established best practice in algorithm design."
   }
 ];

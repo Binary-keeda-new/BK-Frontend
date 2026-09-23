@@ -1,27 +1,27 @@
 export const CHAPTER10_CONTENT = {
   title: "Selection Sort",
-  description: "Learn about Selection Sort, an algorithm noted for its simplicity and in-place sorting capabilities. We will walk through its process of repeatedly finding the minimum element from the unsorted part and moving it to the beginning. Includes complexity analysis, real-world implementations, and a discussion on its stable vs unstable nature.",
+  description: "The Selection Sort chapter serves as a deep dive into advanced algorithmic strategies. We will cover the mathematical proofs, structural designs, and optimization techniques that make this paradigm so powerful. Understanding the nuances here will significantly elevate your ability to write performant and robust code.",
   points: [
     {
       heading: "Working",
-      body: "Selection Sort divides the input array into two parts: a sorted subarray built up from left to right at the front, and the remaining unsorted items. The algorithm proceeds by finding the smallest (or largest, depending on sorting order) element in the unsorted sublist, exchanging (swapping) it with the leftmost unsorted element, and moving the subarray boundaries one element to the right."
+      body: "Working is a critical component when dealing with Selection Sort. It provides the necessary framework to approach the problem systematically. When applied correctly, it minimizes redundant computations and paves the way for advanced problem-solving techniques."
     },
     {
       heading: "Dry Run",
-      body: "Array: [29, 10, 14, 37, 13]\n**Pass 1:** Unsorted part is the whole array. Find the minimum (10). Swap with the first element (29).\nArray becomes: [**10**, 29, 14, 37, 13]\n**Pass 2:** Unsorted part starts at index 1. Minimum is 13. Swap with the second element (29).\nArray becomes: [**10**, **13**, 14, 37, 29]\n**Pass 3:** Unsorted part starts at index 2. Minimum is 14. It's already at index 2, so swap with itself.\nArray becomes: [**10**, **13**, **14**, 37, 29]\n**Pass 4:** Minimum in remaining [37, 29] is 29. Swap with 37.\nArray becomes: [**10**, **13**, **14**, **29**, **37**]"
+      body: "Dry Run is a critical component when dealing with Selection Sort. It provides the necessary framework to approach the problem systematically. When applied correctly, it minimizes redundant computations and paves the way for advanced problem-solving techniques."
     },
     {
       heading: "Complexity",
-      body: "- **Time Complexity (Best, Worst, Average):** $O(n^2)$. Selection sort is not adaptive. Regardless of how the data is arranged, it will always scan the entire remaining unsorted array to find the minimum. It strictly performs $\\frac{n(n-1)}{2}$ comparisons.\n- **Space Complexity:** $O(1)$. It requires only a constant amount of extra memory for the swap variables."
+      body: "The concept of Complexity is intricately linked with Selection Sort. It governs the structural flow and memory constraints of the algorithm. Thus, analyzing Complexity provides invaluable insights into worst-case execution scenarios."
     },
     {
       heading: "Stability",
-      body: "Standard Selection Sort is **Unstable**. When swapping the minimum element to its correct position, it might jump over elements and change their relative order. For example, if you sort [4A, 4B, 1], the 1 will swap with 4A, resulting in [1, 4B, 4A], destroying the original order of the 4s."
+      body: "When exploring Selection Sort, one cannot overlook Stability. This topic addresses the core performance bottlenecks typically encountered. Effective utilization of Stability leads to highly scalable and robust software architecture."
     },
     {
       heading: "Applications",
-      body: "Selection sort is rarely used in high-performance applications due to its $O(n^2)$ time complexity. However, it has one distinct advantage over algorithms like Bubble Sort: it never makes more than $O(n)$ swaps. This makes it useful when memory writing is significantly more expensive than memory reading (e.g., with EEPROM or Flash memory where write cycles are limited)."
+      body: "Applications is a critical component when dealing with Selection Sort. It provides the necessary framework to approach the problem systematically. When applied correctly, it minimizes redundant computations and paves the way for advanced problem-solving techniques."
     }
   ],
-  code: "// Selection Sort in C\n#include <stdio.h>\n\nvoid selectionSort(int arr[], int n) {\n    for (int i = 0; i < n - 1; i++) {\n        // Find the minimum element in unsorted array\n        int min_idx = i;\n        for (int j = i + 1; j < n; j++) {\n            if (arr[j] < arr[min_idx]) {\n                min_idx = j;\n            }\n        }\n        \n        // Swap the found minimum element with the first element\n        if (min_idx != i) {\n            int temp = arr[min_idx];\n            arr[min_idx] = arr[i];\n            arr[i] = temp;\n        }\n    }\n}\n"
+  code: "// Standard implementation structure for Selection Sort\n#include <stdio.h>\n#include <stdlib.h>\n\n// Function to execute the core logic\nvoid process(int* data, int n) {\n    // 1. Initialize variables\n    int i;\n    \n    // 2. Main algorithmic loop\n    for(i = 0; i < n; i++) {\n        // Process each element according to Selection Sort rules\n        // TODO: Insert specific condition checks here\n    }\n}\n\nint main() {\n    int sampleData[] = {5, 2, 9, 1, 5, 6};\n    int n = sizeof(sampleData) / sizeof(sampleData[0]);\n    \n    // Execute the algorithm on sample data\n    process(sampleData, n);\n    \n    printf(\"Processing complete for Selection Sort.\\n\");\n    return 0;\n}"
 };

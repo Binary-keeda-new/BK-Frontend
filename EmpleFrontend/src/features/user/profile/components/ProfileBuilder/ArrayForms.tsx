@@ -1,14 +1,24 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Education, Experience, Project, Certification } from '../../types';
-import { Plus, Trash2 } from 'lucide-react';
+import { Plus, Trash2, AlertCircle } from 'lucide-react';
 
 const inputClass = "w-full p-2.5 border rounded-lg outline-none focus:ring-1 focus:ring-[var(--orange)] focus:border-[var(--orange)] transition-all placeholder:text-gray-500";
 const inputStyle = { background: 'var(--surface)', borderColor: 'var(--border)', color: 'var(--text)' };
 const cardStyle = { background: 'var(--surface2)', borderColor: 'var(--border)' };
 
-export function EducationForm({ data, onChange }: { data: Education[], onChange: (d: Education[]) => void }) {
+function ErrorMsg({ show, text = "This section is required for publishing." }: { show: boolean, text?: string }) {
+  if (!show) return null;
+  return (
+    <div className="flex items-center gap-1 mt-2 text-red-500 text-sm font-medium animate-in fade-in slide-in-from-top-1">
+      <AlertCircle className="w-4 h-4" />
+      <span>{text}</span>
+    </div>
+  );
+}
+
+export function EducationForm({ data, onChange, errors = [], autoFocusField }: { data: Education[], onChange: (d: Education[]) => void, errors?: string[], autoFocusField?: string }) {
   const add = () => onChange([...data, { institution: '', degree: '', branch: '', startYear: '', endYear: '' }]);
   const remove = (index: number) => onChange(data.filter((_, i) => i !== index));
   const update = (index: number, field: keyof Education, value: string) => {
@@ -17,10 +27,22 @@ export function EducationForm({ data, onChange }: { data: Education[], onChange:
     onChange(newData);
   };
 
+  const containerRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (autoFocusField === 'education_list' && containerRef.current) {
+      containerRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [autoFocusField]);
+
+  const hasError = errors.includes('education_list');
+
   return (
-    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
+    <div ref={containerRef} className={`space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-500 p-4 rounded-xl ${hasError ? 'border-2 border-red-500 bg-red-500/5' : ''}`}>
       <div className="flex justify-between items-center border-b pb-4" style={{ borderColor: 'var(--border)' }}>
-        <h2 className="text-2xl font-bold" style={{ color: 'var(--text)' }}>Education <span style={{ color: 'var(--orange)' }}>*</span></h2>
+        <div>
+          <h2 className="text-2xl font-bold" style={{ color: 'var(--text)' }}>Education <span style={{ color: 'var(--orange)' }}>*</span></h2>
+          <ErrorMsg show={hasError} text="At least one complete education entry is required." />
+        </div>
         <button onClick={add} className="flex items-center gap-2 px-4 py-2 font-medium transition-colors rounded-lg shadow-sm" style={{ background: 'var(--orange)', color: '#fff' }}>
           <Plus className="w-4 h-4" /> Add Education
         </button>
@@ -43,7 +65,7 @@ export function EducationForm({ data, onChange }: { data: Education[], onChange:
   );
 }
 
-export function ExperienceForm({ data, onChange }: { data: Experience[], onChange: (d: Experience[]) => void }) {
+export function ExperienceForm({ data, onChange, errors = [], autoFocusField }: { data: Experience[], onChange: (d: Experience[]) => void, errors?: string[], autoFocusField?: string }) {
   const add = () => onChange([...data, { company: '', role: '', employmentType: '', currentRole: false }]);
   const remove = (index: number) => onChange(data.filter((_, i) => i !== index));
   const update = (index: number, field: keyof Experience, value: any) => {
@@ -75,7 +97,7 @@ export function ExperienceForm({ data, onChange }: { data: Experience[], onChang
   );
 }
 
-export function ProjectsForm({ data, onChange }: { data: Project[], onChange: (d: Project[]) => void }) {
+export function ProjectsForm({ data, onChange, errors = [], autoFocusField }: { data: Project[], onChange: (d: Project[]) => void, errors?: string[], autoFocusField?: string }) {
   const add = () => onChange([...data, { name: '', description: '', githubUrl: '', liveUrl: '' }]);
   const remove = (index: number) => onChange(data.filter((_, i) => i !== index));
   const update = (index: number, field: keyof Project, value: any) => {
@@ -84,10 +106,22 @@ export function ProjectsForm({ data, onChange }: { data: Project[], onChange: (d
     onChange(newData);
   };
 
+  const containerRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (autoFocusField === 'projects_list' && containerRef.current) {
+      containerRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [autoFocusField]);
+
+  const hasError = errors.includes('projects_list');
+
   return (
-    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
+    <div ref={containerRef} className={`space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-500 p-4 rounded-xl ${hasError ? 'border-2 border-red-500 bg-red-500/5' : ''}`}>
       <div className="flex justify-between items-center border-b pb-4" style={{ borderColor: 'var(--border)' }}>
-        <h2 className="text-2xl font-bold" style={{ color: 'var(--text)' }}>Projects <span style={{ color: 'var(--orange)' }}>*</span></h2>
+        <div>
+          <h2 className="text-2xl font-bold" style={{ color: 'var(--text)' }}>Projects <span style={{ color: 'var(--orange)' }}>*</span></h2>
+          <ErrorMsg show={hasError} text="At least one project is required." />
+        </div>
         <button onClick={add} className="flex items-center gap-2 px-4 py-2 font-medium transition-colors rounded-lg shadow-sm" style={{ background: 'var(--orange)', color: '#fff' }}>
           <Plus className="w-4 h-4" /> Add Project
         </button>
@@ -109,7 +143,7 @@ export function ProjectsForm({ data, onChange }: { data: Project[], onChange: (d
   );
 }
 
-export function CertificationsForm({ data, onChange }: { data: Certification[], onChange: (d: Certification[]) => void }) {
+export function CertificationsForm({ data, onChange, errors = [], autoFocusField }: { data: Certification[], onChange: (d: Certification[]) => void, errors?: string[], autoFocusField?: string }) {
   const add = () => onChange([...data, { name: '', issuer: '', url: '' }]);
   const remove = (index: number) => onChange(data.filter((_, i) => i !== index));
   const update = (index: number, field: keyof Certification, value: any) => {

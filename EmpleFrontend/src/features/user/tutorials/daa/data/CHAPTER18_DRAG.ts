@@ -1,22 +1,24 @@
 export const CHAPTER18_DRAG = [
   {
-    instructions: "Arrange the general steps to solve a problem using Bottom-Up Dynamic Programming.",
+    instructions: "Order the logic execution for Longest Increasing Subsequence.",
     lines: [
-      { id: "1", text: "1. Define the state representing the subproblems (e.g., dp[i])." },
-      { id: "2", text: "2. Identify the base cases and initialize the DP table." },
-      { id: "3", text: "3. Formulate the state transition relation (how a state depends on previous states)." },
-      { id: "4", text: "4. Iterate through the table from smallest to largest subproblems, filling it." },
-      { id: "5", text: "5. Return the value in the table corresponding to the main problem." }
+      { id: "1", text: "Initialize dp array with 1s" },
+      { id: "2", text: "If arr[i] > arr[j], update dp[i]" },
+      { id: "3", text: "Find the maximum value in the entire dp array" },
+      { id: "4", text: "Iterate 'i' from 1 to n" },
+      { id: "5", text: "Iterate 'j' from 0 to i-1" }
     ],
-    order: ["1", "2", "3", "4", "5"]
+    order: ["1", "4", "5", "2", "3"]
   },
   {
-    instructions: "Match the concept to its paradigm: (1) Memoization, (2) Tabulation, (3) Greedy.",
+    instructions: "Arrange the Coin Change (Minimum Coins) algorithm steps.",
     lines: [
-      { id: "1", text: "1. Top-Down recursion with caching." },
-      { id: "2", text: "2. Bottom-Up iteration using an array/table." },
-      { id: "3", text: "3. Making the locally optimal choice without looking back." }
+      { id: "1", text: "Initialize dp[1..amount] to infinity" },
+      { id: "2", text: "Check if dp[amount] is still infinity" },
+      { id: "3", text: "Initialize dp[0] = 0" },
+      { id: "4", text: "Iterate through each coin value" },
+      { id: "5", text: "Update dp[i] = min(dp[i], dp[i-coin] + 1)" }
     ],
-    order: ["1", "2", "3"]
+    order: ["3", "1", "4", "5", "2"]
   }
 ];

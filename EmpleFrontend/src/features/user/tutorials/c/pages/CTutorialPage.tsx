@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import { CONTENT, CHAPTERS } from "../data/cTutorial";
 import { Badge } from "../components/CommonComponents";
 import { LearnTab, MCQTab, DebugTab, CompleteTab, ArrangeTab } from "../components/TaskTabs";
@@ -30,7 +31,7 @@ const TABS = [
   { id: "roadmap", label: "Progress", icon: TrendingUp },
 ];
 
-export default function CTutorialPage({ onBack }: CTutorialPageProps) {
+export default function CTutorialPage() {
   const [chapter, setChapter] = useState(CHAPTERS[0].id);
   const [activeTab, setActiveTab] = useState("learn");
   const [completedMap, setCompletedMap] = useState<Record<string, boolean>>({});
@@ -73,13 +74,16 @@ export default function CTutorialPage({ onBack }: CTutorialPageProps) {
           <div className="flex-1 min-w-[300px]">
             {/* Breadcrumb */}
             <div className="flex items-center gap-2 mb-4 text-xs font-semibold" style={{ color: "var(--muted2)" }}>
-              <button 
-                onClick={onBack}
-                className="hover:underline outline-none transition-colors"
-                style={{ color: "var(--orange)" }}
-              >
-                Tutorials
-              </button>
+              <Link href="/tutorials/notes" passHref>
+                <button
+                  style={{
+                    background: "transparent", border: "none", color: "var(--text)", cursor: "pointer",
+                    display: "flex", alignItems: "center", justifyContent: "center", padding: "8px", borderRadius: "8px"
+                  }}
+                >
+                  <ArrowLeft size={20} />
+                </button>
+              </Link>
               <span>/</span>
               <span>C Programming</span>
             </div>

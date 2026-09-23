@@ -114,7 +114,7 @@ export default function AdminEventsPage({ subPage, onSelectSubPage }: Props) {
     <div className="w-full max-w-[1100px] px-4 py-6 sm:px-6 sm:py-8 lg:px-10 lg:py-10">
       <div className="mb-8">
         <h1 className="text-[22px] font-extrabold leading-tight text-[var(--clr-text)] sm:text-3xl">
-          Admin <span className="text-[var(--clr-accent)]">Events</span>
+          <span className="text-[var(--clr-accent)]">Events</span>
         </h1>
         <p className="mt-1 text-sm text-[var(--clr-text2)]">
           Manage all events visible to users on the platform.

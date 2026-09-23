@@ -201,7 +201,7 @@ export default function Leaderboard() {
           ) : (
             <div className="flex h-full flex-col items-center justify-center text-center animate-in fade-in duration-500">
               <p className="text-[13px] font-medium text-white/40">No champions yet.</p>
-              <p className="mt-1 text-[11px] text-white/20">Complete a quiz to claim #1!</p>
+              <p className="mt-1 text-[11px] text-white/20">Complete a quiz or test to claim #1!</p>
             </div>
           )}
         </div>

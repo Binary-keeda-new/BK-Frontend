@@ -79,7 +79,10 @@ return (
   <div
     className="
       animated-border-inner
-      h-[440px]
+      flex
+      flex-col
+      justify-between
+      h-[330px]
       w-full
       bg-[#151a2d]
       rounded-[29px]
@@ -97,16 +100,16 @@ return (
         30-day completions
       </p>
 
-      <div className="h-[220px] mt-4">
+      <div className="h-[280px] mt-4 flex items-center justify-center">
   <ResponsiveContainer width="100%" height="100%">
     <PieChart>
       <Pie
         data={categoryData}
         dataKey="value"
         cx="50%"
-        cy="45%"
-        innerRadius={60}
-        outerRadius={95}
+        cy="50%"
+        innerRadius={5}
+        outerRadius={40}
         paddingAngle={2}
         stroke="none"
       >

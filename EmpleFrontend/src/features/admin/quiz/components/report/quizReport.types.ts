@@ -26,6 +26,7 @@ export type QuizReport = {
   leaderboard: {
     rank: number;
     userId: string;
+    name: string;
     score: number;
     email: string;
     totalQuestions: number;

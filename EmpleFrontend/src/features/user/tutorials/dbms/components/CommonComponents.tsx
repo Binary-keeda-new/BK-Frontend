@@ -67,8 +67,37 @@ export function CodeBlock({ code }: CodeBlockProps) {
           )}
         </button>
       </div>
-      <pre className="p-4 overflow-x-auto text-[13px] font-mono text-indigo-300 leading-relaxed max-h-96">
-        <code>{code}</code>
+      <pre className="p-4 overflow-x-auto text-[13px] font-mono leading-relaxed max-h-96">
+        <code>
+          {code.split('\n').map((line, i, arr) => {
+            let idx1 = line.indexOf('--');
+            let idx2 = line.indexOf('//');
+            let minIdx = -1;
+            if (idx1 !== -1 && idx2 !== -1) minIdx = Math.min(idx1, idx2);
+            else if (idx1 !== -1) minIdx = idx1;
+            else if (idx2 !== -1) minIdx = idx2;
+
+            const isLast = i === arr.length - 1;
+
+            if (minIdx !== -1) {
+              const codePart = line.substring(0, minIdx);
+              const commentPart = line.substring(minIdx);
+              return (
+                <React.Fragment key={i}>
+                   {codePart && <span className="text-orange-400">{codePart}</span>}
+                   <span className="text-gray-400 italic">{commentPart}</span>
+                   {!isLast && '\n'}
+                </React.Fragment>
+              );
+            }
+            return (
+              <React.Fragment key={i}>
+                <span className="text-orange-400">{line}</span>
+                {!isLast && '\n'}
+              </React.Fragment>
+            );
+          })}
+        </code>
       </pre>
     </div>
   );

@@ -1,21 +1,24 @@
 export const CHAPTER19_DRAG = [
   {
-    instructions: "Match the scenario with the type of Tradeoff applied.",
+    instructions: "Order the logical statements to solve 0/1 Knapsack.",
     lines: [
-      { id: "1", text: "Using a Hash Map for fast O(1) lookups: TRADING SPACE FOR TIME" },
-      { id: "2", text: "Compressing a large video file into a ZIP: TRADING TIME FOR SPACE" },
-      { id: "3", text: "Applying Memoization to a recursive function: TRADING SPACE FOR TIME" }
+      { id: "1", text: "Iterate over items i from 1 to n" },
+      { id: "2", text: "Else, exclude item (dp[i][w] = dp[i-1][w])" },
+      { id: "3", text: "Initialize dp[n+1][W+1] with 0s" },
+      { id: "4", text: "Iterate over capacities w from 1 to W" },
+      { id: "5", text: "If wt[i-1] <= w, take max of including/excluding" }
     ],
-    order: ["1", "2", "3"]
+    order: ["3", "1", "4", "5", "2"]
   },
   {
-    instructions: "Arrange the space complexities from most efficient (least space) to least efficient.",
+    instructions: "Arrange the string backtracking steps to print the LCS.",
     lines: [
-      { id: "1", text: "O(1) - Constant (e.g., In-place sorts like Heap Sort)" },
-      { id: "2", text: "O(log n) - Logarithmic (e.g., Quick Sort recursion stack)" },
-      { id: "3", text: "O(n) - Linear (e.g., Merge Sort auxiliary array)" },
-      { id: "4", text: "O(n^2) - Quadratic (e.g., 2D DP Table)" }
+      { id: "1", text: "Start at dp[n][m]" },
+      { id: "2", text: "Else if dp[i-1][j] > dp[i][j-1], move up" },
+      { id: "3", text: "If S1[i-1] == S2[j-1], append char and move diagonally" },
+      { id: "4", text: "Else, move left" },
+      { id: "5", text: "Reverse the collected characters" }
     ],
-    order: ["1", "2", "3", "4"]
+    order: ["1", "3", "2", "4", "5"]
   }
 ];

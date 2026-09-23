@@ -1,24 +1,23 @@
 export const CHAPTER2_DRAG = [
   {
-    instructions: "Arrange the functions from slowest growing (smallest) to fastest growing (largest) as N approaches infinity.",
+    instructions: "Order these growth functions from slowest growing to fastest growing.",
     lines: [
-      { id: "1", text: "O(1) - Constant" },
-      { id: "2", text: "O(log n) - Logarithmic" },
-      { id: "3", text: "O(n) - Linear" },
-      { id: "4", text: "O(n^2) - Quadratic" },
-      { id: "5", text: "O(2^n) - Exponential" }
+      { id: "1", text: "log n" },
+      { id: "2", text: "n log n" },
+      { id: "3", text: "n^2" },
+      { id: "4", text: "2^n" },
+      { id: "5", text: "n" }
     ],
-    order: ["1", "2", "3", "4", "5"]
+    order: ["1", "5", "2", "3", "4"]
   },
   {
-    instructions: "Assemble the correct bitwise equivalent for calculating 2^N (2 to the power of N) in C.",
+    instructions: "Arrange the steps to compute binary representation of a number.",
     lines: [
-      { id: "1", text: "int powerOfTwo(int n) {" },
-      { id: "2", text: "  // Left shifting 1 by n bits is equivalent to 1 * 2^n" },
-      { id: "3", text: "  int result = 1 << n;" },
-      { id: "4", text: "  return result;" },
-      { id: "5", text: "}" }
+      { id: "1", text: "Record the remainder" },
+      { id: "2", text: "Take modulo 2 of the number" },
+      { id: "3", text: "Reverse the recorded remainders" },
+      { id: "4", text: "Divide the number by 2" }
     ],
-    order: ["1", "2", "3", "4", "5"]
+    order: ["2", "1", "4", "3"]
   }
 ];

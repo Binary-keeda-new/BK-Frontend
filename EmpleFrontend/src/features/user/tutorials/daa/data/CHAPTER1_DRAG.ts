@@ -1,24 +1,23 @@
 export const CHAPTER1_DRAG = [
   {
-    instructions: "Arrange the standard phases of Algorithm Design and Analysis in the correct chronological order.",
+    instructions: "Order the standard steps of Algorithm Design.",
     lines: [
-      { id: "1", text: "1. Define the Problem clearly (Inputs and Outputs)" },
-      { id: "2", text: "2. Formulate the Algorithm (Pseudocode)" },
-      { id: "3", text: "3. Prove the Correctness of the logic" },
-      { id: "4", text: "4. Analyze Time and Space Complexity" },
-      { id: "5", text: "5. Implement the code in a Programming Language" }
+      { id: "1", text: "Formulate the Algorithm" },
+      { id: "2", text: "Design the Pseudocode" },
+      { id: "3", text: "Analyze the Complexity" },
+      { id: "4", text: "Implement the Code" },
+      { id: "5", text: "Understand the Problem" }
     ],
-    order: ["1", "2", "3", "4", "5"]
+    order: ["5", "1", "2", "3", "4"]
   },
   {
-    instructions: "Assemble a simple algorithm that finds the sum of an array in pseudocode.",
+    instructions: "Arrange the phases of Algorithm Analysis.",
     lines: [
-      { id: "1", text: "Algorithm ArraySum(A, n)" },
-      { id: "2", text: "  sum = 0" },
-      { id: "3", text: "  for i = 0 to n-1 do" },
-      { id: "4", text: "    sum = sum + A[i]" },
-      { id: "5", text: "  return sum" }
+      { id: "1", text: "Identify Input Size" },
+      { id: "2", text: "Set up sum/recurrence" },
+      { id: "3", text: "Find Asymptotic Bound" },
+      { id: "4", text: "Identify Basic Operation" }
     ],
-    order: ["1", "2", "3", "4", "5"]
+    order: ["1", "4", "2", "3"]
   }
 ];

@@ -1,22 +1,24 @@
 export const CHAPTER13_DRAG = [
   {
-    instructions: "Arrange the steps to perform Quick Sort.",
+    instructions: "Order the execution steps of Quick Sort.",
     lines: [
-      { id: "1", text: "1. Choose an element as a pivot (e.g., the last element)." },
-      { id: "2", text: "2. Partition the array so all elements smaller than the pivot are to its left." },
-      { id: "3", text: "3. Place the pivot in its final sorted position." },
-      { id: "4", text: "4. Recursively call Quick Sort on the left sub-array." },
-      { id: "5", text: "5. Recursively call Quick Sort on the right sub-array." }
+      { id: "1", text: "Partition array so smaller elements are on the left" },
+      { id: "2", text: "Recursively apply to left and right subarrays" },
+      { id: "3", text: "Place pivot in its correct sorted position" },
+      { id: "4", text: "Select a pivot element" },
+      { id: "5", text: "Partition array so larger elements are on the right" }
     ],
-    order: ["1", "2", "3", "4", "5"]
+    order: ["4", "1", "5", "3", "2"]
   },
   {
-    instructions: "Arrange the time complexities of Quick Sort from fastest to slowest.",
+    instructions: "Arrange the variables tracking the Lomuto Partition scheme.",
     lines: [
-      { id: "1", text: "O(n log n) - Best Case (Pivot is the median)" },
-      { id: "2", text: "O(n log n) - Average Case (Pivot is random)" },
-      { id: "3", text: "O(n^2) - Worst Case (Array is already sorted, pivot is last element)" }
+      { id: "1", text: "'high' stores the pivot element" },
+      { id: "2", text: "'i' tracks the boundary of smaller elements" },
+      { id: "3", text: "Swap pivot with arr[i+1] at the end" },
+      { id: "4", text: "'j' iterates through the array" },
+      { id: "5", text: "Swap arr[i] and arr[j] when arr[j] < pivot" }
     ],
-    order: ["1", "2", "3"]
+    order: ["1", "4", "2", "5", "3"]
   }
 ];

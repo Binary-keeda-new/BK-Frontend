@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { Option, Question, ThemeTokens } from "./quizEdit.types";
 import QuizEditCard from "./QuizEditCard";
 import QuizQuestionForm from "./QuizQuestionForm";
@@ -17,6 +18,8 @@ type Props = {
   addOption: (qid: string) => void;
   setActiveQ: (id: string) => void;
   addQuestion: () => void;
+  saveQuestion: (q: Question) => Promise<void>;
+  addToast: (msg: string, type: "success" | "error") => void;
 };
 
 export default function QuestionEditorCard({
@@ -34,7 +37,22 @@ export default function QuestionEditorCard({
   addOption,
   setActiveQ,
   addQuestion,
+  saveQuestion,
+  addToast,
 }: Props) {
+  const [isSaving, setIsSaving] = useState(false);
+
+  const handleSave = async () => {
+    setIsSaving(true);
+    try {
+      await saveQuestion(aq);
+      addToast('Question saved successfully', 'success');
+    } catch (err: any) {
+      addToast(err.message || 'Failed to save question', 'error');
+    } finally {
+      setIsSaving(false);
+    }
+  };
   return (
     <QuizEditCard
       background={t.cardBg}
@@ -124,18 +142,23 @@ export default function QuestionEditorCard({
             cursor: aqIdx > 0 ? "pointer" : "default",
           }}
         >
-          ← Prev
+          Prev
         </button>
 
         <div className="flex gap-2">
-          {/* {aqIdx < questions.length - 1 && (
-            <button
-              onClick={() => setActiveQ(questions[aqIdx + 1].id)}
-              className="rounded-[10px] border-none bg-[var(--clr-accent3)] px-[18px] py-[9px] text-[13px] font-bold text-[var(--clr-accent)]"
-            >
-              Next →
-            </button>
-          )} */}
+          <button
+            onClick={handleSave}
+            disabled={isSaving}
+            className="flex items-center gap-1.5 rounded-[10px] border px-[18px] py-[9px] text-[13px] font-bold transition-all"
+            style={{
+              borderColor: t.cardBorder,
+              background: 'transparent',
+              color: 'var(--clr-accent)',
+              opacity: isSaving ? 0.7 : 1,
+            }}
+          >
+            {isSaving ? 'Saving...' : 'Save Question'}
+          </button>
 
           <button
             onClick={addQuestion}
