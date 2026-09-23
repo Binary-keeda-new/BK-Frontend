@@ -1,5 +1,11 @@
 export type TestSectionType = 'mcq' | 'coding';
 
+export type TestAttemptStatus =
+  | 'not_started'
+  | 'in_progress'
+  | 'finalizing'
+  | 'submitted'
+  | 'force_submitted';
 
 export type UserTestSection = {
   _id: string;
@@ -7,12 +13,17 @@ export type UserTestSection = {
   type: TestSectionType;
   duration: number;
   numberOfQuestions: number;
+  codingProblems?: {
+    problemId: UserCodingProblem;
+    marks: number;
+    order: number;
+  }[];
   codingProblemIds?: UserCodingProblem[];
 };
 
 export type TestAttemptStatusMap = Record<
   string,
-  { attempted: boolean; status: string; attemptId: string }
+  { attempted: boolean; status: TestAttemptStatus; attemptId: string }
 >;
 
 export interface UserTestReport {
@@ -22,46 +33,47 @@ export interface UserTestReport {
     title: string;
     description?: string;
   };
-  candidate: {
+  candidate?: {
     id: string;
     name: string;
     email?: string;
   };
-  status: string;
+  status: TestAttemptStatus;
+  resultReady: boolean;
+  requiresReview: boolean;
   startedAt: string;
   submittedAt: string;
+  totalTimeMs?: number;
   timeUsedMs: number;
   totalDurationMs: number;
-  summary: {
-    score: number;
-    totalMarks: number;
-    percentage: number;
-    correct: number;
-    incorrect: number;
-    skipped: number;
-    totalMcqQuestions: number;
-    codingAccepted: number;
-    totalCodingProblems: number;
-    codingTestCasesPassed: number;
-    codingTestCasesTotal: number;
-    accuracy: number;
-  };
-  rank?: {
-    position: number;
-    totalCandidates: number;
-  } | null;
-  sections: Array<{
+  totalScore: number;
+  maxScore: number;
+  percentage: number;
+  completionType?: 'submitted' | 'force_submitted' | 'expired' | 'manual_force_submit' | 'timer_expired' | 'security_violation_limit';
+  passStatus?: boolean | null;
+  
+  sectionBreakdown?: Array<{
     sectionId: string;
     title: string;
     type: 'mcq' | 'coding';
-    score: number | null;
-    totalMarks: number | null;
-    attempted: number;
-    totalItems: number;
-    accuracyOrAcceptanceRate: number;
+    score: number;
+    maxScore: number;
     timeSpentMs: number;
     status: string;
+    
+    // MCQ specific
+    correct?: number;
+    incorrect?: number;
+    unanswered?: number;
+    
+    // Coding specific
+    numberOfProblems?: number;
+    finalizedProblems?: number;
   }>;
+
+  // Kept for UI compatibility, Phase 6E will overhaul `TestResult`
+  summary: any;
+  sections: any[];
   mcqReview: Array<{
     questionId: string;
     question: string;
@@ -89,6 +101,7 @@ export interface UserTestReport {
     executionTime?: number | null;
     memory?: number | null;
   }>;
+  rank?: any;
 }
 
 export type UserTest = {
@@ -100,7 +113,7 @@ export type UserTest = {
   attempted: boolean;
   sections: UserTestSection[];
 
-  status?: 'not_started' | 'in_progress' | 'completed';
+  status?: TestAttemptStatus;
   attemptId?: string;
   settings?: UserTestSettings;
 };
@@ -129,4 +142,17 @@ export type UserCodingProblem = {
   topics: string[];
   points: number;
   status?: 'draft' | 'published';
-};
+  selectedSubmission?: {
+    submissionId: string;
+    status: import('../services/testExecution.service').TestCodingSubmissionStatus;
+    passedTestCases?: number;
+    totalTestCases?: number;
+    score?: number;
+    language?: string;
+  };
+  activeSubmission?: {
+    submissionId: string;
+    status: import('../services/testExecution.service').TestCodingSubmissionStatus;
+    language?: string;
+  };
+};

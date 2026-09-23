@@ -32,19 +32,30 @@ export default function ReportHeader({ report, onBack }: Props) {
         </div>
 
         <div className="flex flex-col items-start gap-3 sm:items-end sm:gap-2">
-          {status === 'submitted' ? (
-            <span className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-emerald-500">
-              <CheckCircle className="h-3.5 w-3.5" /> Submitted
+          <div className="flex items-center gap-2">
+            {report.passStatus !== undefined && report.passStatus !== null && (
+              <span className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-1 text-xs font-bold uppercase tracking-wider ${
+                report.passStatus 
+                  ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-500' 
+                  : 'border-red-500/30 bg-red-500/10 text-red-500'
+              }`}>
+                {report.passStatus ? 'Passed' : 'Failed'}
+              </span>
+            )}
+            
+            <span className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-1 text-xs font-bold uppercase tracking-wider ${
+              status === 'submitted' || status === 'force_submitted'
+                ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-500'
+                : 'border-blue-500/30 bg-blue-500/10 text-blue-500'
+            }`}>
+              <CheckCircle className="h-3.5 w-3.5" /> 
+              {report.completionType === 'manual_force_submit' ? 'Submitted Early' 
+                : report.completionType === 'timer_expired' ? 'Time Expired'
+                : report.completionType === 'security_violation_limit' ? 'Security Limit Reached'
+                : status === 'submitted' ? 'Completed' 
+                : status}
             </span>
-          ) : status === 'timed_out' ? (
-            <span className="inline-flex items-center gap-1.5 rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-amber-500">
-              <Clock className="h-3.5 w-3.5" /> Timed Out
-            </span>
-          ) : (
-            <span className="inline-flex items-center gap-1.5 rounded-lg border border-blue-500/30 bg-blue-500/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-blue-500">
-              <CheckCircle className="h-3.5 w-3.5" /> {status}
-            </span>
-          )}
+          </div>
 
           <div className="rounded-xl  bg-[var(--bg)] px-4 py-3 text-sm text-[var(--muted2)] sm:text-right w-full sm:w-auto">
             <p className="flex items-center justify-between gap-4 sm:justify-end">

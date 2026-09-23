@@ -7,10 +7,11 @@ import { BarChart2 } from 'lucide-react';
 
 type Props = {
   report: UserTestReport;
+  onReviewSection: (sectionId: string, type: 'mcq' | 'coding') => void;
 };
 
-export default function SectionPerformance({ report }: Props) {
-  const sections = report.sections;
+export default function SectionPerformance({ report, onReviewSection }: Props) {
+  const sections = report.sectionBreakdown;
 
   if (!sections || sections.length === 0) {
     return (
@@ -30,7 +31,7 @@ export default function SectionPerformance({ report }: Props) {
             Performance Overview
           </h3>
           <p className="text-sm font-medium text-[var(--muted2)]">
-            Comparing accuracy and acceptance rates across all sections.
+            Comparing score distributions across all sections.
           </p>
           <div className="mt-6 flex-1 min-h-[300px]">
             <SectionPerformanceChart sections={sections} />
@@ -40,7 +41,12 @@ export default function SectionPerformance({ report }: Props) {
         {/* Cards Column */}
         <div className="col-span-1 lg:col-span-2 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2">
           {sections.map((section) => (
-            <SectionPerformanceCard key={section.sectionId} section={section} />
+            <SectionPerformanceCard 
+              key={section.sectionId} 
+              section={section} 
+              attemptId={report.attemptId} 
+              onReview={() => onReviewSection(section.sectionId, section.type)} 
+            />
           ))}
         </div>
       </div>

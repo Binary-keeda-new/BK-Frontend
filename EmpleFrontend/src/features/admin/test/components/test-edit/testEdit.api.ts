@@ -62,7 +62,7 @@ export const createSection = (
     type: string;
     numberOfQuestions: number;
     duration: number;
-    codingProblemIds: string[];
+    codingProblems?: { problemId: string; marks: number; order: number }[];
   }
 ) => {
   return apiRequest<TestSectionSingleResponse>(
@@ -80,7 +80,7 @@ export const updateSection = (
     type: string;
     numberOfQuestions: number;
     duration: number;
-    codingProblemIds: string[];
+    codingProblems?: { problemId: string; marks: number; order: number }[];
   }
 ) => {
   return apiRequest<TestSectionSingleResponse>(

@@ -13,28 +13,36 @@ type CodingSubmission = {
   totalCount?: number;
   results?: unknown[];
   timeTakenSeconds?: number;
+  submissionId?: string; // added for Test mode
 };
 
-type Props = {
+type CodingWorkspaceProps = {
   problems: UserCodingProblem[];
-  mode?: 'practice' | 'test';
   onBack?: () => void;
   onComplete?: (submissions: CodingSubmission[]) => void | Promise<void>;
   formattedTimeLeft?: string | null;
   timeLeftMs?: number | null;
   initialSubmissions?: CodingSubmission[];
-};
+} & (
+  | { mode?: 'practice' }
+  | { mode: 'test'; attemptId: string; sectionId: string }
+);
 
-export default function CodingWorkspace({
-  problems,
-  mode = 'practice',
-  onBack,
-  onComplete,
-  formattedTimeLeft,
-  timeLeftMs,
-  initialSubmissions = [],
-}: Props) {
-  const workspaceState = useCodingWorkspace(problems, initialSubmissions);
+export default function CodingWorkspace(props: CodingWorkspaceProps) {
+  const {
+    problems,
+    onBack,
+    onComplete,
+    formattedTimeLeft,
+    timeLeftMs,
+    initialSubmissions = [],
+  } = props;
+  
+  const mode = props.mode || 'practice';
+
+  const testContext = props.mode === 'test' ? { attemptId: props.attemptId, sectionId: props.sectionId } : undefined;
+
+  const workspaceState = useCodingWorkspace(problems, initialSubmissions, testContext);
 
   if (problems.length === 0) {
     return (

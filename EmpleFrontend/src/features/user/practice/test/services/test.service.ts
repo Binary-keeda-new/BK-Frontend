@@ -24,13 +24,46 @@ export type TestCodingReviewSubmission = {
   submittedAt?: string;
 };
 
-export type TestSectionReviewResponse = {
-  attemptId: string;
-  sectionId: string;
-  type?: 'mcq' | 'coding';
-  answers?: any[];
-  codingSubmissions?: TestCodingReviewSubmission[];
+export type TestObjectiveReviewItem = {
+  questionId: string;
+  question: string;
+  options: string[];
+  selectedOptions: string[];
+  correctOptions?: string[];
+  evaluationStatus: string;
+  awardedMarks: number;
+  positiveMarks: number;
+  negativeMarks: number;
+  solution?: string;
+  solutionMedia?: string;
+  timeTakenSeconds?: number;
 };
+
+export type TestCodingReviewItem = {
+  problemId: string;
+  problem: any;
+  sourceCode: string;
+  language: string;
+  status: string;
+  passedTestCases: number;
+  totalTestCases: number;
+  score: number;
+  maxMarks: number;
+};
+
+export type TestSectionReviewResponse =
+  | {
+      attemptId: string;
+      sectionId: string;
+      type: 'mcq';
+      questions: TestObjectiveReviewItem[];
+    }
+  | {
+      attemptId: string;
+      sectionId: string;
+      type: 'coding';
+      submissions: TestCodingReviewItem[];
+    };
 
 export type TestAttemptStatusMap = Record<string, TestAttemptStatusItem>;
 
@@ -73,24 +106,7 @@ export const startTestAttempt = async (
   return result.data;
 };
 
-export const submitTestSection = async (
-  attemptId: string,
-  sectionId: string,
-  answers: {
-    questionId: string;
-    selectedOptions: string[];
-  }[]
-) => {
-  const result = await apiRequest<ApiResponse<unknown>>(
-    `/api/v1/test-attempts/${attemptId}/sections/${sectionId}/submit`,
-    {
-      method: 'POST',
-      body: JSON.stringify({ answers }),
-    }
-  );
 
-  return result.data;
-};
 
 export const submitTestFeedback = async (
   attemptId: string,
@@ -115,9 +131,10 @@ export const getTestAttemptDetails = async (attemptId: string) => {
     ApiResponse<{
       _id: string;
       testId: string;
-      status: string;
+      status: import('../types/test.types').TestAttemptStatus;
       startedAt: string;
       expiresAt?: string | null;
+      requiresReview?: boolean;
       sections: {
         sectionId: string;
         status: string;
@@ -145,12 +162,60 @@ export const getTestSectionReview = async (
 };
 
 export const getUserTestReport = async (attemptId: string) => {
-  const result = await apiRequest<ApiResponse<UserTestReport>>(
+  const result = await apiRequest<ApiResponse<any>>(
     `/api/v1/test-attempts/${attemptId}/report`,
     {
       method: 'GET',
     }
   );
 
-  return result.data;
+  const data = result.data;
+
+  if (data.status === 'finalizing' || data.resultReady === false) {
+    return {
+      status: data.status,
+      resultReady: data.resultReady,
+      requiresReview: data.requiresReview,
+    } as UserTestReport;
+  }
+
+  const report = data.report;
+
+  return {
+    attemptId: report.attemptId,
+    test: {
+      id: report.testId,
+      title: report.testTitle,
+    },
+    status: data.status,
+    resultReady: data.resultReady,
+    requiresReview: data.requiresReview,
+    startedAt: report.startedAt,
+    submittedAt: report.submittedAt,
+    timeUsedMs: (report.totalTimeTakenSeconds || 0) * 1000,
+    totalDurationMs: 0,
+    totalScore: report.totalScore,
+    maxScore: report.maximumScore,
+    percentage: report.percentage,
+    passStatus: report.passStatus,
+    completionType: report.completionType,
+    sectionBreakdown: report.sections?.map((s: any) => ({
+      sectionId: s.sectionId,
+      title: `Section ${s.order}`,
+      type: s.type,
+      score: s.score,
+      maxScore: s.maximumMarks,
+      timeSpentMs: 0,
+      status: s.status,
+      correct: s.correct,
+      incorrect: s.incorrect,
+      unanswered: s.unanswered,
+      numberOfProblems: s.numberOfProblems,
+      finalizedProblems: s.finalizedProblems,
+    })),
+    summary: {},
+    sections: [],
+    mcqReview: [],
+    codingReview: [],
+  } as UserTestReport;
 };

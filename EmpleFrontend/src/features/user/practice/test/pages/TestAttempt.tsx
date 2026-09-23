@@ -5,6 +5,7 @@ import { UserTestSection } from '../types/test.types';
 import {
   getTestSectionAttempt,
   submitTestSectionAttempt,
+  saveTestSectionAnswers,
   type TestSectionAttemptData,
 } from '../services/testAttempt.service';
 import QuestionCard from '../components/test-attempt/QuestionCard';
@@ -26,6 +27,7 @@ type Props = {
   sectionIndex: number;
   onBackToSections: () => void;
   onSectionCompleted: (sectionId: string) => void;
+  onAttemptStateChange?: (status: import('../types/test.types').TestAttemptStatus, requiresReview?: boolean) => void;
   minTimeBeforeSubmit?: number;
   allowCalculator?: boolean;
   allowVirtualKeyboard?: boolean;
@@ -39,10 +41,10 @@ export default function TestAttempt({
   sectionIndex,
   onBackToSections,
   onSectionCompleted,
+  onAttemptStateChange,
   minTimeBeforeSubmit = 0,
   allowCalculator = false,
   allowVirtualKeyboard = false,
-  
 }: Props) {
   const [data, setData] = useState<TestSectionAttemptData | null>(null);
   const [current, setCurrent] = useState(0);
@@ -62,9 +64,32 @@ export default function TestAttempt({
   const [showCalculator, setShowCalculator] = useState(false);
   const [showVirtualKeyboard, setShowVirtualKeyboard] = useState(false);
 
+  // Phase 6C: Autosave state
+  const serverRevisionRef = useRef(0);
+  const localRevisionRef = useRef(0);
+  const isDirtyRef = useRef(false);
+  const isSavingRef = useRef(false);
+  const autosaveTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const periodicTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const lastSavedSnapshotRef = useRef<string>('');
+  const sectionIdRef = useRef(section._id);
+  const attemptIdRef = useRef(attemptId);
+  const answersRef = useRef(answers);
+  const timingsRef = useRef(timings);
+  const currentQuestionStartedAtRef = useRef(currentQuestionStartedAt);
+
   const questions = data?.questions ?? [];
   const totalQuestions = questions.length;
   const q = questions[current];
+
+  const qRef = useRef(q);
+
+  useEffect(() => {
+    answersRef.current = answers;
+    timingsRef.current = timings;
+    qRef.current = q;
+    currentQuestionStartedAtRef.current = currentQuestionStartedAt;
+  }, [answers, timings, q, currentQuestionStartedAt]);
 
 
   useEffect(() => {
@@ -111,11 +136,33 @@ export default function TestAttempt({
       let initialVisited = { 0: true };
       let initialFlagged: Record<number, boolean> = {};
 
+      // Phase 6C: Reconciliation
+      let serverRev = result.answerRevision ?? 0;
+      let localRev = serverRev;
+      let localWon = false;
+
       try {
         const localRaw = localStorage.getItem(`emple_test_progress_${attemptId}_${section._id}`);
         if (localRaw) {
           const localData = JSON.parse(localRaw);
-          if (localData.answers) initialAnswers = localData.answers;
+          const localStoredRev = localData.answerRevision;
+          const hasMeaningfulLocalAnswers = localData.answers && Object.keys(localData.answers).length > 0;
+
+          if (localStoredRev !== undefined) {
+             if (localStoredRev > serverRev) {
+               initialAnswers = localData.answers ?? initialAnswers;
+               localRev = localStoredRev;
+               localWon = true;
+             }
+          } else {
+             // Legacy
+             if (serverRev === 0 && hasMeaningfulLocalAnswers) {
+               initialAnswers = localData.answers;
+               localRev = 1;
+               localWon = true;
+             }
+          }
+
           if (localData.timings) {
             Object.assign(initialTimings, localData.timings);
           }
@@ -125,6 +172,13 @@ export default function TestAttempt({
       } catch (e) {
         console.error('Failed to parse local storage progress', e);
       }
+
+      serverRevisionRef.current = serverRev;
+      localRevisionRef.current = localWon ? Math.max(localRev, serverRev) + 1 : serverRev;
+      isDirtyRef.current = localWon;
+      lastSavedSnapshotRef.current = JSON.stringify(localWon ? answerMap : initialAnswers); 
+      sectionIdRef.current = section._id;
+      attemptIdRef.current = attemptId;
 
       setAnswers(initialAnswers);
       setTimings(initialTimings);
@@ -143,21 +197,135 @@ export default function TestAttempt({
     void loadSection();
   }, [loadSection]);
 
+  // Phase 6C: Autosave Implementation
+  const performAutosave = useCallback(async () => {
+    if (section.type === 'coding' || !attemptIdRef.current || !sectionIdRef.current || submitting || isSavingRef.current || !isDirtyRef.current) return;
+    if (sectionIdRef.current !== section._id) return; // guard against section transition
+
+    const currentAnswers = answersRef.current;
+    const currentTimings = timingsRef.current;
+    const currentQ = qRef.current;
+    const currentQStartedAt = currentQuestionStartedAtRef.current;
+
+    const snapshotAnswers = Object.entries(currentAnswers).map(([questionId, selectedOptions]) => {
+      let extraTime = 0;
+      if (currentQ && currentQ.questionId === questionId) {
+        extraTime = Math.floor((Date.now() - currentQStartedAt) / 1000);
+      }
+      return {
+        questionId,
+        selectedOptions,
+        timeTakenSeconds: (currentTimings[questionId] || 0) + extraTime,
+      };
+    });
+
+    const snapshotString = JSON.stringify(currentAnswers);
+    if (snapshotString === lastSavedSnapshotRef.current) {
+      isDirtyRef.current = false;
+      return;
+    }
+
+    const revisionToSave = Math.max(localRevisionRef.current, serverRevisionRef.current + 1);
+    localRevisionRef.current = revisionToSave;
+    isSavingRef.current = true;
+
+    try {
+      const res = await saveTestSectionAnswers(attemptIdRef.current, sectionIdRef.current, {
+        revision: revisionToSave,
+        answers: snapshotAnswers,
+      });
+
+      if (sectionIdRef.current !== section._id) return; // ignore if moved away
+
+      if (res.saved) {
+        serverRevisionRef.current = res.currentRevision ?? revisionToSave;
+        if (JSON.stringify(answersRef.current) === snapshotString) {
+          isDirtyRef.current = false; 
+        }
+        lastSavedSnapshotRef.current = snapshotString;
+        
+        try {
+          const key = `emple_test_progress_${attemptIdRef.current}_${sectionIdRef.current}`;
+          const localRaw = localStorage.getItem(key);
+          if (localRaw) {
+             const localData = JSON.parse(localRaw);
+             localData.answerRevision = serverRevisionRef.current;
+             localStorage.setItem(key, JSON.stringify(localData));
+          }
+        } catch(e) {}
+      } else if (res.reason === 'stale_revision') {
+        serverRevisionRef.current = res.currentRevision;
+      }
+    } catch (e) {
+      console.error('Autosave failed', e);
+      const msg = e instanceof Error ? e.message.toLowerCase() : '';
+      if (msg.includes('expired') || msg.includes('finalizing') || msg.includes('force_submitted') || msg.includes('submitted')) {
+         isDirtyRef.current = false; 
+      }
+    } finally {
+      if (sectionIdRef.current === section._id) {
+        isSavingRef.current = false;
+      }
+    }
+  }, [section._id, section.type, submitting]);
+
   useEffect(() => {
-    if (!data || section.type === 'coding') return;
+    if (section.type === 'coding' || loading || submitting) return;
+
+    if (JSON.stringify(answers) !== lastSavedSnapshotRef.current) {
+      isDirtyRef.current = true;
+    }
+
+    if (autosaveTimerRef.current) clearTimeout(autosaveTimerRef.current);
+
+    autosaveTimerRef.current = setTimeout(() => {
+      if (isDirtyRef.current && !isSavingRef.current) {
+        void performAutosave();
+      }
+    }, 2000);
+
+    return () => {
+      if (autosaveTimerRef.current) clearTimeout(autosaveTimerRef.current);
+    };
+  }, [answers, performAutosave, section.type, loading, submitting]);
+
+  useEffect(() => {
+    if (section.type === 'coding' || loading || submitting) return;
+
+    periodicTimerRef.current = setInterval(() => {
+      if (isDirtyRef.current && !isSavingRef.current) {
+        void performAutosave();
+      }
+    }, 30000);
+
+    return () => {
+      if (periodicTimerRef.current) clearInterval(periodicTimerRef.current);
+    };
+  }, [performAutosave, section.type, loading, submitting]);
+
+  const handleBackToSections = useCallback(() => {
+     if (isDirtyRef.current && !isSavingRef.current && section.type !== 'coding') {
+       void performAutosave();
+     }
+     onBackToSections();
+  }, [onBackToSections, performAutosave, section.type]);
+
+  useEffect(() => {
+    if (!data || section.type === 'coding' || loading) return;
     try {
       const stateToSave = {
         answers,
         visited,
         flagged,
         timings,
+        answerRevision: localRevisionRef.current,
         timestamp: Date.now()
       };
       localStorage.setItem(`emple_test_progress_${attemptId}_${section._id}`, JSON.stringify(stateToSave));
     } catch (e) {
       console.error('Failed to save progress to local storage', e);
     }
-  }, [answers, visited, flagged, timings, data, attemptId, section._id, section.type]);
+  }, [answers, visited, flagged, timings, data, attemptId, section._id, section.type, loading]);
 
   const handleSubmit = useCallback(async () => {
     if (submitting) return;
@@ -186,19 +354,38 @@ export default function TestAttempt({
         finalAnswers
       );
 
+      if (autosaveTimerRef.current) clearTimeout(autosaveTimerRef.current);
+      if (periodicTimerRef.current) clearInterval(periodicTimerRef.current);
+      isDirtyRef.current = false;
+      localStorage.removeItem(`emple_test_progress_${attemptId}_${section._id}`);
+
       onSectionCompleted(section._id);
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Failed to submit section';
-      if (hasAutoSubmitted.current || msg.toLowerCase().includes('expired')) {
+      const msg = err instanceof Error ? err.message.toLowerCase() : 'failed to submit section';
+      if (hasAutoSubmitted.current) {
         onSectionCompleted(section._id);
+      } else if (
+        msg.includes('expired') ||
+        msg.includes('finalizing') ||
+        msg.includes('submitted') ||
+        msg.includes('force_submitted')
+      ) {
+        if (onAttemptStateChange) {
+           let status: import('../types/test.types').TestAttemptStatus = 'submitted';
+           if (msg.includes('finalizing')) status = 'finalizing';
+           else if (msg.includes('force_submitted')) status = 'force_submitted';
+           onAttemptStateChange(status);
+        } else {
+           onSectionCompleted(section._id);
+        }
       } else {
-        setError(msg);
+        setError(err instanceof Error ? err.message : 'Failed to submit section');
       }
     } finally {
       setSubmitting(false);
       setShowSubmitConfirm(false);
     }
-  }, [answers, attemptId, onSectionCompleted, section._id, submitting]);
+  }, [answers, attemptId, onSectionCompleted, onAttemptStateChange, section._id, submitting, q, currentQuestionStartedAt, timings]);
 
   const openSubmitConfirm = useCallback(() => {
     if (submitting || loading || !canSubmit) return;
@@ -329,9 +516,17 @@ export default function TestAttempt({
 if (section.type === 'coding') {
   return (
     <CodingWorkspace
-      problems={section.codingProblemIds || []}
-      initialSubmissions={data?.codingSubmissions}
+      problems={
+        section.codingProblems
+          ? [...section.codingProblems]
+              .sort((a, b) => (a.order || 0) - (b.order || 0))
+              .map((cp) => cp.problemId)
+          : section.codingProblemIds || []
+      }
+      initialSubmissions={[]}
       mode="test"
+      attemptId={attemptId}
+      sectionId={section._id}
       onBack={onBackToSections}
       formattedTimeLeft={formattedTimeLeft}
       timeLeftMs={timeLeftMs}
@@ -341,11 +536,26 @@ if (section.type === 'coding') {
             attemptId,
             section._id,
             [],
-            submissions
+            submissions.map(s => ({
+              problemId: s.problemId,
+              submissionId: s.submissionId || '',
+            }))
           );
         } catch (err) {
-          const msg = err instanceof Error ? err.message : '';
-          if (!msg.toLowerCase().includes('expired')) {
+          const msg = err instanceof Error ? err.message.toLowerCase() : '';
+          if (
+             msg.includes('expired') ||
+             msg.includes('finalizing') ||
+             msg.includes('submitted') ||
+             msg.includes('force_submitted')
+          ) {
+             if (onAttemptStateChange) {
+                let status: import('../types/test.types').TestAttemptStatus = 'submitted';
+                if (msg.includes('finalizing')) status = 'finalizing';
+                else if (msg.includes('force_submitted')) status = 'force_submitted';
+                onAttemptStateChange(status);
+             }
+          } else {
             console.error('Failed to submit coding section', err);
           }
         }
@@ -401,7 +611,7 @@ if (section.type === 'coding') {
           submitting={submitting}
           loading={loading}
           canSubmit={canSubmit}
-          onBackToSections={onBackToSections}
+          onBackToSections={handleBackToSections}
           onOpenQuestions={() => setSidebarOpen(true)}
           onSubmit={openSubmitConfirm}
           allowCalculator={allowCalculator}

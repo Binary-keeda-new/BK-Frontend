@@ -94,13 +94,14 @@ export default function TestSectionCard({
             Selected Coding Problems
           </h4>
 
-          {!section.codingProblemIds?.length ? (
+          {!section.codingProblems?.length ? (
             <p className="mt-2 text-sm text-[var(--clr-text2)]">
               No coding problems selected.
             </p>
           ) : (
             <div className="mt-3 space-y-2">
-              {section.codingProblemIds.map((problem, problemIndex) => {
+              {section.codingProblems.map((cp, problemIndex) => {
+                const problem = cp.problemId;
                 if (typeof problem === 'string') {
                   return (
                     <div
@@ -132,7 +133,7 @@ export default function TestSectionCard({
 
                     {problem.topics?.length ? (
                       <div className="mt-2 flex flex-wrap gap-1.5">
-                        {problem.topics.map((topic) => (
+                        {problem.topics.map((topic: string) => (
                           <span
                             key={topic}
                             className="rounded-full bg-[var(--clr-surface2)] px-2 py-0.5 text-[11px] text-[var(--clr-text2)]"

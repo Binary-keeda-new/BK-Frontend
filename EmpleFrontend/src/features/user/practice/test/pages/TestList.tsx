@@ -14,8 +14,9 @@ import {
   startTestAttempt,
   submitTestFeedback,
   getTestAttemptDetails,
+  getUserTestReport,
 } from '../services/test.service';
-import { forceSubmitTestAttempt } from '../services/testAttempt.service';
+import { forceSubmitTestAttempt, reportTestSecurityViolation } from '../services/testAttempt.service';
 import TestFullscreenGate from '../components/TestFullscreenGate';
 import TestViolationModal from '../components/TestViolationModal';
 import TestMCQReview from './TestMCQReview';
@@ -31,7 +32,7 @@ type Props = {
 export default function TestList({ onFullscreenModeChange }: Props) {
   const [tests, setTests] = useState<UserTest[]>([]);
   const [loading, setLoading] = useState(true);
-  const [attemptStatusMap, setAttemptStatusMap] = useState<Record<string, any>>({});
+  const [attemptStatusMap, setAttemptStatusMap] = useState<Record<string, { status: import('../types/test.types').TestAttemptStatus; attemptId?: string }>>({});
   const searchParams = useSearchParams();
   const router = useRouter();
   const initialAttemptId = searchParams?.get('attemptId');
@@ -49,6 +50,8 @@ export default function TestList({ onFullscreenModeChange }: Props) {
   | 'instructions'
   | 'sections'
   | 'attempt'
+  | 'finalizing'
+  | 'requires-review'
   | 'feedback'
   | 'report'
 >(initialAttemptId ? 'report' : 'list');
@@ -62,6 +65,7 @@ export default function TestList({ onFullscreenModeChange }: Props) {
   const [attemptedTestIds, setAttemptedTestIds] = useState<string[]>([]);
   const [redirectCountdown, setRedirectCountdown] = useState<number | null>(null);
   const [securityWarnings, setSecurityWarnings] = useState(0);
+  const [maxViolations, setMaxViolations] = useState(5);
 
   const [pendingTest, setPendingTest] = useState<UserTest | null>(null);
   const [passwordInput, setPasswordInput] = useState('');
@@ -120,19 +124,56 @@ const [reviewSectionIndex, setreviewSectionIndex] = useState(0);
         clearInterval(interval);
         
         try {
-          await forceSubmitTestAttempt(activeAttemptId);
+          const res = await forceSubmitTestAttempt(activeAttemptId);
           if (selectedTest) {
              setCompletedSectionIds(selectedTest.sections.map((s) => s._id));
           }
-          setView('feedback');
+          
+          if (res.status === 'finalizing') {
+             setView(res.requiresReview ? 'requires-review' : 'finalizing');
+          } else {
+             setView('report');
+          }
         } catch (e) {
           console.error('Failed to auto submit test', e);
+          setView('finalizing');
         }
       }
     }, 1000);
 
     return () => clearInterval(interval);
   }, [attemptExpiresAt, activeAttemptId, selectedTest, view]);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (view === 'finalizing' && activeAttemptId) {
+      interval = setInterval(async () => {
+        try {
+          const report = await getUserTestReport(activeAttemptId);
+          if (report.status === 'submitted' || report.status === 'force_submitted') {
+             clearInterval(interval);
+             setView('report');
+             setAttemptStatusMap(prev => ({
+                ...prev,
+                [selectedTest?._id || '']: { ...prev[selectedTest?._id || ''], status: report.status }
+             }));
+          } else if (report.status === 'finalizing' && report.requiresReview) {
+             clearInterval(interval);
+             setView('requires-review');
+          }
+        } catch (error) {
+          const e = error as Error;
+          const msg = e.message?.toLowerCase() || '';
+          if (msg.includes('401') || msg.includes('403') || msg.includes('not found') || msg.includes('invalid')) {
+            clearInterval(interval);
+            addToast('Cannot access test result. Please contact support.', 'error');
+            setView('list');
+          }
+        }
+      }, 3000);
+    }
+    return () => clearInterval(interval);
+  }, [view, activeAttemptId, selectedTest?._id]);
 
   useEffect(() => {
     const loadTests = async () => {
@@ -179,7 +220,7 @@ const [reviewSectionIndex, setreviewSectionIndex] = useState(0);
     return;
   }
   
-  alert(message);
+  addToast(message, 'error');
 }
   };
 
@@ -224,7 +265,7 @@ const handleAttempt = async (test: UserTest) => {
     error instanceof Error ? error.message : 'Unable to resume test';
 
   if (message.toLowerCase().includes('expired')) {
-    alert('This test attempt has expired.');
+    addToast('This test attempt has expired.', 'error');
     return;
   }
 
@@ -232,11 +273,11 @@ const handleAttempt = async (test: UserTest) => {
     message.toLowerCase().includes('ip') ||
     message.toLowerCase().includes('network')
   ) {
-    alert("Can't connect to network.");
+    addToast("Can't connect to network.", 'error');
     return;
   }
 
-  alert(message);
+  addToast(message, 'error');
 } }
 
 
@@ -402,31 +443,26 @@ if (view === 'resume-fullscreen' && selectedTest) {
   onViolation={(type) => {
   console.warn('Test security violation:', type);
 
-  setSecurityWarnings((prev) => {
-    const next = prev + 1;
+  if (activeAttemptId) {
+    reportTestSecurityViolation(activeAttemptId, type).then(res => {
+      setSecurityWarnings(prev => Math.max(prev, res.violationCount));
+      if (res.maxViolations) setMaxViolations(res.maxViolations);
 
-    if (next === 5) {
-      setTimeout(async () => {
-        try {
-          if (activeAttemptId) {
-            await forceSubmitTestAttempt(activeAttemptId);
-            setCompletedSectionIds(selectedTest.sections.map((s) => s._id));
-            setView('feedback');
-          }
-        } catch (e) {
-          console.error('Failed to force submit test', e);
-          handleBackToList();
-        }
-      }, 0);
-      setActiveViolation(null);
-      return next;
-    }
-
-    if (next > 5) return prev;
-
-    setActiveViolation(type);
-    return next;
-  });
+      if (res.status === 'finalizing' || res.status === 'force_submitted' || res.status === 'submitted') {
+         if (res.status === 'finalizing') {
+            setView(res.requiresReview ? 'requires-review' : 'finalizing');
+         } else {
+            setView('report');
+         }
+      } else {
+         setActiveViolation(type);
+      }
+    }).catch(e => {
+       console.error('Failed to report security violation', e);
+       // Do not drop the event locally if it's a network issue? Wait, plan says:
+       // "If reporting a violation fails due to temporary network error: do not increment authoritative warning count locally... Backend count remains authoritative."
+    });
+  }
 
   if (
     type === 'exit_fullscreen' &&
@@ -440,6 +476,7 @@ if (view === 'resume-fullscreen' && selectedTest) {
   <TestViolationModal
         violationType={activeViolation}
         warningCount={securityWarnings}
+        maxViolations={maxViolations}
         onContinue={() => {
     const wasFullscreenViolation = activeViolation === 'exit_fullscreen';
 
@@ -472,6 +509,13 @@ if (view === 'resume-fullscreen' && selectedTest) {
           minTimeBeforeSubmit={
   selectedTest.settings?.minTimeBeforeSubmit || 0
 }
+          onAttemptStateChange={(status, requiresReview) => {
+             if (status === 'finalizing') {
+                setView(requiresReview ? 'requires-review' : 'finalizing');
+             } else {
+                setView('report');
+             }
+          }}
           onBackToSections={() => setView('sections')}
           onSectionCompleted={(sectionId) => {
             const nextCompleted = completedSectionIds.includes(sectionId)
@@ -492,9 +536,16 @@ if (view === 'resume-fullscreen' && selectedTest) {
               if (Date.now() >= expiresMs - 2000) {
                 if (!hasAutoSubmittedGlobal.current) {
                   hasAutoSubmittedGlobal.current = true;
-                  forceSubmitTestAttempt(activeAttemptId!).catch(console.error);
+                  forceSubmitTestAttempt(activeAttemptId!).then(res => {
+                    if (res.status === 'finalizing') {
+                       setView(res.requiresReview ? 'requires-review' : 'finalizing');
+                    } else {
+                       setView('report');
+                    }
+                  }).catch(console.error);
+                } else {
+                   setView('finalizing');
                 }
-                setView('feedback');
                 return;
               }
             }
@@ -547,9 +598,57 @@ if (view === 'resume-fullscreen' && selectedTest) {
     );
   }
 
-  if (view === 'report' && activeAttemptId) {
+  if (view === 'finalizing') {
     return (
-      <TestResult attemptId={activeAttemptId} onBack={handleBackToList} />
+      <div className="flex h-[80vh] flex-col items-center justify-center p-6 text-center">
+        <h2 className="text-2xl font-bold text-[var(--text)]">Finalizing your test...</h2>
+        <p className="mt-2 text-[var(--muted2)]">
+          Please wait while we process your submission.
+        </p>
+      </div>
+    );
+  }
+
+  if (view === 'requires-review') {
+    return (
+      <div className="flex h-[80vh] flex-col items-center justify-center p-6 text-center">
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-500/10 text-4xl">
+          ⏳
+        </div>
+        <h2 className="mt-6 text-2xl font-bold text-[var(--text)]">Technical Review Required</h2>
+        <p className="mt-2 max-w-md text-[var(--muted2)]">
+          Your test has been submitted, but part of your result requires technical review. You will be notified when the final result is ready.
+        </p>
+        <button
+          onClick={handleBackToList}
+          className="mt-8 rounded-xl bg-[var(--surface2)] border border-[var(--border)] px-6 py-3 text-sm font-semibold text-[var(--text)] hover:bg-[var(--surface)] transition-colors"
+        >
+          Return to Dashboard
+        </button>
+      </div>
+    );
+  }
+
+  if (view === 'report') {
+    return (
+      <TestResult 
+        attemptId={activeAttemptId!} 
+        onBack={handleBackToList}
+        onReviewSection={async (sectionId, type) => {
+          // Find the section details from the original test to pass to the old components if needed
+          // Or just set the view, we can fetch in the components
+          const sec = selectedTest?.sections.find(s => s._id === sectionId);
+          if (sec) {
+            setreviewSection(sec);
+            setreviewSectionIndex(selectedTest?.sections.indexOf(sec) || 0);
+          } else {
+            // Create a stub section just so the review component has what it needs
+            setreviewSection({ _id: sectionId, title: 'Review', type, duration: 0, numberOfQuestions: 0 } as any);
+            setreviewSectionIndex(0);
+          }
+          setView(type === 'mcq' ? 'review-mcq' : 'review-coding');
+        }}
+      />
     );
   }
 
@@ -617,9 +716,11 @@ if (view === 'resume-fullscreen' && selectedTest) {
             const isAttempted =
               test.attempted ||
               attemptedTestIds.includes(test._id) ||
-              attemptStatus?.status === 'submitted';
+              attemptStatus?.status === 'submitted' ||
+              attemptStatus?.status === 'force_submitted';
 
             const isInProgress = attemptStatus?.status === 'in_progress';
+            const isFinalizing = attemptStatus?.status === 'finalizing';
 
             return (
               <div
@@ -643,7 +744,7 @@ if (view === 'resume-fullscreen' && selectedTest) {
                   </div>
 
                  <div className="flex flex-wrap gap-2">
-                {attemptStatus?.status === 'submitted' && (
+                {(attemptStatus?.status === 'submitted' || attemptStatus?.status === 'force_submitted') && (
                   <button
                     onClick={() => handleViewReport(test)}
                     className="rounded-xl border border-[var(--orange)] px-5 py-3 text-sm font-bold text-[var(--orange)] hover:bg-[var(--orange)] hover:text-white transition-colors"
@@ -652,23 +753,26 @@ if (view === 'resume-fullscreen' && selectedTest) {
                   </button>
                 )}
                 <button
-  onClick={() => {
-    if (isAttempted) {
-      handleReviewTest(test);
-    } else {
-      handleAttempt(test);
-    }
-  }}
-  className={`rounded-xl px-5 py-3 text-sm font-bold ${
-    isAttempted
-      ? 'border border-sky-500/30 bg-sky-500/10 text-sky-300'
-      : isInProgress
-      ? 'border border-emerald-500/30 bg-emerald-500/10 text-emerald-300'
-      : 'bg-[var(--orange)] text-white'
-  }`}
->
-  {isAttempted ? 'Review' : isInProgress ? 'Resume' : 'Attempt'}
-</button>
+                  disabled={isFinalizing}
+                  onClick={() => {
+                    if (isAttempted) {
+                      handleReviewTest(test);
+                    } else if (!isFinalizing) {
+                      handleAttempt(test);
+                    }
+                  }}
+                  className={`rounded-xl px-5 py-3 text-sm font-bold ${
+                    isAttempted
+                      ? 'border border-sky-500/30 bg-sky-500/10 text-sky-300'
+                      : isFinalizing
+                      ? 'border border-gray-500/30 bg-gray-500/10 text-gray-300 opacity-60 cursor-not-allowed'
+                      : isInProgress
+                      ? 'border border-emerald-500/30 bg-emerald-500/10 text-emerald-300'
+                      : 'bg-[var(--orange)] text-white'
+                  }`}
+                >
+                  {isAttempted ? 'Review' : isFinalizing ? 'Finalizing...' : isInProgress ? 'Resume' : 'Attempt'}
+                </button>
                 </div>
                 </div>
               </div>

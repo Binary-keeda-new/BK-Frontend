@@ -16,7 +16,7 @@ export type TestSection = {
   numberOfQuestions: number;
   duration: number;
   order?: number;
-  codingProblemIds?: Array<CodingProblemOption | string>;
+  codingProblems?: Array<{ problemId: CodingProblemOption | string; marks: number; order: number }>;
 };
 
 export type TestForm = {

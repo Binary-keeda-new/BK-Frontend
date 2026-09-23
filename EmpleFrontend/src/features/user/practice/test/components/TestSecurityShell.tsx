@@ -38,7 +38,7 @@ export default function TestSecurityShell({
       console.log('CLIPBOARD EVENT:', e.type);
       e.preventDefault();
       e.stopPropagation();
-      report(`clipboard_${e.type}`);
+      report(`${e.type}_attempt`);
     };
 
     window.addEventListener('copy', blockClipboard, true);
@@ -63,19 +63,28 @@ export default function TestSecurityShell({
 
     const blockKeys = (e: KeyboardEvent) => {
       const key = e.key.toLowerCase();
+      
+      const isCopy = ['c'].includes(key) && (e.metaKey || e.ctrlKey);
+      const isPaste = ['v'].includes(key) && (e.metaKey || e.ctrlKey);
+      const isCut = ['x'].includes(key) && (e.metaKey || e.ctrlKey);
 
       const blocked =
         e.key === 'F12' ||
-        (e.metaKey && ['c', 'v', 'x', 's', 'p', 'u'].includes(key)) ||
-        (e.ctrlKey && ['c', 'v', 'x', 's', 'p', 'u'].includes(key)) ||
+        (e.metaKey && ['s', 'p', 'u'].includes(key)) ||
+        (e.ctrlKey && ['s', 'p', 'u'].includes(key)) ||
         (e.metaKey && e.altKey && ['i', 'j', 'c'].includes(key)) ||
-        (e.ctrlKey && e.shiftKey && ['i', 'j', 'c'].includes(key));
+        (e.ctrlKey && e.shiftKey && ['i', 'j', 'c'].includes(key)) ||
+        isCopy || isPaste || isCut;
 
       if (blocked) {
         console.log('KEYBOARD BLOCKED:', e.key);
         e.preventDefault();
         e.stopPropagation();
-        report(`keyboard_${e.key}`);
+        
+        if (isCopy) report('copy_attempt');
+        else if (isPaste) report('paste_attempt');
+        else if (isCut) report('cut_attempt');
+        else report('blocked_keyboard_shortcut');
       }
     };
 
@@ -91,7 +100,7 @@ export default function TestSecurityShell({
   useEffect(() => {
     if (!settings?.noLostFocus) return;
 
-    const onBlur = () => report('lost_focus');
+    const onBlur = () => report('focus_lost');
 
     window.addEventListener('blur', onBlur);
 
@@ -105,7 +114,7 @@ export default function TestSecurityShell({
 
     const onVisibilityChange = () => {
       if (document.hidden) {
-        report('tab_hidden_or_minimized');
+        report('tab_hidden');
       }
     };
 
@@ -121,7 +130,7 @@ export default function TestSecurityShell({
 
     const onFullscreenChange = () => {
       if (!document.fullscreenElement) {
-        report('exit_fullscreen');
+        report('fullscreen_exit');
       }
     };
 
@@ -146,7 +155,7 @@ export default function TestSecurityShell({
 
     if (open && !alreadyReported) {
       alreadyReported = true;
-      report('devtools_open');
+      report('devtools_detected');
     }
 
     if (!open) {

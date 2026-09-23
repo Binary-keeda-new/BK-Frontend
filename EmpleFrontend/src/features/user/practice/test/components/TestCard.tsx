@@ -32,7 +32,7 @@ export default function TestCard({
   const buttonLabel =
     status === 'in_progress'
       ? 'Resume'
-      : hasAttempted || status === 'completed'
+      : hasAttempted || status === 'submitted'
       ? 'Preview'
       : 'Attempt';
 
@@ -42,7 +42,7 @@ export default function TestCard({
       return;
     }
 
-    if (hasAttempted || status === 'completed') {
+    if (hasAttempted || status === 'submitted') {
       onPreview?.(test._id);
       return;
     }
@@ -65,7 +65,7 @@ export default function TestCard({
               </span>
             )}
 
-            {(hasAttempted || status === 'completed') && status !== 'in_progress' && (
+            {(hasAttempted || status === 'submitted') && status !== 'in_progress' && (
               <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 text-[11px] font-semibold text-emerald-300">
                 Completed
               </span>
@@ -106,7 +106,7 @@ export default function TestCard({
           className={`shrink-0 rounded-2xl px-5 py-2.5 text-sm font-bold ${
             status === 'in_progress'
               ? 'border border-sky-500/30 bg-sky-500/10 text-sky-300'
-              : hasAttempted || status === 'completed'
+              : hasAttempted || status === 'submitted'
               ? 'border border-emerald-500/30 bg-emerald-500/10 text-emerald-300'
               : 'bg-[var(--orange)] text-white'
           }`}

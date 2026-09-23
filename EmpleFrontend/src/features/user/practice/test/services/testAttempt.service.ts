@@ -24,9 +24,11 @@ export type TestSectionAttemptData = {
   duration: number;
   numberOfQuestions: number;
   questions: TestSectionQuestion[];
+  answerRevision?: number;
   answers: {
     questionId: string;
     selectedOptions: string[];
+    timeTakenSeconds?: number;
   }[];
   codingSubmissions?: CodingSubmissionPayload[];
 };
@@ -39,13 +41,7 @@ export type TestSectionAnswerPayload = {
 
 export type CodingSubmissionPayload = {
   problemId: string;
-  language: string;
-  sourceCode: string;
-  accepted?: boolean;
-  passedCount?: number;
-  totalCount?: number;
-  results?: unknown[];
-  timeTakenSeconds?: number;
+  submissionId: string;
 };
 
 export const getTestSectionAttempt = async (
@@ -68,13 +64,14 @@ export const submitTestSectionAttempt = async (
   answers: TestSectionAnswerPayload[] = [],
   codingSubmissions: CodingSubmissionPayload[] = []
 ) => {
+  const payloadAnswers = answers.length > 0 ? answers : codingSubmissions;
+
   const result = await apiRequest<ApiResponse<unknown>>(
     `/api/v1/test-attempts/${attemptId}/sections/${sectionId}/submit`,
     {
       method: 'POST',
       body: JSON.stringify({
-        answers,
-        codingSubmissions,
+        answers: payloadAnswers,
       }),
     }
   );
@@ -82,13 +79,66 @@ export const submitTestSectionAttempt = async (
   return result.data;
 };
 
+export type ForceSubmitResponse = {
+  status: import('../types/test.types').TestAttemptStatus;
+  requiresReview?: boolean;
+};
+
 export const forceSubmitTestAttempt = async (attemptId: string) => {
-  const result = await apiRequest<ApiResponse<unknown>>(
+  const result = await apiRequest<ApiResponse<ForceSubmitResponse>>(
     `/api/v1/test-attempts/${attemptId}/force-submit`,
     {
       method: 'POST',
     }
   );
 
+  return result.data;
+};
+
+export type AutosaveResponse =
+  | { saved: true; currentRevision?: number }
+  | { saved: false; reason: 'stale_revision'; currentRevision: number };
+
+export const saveTestSectionAnswers = async (
+  attemptId: string,
+  sectionId: string,
+  payload: {
+    revision: number;
+    answers: {
+      questionId: string;
+      selectedOptions: string[];
+      timeTakenSeconds: number;
+    }[];
+  }
+) => {
+  const result = await apiRequest<ApiResponse<AutosaveResponse>>(
+    `/api/v1/test-attempts/${attemptId}/sections/${sectionId}/answers`,
+    {
+      method: 'PATCH',
+      body: JSON.stringify(payload),
+    }
+  );
+  return result.data;
+};
+
+export type SecurityViolationResponse = {
+  violationCount: number;
+  maxViolations?: number;
+  forceSubmitted: boolean;
+  status: import('../types/test.types').TestAttemptStatus;
+  requiresReview?: boolean;
+};
+
+export const reportTestSecurityViolation = async (
+  attemptId: string,
+  violationType: string
+) => {
+  const result = await apiRequest<ApiResponse<SecurityViolationResponse>>(
+    `/api/v1/test-attempts/${attemptId}/security-violations`,
+    {
+      method: 'POST',
+      body: JSON.stringify({ type: violationType }),
+    }
+  );
   return result.data;
 };

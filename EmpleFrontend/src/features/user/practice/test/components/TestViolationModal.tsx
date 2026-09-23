@@ -3,25 +3,25 @@
 type Props = {
   violationType: string | null;
   warningCount: number;
+  maxViolations: number;
   onContinue: () => void;
 };
 
 const messages: Record<string, string> = {
-  keyboard_c: 'Copying content is not allowed during this test.',
-  keyboard_v: 'Pasting content is not allowed during this test.',
-  keyboard_x: 'Cutting content is not allowed during this test.',
-  clipboard_copy: 'Copying content is not allowed during this test.',
-  clipboard_paste: 'Pasting content is not allowed during this test.',
-  clipboard_cut: 'Cutting content is not allowed during this test.',
-  lost_focus: 'You moved away from the test window.',
-  tab_hidden_or_minimized: 'You switched tabs, minimized, or hid the test window.',
-  devtools_open: 'Developer tools are not allowed during this test.',
-  exit_fullscreen: 'Fullscreen mode is required for this test.',
+  copy_attempt: 'Copying content is not allowed during this test.',
+  paste_attempt: 'Pasting content is not allowed during this test.',
+  cut_attempt: 'Cutting content is not allowed during this test.',
+  focus_lost: 'You moved away from the test window.',
+  tab_hidden: 'You switched tabs, minimized, or hid the test window.',
+  devtools_detected: 'Developer tools are not allowed during this test.',
+  fullscreen_exit: 'Fullscreen mode is required for this test.',
+  blocked_keyboard_shortcut: 'Using blocked keyboard shortcuts is not allowed during this test.',
 };
 
 export default function TestViolationModal({
   violationType,
   warningCount,
+  maxViolations,
   onContinue,
 }: Props) {
   if (!violationType) return null;
@@ -42,7 +42,7 @@ export default function TestViolationModal({
         </p>
 
         <div className="mt-5 rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-center text-sm font-semibold text-red-400">
-          Warning Count: {warningCount}
+          Warning {warningCount} of {maxViolations}
         </div>
 
         <p className="mt-4 text-center text-xs leading-5 text-[var(--muted2)]">

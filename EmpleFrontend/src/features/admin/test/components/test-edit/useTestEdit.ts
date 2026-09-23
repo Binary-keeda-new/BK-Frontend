@@ -190,8 +190,8 @@ export function useTestEdit(testId: string) {
   const handleEditSection = (section: TestSection) => {
     setEditingSection(section);
 
-    const codingProblemIds = (section.codingProblemIds || []).map((item) =>
-      typeof item === 'string' ? item : item._id
+    const codingProblemIds = (section.codingProblems || []).map((item) =>
+      typeof item.problemId === 'string' ? item.problemId : (item.problemId as any)._id
     );
 
     setSectionForm({
@@ -258,8 +258,14 @@ export function useTestEdit(testId: string) {
       type: sectionForm.type,
       numberOfQuestions,
       duration,
-      codingProblemIds:
-        sectionForm.type === 'coding' ? sectionForm.codingProblemIds : [],
+      codingProblems:
+        sectionForm.type === 'coding'
+          ? sectionForm.codingProblemIds.map((id, index) => ({
+              problemId: id,
+              marks: 10,
+              order: index + 1,
+            }))
+          : [],
     };
 
     try {

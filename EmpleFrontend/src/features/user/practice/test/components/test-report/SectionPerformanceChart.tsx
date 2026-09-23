@@ -18,7 +18,8 @@ import {
 type Props = {
   sections: Array<{
     title: string;
-    accuracyOrAcceptanceRate: number;
+    score: number;
+    maxScore: number;
     type: 'mcq' | 'coding';
   }>;
 };
@@ -36,11 +37,11 @@ const CustomTooltip = ({ active, payload, label }: any) => {
     const data = payload[0].payload;
     const isMcq = data.type === 'mcq';
     return (
-      <div className="rounded-2xl /80 bg-[var(--surface)]/90 p-4 shadow-xl backdrop-blur-md">
+      <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)]/90 p-4 shadow-xl backdrop-blur-md">
         <p className="mb-2 font-extrabold text-[var(--text)]">{data.fullTitle}</p>
         <p className="flex items-center justify-between gap-6 text-sm">
           <span className="font-semibold uppercase tracking-wider text-[var(--muted2)] text-xs">
-            {isMcq ? 'Accuracy' : 'Acceptance'}
+            Score
           </span>
           <span className={`font-black text-lg ${isMcq ? 'text-emerald-500' : 'text-sky-500'}`}>
             {payload[0].value}%
@@ -58,7 +59,7 @@ export default function SectionPerformanceChart({ sections }: Props) {
   const data = sections.map((s) => ({
     name: truncateText(s.title),
     fullTitle: s.title || 'Untitled Section',
-    value: s.accuracyOrAcceptanceRate,
+    value: s.maxScore > 0 ? Math.round((s.score / s.maxScore) * 100) : 0,
     type: s.type,
   }));
 

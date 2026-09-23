@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { UserTestSection } from '../types/test.types';
-import { getTestSectionReview } from '../services/test.service';
+import { getTestSectionReview, TestObjectiveReviewItem } from '../services/test.service';
 
 type Props = {
   attemptId: string;
@@ -11,26 +11,11 @@ type Props = {
   onBack: () => void;
 };
 
-type ReviewAnswer = {
-  questionId: string;
-  question: string;
-  questionType: 'MCQ' | 'MSQ' | 'NAT';
-  options: string[];
-  selectedOptions: string[];
-  correctOptions: string[];
-  isCorrect: boolean;
-  marksAwarded: number;
-  positiveMarks: number;
-  negativeMarks: number;
-  imageUrl?: string | null;
-  solution?: string;
-  solutionMedia?: string | null;
-};
-
 type SectionReviewData = {
   attemptId: string;
   sectionId: string;
-  answers: ReviewAnswer[];
+  type: 'mcq';
+  questions: TestObjectiveReviewItem[];
 };
 
 function getQuestionMode(questionType?: string | null) {
@@ -40,9 +25,9 @@ function getQuestionMode(questionType?: string | null) {
   return 'Question';
 }
 
-function getMarksText(answer: ReviewAnswer) {
-  if (answer.marksAwarded > 0) return `+${answer.marksAwarded}`;
-  return `${answer.marksAwarded}`;
+function getMarksText(answer: TestObjectiveReviewItem) {
+  if (answer.awardedMarks > 0) return `+${answer.awardedMarks}`;
+  return `${answer.awardedMarks}`;
 }
 
 export default function TestMCQReview({
@@ -55,13 +40,13 @@ export default function TestMCQReview({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const questions = useMemo(() => data?.answers ?? [], [data]);
+  const questions = useMemo(() => data?.questions ?? [], [data]);
 
   const { score, maxScore } = useMemo(() => {
     let score = 0;
     let maxScore = 0;
     for (const q of questions) {
-      score += q.marksAwarded || 0;
+      score += q.awardedMarks || 0;
       maxScore += q.positiveMarks || 0;
     }
     return { score, maxScore };
@@ -178,7 +163,20 @@ export default function TestMCQReview({
 
         <div className="mt-5 flex flex-col gap-4">
           {questions.map((question, index) => {
-            const isNat = question.questionType === 'NAT';
+            const isNat = !question.options || question.options.length === 0;
+            const isUnanswered = question.evaluationStatus === 'unanswered';
+            const isCorrect = question.evaluationStatus === 'correct';
+
+            let statusColor = 'border-[var(--border)] bg-[var(--surface)] text-[var(--muted2)]';
+            let statusText = 'Unanswered';
+            
+            if (isCorrect) {
+              statusColor = 'border-emerald-500/30 bg-emerald-500/10 text-emerald-400';
+              statusText = 'Correct';
+            } else if (!isUnanswered) {
+              statusColor = 'border-red-500/30 bg-red-500/10 text-red-400';
+              statusText = 'Incorrect';
+            }
 
             return (
               <article
@@ -198,34 +196,17 @@ export default function TestMCQReview({
                     </div>
 
                     <span
-                      className={
-                        question.isCorrect
-                          ? 'inline-flex items-center rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1.5 text-xs font-bold text-emerald-400'
-                          : 'inline-flex items-center rounded-full border border-red-500/30 bg-red-500/10 px-3 py-1.5 text-xs font-bold text-red-400'
-                      }
+                      className={`inline-flex items-center rounded-full border px-3 py-1.5 text-xs font-bold ${statusColor}`}
                     >
-                      {question.isCorrect ? 'Correct' : 'Incorrect'} ·{' '}
-                      {getMarksText(question)}
+                      {statusText} · {getMarksText(question)}
                     </span>
                   </div>
 
                   <div className="flex flex-wrap gap-2">
                     <span className="rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1 text-[11px] font-medium text-[var(--muted2)]">
-                      {getQuestionMode(question.questionType)}
-                    </span>
-
-                    <span className="rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1 text-[11px] font-medium text-[var(--muted2)]">
-                      +{question.positiveMarks} / -{question.negativeMarks}
+                      +{question.positiveMarks} / {question.negativeMarks < 0 ? question.negativeMarks : `-${question.negativeMarks}`}
                     </span>
                   </div>
-
-                  {question.imageUrl && (
-                    <img
-                      src={question.imageUrl}
-                      alt="Question"
-                      className="max-w-full rounded-xl border border-[var(--border)]"
-                    />
-                  )}
 
                   {isNat ? (
                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -234,7 +215,7 @@ export default function TestMCQReview({
                           Your Answer
                         </p>
                         <p className="mt-2 text-base font-semibold text-[var(--text)]">
-                          {question.selectedOptions[0] || 'Not answered'}
+                          {question.selectedOptions?.[0] || 'Not answered'}
                         </p>
                       </div>
 
@@ -243,28 +224,28 @@ export default function TestMCQReview({
                           Correct Answer
                         </p>
                         <p className="mt-2 text-base font-semibold text-emerald-300">
-                          {question.correctOptions[0] || '-'}
+                          {question.correctOptions?.[0] || '-'}
                         </p>
                       </div>
                     </div>
                   ) : (
                     <div className="flex flex-col gap-2.5">
-                      {question.options.map((option) => {
+                      {question.options?.map((option) => {
                         const isSelected =
-                          question.selectedOptions.includes(option);
-                        const isCorrect =
-                          question.correctOptions.includes(option);
+                          question.selectedOptions?.includes(option);
+                        const isOptionCorrect =
+                          question.correctOptions?.includes(option);
 
                         let optionClassName =
                           'rounded-xl border px-4 py-3 text-sm transition';
 
-                        if (isSelected && isCorrect) {
+                        if (isSelected && isOptionCorrect) {
                           optionClassName +=
                             ' border-emerald-500 bg-emerald-500/15 text-emerald-200';
-                        } else if (isSelected && !isCorrect) {
+                        } else if (isSelected && !isOptionCorrect) {
                           optionClassName +=
                             ' border-red-500/70 bg-red-500/10 text-red-300';
-                        } else if (isCorrect) {
+                        } else if (isOptionCorrect) {
                           optionClassName +=
                             ' border-emerald-500/70 bg-emerald-500/10 text-emerald-300';
                         } else {
@@ -284,7 +265,7 @@ export default function TestMCQReview({
                                   </span>
                                 )}
 
-                                {isCorrect && (
+                                {isOptionCorrect && (
                                   <span className="rounded-full bg-emerald-500/15 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-emerald-300">
                                     Correct
                                   </span>

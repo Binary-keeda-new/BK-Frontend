@@ -6,18 +6,15 @@ import { UserTestReport } from '../types/test.types';
 import ReportHeader from '../components/test-report/ReportHeader';
 import OverallSummary from '../components/test-report/OverallSummary';
 import SectionPerformance from '../components/test-report/SectionPerformance';
-import McqAnalytics from '../components/test-report/McqAnalytics';
-import McqReview from '../components/test-report/McqReview';
-import CodingAnalytics from '../components/test-report/CodingAnalytics';
-import CodingReview from '../components/test-report/CodingReview';
 import ReportSkeleton from '../components/test-report/ReportSkeleton';
 
 type Props = {
   attemptId: string;
   onBack: () => void;
+  onReviewSection: (sectionId: string, type: 'mcq' | 'coding') => void;
 };
 
-export default function TestResult({ attemptId, onBack }: Props) {
+export default function TestResult({ attemptId, onBack, onReviewSection }: Props) {
   const [report, setReport] = useState<UserTestReport | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -40,27 +37,6 @@ export default function TestResult({ attemptId, onBack }: Props) {
     void fetchReport();
   }, [attemptId]);
 
-  const tabs = useMemo(() => {
-    if (!report) return [];
-    
-    const hasMcq = report.summary.totalMcqQuestions > 0 || (report.mcqReview && report.mcqReview.length > 0);
-    const hasCoding = report.summary.totalCodingProblems > 0 || (report.codingReview && report.codingReview.length > 0);
-    
-    const availableTabs = [
-      { id: 'overview', label: 'Overview' }
-    ];
-    
-    if (hasMcq) {
-      availableTabs.push({ id: 'mcq', label: 'MCQ Analytics' });
-    }
-    
-    if (hasCoding) {
-      availableTabs.push({ id: 'coding', label: 'Coding Analytics' });
-    }
-    
-    return availableTabs;
-  }, [report]);
-
   if (loading) {
     return <ReportSkeleton />;
   }
@@ -77,10 +53,43 @@ export default function TestResult({ attemptId, onBack }: Props) {
             onClick={onBack}
             className="mt-4 rounded-xl bg-[var(--orange)] px-4 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
           >
-            Back to Tests
+            Back to Dashboard
           </button>
         </div>
       </main>
+    );
+  }
+
+  // Handle finalizing and requiresReview
+  if (report.status === 'finalizing' || report.resultReady === false) {
+    // If we're here, it means we got a report but it's not ready yet
+    if (report.requiresReview) {
+      return (
+        <div className="flex h-[80vh] flex-col items-center justify-center p-6 text-center">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-500/10 text-4xl">
+            ⏳
+          </div>
+          <h2 className="mt-6 text-2xl font-bold text-[var(--text)]">Technical Review Required</h2>
+          <p className="mt-2 max-w-md text-[var(--muted2)]">
+            Your test has been submitted, but part of your result requires technical review. You will be notified when the final result is ready.
+          </p>
+          <button
+            onClick={onBack}
+            className="mt-8 rounded-xl bg-[var(--surface2)] border border-[var(--border)] px-6 py-3 text-sm font-semibold text-[var(--text)] hover:bg-[var(--surface)] transition-colors"
+          >
+            Return to Dashboard
+          </button>
+        </div>
+      );
+    }
+
+    return (
+      <div className="flex h-[80vh] flex-col items-center justify-center p-6 text-center">
+        <h2 className="text-2xl font-bold text-[var(--text)]">Finalizing your test...</h2>
+        <p className="mt-2 text-[var(--muted2)]">
+          Please wait while we process your submission.
+        </p>
+      </div>
     );
   }
 
@@ -88,44 +97,10 @@ export default function TestResult({ attemptId, onBack }: Props) {
     <main className="mx-auto w-full max-w-7xl px-4 py-8 md:px-6">
       <ReportHeader report={report} onBack={onBack} />
       
-      {tabs.length > 1 && (
-        <div className="mb-8 flex flex-wrap gap-2 rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-2 shadow-sm">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id as 'overview' | 'mcq' | 'coding')}
-              className={`rounded-2xl px-6 py-3 text-sm font-bold tracking-wide uppercase transition-all duration-300 ${
-                activeTab === tab.id
-                  ? 'bg-[var(--orange)] text-white shadow-[0_4px_14px_rgba(241,90,34,0.3)]'
-                  : 'text-[var(--muted2)] hover:bg-[var(--bg)] hover:text-[var(--text)]'
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
-      )}
-
-      {activeTab === 'overview' && (
-        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-          <OverallSummary report={report} />
-          <SectionPerformance report={report} />
-        </div>
-      )}
-
-      {activeTab === 'mcq' && (
-        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-          {report.summary.totalMcqQuestions > 0 && <McqAnalytics report={report} />}
-          <McqReview report={report} />
-        </div>
-      )}
-
-      {activeTab === 'coding' && (
-        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-          {report.summary.totalCodingProblems > 0 && <CodingAnalytics report={report} />}
-          <CodingReview report={report} />
-        </div>
-      )}
+      <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <OverallSummary report={report} />
+        <SectionPerformance report={report} onReviewSection={onReviewSection} />
+      </div>
     </main>
   );
 }

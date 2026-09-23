@@ -34,7 +34,7 @@ export default function LoginPage() {
         return
       } else {
         setError(
-          `Failed to start ${provider} login: ${result.error?.errorMessage || 'Not configured in Descope'}`
+          `Failed to start ${provider} login: ${result.error?.errorDescription || result.error?.errorMessage || 'Not configured in Descope'}`
         )
       }
     } catch (err) {

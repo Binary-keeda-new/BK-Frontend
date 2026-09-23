@@ -107,7 +107,7 @@ export default function SignupPage() {
         window.location.href = result.data.url
         return
       } else {
-        setError(`Failed to start ${provider} login: ${result.error?.errorMessage || 'Not configured in Descope'}`)
+        setError(`Failed to start ${provider} login: ${result.error?.errorDescription || result.error?.errorMessage || 'Not configured in Descope'}`)
       }
     } catch (err) {
       console.error('Social signup error:', err)

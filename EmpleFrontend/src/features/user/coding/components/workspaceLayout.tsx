@@ -74,15 +74,17 @@ export default function WorkspaceLayout({
       hasAutoSubmitted.current = true;
       const submissions = problems.map((p) => {
         const state = problemStates[p._id];
+        const validSub = state?.validSelectedSubmission || state?.testSubmissionState;
         return {
           problemId: p._id,
-          language: state?.selectedLanguage || 'Java',
+          language: validSub?.language || state?.selectedLanguage || 'Java',
           sourceCode: state?.code || '',
-          accepted: state?.executionResult?.accepted,
-          passedCount: state?.executionResult?.passedCount,
-          totalCount: state?.executionResult?.totalCount,
+          accepted: validSub?.status === 'accepted' || state?.executionResult?.accepted,
+          passedCount: validSub?.passedTestCases || state?.executionResult?.passedCount,
+          totalCount: validSub?.totalTestCases || state?.executionResult?.totalCount,
           results: state?.executionResult?.results || [],
           timeTakenSeconds: state?.timeTakenSeconds || 0,
+          submissionId: validSub?.submissionId,
         };
       });
       void onComplete?.(submissions);
@@ -171,15 +173,17 @@ export default function WorkspaceLayout({
                 onClick={() => {
                   const submissions = problems.map((p) => {
                     const state = problemStates[p._id];
+                    const validSub = state?.validSelectedSubmission || state?.testSubmissionState;
                     return {
                       problemId: p._id,
-                      language: state?.selectedLanguage || 'Java',
+                      language: validSub?.language || state?.selectedLanguage || 'Java',
                       sourceCode: state?.code || '',
-                      accepted: state?.executionResult?.accepted,
-                      passedCount: state?.executionResult?.passedCount,
-                      totalCount: state?.executionResult?.totalCount,
+                      accepted: validSub?.status === 'accepted' || state?.executionResult?.accepted,
+                      passedCount: validSub?.passedTestCases || state?.executionResult?.passedCount,
+                      totalCount: validSub?.totalTestCases || state?.executionResult?.totalCount,
                       results: state?.executionResult?.results || [],
                       timeTakenSeconds: state?.timeTakenSeconds || 0,
+                      submissionId: validSub?.submissionId,
                     };
                   });
                   onComplete?.(submissions);
