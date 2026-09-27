@@ -8,7 +8,6 @@ frontend:
         - npm ci
     build:
       commands:
-        - cd EmpleFrontend
         - npm run build
   artifacts:
     baseDirectory: EmpleFrontend/.next
