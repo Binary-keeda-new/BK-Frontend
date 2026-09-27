@@ -10,10 +10,10 @@ frontend:
       commands:
         - npm run build
   artifacts:
-    baseDirectory: .next
+    baseDirectory: EmpleFrontend/.next
     files:
       - '**/*'
   cache:
     paths:
-      - .next/cache/**/*
-      - node_modules/**/*
+      - EmpleFrontend/.next/cache/**/*
+      - EmpleFrontend/node_modules/**/*
