@@ -1,10 +1,10 @@
-import { notFound } from "next/navigation";
+﻿import { notFound } from "next/navigation";
 import CTutorialPage from "@/features/user/tutorials/c/pages/CTutorialPage";
 import JavaTutorialPage from "@/features/user/tutorials/java/pages/JavaTutorialPage";
 import DAATutorialPage from "@/features/user/tutorials/daa/pages/DAATutorialPage";
 import DBMSTutorialPage from "@/features/user/tutorials/dbms/pages/DBMSTutorialPage";
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   
   const metadataMap: Record<string, any> = {
@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default async function TutorialSubjectPage({ params }: { params: { slug: string } }) {
+export default async function TutorialSubjectPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   
   if (slug === "c") return <CTutorialPage />;

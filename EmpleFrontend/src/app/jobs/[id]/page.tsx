@@ -1,12 +1,12 @@
-import { Metadata } from 'next';
+﻿import { Metadata } from 'next';
 import JobBoard from '@/features/user/jobs/components/JobBoard';
 
 type Props = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const id = params.id;
+  const { id } = await params;
   
   return {
     title: `${id.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())} Jobs | Emple`,
@@ -17,6 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function JobDetailPage({ params }: Props) {
-  return <JobBoard initialJobId={params.id} />;
+export default async function JobDetailPage({ params }: Props) {
+  const { id } = await params;
+  return <JobBoard initialJobId={id} />;
 }

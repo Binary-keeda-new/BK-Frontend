@@ -1,9 +1,10 @@
-import QuestionBankDetailPage from '@/features/admin/question-bank/pages/QuestionBankDetail';
+﻿import QuestionBankDetailPage from '@/features/admin/question-bank/pages/QuestionBankDetail';
 
-export default function Page({
+export default async function Page({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  return <QuestionBankDetailPage id={params.id} />;
+  const { id } = await params;
+  return <QuestionBankDetailPage id={id} />;
 }
