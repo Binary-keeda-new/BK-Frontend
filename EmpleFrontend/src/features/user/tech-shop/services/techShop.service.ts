@@ -1,4 +1,4 @@
-import { getSessionToken } from "@descope/nextjs-sdk/client";
+import { getSessionToken } from "@descope/web-js-sdk";
 
 const BASE = process.env.NEXT_PUBLIC_API_URL ?? "";
 

@@ -1,7 +1,8 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useDescope, getSessionToken } from '@descope/nextjs-sdk/client'
+import { useDescope } from '@descope/nextjs-sdk/client';
+import { getSessionToken } from '@descope/web-js-sdk'
 import { getDeviceId, getDeviceLabel } from '@/shared/utils/deviceId'
 
 export default function CallbackPage() {

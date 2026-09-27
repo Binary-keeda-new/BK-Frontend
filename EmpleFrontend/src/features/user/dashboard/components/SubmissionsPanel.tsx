@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { getSessionToken } from "@descope/nextjs-sdk/client";
+import { useSession } from "@descope/nextjs-sdk/client";
+import { getSessionToken } from "@descope/web-js-sdk";
 import EmptyState from "@/shared/components/ui/EmptyState";
 import { FileText } from "lucide-react";
 
@@ -60,6 +61,7 @@ export default function SubmissionsPanel({
   onToggleExpand?: () => void;
 }) {
   const router = useRouter();
+  const { sessionToken } = useSession();
 
   const [active, setActive] = useState<Tab>("Quiz");
   const [submissions, setSubmissions] = useState<SubmissionItem[]>([]);
@@ -79,7 +81,7 @@ export default function SubmissionsPanel({
           return;
         }
 
-        const token = getSessionToken();
+        const token = sessionToken || getSessionToken();
 
         const res = await fetch(`${API_BASE}/api/v1/quiz-attempts`, {
           method: "GET",
@@ -107,7 +109,7 @@ export default function SubmissionsPanel({
     };
 
     void fetchAttempts();
-  }, [active]);
+  }, [active, sessionToken]);
 
   const visibleSubmissions = isExpanded ? submissions : submissions.slice(0, 5);
 

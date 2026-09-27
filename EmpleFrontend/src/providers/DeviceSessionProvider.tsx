@@ -2,7 +2,8 @@
 
 import { createContext, useContext, useEffect, useRef, useState } from 'react'
 import { io, Socket } from 'socket.io-client'
-import { useDescope, getSessionToken } from '@descope/nextjs-sdk/client'
+import { useDescope } from '@descope/nextjs-sdk/client';
+import { getSessionToken } from '@descope/web-js-sdk'
 import { getDeviceId } from '@/shared/utils/deviceId'
 import { API_BASE_URL, apiRequest } from '@/shared/utils/api'
 import { useAppAuth } from '@/providers/AppAuthProvider'

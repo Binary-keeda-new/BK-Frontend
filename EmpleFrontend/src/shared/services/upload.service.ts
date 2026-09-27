@@ -1,4 +1,4 @@
-import { getSessionToken } from "@descope/nextjs-sdk/client";
+import { getSessionToken } from "@descope/web-js-sdk";
 import { parseJsonResponse } from "@/shared/utils/api";
 
 const API_BASE_URL =

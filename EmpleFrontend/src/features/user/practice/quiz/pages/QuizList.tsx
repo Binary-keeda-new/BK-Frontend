@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Coins} from "lucide-react";
-import { getSessionToken, useSession } from "@descope/nextjs-sdk/client";
+import { useSession } from "@descope/nextjs-sdk/client";
+import { getSessionToken } from "@descope/web-js-sdk";
 
 import { QUIZ_CATEGORIES } from "@/shared/constants/quizCategories";
 import { useWallet } from "@/providers/WalletProvider";
@@ -160,7 +161,7 @@ export default function QuizList() {
   const router = useRouter();
   const params = useParams();
 
-  const { isAuthenticated, isSessionLoading } = useSession() as any;
+  const { isAuthenticated, isSessionLoading, sessionToken } = useSession() as any;
   const [toasts, setToasts] = useState<{ id: string; message: string; type: 'success' | 'error' }[]>([]);
 
   useEffect(() => {
@@ -266,7 +267,7 @@ export default function QuizList() {
           return;
         }
 
-        const token = getSessionToken();
+        const token = sessionToken || getSessionToken();
 
         const statusResponse = await fetch(
           `${API_BASE}/api/v1/quiz-attempts/status?quizIds=${quizIds.join(

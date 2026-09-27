@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import {
   createContext,
@@ -9,7 +9,7 @@ import {
 
 import { getCurrentUser } from '@/shared/services/auth.service'
 import { CurrentUser } from '@/shared/types/auth.types'
-import { getSessionToken } from "@descope/nextjs-sdk/client";
+import { useSession } from "@descope/nextjs-sdk/client";
 
 type AuthContextType = {
   user: CurrentUser | null
@@ -26,6 +26,7 @@ const AuthContext = createContext<AuthContextType>({
 })
 
 export function AppAuthProvider({ children }: { children: React.ReactNode }) {
+  const { sessionToken, isSessionLoading } = useSession();
   const [user, setUser] = useState<CurrentUser | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -38,24 +39,28 @@ export function AppAuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
- useEffect(() => {
-  const token = getSessionToken();
+  useEffect(() => {
+    if (isSessionLoading) return;
 
-  if (!token) {
-    setLoading(false);
-    return;
-  }
+    const token = sessionToken || (typeof window !== 'undefined' ? localStorage.getItem('token') : null);
 
-  const expiry = localStorage.getItem("sessionExpiry");
+    if (!token) {
+      setUser(null);
+      setLoading(false);
+      return;
+    }
 
-  if (expiry && Date.now() > Number(expiry)) {
-    localStorage.removeItem("sessionExpiry");
-    setLoading(false);
-    return;
-  }
+    const expiry = localStorage.getItem("sessionExpiry");
 
-  refreshUser().finally(() => setLoading(false));
-}, []);
+    if (expiry && Date.now() > Number(expiry)) {
+      localStorage.removeItem("sessionExpiry");
+      setUser(null);
+      setLoading(false);
+      return;
+    }
+
+    refreshUser().finally(() => setLoading(false));
+  }, [sessionToken, isSessionLoading]);
 
   return (
     <AuthContext.Provider
