@@ -29,10 +29,14 @@ export default function MonacoEditor({
 }: Props) {
   const lang = language as keyof typeof problem.codeTemplates;
 
-  const lockedPrefix = problem.lockedPrefixTemplates?.[lang] || '';
-  const lockedSuffix = problem.lockedSuffixTemplates?.[lang] || '';
+  const lockedPrefix = problem?.lockedPrefixTemplates?.[lang] || '';
+  const lockedSuffix = problem?.lockedSuffixTemplates?.[lang] || '';
 
   const hasLockedCode = Boolean(lockedPrefix || lockedSuffix);
+
+  const availableLanguages = Array.isArray(problem?.languages) && problem.languages.length > 0
+    ? problem.languages
+    : ['Java', 'Python', 'C++', 'C'];
 
   const handleEditorChange = (value?: string) => {
     const nextValue = value ?? '';
@@ -57,9 +61,11 @@ export default function MonacoEditor({
     setCode(restoredCode);
   };
 
+  const monacoLanguage = LANGUAGE_MAP[language as keyof typeof LANGUAGE_MAP] || 'java';
+
   return (
     <div className="flex h-full flex-col">
-      <div className="flex h-14 items-center justify-between border-b border-[var(--clr-border)] bg-[var(--clr-surface)] px-5">
+      <div className="flex h-14 items-center justify-between border-b border-[var(--clr-border)] bg-[var(--clr-surface)] px-4 shrink-0">
         <div className="flex items-center gap-3">
           <span className="text-xs font-bold uppercase tracking-[0.16em] text-[var(--clr-text3)]">
             Language
@@ -68,18 +74,18 @@ export default function MonacoEditor({
           <select
             value={language}
             onChange={(e) => changeLanguage(e.target.value)}
-            className="rounded-xl border border-[var(--clr-border)] bg-[var(--clr-surface2)] px-3 py-2 text-sm text-[var(--clr-text)] outline-none"
+            className="rounded-xl border border-[var(--clr-border)] bg-[var(--clr-surface2)] px-3 py-1.5 text-xs text-[var(--clr-text)] font-semibold outline-none focus:border-[var(--clr-accent)]"
           >
-            {problem.languages.map((lang) => (
-              <option key={lang} value={lang}>
-                {lang}
+            {availableLanguages.map((l) => (
+              <option key={l} value={l}>
+                {l}
               </option>
             ))}
           </select>
 
           {hasLockedCode && (
             <span className="rounded-full border border-[var(--clr-border)] bg-[var(--clr-surface2)] px-3 py-1 text-xs font-semibold text-[var(--clr-text3)]">
-              Read-only starter/ending code enabled
+              Starter templates enabled
             </span>
           )}
         </div>
@@ -89,26 +95,26 @@ export default function MonacoEditor({
             type="button"
             onClick={onRunCode}
             disabled={running || submitting}
-            className="rounded-xl bg-emerald-700 px-5 py-2 text-sm font-bold text-white transition hover:bg-emerald-600 disabled:opacity-50"
+            className="rounded-xl bg-emerald-700 px-4 py-1.5 text-xs font-bold text-white transition hover:bg-emerald-600 disabled:opacity-50"
           >
-            {running ? 'Running...' : 'Run'}
+            {running ? 'Running...' : 'Run Code'}
           </button>
 
           <button
             type="button"
             onClick={onSubmitCode}
             disabled={running || submitting}
-            className="rounded-xl bg-[var(--clr-accent)] px-5 py-2 text-sm font-bold text-white transition hover:opacity-90 disabled:opacity-50"
+            className="rounded-xl bg-[var(--clr-accent)] px-4 py-1.5 text-xs font-bold text-white transition hover:opacity-90 disabled:opacity-50"
           >
-            {submitting ? 'Submitting...' : 'Submit'}
+            {submitting ? 'Submitting...' : 'Submit Code'}
           </button>
         </div>
       </div>
 
-      <div className="flex-1">
+      <div className="flex-1 min-h-0">
         <Editor
           height="100%"
-          language={LANGUAGE_MAP[language as keyof typeof LANGUAGE_MAP]}
+          language={monacoLanguage}
           value={code}
           onChange={handleEditorChange}
           theme="vs-dark"
@@ -117,12 +123,12 @@ export default function MonacoEditor({
             minimap: {
               enabled: false,
             },
-            fontSize: 15,
+            fontSize: 14,
             scrollBeyondLastLine: false,
             wordWrap: 'on',
             tabSize: 4,
             padding: {
-              top: 20,
+              top: 16,
             },
             smoothScrolling: true,
             cursorSmoothCaretAnimation: 'on',

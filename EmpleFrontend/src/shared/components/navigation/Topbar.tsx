@@ -11,7 +11,7 @@ import {
   RotateCcw,
 } from "lucide-react";
 import { useDescope, useSession, useUser } from "@descope/nextjs-sdk/client";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import SlideDrawer from "@/shared/components/ui/SlideDrawer";
 import MediaFeedWidget from "@/features/user/dashboard/components/MediaFeedWidget";
 import EmptyState from "@/shared/components/ui/EmptyState";
@@ -184,8 +184,11 @@ export default function Topbar() {
   const [requestOpen, setRequestOpen] = useState(false);
   const sdk = useDescope();
   const router = useRouter();
+  const pathname = usePathname();
 
   const { session, isAuthenticated } = useSession() as any;
+  const isDashboard = Boolean(pathname?.startsWith('/user') || pathname?.startsWith('/dashboard'));
+  const showTodoList = Boolean(isAuthenticated && isDashboard);
   const { user, isUserLoading } = useUser();
   const { config, refreshWallet } = useWallet();
   const { notifyReward } = useNotification();
@@ -333,7 +336,7 @@ export default function Topbar() {
           )}
 
           {/* Todo Button */}
-          {isAuthenticated && (
+          {showTodoList && (
             <div className="relative" ref={todoRef}>
               <button
                 onClick={() => setTodoOpen((prev) => !prev)}
@@ -452,24 +455,6 @@ export default function Topbar() {
   </button>
 )}
 
-          {/* Productivity Button */}
-<button
-  onClick={() => router.push("/user/productivity")}
-  className="
-    w-10 h-10
-    rounded-full
-    flex items-center justify-center
-    cursor-pointer
-    text-gray-400
-    transition-all duration-300 ease-out
-    hover:bg-[rgba(249,115,22,0.12)]
-    hover:text-[#f97316]
-    hover:-translate-y-1
-  "
-  title="Productivity Hub"
->
-  <ListTodo size={22} />
-</button>
 
           {/* Avatar Dropdown */}
           {isAuthenticated ? (

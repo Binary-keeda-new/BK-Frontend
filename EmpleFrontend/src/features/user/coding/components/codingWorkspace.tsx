@@ -1,5 +1,6 @@
 'use client';
 
+import { useMemo } from 'react';
 import type { UserCodingProblem } from '../../practice/test/types/test.types';
 import WorkspaceLayout from './workspaceLayout';
 import useCodingWorkspace from '../hooks/useCodingWorkspace';
@@ -15,6 +16,8 @@ type CodingSubmission = {
   timeTakenSeconds?: number;
   submissionId?: string; // added for Test mode
 };
+
+const EMPTY_SUBMISSIONS: CodingSubmission[] = [];
 
 type CodingWorkspaceProps = {
   problems: UserCodingProblem[];
@@ -35,12 +38,15 @@ export default function CodingWorkspace(props: CodingWorkspaceProps) {
     onComplete,
     formattedTimeLeft,
     timeLeftMs,
-    initialSubmissions = [],
+    initialSubmissions = EMPTY_SUBMISSIONS,
   } = props;
   
   const mode = props.mode || 'practice';
 
-  const testContext = props.mode === 'test' ? { attemptId: props.attemptId, sectionId: props.sectionId } : undefined;
+  const testContext = useMemo(
+    () => (props.mode === 'test' ? { attemptId: props.attemptId, sectionId: props.sectionId } : undefined),
+    [props.mode, (props as any).attemptId, (props as any).sectionId]
+  );
 
   const workspaceState = useCodingWorkspace(problems, initialSubmissions, testContext);
 

@@ -38,6 +38,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             secure: process.env.NODE_ENV === "production",
             sameSite: "Lax",
           }}
+          refreshTokenViaCookie={{
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "Lax",
+          }}
         >
           <AppAuthProvider>
             <NotificationProvider>

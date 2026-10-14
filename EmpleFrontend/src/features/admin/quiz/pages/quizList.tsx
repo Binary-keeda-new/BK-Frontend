@@ -423,7 +423,7 @@ export default function QuizzesContent({
               </p>
 
               <p className="mb-4 text-xs text-[var(--clr-text3)]">
-                Attempted quizzes cannot be deleted.
+                This action will delete the quiz and remove it from candidate access.
               </p>
 
               <div className="flex justify-end gap-2">

@@ -2,15 +2,32 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import { Heart } from 'lucide-react';
+import { useUser } from '@descope/nextjs-sdk/client';
 import { Blog } from '../types/blogs.types';
+import { likeBlog } from '../services/blogs.service';
 import BlogContentRenderer from '../components/BlogContentRenderer';
+
+const getClientId = () => {
+  if (typeof window === 'undefined') return '';
+  let cid = localStorage.getItem('emple_client_id');
+  if (!cid) {
+    cid = 'client_' + Math.random().toString(36).substring(2, 12);
+    localStorage.setItem('emple_client_id', cid);
+  }
+  return cid;
+};
 
 export default function BlogDetailPage() {
   const { id }    = useParams<{ id: string }>();
   const router    = useRouter();
+  const { user }  = useUser();
   const [blog, setBlog]       = useState<Blog | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError]     = useState('');
+  const [likes, setLikes]     = useState(0);
+  const [isLiked, setIsLiked] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const getImageUrl = (image: string) => {
     if (!image) return '';
@@ -29,10 +46,63 @@ export default function BlogDetailPage() {
         if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
         return res.json();
       })
-      .then(data => setBlog(data.data ?? data))
+      .then(data => {
+        const blogData: Blog = data.data ?? data;
+        setBlog(blogData);
+        setLikes(blogData.likes || 0);
+
+        const effectiveUserId = user?.userId || user?.email || (typeof window !== 'undefined' ? localStorage.getItem('emple_client_id') : '');
+        if (effectiveUserId && blogData.likedBy?.includes(effectiveUserId)) {
+          setIsLiked(true);
+        } else {
+          try {
+            const localLiked = JSON.parse(localStorage.getItem('liked_blogs') || '[]');
+            if (Array.isArray(localLiked) && localLiked.includes(blogData._id)) {
+              setIsLiked(true);
+            }
+          } catch {}
+        }
+      })
       .catch(err => setError(err.message || 'Failed to load blog.'))
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [id, user]);
+
+  const handleLike = async () => {
+    if (!blog || isSubmitting) return;
+
+    const effectiveUserId = user?.userId || user?.email || getClientId();
+    const nextLiked = !isLiked;
+    const nextCount = nextLiked ? likes + 1 : Math.max(0, likes - 1);
+
+    // Optimistic update
+    setIsLiked(nextLiked);
+    setLikes(nextCount);
+    setIsSubmitting(true);
+
+    try {
+      const localLiked = new Set(JSON.parse(localStorage.getItem('liked_blogs') || '[]'));
+      if (nextLiked) localLiked.add(blog._id);
+      else localLiked.delete(blog._id);
+      localStorage.setItem('liked_blogs', JSON.stringify([...localLiked]));
+    } catch {}
+
+    try {
+      const res = await likeBlog(blog._id, effectiveUserId);
+      if (typeof res?.likes === 'number') {
+        setLikes(res.likes);
+      }
+      if (typeof res?.isLiked === 'boolean') {
+        setIsLiked(res.isLiked);
+      }
+    } catch (err) {
+      console.error('Failed to like blog:', err);
+      // Revert on error
+      setIsLiked(!nextLiked);
+      setLikes(likes);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg)', padding: '40px 24px' }}>
@@ -74,19 +144,62 @@ export default function BlogDetailPage() {
             {blog.title}
           </h1>
 
-          {/* Meta Data */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 32 }}>
-            <span style={{ fontSize: 14, color: 'var(--muted2)', fontWeight: 500 }}>
-              {new Date(blog.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}
-            </span>
-            {blog.tags.length > 0 && (
-              <>
-                <span style={{ width: 4, height: 4, borderRadius: '50%', background: 'var(--border)', display: 'inline-block' }} />
-                <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--orange)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                  {blog.tags[0]}
-                </span>
-              </>
-            )}
+          {/* Meta Data & Like Button */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 14, marginBottom: 32 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+              <span style={{ fontSize: 14, color: 'var(--muted2)', fontWeight: 500 }}>
+                {new Date(blog.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}
+              </span>
+              {blog.tags.length > 0 && (
+                <>
+                  <span style={{ width: 4, height: 4, borderRadius: '50%', background: 'var(--border)', display: 'inline-block' }} />
+                  <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--orange)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    {blog.tags[0]}
+                  </span>
+                </>
+              )}
+            </div>
+
+            <button
+              type="button"
+              onClick={handleLike}
+              title={isLiked ? "Unlike article" : "Like article"}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 8,
+                padding: '8px 18px',
+                borderRadius: 24,
+                background: isLiked ? 'rgba(244, 63, 94, 0.12)' : 'var(--surface)',
+                border: `1px solid ${isLiked ? 'rgba(244, 63, 94, 0.4)' : 'var(--border)'}`,
+                color: isLiked ? '#f43f5e' : 'var(--text)',
+                cursor: 'pointer',
+                fontWeight: 600,
+                fontSize: 14,
+                transition: 'all 0.2s ease',
+              }}
+              onMouseEnter={e => {
+                if (!isLiked) {
+                  (e.currentTarget as HTMLElement).style.borderColor = 'rgba(244, 63, 94, 0.3)';
+                  (e.currentTarget as HTMLElement).style.color = '#f43f5e';
+                }
+                (e.currentTarget as HTMLElement).style.transform = 'scale(1.05)';
+              }}
+              onMouseLeave={e => {
+                if (!isLiked) {
+                  (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)';
+                  (e.currentTarget as HTMLElement).style.color = 'var(--text)';
+                }
+                (e.currentTarget as HTMLElement).style.transform = 'scale(1)';
+              }}
+            >
+              <Heart
+                size={18}
+                fill={isLiked ? "#f43f5e" : "transparent"}
+                color={isLiked ? "#f43f5e" : "currentColor"}
+              />
+              <span>{likes} {likes === 1 ? 'Like' : 'Likes'}</span>
+            </button>
           </div>
 
           {/* Advertisement Banner Placeholder */}
@@ -105,6 +218,56 @@ export default function BlogDetailPage() {
           <article className="blog-article-body" style={{ borderBottom: '1px solid var(--border)', paddingBottom: '60px', marginBottom: '40px' }}>
             <BlogContentRenderer rawContent={blog.content} blocks={blog.blocks} />
           </article>
+
+          {/* Bottom Article Feedback / Like Callout */}
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '36px 20px',
+            marginBottom: 40,
+            background: 'var(--surface)',
+            border: '1px solid var(--border)',
+            borderRadius: 16,
+            textAlign: 'center',
+            gap: 14
+          }}>
+            <p style={{ margin: 0, fontSize: 16, fontWeight: 700, color: 'var(--text)' }}>
+              Enjoyed this article?
+            </p>
+            <p style={{ margin: 0, fontSize: 13, color: 'var(--muted2)' }}>
+              Give it a like to show your appreciation!
+            </p>
+            <button
+              type="button"
+              onClick={handleLike}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 8,
+                padding: '10px 24px',
+                borderRadius: 30,
+                background: isLiked ? 'rgba(244, 63, 94, 0.14)' : 'var(--surface2)',
+                border: `1.5px solid ${isLiked ? '#f43f5e' : 'var(--border)'}`,
+                color: isLiked ? '#f43f5e' : 'var(--text)',
+                cursor: 'pointer',
+                fontWeight: 700,
+                fontSize: 15,
+                transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                boxShadow: isLiked ? '0 4px 18px rgba(244, 63, 94, 0.25)' : 'none',
+              }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'scale(1.05)'; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = 'scale(1)'; }}
+            >
+              <Heart
+                size={20}
+                fill={isLiked ? "#f43f5e" : "transparent"}
+                color={isLiked ? "#f43f5e" : "currentColor"}
+              />
+              <span>{isLiked ? 'Liked' : 'Like'} ({likes})</span>
+            </button>
+          </div>
         </div>
       )}
     </div>

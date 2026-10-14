@@ -8,6 +8,7 @@ interface Props {
   totalProblems?: number;
   onPrev?: () => void;
   onNext?: () => void;
+  onCompleteSection?: () => void;
 }
 
 export default function WorkspaceHeader({
@@ -20,9 +21,10 @@ export default function WorkspaceHeader({
   totalProblems = 1,
   onPrev,
   onNext,
+  onCompleteSection,
 }: Props) {
   return (
-    <header className="border-b border-[var(--clr-border)] bg-[var(--clr-surface)] px-5 py-3">
+    <header className="border-b border-[var(--clr-border)] bg-[var(--clr-surface)] px-5 py-3 shrink-0">
       <div className="flex items-center justify-between gap-4">
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-3">
@@ -41,7 +43,7 @@ export default function WorkspaceHeader({
                 Emple Coding Workspace
               </p>
 
-              <h1 className="mt-1 truncate text-lg font-extrabold text-[var(--clr-text)]">
+              <h1 className="mt-0.5 truncate text-base font-extrabold text-[var(--clr-text)]">
                 {problem.title}
               </h1>
             </div>
@@ -54,25 +56,25 @@ export default function WorkspaceHeader({
               type="button"
               onClick={onPrev}
               disabled={currentProblemIndex === 0}
-              className="text-sm font-bold text-[var(--clr-text2)] disabled:opacity-30 transition hover:text-[var(--clr-accent)]"
+              className="text-xs font-bold text-[var(--clr-text2)] disabled:opacity-30 transition hover:text-[var(--clr-accent)]"
             >
               &lt; Previous
             </button>
-            <span className="text-sm font-semibold text-[var(--clr-text)] min-w-[120px] text-center">
+            <span className="text-xs font-semibold text-[var(--clr-text)] min-w-[110px] text-center">
               Problem {currentProblemIndex + 1} of {totalProblems}
             </span>
             <button
               type="button"
               onClick={onNext}
               disabled={currentProblemIndex === totalProblems - 1}
-              className="text-sm font-bold text-[var(--clr-text2)] disabled:opacity-30 transition hover:text-[var(--clr-accent)]"
+              className="text-xs font-bold text-[var(--clr-text2)] disabled:opacity-30 transition hover:text-[var(--clr-accent)]"
             >
               Next &gt;
             </button>
           </div>
         )}
 
-        <div className="flex items-center justify-end flex-1 shrink-0">
+        <div className="flex items-center justify-end gap-3 flex-1 shrink-0">
           {formattedTimeLeft && (
             <span
               className="rounded-full border border-emerald-400/30 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-400"
@@ -85,6 +87,16 @@ export default function WorkspaceHeader({
             >
               ⏱ {formattedTimeLeft}
             </span>
+          )}
+
+          {mode === 'test' && onCompleteSection && (
+            <button
+              type="button"
+              onClick={onCompleteSection}
+              className="rounded-xl bg-[var(--clr-accent)] px-4 py-2 text-xs font-bold text-white transition hover:opacity-90 shadow-sm"
+            >
+              Complete Section
+            </button>
           )}
         </div>
       </div>

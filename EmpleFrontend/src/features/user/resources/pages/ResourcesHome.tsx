@@ -1,5 +1,8 @@
 "use client";
+import { useState } from "react";
 import Link from "next/link";
+import { useSession } from "@descope/nextjs-sdk/client";
+import LoginGate from "@/shared/components/access/LoginGate";
 import { Map, Newspaper, HelpCircle, Award, BookOpen, Lightbulb, Target, PaperclipIcon } from "lucide-react";
 const RESOURCES_CARDS = [
   {
@@ -68,6 +71,16 @@ const RESOURCES_CARDS = [
 },
 ];
 export default function ResourcesHome({ basePath = "/user/resources" }: { basePath?: string }) {
+  const { isAuthenticated } = useSession() as any;
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
+  const handleCardClick = (e: React.MouseEvent) => {
+    if (!isAuthenticated) {
+      e.preventDefault();
+      setShowLoginModal(true);
+    }
+  };
+
   return (
     <div className="p-6">
       <div className="mb-8">
@@ -82,7 +95,12 @@ export default function ResourcesHome({ basePath = "/user/resources" }: { basePa
         {RESOURCES_CARDS.map((card) => {
           const finalHref = card.href.replace("/user/resources", basePath);
           return (
-            <Link href={finalHref} key={card.title} style={{ textDecoration: "none", display: "flex", flexDirection: "column", height: "100%" }}>
+            <Link
+              href={finalHref}
+              key={card.title}
+              onClick={handleCardClick}
+              style={{ textDecoration: "none", display: "flex", flexDirection: "column", height: "100%" }}
+            >
               <div
                 style={{
                   background: "var(--surface)", border: "1px solid var(--border)",
@@ -140,6 +158,32 @@ export default function ResourcesHome({ basePath = "/user/resources" }: { basePa
           );
         })}
       </div>
+
+      {showLoginModal && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          zIndex: 99999, padding: '20px'
+        }}>
+          <div style={{ position: 'relative', width: '100%', maxWidth: '500px' }}>
+            <button 
+              onClick={() => setShowLoginModal(false)}
+              style={{
+                position: 'absolute', top: '10px', right: '10px',
+                background: 'transparent', border: 'none', color: 'var(--muted2)',
+                fontSize: '24px', cursor: 'pointer', zIndex: 10
+              }}
+            >
+              &times;
+            </button>
+            <LoginGate 
+              title="Free Account Required" 
+              message="Create a free Emple account to access this feature and unlock premium resources." 
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

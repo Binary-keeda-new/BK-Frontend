@@ -15,3 +15,15 @@ export async function fetchBlogById(id: string): Promise<Blog> {
   const data = await res.json();
   return data.data;
 }
+
+export async function likeBlog(id: string, userId?: string): Promise<{ likes: number; isLiked: boolean }> {
+  const res = await fetch(`${API_BASE}/${id}/like`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ userId }),
+  });
+  if (!res.ok) throw new Error(`Failed to like blog: ${res.status}`);
+  const data = await res.json();
+  return data.data;
+}
+

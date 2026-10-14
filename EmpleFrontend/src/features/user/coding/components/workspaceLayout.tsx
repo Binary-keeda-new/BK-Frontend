@@ -40,7 +40,6 @@ export default function WorkspaceLayout({
   timeLeftMs,
 }: Props) {
   const {
-    activeProblemId,
     currentProblemIndex,
     setCurrentProblemIndex,
     totalProblems,
@@ -57,58 +56,69 @@ export default function WorkspaceLayout({
     executionError,
     handleRunCode,
     handleSubmitCode,
-    submitCompleted,
     customInput,
     setCustomInput,
     problemStates,
     problems,
   } = workspaceState;
 
-  const allProblemsSubmitted = problems.every(
-    (p) => problemStates[p._id]?.submitCompleted
-  );
+  const handleCompleteSection = () => {
+    const submissions = (problems || []).map((p) => {
+      const state = problemStates[p._id];
+      const validSub = state?.validSelectedSubmission || state?.testSubmissionState;
+      return {
+        problemId: p._id,
+        language: validSub?.language || state?.selectedLanguage || 'Java',
+        sourceCode: state?.code || '',
+        accepted: validSub?.status === 'accepted' || state?.executionResult?.accepted,
+        passedCount: validSub?.passedTestCases || state?.executionResult?.passedCount,
+        totalCount: validSub?.totalTestCases || state?.executionResult?.totalCount,
+        results: state?.executionResult?.results || [],
+        timeTakenSeconds: state?.timeTakenSeconds || 0,
+        submissionId: validSub?.submissionId,
+      };
+    });
+    onComplete?.(submissions);
+  };
 
   const hasAutoSubmitted = useRef(false);
   useEffect(() => {
-    if (timeLeftMs === 0 && mode === 'test' && !allProblemsSubmitted && !hasAutoSubmitted.current) {
+    if (timeLeftMs === 0 && mode === 'test' && !hasAutoSubmitted.current) {
       hasAutoSubmitted.current = true;
-      const submissions = problems.map((p) => {
-        const state = problemStates[p._id];
-        const validSub = state?.validSelectedSubmission || state?.testSubmissionState;
-        return {
-          problemId: p._id,
-          language: validSub?.language || state?.selectedLanguage || 'Java',
-          sourceCode: state?.code || '',
-          accepted: validSub?.status === 'accepted' || state?.executionResult?.accepted,
-          passedCount: validSub?.passedTestCases || state?.executionResult?.passedCount,
-          totalCount: validSub?.totalTestCases || state?.executionResult?.totalCount,
-          results: state?.executionResult?.results || [],
-          timeTakenSeconds: state?.timeTakenSeconds || 0,
-          submissionId: validSub?.submissionId,
-        };
-      });
-      void onComplete?.(submissions);
+      handleCompleteSection();
     }
-  }, [timeLeftMs, mode, allProblemsSubmitted, problems, problemStates, onComplete]);
+  }, [timeLeftMs, mode]);
 
   if (loading) {
     return (
-      <div className="flex h-screen items-center justify-center bg-[var(--clr-background)] text-[var(--clr-text)]">
-        Loading coding problem...
+      <div className="flex h-screen items-center justify-center bg-[var(--clr-background)] text-[var(--clr-text)] font-semibold">
+        <div className="flex items-center gap-3">
+          <span className="h-4 w-4 rounded-full border-2 border-[var(--clr-accent)] border-t-transparent animate-spin" />
+          Loading coding workspace...
+        </div>
       </div>
     );
   }
 
   if (error || !problem) {
     return (
-      <div className="flex h-screen items-center justify-center bg-[var(--clr-background)] text-red-400">
-        {error || 'Coding problem could not be loaded.'}
+      <div className="flex h-screen flex-col items-center justify-center gap-4 bg-[var(--clr-background)] text-red-400">
+        <p className="font-semibold">{error || 'Coding problem could not be loaded.'}</p>
+        {onBack && (
+          <button
+            type="button"
+            onClick={onBack}
+            className="rounded-xl border border-[var(--clr-border)] bg-[var(--clr-surface)] px-4 py-2 text-sm font-bold text-[var(--clr-text)]"
+          >
+            Go Back
+          </button>
+        )}
       </div>
     );
   }
 
   return (
-    <div className="flex h-screen flex-col bg-[var(--clr-background)]">
+    <div className="flex h-screen flex-col bg-[var(--clr-background)] overflow-hidden">
       <WorkspaceHeader
         problem={problem}
         mode={mode}
@@ -119,86 +129,56 @@ export default function WorkspaceLayout({
         totalProblems={totalProblems}
         onPrev={() => setCurrentProblemIndex(currentProblemIndex - 1)}
         onNext={() => setCurrentProblemIndex(currentProblemIndex + 1)}
+        onCompleteSection={handleCompleteSection}
       />
 
-      <div className="flex flex-1 overflow-hidden p-4">
-  <PanelGroup direction="horizontal" className="h-full w-full gap-3">
-    <Panel defaultSize={42} minSize={25}>
-      <div className="h-full overflow-hidden rounded-2xl border border-[var(--clr-border)] bg-[var(--clr-surface)]">
-        <ProblemSidebar problem={problem} />
-      </div>
-    </Panel>
-
-    <PanelResizeHandle className="w-1 rounded-full bg-[var(--clr-border)] transition hover:bg-[var(--clr-accent)]" />
-
-    <Panel minSize={35}>
-      <PanelGroup direction="vertical" className="h-full gap-3">
-        <Panel defaultSize={68} minSize={35}>
-          <div className="h-full overflow-hidden rounded-2xl border border-[var(--clr-border)] bg-[var(--clr-surface)]">
-            <MonacoEditor
-              problem={problem}
-              code={code}
-              setCode={setCode as any}
-              language={selectedLanguage}
-              changeLanguage={changeLanguage}
-              running={running}
-              submitting={submitting}
-              onRunCode={handleRunCode}
-              onSubmitCode={handleSubmitCode}
-            />
-          </div>
-        </Panel>
-
-        <PanelResizeHandle className="h-1 rounded-full bg-[var(--clr-border)] transition hover:bg-[var(--clr-accent)]" />
-
-        <Panel defaultSize={32} minSize={18}>
-          <div className="h-full overflow-hidden rounded-2xl border border-[var(--clr-border)] bg-[var(--clr-surface)]">
-            <ConsolePanel
-  running={running}
-  submitting={submitting}
-  result={executionResult}
-  error={executionError}
-  customInput={customInput}
-  setCustomInput={setCustomInput as any}
-  onRunCode={handleRunCode}
-/>
-          </div>
-        </Panel>
-
-        {mode === 'test' && allProblemsSubmitted && (
-          <div className="rounded-2xl border border-[var(--clr-border)] bg-[var(--clr-surface)] p-4">
-            <div className="flex justify-end">
-              <button
-                type="button"
-                onClick={() => {
-                  const submissions = problems.map((p) => {
-                    const state = problemStates[p._id];
-                    const validSub = state?.validSelectedSubmission || state?.testSubmissionState;
-                    return {
-                      problemId: p._id,
-                      language: validSub?.language || state?.selectedLanguage || 'Java',
-                      sourceCode: state?.code || '',
-                      accepted: validSub?.status === 'accepted' || state?.executionResult?.accepted,
-                      passedCount: validSub?.passedTestCases || state?.executionResult?.passedCount,
-                      totalCount: validSub?.totalTestCases || state?.executionResult?.totalCount,
-                      results: state?.executionResult?.results || [],
-                      timeTakenSeconds: state?.timeTakenSeconds || 0,
-                      submissionId: validSub?.submissionId,
-                    };
-                  });
-                  onComplete?.(submissions);
-                }}
-                className="rounded-xl bg-[var(--clr-accent)] px-5 py-3 text-sm font-bold text-white"
-              >
-                Complete Coding Section
-              </button>
+      <div className="flex flex-1 min-h-0 overflow-hidden p-3">
+        <PanelGroup direction="horizontal" className="h-full w-full gap-2">
+          <Panel defaultSize={35} minSize={20}>
+            <div className="h-full overflow-hidden rounded-2xl border border-[var(--clr-border)] bg-[var(--clr-surface)]">
+              <ProblemSidebar problem={problem} />
             </div>
-          </div>
-        )}
-      </PanelGroup>
-    </Panel>
-  </PanelGroup>
-</div>
+          </Panel>
+
+          <PanelResizeHandle className="w-1 rounded-full bg-[var(--clr-border)] transition hover:bg-[var(--clr-accent)] cursor-col-resize" />
+
+          <Panel minSize={35}>
+            <PanelGroup direction="vertical" className="h-full gap-2">
+              <Panel defaultSize={62} minSize={30}>
+                <div className="h-full overflow-hidden rounded-2xl border border-[var(--clr-border)] bg-[var(--clr-surface)]">
+                  <MonacoEditor
+                    problem={problem}
+                    code={code}
+                    setCode={setCode as any}
+                    language={selectedLanguage}
+                    changeLanguage={changeLanguage}
+                    running={running}
+                    submitting={submitting}
+                    onRunCode={handleRunCode}
+                    onSubmitCode={handleSubmitCode}
+                  />
+                </div>
+              </Panel>
+
+              <PanelResizeHandle className="h-1 rounded-full bg-[var(--clr-border)] transition hover:bg-[var(--clr-accent)] cursor-row-resize" />
+
+              <Panel defaultSize={38} minSize={20}>
+                <div className="h-full overflow-hidden rounded-2xl border border-[var(--clr-border)] bg-[var(--clr-surface)]">
+                  <ConsolePanel
+                    running={running}
+                    submitting={submitting}
+                    result={executionResult}
+                    error={executionError}
+                    customInput={customInput}
+                    setCustomInput={setCustomInput as any}
+                    onRunCode={handleRunCode}
+                  />
+                </div>
+              </Panel>
+            </PanelGroup>
+          </Panel>
+        </PanelGroup>
+      </div>
     </div>
   );
 }
