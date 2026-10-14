@@ -1,11 +1,10 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import type { UserCodingProblem } from '../../practice/test/types/test.types';
 import { getCodingProblem } from '../services/codingProblemService';
 import {
   runCode,
-  submitCode,
   type ExecutionResponseData,
 } from '../services/executionService';
 import {
@@ -30,212 +29,347 @@ export type ProblemWorkspaceState = {
   validSelectedSubmission?: TestCodingSubmissionResponse;
 };
 
+export const getLanguageStarterCode = (language: string, templates?: Record<string, string>): string => {
+  if (templates?.[language] && typeof templates[language] === 'string' && templates[language].trim() !== '') {
+    // If template has single-line joined statements, ensure a newline exists between split() and print
+    const templateText = templates[language];
+    if (language === 'Python' && templateText.includes('split())print(')) {
+      return templateText.replace('split())print(', 'split())\nprint(');
+    }
+    return templateText;
+  }
+  switch (language) {
+    case 'Python':
+      return '# Write your solution here\na, b = map(int, input().split())\nprint(a + b)\n';
+    case 'C++':
+      return '#include <iostream>\nusing namespace std;\n\nint main() {\n    // Write your solution here\n    return 0;\n}\n';
+    case 'C':
+      return '#include <stdio.h>\n\nint main() {\n    // Write your solution here\n    return 0;\n}\n';
+    case 'JavaScript':
+      return '// Write your solution here\n';
+    case 'Java':
+    default:
+      return 'public class Solution {\n    public static void main(String[] args) {\n        // Write your solution here\n    }\n}\n';
+  }
+};
+
+export const getDraftStorageKey = (
+  problemId: string,
+  language: string,
+  testContext?: { attemptId: string; sectionId: string }
+): string => {
+  if (testContext?.attemptId && testContext?.sectionId) {
+    return `emple_test_draft_${testContext.attemptId}_${testContext.sectionId}_${problemId}_${language}`;
+  }
+  return `emple_practice_draft_${problemId}_${language}`;
+};
+
 export default function useCodingWorkspace(
   problems: UserCodingProblem[],
   initialSubmissions: any[] = [],
-  testContext?: { attemptId: string; sectionId: string; }
+  testContext?: { attemptId: string; sectionId: string }
 ) {
   const [currentProblemIndex, setCurrentProblemIndex] = useState(0);
-  
-  // Guard against out-of-bounds
-  const safeIndex = Math.min(Math.max(0, currentProblemIndex), Math.max(0, problems.length - 1));
-  if (safeIndex !== currentProblemIndex && problems.length > 0) {
-    setCurrentProblemIndex(safeIndex);
-  }
 
-  const activeProblemId = problems[safeIndex]?._id;
+  const safeIndex = problems.length > 0
+    ? Math.min(Math.max(0, currentProblemIndex), problems.length - 1)
+    : 0;
+
+  const setClampedProblemIndex = useCallback((idx: number | ((prev: number) => number)) => {
+    setCurrentProblemIndex((prev) => {
+      const next = typeof idx === 'function' ? idx(prev) : idx;
+      return problems.length > 0 ? Math.min(Math.max(0, next), problems.length - 1) : 0;
+    });
+  }, [problems.length]);
+
+  const rawProblem = problems[safeIndex];
+  const activeProblemId = typeof rawProblem === 'string'
+    ? rawProblem
+    : (rawProblem as any)?._id || (rawProblem as any)?.id || (rawProblem as any)?.problemId || '';
 
   const [problemStates, setProblemStates] = useState<Record<string, ProblemWorkspaceState>>({});
-  
+
   const [running, setRunning] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+
+  const problemsRef = useRef(problems);
+  problemsRef.current = problems;
+
+  const initialSubmissionsRef = useRef(initialSubmissions);
+  initialSubmissionsRef.current = initialSubmissions;
+
+  const testContextRef = useRef(testContext);
+  testContextRef.current = testContext;
+
+  const fetchingIdsRef = useRef<Set<string>>(new Set());
 
   useEffect(() => {
     if (!activeProblemId) return;
 
-    setProblemStates(prev => {
-      // If already initialized (even if just loading), don't re-fetch/re-initialize
-      if (prev[activeProblemId]) {
-        return prev;
+    // Check if we already have this problem loaded or initialized
+    if (problemStates[activeProblemId]) return;
+
+    const currentProblems = problemsRef.current;
+    const currentSubmissions = initialSubmissionsRef.current;
+    const currentTestContext = testContextRef.current;
+
+    const rawProblemObj = (currentProblems.find(
+      (p) =>
+        (p as any)._id === activeProblemId ||
+        (p as any).problemId === activeProblemId ||
+        (p as any).id === activeProblemId
+    ) as any) || (typeof rawProblem === 'object' ? rawProblem : { _id: activeProblemId });
+
+    const canonicalId = activeProblemId;
+
+    const hasDirectTemplates = Boolean(
+      rawProblemObj.codeTemplates &&
+        rawProblemObj.languages &&
+        Object.keys(rawProblemObj.codeTemplates).length > 0
+    );
+
+    if (hasDirectTemplates) {
+      const matchingSubmissions = (currentSubmissions || []).filter(
+        (sub) => sub.problemId?.toString() === canonicalId.toString()
+      );
+      let savedSubmission =
+        matchingSubmissions.length > 0
+          ? matchingSubmissions[matchingSubmissions.length - 1]
+          : null;
+
+      let lang = savedSubmission?.language;
+      if (savedSubmission && lang && !rawProblemObj.languages?.includes(lang)) {
+        savedSubmission = null;
       }
 
-      // Safe to do async fetch
-      const fetchProblemData = async () => {
-        try {
-          const passedProblem = problems[safeIndex] as any;
-          let data = passedProblem;
-          
-          if (!passedProblem.codeTemplates || !passedProblem.languages) {
-            data = await getCodingProblem(activeProblemId);
-          }
+      lang = savedSubmission?.language || rawProblemObj.languages?.[0] || 'Java';
 
-          const matchingSubmissions = initialSubmissions.filter(
-            (sub) => sub.problemId?.toString() === activeProblemId.toString()
-          );
-          let savedSubmission = matchingSubmissions.length > 0 
-            ? matchingSubmissions[matchingSubmissions.length - 1] 
-            : null;
+      let initialCode = savedSubmission?.sourceCode;
 
-          let lang = savedSubmission?.language;
-          if (savedSubmission && lang && !data.languages?.includes(lang)) {
-             savedSubmission = null; // Invalidate if language no longer supported
-          }
-
-          lang = savedSubmission?.language || data.languages?.[0] || 'Java';
-
-          let initialCode = savedSubmission?.sourceCode;
-
-          if (typeof window !== 'undefined') {
-            const localDraft = localStorage.getItem(`emple_draft_${activeProblemId}_${lang}`);
-            if (localDraft) {
-              initialCode = localDraft;
-            }
-          }
-
-          if (typeof initialCode !== 'string') {
-            const prefix = data.lockedPrefixTemplates?.[lang] || '';
-            const editable = data.codeTemplates?.[lang] || '';
-            const suffix = data.lockedSuffixTemplates?.[lang] || '';
-            initialCode = `${prefix}${editable}${suffix}`;
-          }
-
-          let restoredResult = null;
-          if (savedSubmission) {
-             restoredResult = {
-               accepted: savedSubmission.accepted,
-               passedCount: savedSubmission.passedCount,
-               totalCount: savedSubmission.totalCount,
-               results: savedSubmission.results || [],
-             } as ExecutionResponseData;
-          }
-
-          setProblemStates(currentStates => ({
-            ...currentStates,
-            [activeProblemId]: {
-              ...currentStates[activeProblemId],
-              problem: data,
-              loading: false,
-              error: '',
-              selectedLanguage: lang,
-              code: initialCode,
-              executionResult: restoredResult,
-              submitCompleted: !!savedSubmission,
-              timeTakenSeconds: savedSubmission?.timeTakenSeconds || 0,
-            }
-          }));
-        } catch (err) {
-          setProblemStates(currentStates => ({
-            ...currentStates,
-            [activeProblemId]: {
-              ...currentStates[activeProblemId],
-              loading: false,
-              error: err instanceof Error ? err.message : 'Failed to load problem',
-            }
-          }));
-        }
-      };
-
-      const passedProblem = problems.find(p => p._id === activeProblemId) as any || problems[safeIndex] as any;
-
-      let validSubmission = undefined;
-      let activeSubmission = undefined;
-      let submitCompleted = false;
-
-      // Handle Test Mode hydration from Phase 6F.1 DTO
-      if (testContext && (passedProblem?.selectedSubmission || passedProblem?.activeSubmission)) {
-        if (passedProblem.selectedSubmission) {
-           validSubmission = passedProblem.selectedSubmission;
-        }
-        if (passedProblem.activeSubmission && (passedProblem.activeSubmission.status === 'queued' || passedProblem.activeSubmission.status === 'running')) {
-           activeSubmission = passedProblem.activeSubmission;
-        } else if (validSubmission) {
-           activeSubmission = validSubmission;
-        }
-        
-        if (activeSubmission && validSubmission) {
-           // We have both an active and a valid fallback. If active fails, we keep valid.
-        }
-      } else {
-        // Fallback to legacy/practice hydration
-        const savedSubmission = initialSubmissions?.find(
-          (sub) => sub.problemId === activeProblemId
-        );
-        if (savedSubmission) {
-          activeSubmission = {
-            submissionId: savedSubmission.submissionId || '',
-            status: savedSubmission.status || 'accepted',
-            language: savedSubmission.language || 'Java',
-            score: savedSubmission.score,
-            passedTestCases: savedSubmission.passedCount,
-            totalTestCases: savedSubmission.totalCount,
-          };
-          
-          if (
-            activeSubmission.status === 'accepted' ||
-            activeSubmission.status === 'wrong_answer' ||
-            activeSubmission.status === 'compilation_error' ||
-            activeSubmission.status === 'runtime_error' ||
-            activeSubmission.status === 'time_limit_exceeded' ||
-            activeSubmission.status === undefined
-          ) {
-            validSubmission = activeSubmission;
-          }
+      if (typeof window !== 'undefined') {
+        const draftKey = getDraftStorageKey(canonicalId, lang, currentTestContext);
+        const localDraft = localStorage.getItem(draftKey);
+        if (localDraft) {
+          initialCode = localDraft;
         }
       }
 
-      if (validSubmission) {
-         submitCompleted = true;
-      } else if (activeSubmission && (
-         activeSubmission.status === 'accepted' ||
-         activeSubmission.status === 'wrong_answer' ||
-         activeSubmission.status === 'compilation_error' ||
-         activeSubmission.status === 'runtime_error' ||
-         activeSubmission.status === 'time_limit_exceeded'
-      )) {
-         submitCompleted = true;
+      if (typeof initialCode !== 'string') {
+        const prefix = rawProblemObj.lockedPrefixTemplates?.[lang] || '';
+        const editable = getLanguageStarterCode(lang, rawProblemObj.codeTemplates);
+        const suffix = rawProblemObj.lockedSuffixTemplates?.[lang] || '';
+        initialCode = `${prefix}${editable}${suffix}`;
       }
 
-      const initialState: ProblemWorkspaceState = {
-        problem: null,
-        loading: true,
-        error: '',
-        selectedLanguage: activeSubmission?.language || validSubmission?.language || 'Java',
-        code: '',
-        customInput: '',
-        executionResult: null,
-        executionError: '',
-        submitCompleted,
-        timeTakenSeconds: 0,
-        testSubmissionState: activeSubmission ? {
-          submissionId: activeSubmission.submissionId,
-          problemId: activeProblemId,
-          status: activeSubmission.status as any,
-          language: activeSubmission.language || 'Java',
-          score: activeSubmission.score,
-          passedTestCases: activeSubmission.passedTestCases,
-          totalTestCases: activeSubmission.totalTestCases,
-        } : undefined,
-        validSelectedSubmission: validSubmission ? {
-          submissionId: validSubmission.submissionId,
-          problemId: activeProblemId,
-          status: validSubmission.status as any,
-          language: validSubmission.language || 'Java',
-          score: validSubmission.score,
-          passedTestCases: validSubmission.passedTestCases,
-          totalTestCases: validSubmission.totalTestCases,
-        } : undefined,
-      };
+      let restoredResult: ExecutionResponseData | null = null;
+      if (savedSubmission) {
+        restoredResult = {
+          accepted: savedSubmission.accepted,
+          passedCount: savedSubmission.passedCount || 0,
+          totalCount: savedSubmission.totalCount || 0,
+          results: savedSubmission.results || [],
+        };
+      }
 
-      void fetchProblemData();
+      setProblemStates((prev) => {
+        if (prev[canonicalId]?.problem) return prev;
+        return {
+          ...prev,
+          [canonicalId]: {
+            problem: rawProblemObj,
+            loading: false,
+            error: '',
+            selectedLanguage: lang,
+            code: initialCode,
+            customInput: '',
+            executionResult: restoredResult,
+            executionError: '',
+            submitCompleted: Boolean(savedSubmission),
+            timeTakenSeconds: savedSubmission?.timeTakenSeconds || 0,
+            testSubmissionState: savedSubmission
+              ? {
+                  submissionId: savedSubmission.submissionId || savedSubmission._id || '',
+                  problemId: canonicalId,
+                  status: savedSubmission.accepted ? 'accepted' : 'wrong_answer',
+                  language: lang,
+                }
+              : undefined,
+            validSelectedSubmission: savedSubmission
+              ? {
+                  submissionId: savedSubmission.submissionId || savedSubmission._id || '',
+                  problemId: canonicalId,
+                  status: savedSubmission.accepted ? 'accepted' : 'wrong_answer',
+                  language: lang,
+                  accepted: savedSubmission.accepted,
+                  passedCount: savedSubmission.passedCount || 0,
+                  totalCount: savedSubmission.totalCount || 0,
+                  results: savedSubmission.results || [],
+                }
+              : undefined,
+          },
+        };
+      });
+      return;
+    }
 
+    // Otherwise, fetch asynchronously
+    if (fetchingIdsRef.current.has(canonicalId)) return;
+    fetchingIdsRef.current.add(canonicalId);
+
+    // Set initial loading state
+    setProblemStates((prev) => {
+      if (prev[canonicalId]) return prev;
       return {
         ...prev,
-        [activeProblemId]: initialState
+        [canonicalId]: {
+          problem: null,
+          loading: true,
+          error: '',
+          selectedLanguage: 'Java',
+          code: '',
+          customInput: '',
+          executionResult: null,
+          executionError: '',
+          submitCompleted: false,
+          timeTakenSeconds: 0,
+        },
       };
     });
-  }, [activeProblemId, problems, safeIndex, initialSubmissions]);
 
-  // Timer: Add 1 second every second to the active problem's timeTakenSeconds
+    let isMounted = true;
+    const fetchProblemData = async () => {
+      try {
+        let data = rawProblemObj;
+        if (!rawProblemObj.codeTemplates || !rawProblemObj.languages) {
+          data = await getCodingProblem(canonicalId);
+        }
+
+        if (!isMounted) return;
+
+        const matchingSubmissions = (currentSubmissions || []).filter(
+          (sub) => sub.problemId?.toString() === canonicalId.toString()
+        );
+        let savedSubmission =
+          matchingSubmissions.length > 0
+            ? matchingSubmissions[matchingSubmissions.length - 1]
+            : null;
+
+        let lang = savedSubmission?.language;
+        if (savedSubmission && lang && Array.isArray(data.languages) && !data.languages.includes(lang)) {
+          savedSubmission = null;
+        }
+
+        lang = savedSubmission?.language || data.languages?.[0] || 'Java';
+
+        let initialCode = savedSubmission?.sourceCode;
+        if (typeof window !== 'undefined') {
+          const draftKey = getDraftStorageKey(canonicalId, lang, currentTestContext);
+          const localDraft = localStorage.getItem(draftKey);
+          if (localDraft) {
+            initialCode = localDraft;
+          }
+        }
+
+        if (typeof initialCode !== 'string') {
+          const prefix = data.lockedPrefixTemplates?.[lang] || '';
+          const editable = getLanguageStarterCode(lang, data.codeTemplates);
+          const suffix = data.lockedSuffixTemplates?.[lang] || '';
+          initialCode = `${prefix}${editable}${suffix}`;
+        }
+
+        let restoredResult: ExecutionResponseData | null = null;
+        if (savedSubmission) {
+          restoredResult = {
+            accepted: savedSubmission.accepted,
+            passedCount: savedSubmission.passedCount || 0,
+            totalCount: savedSubmission.totalCount || 0,
+            results: savedSubmission.results || [],
+          };
+        }
+
+        setProblemStates((currentStates) => ({
+          ...currentStates,
+          [canonicalId]: {
+            ...currentStates[canonicalId],
+            problem: data,
+            loading: false,
+            error: '',
+            selectedLanguage: lang,
+            code: initialCode,
+            executionResult: restoredResult,
+            submitCompleted: Boolean(savedSubmission),
+            timeTakenSeconds: savedSubmission?.timeTakenSeconds || 0,
+            testSubmissionState: savedSubmission
+              ? {
+                  submissionId: savedSubmission.submissionId || savedSubmission._id || '',
+                  problemId: canonicalId,
+                  status: savedSubmission.accepted ? 'accepted' : 'wrong_answer',
+                  language: lang,
+                }
+              : undefined,
+            validSelectedSubmission: savedSubmission
+              ? {
+                  submissionId: savedSubmission.submissionId || savedSubmission._id || '',
+                  problemId: canonicalId,
+                  status: savedSubmission.accepted ? 'accepted' : 'wrong_answer',
+                  language: lang,
+                  accepted: savedSubmission.accepted,
+                  passedCount: savedSubmission.passedCount || 0,
+                  totalCount: savedSubmission.totalCount || 0,
+                  results: savedSubmission.results || [],
+                }
+              : undefined,
+          },
+        }));
+      } catch (err) {
+        if (!isMounted) return;
+
+        const fallbackLang = 'Java';
+        const fallbackTemplates = {
+          Java: getLanguageStarterCode('Java'),
+          Python: getLanguageStarterCode('Python'),
+          'C++': getLanguageStarterCode('C++'),
+          C: getLanguageStarterCode('C'),
+        };
+
+        const fallbackProblem = {
+          ...rawProblemObj,
+          title: rawProblemObj.title || 'Coding Problem',
+          statement: rawProblemObj.statement || 'Write code to solve the problem.',
+          languages: Array.isArray(rawProblemObj.languages) && rawProblemObj.languages.length > 0
+            ? rawProblemObj.languages
+            : [fallbackLang, 'Python', 'C++', 'C'],
+          codeTemplates: rawProblemObj.codeTemplates || fallbackTemplates,
+        };
+
+        setProblemStates((currentStates) => ({
+          ...currentStates,
+          [canonicalId]: {
+            ...currentStates[canonicalId],
+            problem: fallbackProblem,
+            loading: false,
+            error: '',
+            selectedLanguage: fallbackLang,
+            code: getLanguageStarterCode(fallbackLang, fallbackProblem.codeTemplates),
+            customInput: '',
+            executionResult: null,
+            executionError: '',
+            submitCompleted: false,
+            timeTakenSeconds: 0,
+          },
+        }));
+      } finally {
+        fetchingIdsRef.current.delete(canonicalId);
+      }
+    };
+
+    void fetchProblemData();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [activeProblemId, problems.length]);
+
   useEffect(() => {
     if (!activeProblemId) return;
 
@@ -243,7 +377,7 @@ export default function useCodingWorkspace(
       setProblemStates(prev => {
         const state = prev[activeProblemId];
         if (!state || state.loading || !state.problem) return prev;
-        
+
         return {
           ...prev,
           [activeProblemId]: {
@@ -257,19 +391,26 @@ export default function useCodingWorkspace(
     return () => clearInterval(timer);
   }, [activeProblemId]);
 
-  // Auto-save while typing to localStorage
   useEffect(() => {
     if (!activeProblemId) return;
     const currentState = problemStates[activeProblemId];
     if (!currentState || currentState.loading || !currentState.problem) return;
 
-    const storageKey = `emple_draft_${activeProblemId}_${currentState.selectedLanguage}`;
+    const storageKey = getDraftStorageKey(activeProblemId, currentState.selectedLanguage, testContext);
     const timeoutId = setTimeout(() => {
-      localStorage.setItem(storageKey, currentState.code);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(storageKey, currentState.code);
+      }
     }, 1000);
 
     return () => clearTimeout(timeoutId);
-  }, [activeProblemId, problemStates[activeProblemId]?.code, problemStates[activeProblemId]?.selectedLanguage]);
+  }, [
+    activeProblemId,
+    problemStates[activeProblemId]?.code,
+    problemStates[activeProblemId]?.selectedLanguage,
+    testContext?.attemptId,
+    testContext?.sectionId,
+  ]);
 
   const activeState = problemStates[activeProblemId] || {
     problem: null,
@@ -298,17 +439,16 @@ export default function useCodingWorkspace(
   const changeLanguage = (language: string) => {
     if (!activeState.problem) return;
 
-    const lang = language as keyof typeof activeState.problem.codeTemplates;
-    
     let newCode: string | null = null;
     if (typeof window !== 'undefined') {
-       newCode = localStorage.getItem(`emple_draft_${activeProblemId}_${language}`);
+      const draftKey = getDraftStorageKey(activeProblemId, language, testContext);
+      newCode = localStorage.getItem(draftKey);
     }
 
     if (!newCode) {
-      const prefix = activeState.problem.lockedPrefixTemplates?.[lang] || '';
-      const editable = activeState.problem.codeTemplates?.[lang] || '';
-      const suffix = activeState.problem.lockedSuffixTemplates?.[lang] || '';
+      const prefix = activeState.problem.lockedPrefixTemplates?.[language] || '';
+      const editable = getLanguageStarterCode(language, activeState.problem.codeTemplates);
+      const suffix = activeState.problem.lockedSuffixTemplates?.[language] || '';
       newCode = `${prefix}${editable}${suffix}`;
     }
 
@@ -324,64 +464,62 @@ export default function useCodingWorkspace(
   const setCode = (code: string) => updateActiveState({ code });
   const setCustomInput = (customInput: string) => updateActiveState({ customInput });
 
-  // Polling Effect for Test Mode
+  const attemptId = testContext?.attemptId;
   useEffect(() => {
-    if (!testContext || !activeProblemId) return;
-    
+    if (!attemptId || !activeProblemId) return;
+
     const activeState = problemStates[activeProblemId];
     if (!activeState?.testSubmissionState) return;
-    
+
     const { status, submissionId } = activeState.testSubmissionState;
     if (status !== 'queued' && status !== 'running') return;
 
     let isMounted = true;
     const interval = setInterval(async () => {
       try {
-        const response = await pollTestSubmission(testContext.attemptId, submissionId);
-        
-        // Guard against stale responses (submission ID changed in the meantime)
+        const response = await pollTestSubmission(attemptId, submissionId);
+
         setProblemStates(prev => {
-           const currentState = prev[activeProblemId];
-           if (currentState?.testSubmissionState?.submissionId !== submissionId) {
-              return prev; // Active submission changed, ignore this polling result
-           }
-           
-           if (!isMounted) return prev;
+          const currentState = prev[activeProblemId];
+          if (currentState?.testSubmissionState?.submissionId !== submissionId) {
+            return prev;
+          }
 
-           const newStatus = response.status;
-           const isValidFinalized = (
-             newStatus === 'accepted' ||
-             newStatus === 'wrong_answer' ||
-             newStatus === 'compilation_error' ||
-             newStatus === 'runtime_error' ||
-             newStatus === 'time_limit_exceeded'
-           );
+          if (!isMounted) return prev;
 
-           let nextValidSubmission = currentState.validSelectedSubmission;
-           if (isValidFinalized) {
-             nextValidSubmission = response;
-           }
+          const newStatus = response.status;
+          const isValidFinalized = (
+            newStatus === 'accepted' ||
+            newStatus === 'wrong_answer' ||
+            newStatus === 'compilation_error' ||
+            newStatus === 'runtime_error' ||
+            newStatus === 'time_limit_exceeded'
+          );
 
-           return {
-             ...prev,
-             [activeProblemId]: {
-                ...currentState,
-                testSubmissionState: response,
-                validSelectedSubmission: nextValidSubmission,
-                submitCompleted: !!nextValidSubmission, // Mark completed if valid finalized status exists
-             }
-           };
+          let nextValidSubmission = currentState.validSelectedSubmission;
+          if (isValidFinalized) {
+            nextValidSubmission = response;
+          }
+
+          return {
+            ...prev,
+            [activeProblemId]: {
+              ...currentState,
+              testSubmissionState: response,
+              validSelectedSubmission: nextValidSubmission,
+              submitCompleted: !!nextValidSubmission,
+            }
+          };
         });
-        
+
         if (
-           response.status !== 'queued' && 
-           response.status !== 'running'
+          response.status !== 'queued' &&
+          response.status !== 'running'
         ) {
-           clearInterval(interval);
+          clearInterval(interval);
         }
       } catch (err) {
-        // If error fetching poll, don't crash, just let the next interval try, unless 403 or similar
-        // For simplicity, log and continue, unless it's a fatal error.
+        // Polling retry
       }
     }, 2500);
 
@@ -389,10 +527,16 @@ export default function useCodingWorkspace(
       isMounted = false;
       clearInterval(interval);
     };
-  }, [testContext, activeProblemId, problemStates[activeProblemId]?.testSubmissionState?.status, problemStates[activeProblemId]?.testSubmissionState?.submissionId]);
+  }, [
+    attemptId,
+    activeProblemId,
+    problemStates[activeProblemId]?.testSubmissionState?.status,
+    problemStates[activeProblemId]?.testSubmissionState?.submissionId,
+  ]);
 
   const handleRunCode = async () => {
     if (!activeState.problem || running || submitting) return;
+    const targetProblemId = activeProblemId || activeState.problem?._id || activeState.problem?.problemId || '';
 
     try {
       setRunning(true);
@@ -400,9 +544,9 @@ export default function useCodingWorkspace(
 
       if (testContext) {
         const result = await runTestCode(
-          testContext.attemptId, 
-          testContext.sectionId, 
-          activeState.problem._id, 
+          testContext.attemptId,
+          testContext.sectionId,
+          targetProblemId,
           {
             language: activeState.selectedLanguage,
             sourceCode: activeState.code,
@@ -412,16 +556,18 @@ export default function useCodingWorkspace(
         updateActiveState({ executionResult: result });
       } else {
         const result = await runCode({
-          problemId: activeState.problem._id,
+          problemId: targetProblemId,
           language: activeState.selectedLanguage,
           sourceCode: activeState.code,
+          customInput: activeState.customInput,
         });
         updateActiveState({ executionResult: result });
       }
     } catch (err: any) {
-      if (err.status === 503) {
-        updateActiveState({ executionError: 'Code execution is temporarily unavailable.' });
-      } else if (err.status === 429) {
+      const status = err?.status || err?.statusCode;
+      if (status === 503) {
+        updateActiveState({ executionError: 'Code execution is currently unavailable. Your code is still saved.' });
+      } else if (status === 429) {
         updateActiveState({ executionError: 'Too many execution requests. Please wait a moment and try again.' });
       } else {
         updateActiveState({ executionError: err.message || 'Failed to run code' });
@@ -433,6 +579,7 @@ export default function useCodingWorkspace(
 
   const handleSubmitCode = async () => {
     if (!activeState.problem || running || submitting) return;
+    const targetProblemId = activeProblemId || activeState.problem?._id || activeState.problem?.problemId || '';
 
     try {
       setSubmitting(true);
@@ -442,25 +589,25 @@ export default function useCodingWorkspace(
         const result = await submitTestCode(
           testContext.attemptId,
           testContext.sectionId,
-          activeState.problem._id,
+          targetProblemId,
           {
             language: activeState.selectedLanguage,
             sourceCode: activeState.code,
           }
         );
-        
+
         updateActiveState({
           testSubmissionState: {
             submissionId: result.submissionId,
-            problemId: activeState.problem._id,
+            problemId: targetProblemId,
             status: result.status,
             language: activeState.selectedLanguage,
           },
-          submitCompleted: false, // will become true upon successful polling termination
+          submitCompleted: false,
         });
       } else {
         const result = await runCode({
-          problemId: activeState.problem._id,
+          problemId: targetProblemId,
           language: activeState.selectedLanguage,
           sourceCode: activeState.code,
           customInput: activeState.customInput,
@@ -469,9 +616,10 @@ export default function useCodingWorkspace(
         updateActiveState({ executionResult: result, submitCompleted: true });
       }
     } catch (err: any) {
-      if (err.status === 503) {
-        updateActiveState({ executionError: 'Code execution is temporarily unavailable.' });
-      } else if (err.status === 429) {
+      const status = err?.status || err?.statusCode;
+      if (status === 503) {
+        updateActiveState({ executionError: 'Code execution is currently unavailable. Your code is still saved.' });
+      } else if (status === 429) {
         updateActiveState({ executionError: 'Too many execution requests. Please wait a moment and try again.' });
       } else {
         updateActiveState({ executionError: err.message || 'Failed to submit code' });
@@ -483,7 +631,7 @@ export default function useCodingWorkspace(
 
   return {
     currentProblemIndex: safeIndex,
-    setCurrentProblemIndex,
+    setCurrentProblemIndex: setClampedProblemIndex,
     totalProblems: problems.length,
     activeProblemId,
 
@@ -499,13 +647,12 @@ export default function useCodingWorkspace(
     executionResult: activeState.executionResult,
     executionError: activeState.executionError,
     submitCompleted: activeState.submitCompleted,
-    
+
     running,
     submitting,
     handleRunCode,
     handleSubmitCode,
-    
-    // For section completion
+
     problemStates,
     problems,
   };

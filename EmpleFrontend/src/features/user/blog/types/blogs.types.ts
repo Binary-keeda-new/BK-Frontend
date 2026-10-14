@@ -14,4 +14,6 @@ export interface Blog {
   coverImage?: string;
   published: boolean;
   createdAt: string;
+  likes?: number;
+  likedBy?: string[];
 }

@@ -52,9 +52,10 @@ useEffect(() => {
     try {
       const data = await getAllProducts();
       console.log("Products:", data);
-      setProducts(data);
+      setProducts(Array.isArray(data) ? data : []);
     } catch (error) {
-      console.error(error);
+      console.error("Failed to load products:", error);
+      setProducts([]);
     }
   };
 

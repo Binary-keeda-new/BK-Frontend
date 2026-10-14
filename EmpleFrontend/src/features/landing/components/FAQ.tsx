@@ -6,7 +6,7 @@ interface FAQItem { q: string; a: string; }
 const faqs: FAQItem[] = [
   {
     q: "What is Emple?",
-    a: "Emple is an AI-powered career development platform designed to help students, graduates, and professionals prepare for internships, placements, and job opportunities. The platform combines interview preparation, ATS resume analysis, career roadmaps, tutorials, placement resources, and skill-building tools in one place. Whether you're preparing for your first internship or your next career move, Emple helps you build the skills, confidence, and resources needed to succeed.",
+    a: "Emple is an AI-powered career development platform designed to help students, graduates, and professionals prepare for internships, placements, and job opportunities. The platform combines interview preparation, ATS resume analysis, career roadmaps, placement resources, and skill-building tools in one place. Whether you're preparing for your first internship or your next career move, Emple helps you build the skills, confidence, and resources needed to succeed.",
   },
   {
     q: "Who can join Emple?",
@@ -14,7 +14,7 @@ const faqs: FAQItem[] = [
   },
   {
   q: "What Resources does Emple offer?",
-  a: "Emple provides interview preparation resources, structured career roadmaps, technical tutorials, ATS resume guidance, certification resources, placement preparation materials, industry-focused blogs, and community learning opportunities. These resources are designed to help learners develop in-demand skills and prepare confidently for internships, placements, and job opportunities."
+  a: "Emple provides interview preparation resources, structured career roadmaps, ATS resume guidance, certification resources, placement preparation materials, industry-focused blogs, and community learning opportunities. These resources are designed to help learners develop in-demand skills and prepare confidently for internships, placements, and job opportunities."
 },
   {
     q: "Are the career roadmaps suitable for beginners?",
@@ -26,7 +26,7 @@ const faqs: FAQItem[] = [
   },
   {
     q: "How do I get started",
-    a: "Getting started is simple. Create a free account, complete your profile, and explore the available resources. You can begin with career roadmaps, tutorials, interview preparation content, and other learning materials. As you progress, you can use additional tools and features to further support your career goals.",
+    a: "Getting started is simple. Create a free account, complete your profile, and explore the available resources. You can begin with career roadmaps, interview preparation content, and other learning materials. As you progress, you can use additional tools and features to further support your career goals.",
   },
   {
     q: "What makes Emple different?",

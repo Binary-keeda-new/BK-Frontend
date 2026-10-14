@@ -37,7 +37,7 @@ const [isDeleting, setIsDeleting] =
 
   const fetchProblems = async () => {
   try {
-    const data = await apiRequest<{ data: CodingProblem[] }>('/api/v1/admin/coding-problems');
+    const data = await apiRequest<{ data: CodingProblem[] }>('/api/v1/coding-problems');
     setProblems(data.data || []);
   } catch (error) {
     console.error(
@@ -55,7 +55,7 @@ const handleDeleteProblem = async () => {
   try {
     setIsDeleting(true);
 
-    await apiRequest(`/api/v1/admin/coding-problems/${problemToDelete._id}`, {
+    await apiRequest(`/api/v1/coding-problems/${problemToDelete._id}`, {
       method: 'DELETE',
     });
 
@@ -78,7 +78,7 @@ const handleDeleteProblem = async () => {
   useEffect(() => {
     const fetchProblemsList = async () => {
       try {
-        const data = await apiRequest<{ data: CodingProblem[] }>('/api/v1/admin/coding-problems');
+        const data = await apiRequest<{ data: CodingProblem[] }>('/api/v1/coding-problems');
         setProblems(data.data || []);
       } catch (error) {
         console.error('Failed to fetch coding problems:', error);

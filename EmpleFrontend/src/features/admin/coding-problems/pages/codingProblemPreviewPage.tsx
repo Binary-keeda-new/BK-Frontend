@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import ProblemPanel from '@/features/admin/coding-problems/components/problemPanel';
+import { apiRequest } from '@/shared/utils/api';
 
 interface Props {
   problemId: string;
@@ -15,13 +16,12 @@ export default function CodingProblemPreviewPage({
 
   useEffect(() => {
     const fetchProblem = async () => {
-      const response = await fetch(
-        `http://localhost:5000/api/v1/admin/coding-problems/${problemId}`
-      );
-      const data =
-        await response.json();
+      try {
+        const data = await apiRequest<{ data: any }>(
+          `/api/v1/coding-problems/${problemId}`
+        );
 
-      const p = data.data;
+        const p = data.data;
 
       setProblem({
   _id: p._id,
@@ -44,6 +44,9 @@ export default function CodingProblemPreviewPage({
   hints:
     p.hints || [],
 });
+      } catch (err) {
+        console.error('Failed to fetch coding problem preview:', err);
+      }
     };
 
     fetchProblem();

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { apiRequest } from '@/shared/utils/api';
 
 interface CreateCodingProblemModalProps {
   isOpen: boolean;
@@ -38,13 +39,10 @@ export default function CreateCodingProblemModal({
   e.preventDefault();
 
   try {
-    const response = await fetch(
-      'http://localhost:5000/api/coding-problems',
+    const data = await apiRequest(
+      '/api/v1/coding-problems',
       {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({
           title: formData.title,
           difficulty: formData.difficulty,
@@ -55,8 +53,6 @@ export default function CreateCodingProblemModal({
         }),
       }
     );
-
-    const data = await response.json();
 
     console.log('Created Problem:', data);
 

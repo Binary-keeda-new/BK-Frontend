@@ -6,9 +6,7 @@ export function middleware(request: NextRequest) {
 
   if (!token && request.nextUrl.pathname.startsWith('/user')) {
     const publicUserRoutes = [
-      '/user/events',
-      '/user/counselling',
-      '/user/tech-shop',
+      '/user/sessions',
     ];
     
     const isPublic = publicUserRoutes.some(route => 
@@ -18,6 +16,10 @@ export function middleware(request: NextRequest) {
     if (!isPublic) {
       return NextResponse.redirect(new URL('/auth/login', request.url))
     }
+  }
+
+  if (!token && request.nextUrl.pathname.startsWith('/resources/')) {
+    return NextResponse.redirect(new URL('/auth/login', request.url))
   }
 
   if (!token && request.nextUrl.pathname.startsWith('/dashboard')) {
@@ -32,5 +34,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/user/:path*', '/dashboard/:path*', '/admin/:path*'],
+  matcher: ['/user/:path*', '/resources/:path+', '/dashboard/:path*', '/admin/:path*'],
 }

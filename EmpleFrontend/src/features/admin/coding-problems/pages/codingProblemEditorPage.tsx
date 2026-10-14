@@ -23,7 +23,7 @@ const API_BASE_URL =
 
 const apiFetch = async (url: string, options?: RequestInit) => {
   const headers = getAuthHeaders();
-  return fetch(url.replace('/api/v1/coding-problems', '/api/v1/admin/coding-problems'), {
+  return fetch(url, {
     ...options,
     headers: {
       ...headers,
@@ -733,7 +733,7 @@ const handlePublish =
 const handleSaveExecution = async () => {
   try {
     const response = await apiFetch(
-      `http://localhost:5000/api/v1/admin/coding-problems/${problemId}`,
+      `${API_BASE_URL}/api/v1/coding-problems/${problemId}`,
       {
         method: 'PATCH',
         headers: {
