@@ -386,7 +386,7 @@ export default function TestsContent({
               </p>
 
               <p className="mb-4 text-xs text-[var(--clr-text3)]">
-                Tests with submissions cannot be deleted.
+                This action will delete the test and remove it from candidate access.
               </p>
 
               <div className="flex justify-end gap-2">

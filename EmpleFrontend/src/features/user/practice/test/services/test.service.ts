@@ -95,6 +95,13 @@ export const startTestAttempt = async (
     ApiResponse<{
       _id: string;
       expiresAt?: string | null;
+      remainingSeconds?: number;
+      violationCount?: number;
+      maxViolations?: number;
+      warningsLeft?: number;
+      activeSectionId?: string | null;
+      activeQuestionId?: string | null;
+      activeQuestionIndex?: number;
     }>
   >(`/api/v1/test-attempts/${testId}/start`, {
     method: 'POST',
@@ -134,7 +141,14 @@ export const getTestAttemptDetails = async (attemptId: string) => {
       status: import('../types/test.types').TestAttemptStatus;
       startedAt: string;
       expiresAt?: string | null;
+      remainingSeconds?: number;
       requiresReview?: boolean;
+      violationCount?: number;
+      maxViolations?: number;
+      warningsLeft?: number;
+      activeSectionId?: string | null;
+      activeQuestionId?: string | null;
+      activeQuestionIndex?: number;
       sections: {
         sectionId: string;
         status: string;
@@ -179,43 +193,56 @@ export const getUserTestReport = async (attemptId: string) => {
     } as UserTestReport;
   }
 
-  const report = data.report;
+  const report = data.report || data;
+
+  const totalScore = report.totalScore ?? report.totalMarks ?? 0;
+  const maxScore = report.maximumScore ?? report.maxScore ?? report.maximumMarks ?? 0;
+  const percentage = typeof report.percentage === 'number'
+    ? Math.round(report.percentage * 10) / 10
+    : (maxScore > 0 ? Math.round((totalScore / maxScore) * 100 * 10) / 10 : 0);
 
   return {
-    attemptId: report.attemptId,
+    attemptId: report.attemptId || attemptId,
     test: {
-      id: report.testId,
-      title: report.testTitle,
+      id: report.testId || report.test?.id || '',
+      title: report.testTitle || report.test?.title || 'Assessment Result',
+      description: report.testDescription || report.test?.description,
     },
-    status: data.status,
-    resultReady: data.resultReady,
-    requiresReview: data.requiresReview,
+    candidate: report.candidate,
+    status: data.status || report.status || 'submitted',
+    resultReady: data.resultReady ?? true,
+    requiresReview: data.requiresReview ?? false,
     startedAt: report.startedAt,
     submittedAt: report.submittedAt,
-    timeUsedMs: (report.totalTimeTakenSeconds || 0) * 1000,
-    totalDurationMs: 0,
-    totalScore: report.totalScore,
-    maxScore: report.maximumScore,
-    percentage: report.percentage,
-    passStatus: report.passStatus,
+    timeUsedMs: (report.totalTimeTakenSeconds || report.timeUsedSeconds || report.totalTimeMs || 0) * (report.totalTimeMs ? 1 : 1000),
+    totalDurationMs: (report.totalDurationMinutes || 0) * 60 * 1000,
+    totalScore,
+    maxScore,
+    percentage,
+    passStatus: report.passStatus ?? (percentage >= (report.passingPercentage || 50)),
     completionType: report.completionType,
-    sectionBreakdown: report.sections?.map((s: any) => ({
-      sectionId: s.sectionId,
-      title: `Section ${s.order}`,
-      type: s.type,
-      score: s.score,
-      maxScore: s.maximumMarks,
-      timeSpentMs: 0,
-      status: s.status,
-      correct: s.correct,
-      incorrect: s.incorrect,
-      unanswered: s.unanswered,
-      numberOfProblems: s.numberOfProblems,
-      finalizedProblems: s.finalizedProblems,
-    })),
-    summary: {},
-    sections: [],
-    mcqReview: [],
-    codingReview: [],
+    sectionBreakdown: (report.sections || report.sectionBreakdown || []).map((s: any, idx: number) => {
+      const sectionScore = s.score ?? s.awardedMarks ?? 0;
+      const sectionMaxScore = s.maximumMarks ?? s.maxScore ?? s.maxMarks ?? 0;
+      return {
+        sectionId: s.sectionId || s._id || `sec_${idx}`,
+        title: s.title || `Section ${s.order ?? (idx + 1)}`,
+        type: s.type || 'mcq',
+        score: sectionScore,
+        maxScore: sectionMaxScore,
+        timeSpentMs: (s.timeSpentSeconds || s.timeTakenSeconds || s.timeSpentMs || 0) * (s.timeSpentMs ? 1 : 1000),
+        status: s.status || 'submitted',
+        correct: s.correct,
+        incorrect: s.incorrect,
+        unanswered: s.unanswered,
+        numberOfProblems: s.numberOfProblems,
+        finalizedProblems: s.finalizedProblems,
+      };
+    }),
+    summary: report.summary || {},
+    sections: report.sections || [],
+    mcqReview: report.mcqReview || [],
+    codingReview: report.codingReview || [],
+    rank: report.rank,
   } as UserTestReport;
 };

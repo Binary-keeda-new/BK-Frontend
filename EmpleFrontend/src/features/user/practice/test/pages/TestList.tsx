@@ -16,7 +16,7 @@ import {
   getTestAttemptDetails,
   getUserTestReport,
 } from '../services/test.service';
-import { forceSubmitTestAttempt, reportTestSecurityViolation } from '../services/testAttempt.service';
+import { forceSubmitTestAttempt, reportTestSecurityViolation, resumeAttemptTimer } from '../services/testAttempt.service';
 import TestFullscreenGate from '../components/TestFullscreenGate';
 import TestViolationModal from '../components/TestViolationModal';
 import TestMCQReview from './TestMCQReview';
@@ -66,12 +66,16 @@ export default function TestList({ onFullscreenModeChange }: Props) {
   const [redirectCountdown, setRedirectCountdown] = useState<number | null>(null);
   const [securityWarnings, setSecurityWarnings] = useState(0);
   const [maxViolations, setMaxViolations] = useState(5);
+  const [warningsLeft, setWarningsLeft] = useState(5);
+  const [isForceSubmitted, setIsForceSubmitted] = useState(false);
 
   const [pendingTest, setPendingTest] = useState<UserTest | null>(null);
   const [passwordInput, setPasswordInput] = useState('');
   const [showPasswordPrompt, setShowPasswordPrompt] = useState(false);
   const [passwordError, setPasswordError] = useState('');
   const [attemptExpiresAt, setAttemptExpiresAt] = useState<string | null>(null);
+  const [remainingSeconds, setRemainingSeconds] = useState<number | null>(null);
+  const [resumedQuestionIndex, setResumedQuestionIndex] = useState<number>(0);
   const [needsFullscreen, setNeedsFullscreen] = useState(false);
   const [activeViolation, setActiveViolation] = useState<string | null>(null);
   const [reviewSection, setreviewSection] = useState<UserTestSection | null>(null);
@@ -101,48 +105,36 @@ const [reviewSectionIndex, setreviewSectionIndex] = useState(0);
     return () => onFullscreenModeChange?.(false);
   }, [view, onFullscreenModeChange, selectedTest]);
 
+  // Global check: if active remainingSeconds reaches 0, trigger auto submit outside of attempt view
   useEffect(() => {
-    if (!attemptExpiresAt || !activeAttemptId) return;
+    if (remainingSeconds === null || !activeAttemptId) return;
 
-    const interval = setInterval(async () => {
-      const expiresMs = new Date(attemptExpiresAt).getTime();
-      const now = Date.now();
-      const timeLeft = expiresMs - now;
+    if (remainingSeconds <= 4 && remainingSeconds > 0 && !warnedAutoSubmit.current) {
+      warnedAutoSubmit.current = true;
+      addToast('Time is almost up! The test will auto-submit shortly...', 'error');
+    }
 
-      if (timeLeft <= 4000 && timeLeft > 0 && !warnedAutoSubmit.current) {
-        warnedAutoSubmit.current = true;
-        addToast('Time is almost up! The test will auto-submit shortly...', 'error');
+    if (remainingSeconds <= 0 && !hasAutoSubmittedGlobal.current) {
+      if (view === 'attempt') {
+        return; // TestAttempt handles section submission
       }
 
-      if (timeLeft <= 0 && !hasAutoSubmittedGlobal.current) {
-        // If user is actively attempting a section, let TestAttempt submit the answers first
-        if (view === 'attempt') {
-          return;
+      hasAutoSubmittedGlobal.current = true;
+      forceSubmitTestAttempt(activeAttemptId).then((res) => {
+        if (selectedTest) {
+          setCompletedSectionIds(selectedTest.sections.map((s) => s._id));
         }
-
-        hasAutoSubmittedGlobal.current = true;
-        clearInterval(interval);
-        
-        try {
-          const res = await forceSubmitTestAttempt(activeAttemptId);
-          if (selectedTest) {
-             setCompletedSectionIds(selectedTest.sections.map((s) => s._id));
-          }
-          
-          if (res.status === 'finalizing') {
-             setView(res.requiresReview ? 'requires-review' : 'finalizing');
-          } else {
-             setView('report');
-          }
-        } catch (e) {
-          console.error('Failed to auto submit test', e);
-          setView('finalizing');
+        if (res.status === 'finalizing') {
+          setView(res.requiresReview ? 'requires-review' : 'finalizing');
+        } else {
+          setView('report');
         }
-      }
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [attemptExpiresAt, activeAttemptId, selectedTest, view]);
+      }).catch((e) => {
+        console.error('Failed to auto submit test', e);
+        setView('finalizing');
+      });
+    }
+  }, [remainingSeconds, activeAttemptId, selectedTest, view]);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -175,6 +167,90 @@ const [reviewSectionIndex, setreviewSectionIndex] = useState(0);
     return () => clearInterval(interval);
   }, [view, activeAttemptId, selectedTest?._id]);
 
+  const [attemptSections, setAttemptSections] = useState<any[]>([]);
+
+  const handleResumeAttempt = async (test: UserTest, attemptId: string) => {
+    try {
+      const attempt = await getTestAttemptDetails(attemptId);
+
+      setActiveAttemptId(attempt._id);
+      setAttemptExpiresAt(attempt.expiresAt || null);
+      setRemainingSeconds(attempt.remainingSeconds ?? null);
+      setResumedQuestionIndex(attempt.activeQuestionIndex || 0);
+
+      const mappedSections = (attempt.sections || []).map((s: any) => ({
+        sectionId: s.sectionId?.toString?.() || s.sectionId,
+        title: s.title,
+        type: s.type,
+        order: s.order,
+        status: s.status,
+        isEditable: s.isEditable,
+      }));
+      setAttemptSections(mappedSections);
+
+      const completedIds = mappedSections
+        .filter((s: any) => s.status === 'completed' || s.status === 'submitted')
+        .map((s: any) => s.sectionId);
+
+      setCompletedSectionIds(completedIds);
+
+      let targetSectionIndex = mappedSections.findIndex(
+        (s: any) => s.sectionId === attempt.activeSectionId
+      );
+      if (targetSectionIndex === -1) {
+        targetSectionIndex = mappedSections.findIndex(
+          (s: any) => s.status === 'in_progress' || s.status === 'not_started'
+        );
+      }
+      if (targetSectionIndex === -1) targetSectionIndex = 0;
+
+      setEnabledSectionIndex(targetSectionIndex);
+
+      const activeSec = test.sections.find((s) => s._id === attempt.activeSectionId) ||
+        test.sections[targetSectionIndex] || test.sections[0];
+      if (activeSec) {
+        setActiveSection(activeSec);
+        setActiveSectionIndex(test.sections.indexOf(activeSec));
+      }
+
+      const maxV = attempt.maxViolations || test.settings?.maxSecurityViolations || 5;
+      setMaxViolations(maxV);
+      const count = attempt.violationCount || 0;
+      setSecurityWarnings(count);
+      const left = attempt.warningsLeft !== undefined ? attempt.warningsLeft : Math.max(0, maxV - count);
+      setWarningsLeft(left);
+      setSelectedTest(test);
+      setAgreed(true);
+
+      if (attempt.status === 'force_submitted' || attempt.status === 'submitted' || left <= 0) {
+        setIsForceSubmitted(true);
+        setView('report');
+        return;
+      }
+
+      // Show Section Progress page first (Do NOT skip into question UI directly)
+      setView('sections');
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : 'Unable to resume test';
+
+      if (message.toLowerCase().includes('expired')) {
+        addToast('This test attempt has expired.', 'error');
+        return;
+      }
+
+      if (
+        message.toLowerCase().includes('ip') ||
+        message.toLowerCase().includes('network')
+      ) {
+        addToast("Can't connect to network.", 'error');
+        return;
+      }
+
+      addToast(message, 'error');
+    }
+  };
+
   useEffect(() => {
     const loadTests = async () => {
       try {
@@ -185,6 +261,8 @@ const [reviewSectionIndex, setreviewSectionIndex] = useState(0);
         const ids = data.map((test) => test._id);
         const statusMap = await getTestAttemptStatus(ids);
         setAttemptStatusMap(statusMap);
+        // Do NOT automatically reopen attempt on navigation to Practice -> Tests
+        // The test list must always be shown with "Resume Test" on unfinished test
       } catch (error) {
         console.error(error);
       } finally {
@@ -201,96 +279,94 @@ const [reviewSectionIndex, setreviewSectionIndex] = useState(0);
 
       setActiveAttemptId(attempt._id);
       setAttemptExpiresAt(attempt.expiresAt || null);
+      setRemainingSeconds(attempt.remainingSeconds ?? null);
+      setResumedQuestionIndex(attempt.activeQuestionIndex || 0);
+      const maxV = attempt.maxViolations || test.settings?.maxSecurityViolations || 5;
+      setMaxViolations(maxV);
+      const count = attempt.violationCount || 0;
+      setSecurityWarnings(count);
+      const left = attempt.warningsLeft !== undefined ? attempt.warningsLeft : Math.max(0, maxV - count);
+      setWarningsLeft(left);
       setSelectedTest(test);
       setAgreed(true);
 
-      if (test.settings?.noExitScreen) {
-        setView('fullscreen');
-      } else {
-        setView('instructions');
+      setEnabledSectionIndex(0);
+      setCompletedSectionIds([]);
+      setAttemptSections([]);
+
+      try {
+        const details = await getTestAttemptDetails(attempt._id);
+        if (details?.sections) {
+          const mappedSections = details.sections.map((s: any) => ({
+            sectionId: s.sectionId?.toString?.() || s.sectionId,
+            title: s.title,
+            type: s.type,
+            order: s.order,
+            status: s.status,
+            isEditable: s.isEditable,
+          }));
+          setAttemptSections(mappedSections);
+          const completedIds = mappedSections
+            .filter((s: any) => s.status === 'completed' || s.status === 'submitted')
+            .map((s: any) => s.sectionId);
+          setCompletedSectionIds(completedIds);
+        }
+      } catch (e) {
+        console.error('Failed to load attempt section details', e);
       }
+
+      try {
+        sessionStorage.setItem(
+          'emple_active_test_attempt',
+          JSON.stringify({ testId: test._id, attemptId: attempt._id })
+        );
+      } catch (e) {}
+
+      // Start attempt directly in sections
+      setView('sections');
     } catch (error) {
-  const message =
-    error instanceof Error ? error.message : 'Unable to start test';
-  
-  if (message.toLowerCase().includes('password')) {
-    setPasswordError(message);
-    setShowPasswordPrompt(true);
-    setPendingTest(test);
-    return;
-  }
-  
-  addToast(message, 'error');
-}
+      const message =
+        error instanceof Error ? error.message : 'Unable to start test';
+
+      if (message.toLowerCase().includes('password')) {
+        setPasswordError(message);
+        setShowPasswordPrompt(true);
+        setPendingTest(test);
+        return;
+      }
+
+      addToast(message, 'error');
+    }
   };
 
-const handleAttempt = async (test: UserTest) => {
-  const status = attemptStatusMap[test._id];
+  const handleAttempt = async (test: UserTest) => {
+    const status = attemptStatusMap[test._id];
 
-  if (status?.status === 'in_progress' && status?.attemptId) {
-    try {
-      const attempt = await getTestAttemptDetails(status.attemptId);
-
-      setActiveAttemptId(attempt._id);
-      setAttemptExpiresAt(attempt.expiresAt || null);
-
-      const completedIds = attempt.sections
-        .filter((s) => s.status === 'submitted')
-        .map((s) => s.sectionId);
-
-      setCompletedSectionIds(completedIds);
-
-      const unlockedIndex = attempt.sections.findIndex(
-        (s) =>
-          s.status === 'unlocked' ||
-          s.status === 'in_progress'
-      );
-
-      setEnabledSectionIndex(
-        unlockedIndex >= 0 ? unlockedIndex : completedIds.length
-      );
-
-      setSelectedTest(test);
-      setAgreed(true);
-
-      if (test.settings?.noExitScreen) {
-        setView('resume-fullscreen');
-      } else {
-        setView('sections');
-      }
-
+    if (status?.status === 'in_progress' && status?.attemptId) {
+      await handleResumeAttempt(test, status.attemptId);
       return;
-    } catch (error) {
-  const message =
-    error instanceof Error ? error.message : 'Unable to resume test';
+    }
 
-  if (message.toLowerCase().includes('expired')) {
-    addToast('This test attempt has expired.', 'error');
-    return;
-  }
+    if (test.settings?.passwordProtected) {
+      setPendingTest(test);
+      setPasswordInput('');
+      setPasswordError('');
+      setShowPasswordPrompt(true);
+      return;
+    }
 
-  if (
-    message.toLowerCase().includes('ip') ||
-    message.toLowerCase().includes('network')
-  ) {
-    addToast("Can't connect to network.", 'error');
-    return;
-  }
-
-  addToast(message, 'error');
-} }
-
-
-  if (test.settings?.passwordProtected) {
-    setPendingTest(test);
-    setPasswordInput('');
-    setPasswordError('');
-    setShowPasswordPrompt(true);
-    return;
-  }
-
-  await beginAttempt(test);
-};
+    // Show Instructions BEFORE starting attempt
+    setSelectedTest(test);
+    setAgreed(false);
+    setEnabledSectionIndex(0);
+    setCompletedSectionIds([]);
+    setAttemptSections([]);
+    const maxV = test.settings?.maxSecurityViolations || 5;
+    setMaxViolations(maxV);
+    setWarningsLeft(maxV);
+    setSecurityWarnings(0);
+    setView('instructions');
+  };
 
 const handleReviewTest = (test: UserTest) => {
   const status = attemptStatusMap[test._id];
@@ -339,15 +415,43 @@ const handleReviewSection = (
     setAgreed(false);
     setView('list');
     setActiveAttemptId(null);
+    try {
+      sessionStorage.removeItem('emple_active_test_attempt');
+    } catch (e) {}
     if (initialAttemptId) {
       router.replace('/user/practice/test');
     }
   };
 
-  const handleAttemptSection = (section: UserTestSection, index: number) => {
+  const handleAttemptSection = async (section: UserTestSection, index: number) => {
     setActiveSection(section);
     setActiveSectionIndex(index);
-    setView('attempt');
+
+    const isFs = typeof document !== 'undefined' && Boolean(
+      document.fullscreenElement ||
+      (document as any).webkitFullscreenElement ||
+      (document as any).mozFullScreenElement ||
+      (document as any).msFullscreenElement
+    );
+
+    if (isFs) {
+      if (activeAttemptId) {
+        try {
+          const res = await resumeAttemptTimer(activeAttemptId);
+          if (typeof res.remainingSeconds === 'number') {
+            setRemainingSeconds(res.remainingSeconds);
+          }
+          if (typeof res.activeQuestionIndex === 'number') {
+            setResumedQuestionIndex(res.activeQuestionIndex);
+          }
+        } catch (e) {
+          console.error('Failed to notify backend timer resume', e);
+        }
+      }
+      setView('attempt');
+    } else {
+      setView('resume-fullscreen');
+    }
   };
 
   if (loading) {
@@ -390,25 +494,51 @@ if (view === 'review-coding' && activeAttemptId && reviewSection) {
 }
 
   if (view === 'fullscreen' && selectedTest) {
-  return (
-    <TestFullscreenGate
-      testTitle={selectedTest.title}
-      onBack={handleBackToList}
-      onEntered={() => setView('instructions')}
-    />
-  );
-}
+    return (
+      <div className="fixed inset-0 z-[9999] bg-[#0b0c10] flex items-center justify-center w-screen h-[100dvh] overflow-hidden">
+        <TestFullscreenGate
+          testTitle={selectedTest.title}
+          onBack={handleBackToList}
+          onEntered={() => setView('instructions')}
+        />
+      </div>
+    );
+  }
 
-if (view === 'resume-fullscreen' && selectedTest) {
-  return (
-    <TestFullscreenGate
-      testTitle={selectedTest.title}
-      warningCount={securityWarnings}
-      onBack={handleBackToList}
-      onEntered={() => setView('sections')}
-    />
-  );
-}
+  if (view === 'resume-fullscreen' && selectedTest) {
+    return (
+      <div className="fixed inset-0 z-[9999] bg-[#0b0c10] flex items-center justify-center w-screen h-[100dvh] overflow-hidden">
+        <TestFullscreenGate
+          testTitle={selectedTest.title}
+          warningCount={warningsLeft}
+          onBack={() => setView('sections')}
+          onEntered={async () => {
+            try {
+              if (activeAttemptId) {
+                const res = await resumeAttemptTimer(activeAttemptId);
+                if (typeof res.remainingSeconds === 'number') {
+                  setRemainingSeconds(res.remainingSeconds);
+                }
+                if (typeof res.activeQuestionIndex === 'number') {
+                  setResumedQuestionIndex(res.activeQuestionIndex);
+                }
+                if (res.activeSectionId) {
+                  const sec = selectedTest.sections.find((s) => s._id === res.activeSectionId);
+                  if (sec) {
+                    setActiveSection(sec);
+                    setActiveSectionIndex(selectedTest.sections.indexOf(sec));
+                  }
+                }
+              }
+            } catch (e) {
+              console.error('Failed to notify backend timer resume', e);
+            }
+            setView('attempt');
+          }}
+        />
+      </div>
+    );
+  }
 
   if (view === 'instructions' && selectedTest) {
     return (
@@ -417,7 +547,7 @@ if (view === 'resume-fullscreen' && selectedTest) {
         agreed={agreed}
         onAgreeChange={setAgreed}
         onBack={handleBackToList}
-        onPreview={() => setView('sections')}
+        onPreview={() => beginAttempt(selectedTest)}
       />
     );
   }
@@ -426,9 +556,10 @@ if (view === 'resume-fullscreen' && selectedTest) {
     return (
       <TestSectionsPreview
         test={selectedTest}
+        attemptSections={attemptSections}
         enabledSectionIndex={enabledSectionIndex}
         completedSectionIds={completedSectionIds}
-        onBack={() => setView('instructions')}
+        onBack={handleBackToList}
         onAttemptSection={handleAttemptSection}
         navigationMode={selectedTest.settings?.navigationMode || 'sequential'}
       />
@@ -437,78 +568,81 @@ if (view === 'resume-fullscreen' && selectedTest) {
 
   if (view === 'attempt' && selectedTest && activeSection) {
     return (
-      <TestSecurityShell
-  settings={selectedTest.settings}
+      <div id="emple-test-fullscreen-root" className="fixed inset-0 z-[9999] bg-[#0b0c10] text-[var(--text,#f0f0f4)] w-screen h-[100dvh] flex flex-col overflow-hidden">
+        <TestSecurityShell
+          settings={selectedTest.settings}
+          isActive={!isForceSubmitted && view === 'attempt'}
+          onViolation={(type) => {
+            console.warn('Test security violation:', type);
 
-  onViolation={(type) => {
-  console.warn('Test security violation:', type);
+            if (activeAttemptId) {
+              reportTestSecurityViolation(activeAttemptId, type).then(res => {
+                const vCount = typeof res.violationCount === 'number' ? res.violationCount : securityWarnings;
+                const maxV = res.maxViolations || maxViolations;
+                const left = typeof res.warningsLeft === 'number' ? res.warningsLeft : Math.max(0, maxV - vCount);
 
-  if (activeAttemptId) {
-    reportTestSecurityViolation(activeAttemptId, type).then(res => {
-      setSecurityWarnings(prev => Math.max(prev, res.violationCount));
-      if (res.maxViolations) setMaxViolations(res.maxViolations);
+                setSecurityWarnings(vCount);
+                if (res.maxViolations) setMaxViolations(maxV);
+                setWarningsLeft(left);
 
-      if (res.status === 'finalizing' || res.status === 'force_submitted' || res.status === 'submitted') {
-         if (res.status === 'finalizing') {
-            setView(res.requiresReview ? 'requires-review' : 'finalizing');
-         } else {
-            setView('report');
-         }
-      } else {
-         setActiveViolation(type);
-      }
-    }).catch(e => {
-       console.error('Failed to report security violation', e);
-       // Do not drop the event locally if it's a network issue? Wait, plan says:
-       // "If reporting a violation fails due to temporary network error: do not increment authoritative warning count locally... Backend count remains authoritative."
-    });
-  }
+                if (res.forceSubmitted || left <= 0 || res.status === 'finalizing' || res.status === 'force_submitted' || res.status === 'submitted') {
+                   setIsForceSubmitted(true);
+                   setActiveViolation(null);
+                   setNeedsFullscreen(false);
+                   try { sessionStorage.removeItem('emple_active_test_attempt'); } catch (e) {}
+                } else {
+                   setActiveViolation(type);
+                }
+              }).catch(e => {
+                 console.error('Failed to report security violation', e);
+              });
+            }
+          }}
+        >
+          <TestViolationModal
+            violationType={activeViolation}
+            warningsLeft={warningsLeft}
+            warningCount={securityWarnings}
+            maxViolations={maxViolations}
+            isForceSubmitted={isForceSubmitted}
+            onForceSubmitAcknowledge={() => {
+              setIsForceSubmitted(false);
+              setActiveViolation(null);
+              try { sessionStorage.removeItem('emple_active_test_attempt'); } catch (e) {}
+              setView('report');
+            }}
+            onContinue={() => {
+              setActiveViolation(null);
+              setNeedsFullscreen(false);
+            }}
+          />
 
-  if (
-    type === 'exit_fullscreen' &&
-    selectedTest.settings?.noExitScreen
-  ) {
-    setNeedsFullscreen(false);
-  }
-}}
->
-  
-  <TestViolationModal
-        violationType={activeViolation}
-        warningCount={securityWarnings}
-        maxViolations={maxViolations}
-        onContinue={() => {
-    const wasFullscreenViolation = activeViolation === 'exit_fullscreen';
-
-    setActiveViolation(null);
-
-    if (wasFullscreenViolation && selectedTest.settings?.noExitScreen) {
-      setNeedsFullscreen(true);
-    } }}
-      />
-
-  {needsFullscreen ? (
-  <TestFullscreenGate
-    testTitle={selectedTest.title}
-    onBack={handleBackToList}
-    onEntered={() => setNeedsFullscreen(false)}
-     warningCount={securityWarnings}
-  />
-) : (
-        <TestAttempt
-          testId={selectedTest._id}
-          attemptId={activeAttemptId!}
-          attemptExpiresAt={attemptExpiresAt}
-          securityWarnings={securityWarnings}
-          section={activeSection}
-          sectionIndex={activeSectionIndex}
-          allowCalculator={selectedTest.settings?.allowCalculator || false}
-          allowVirtualKeyboard={
-  selectedTest.settings?.allowVirtualKeyboard || false
-}
-          minTimeBeforeSubmit={
-  selectedTest.settings?.minTimeBeforeSubmit || 0
-}
+          {needsFullscreen ? (
+            <TestFullscreenGate
+              testTitle={selectedTest.title}
+              onBack={handleBackToList}
+              onEntered={() => setNeedsFullscreen(false)}
+              warningCount={warningsLeft}
+            />
+          ) : (
+          <TestAttempt
+            testId={selectedTest._id}
+            attemptId={activeAttemptId!}
+            attemptExpiresAt={attemptExpiresAt}
+            initialRemainingSeconds={remainingSeconds ?? undefined}
+            initialQuestionIndex={resumedQuestionIndex}
+            warningsLeft={warningsLeft}
+            securityWarnings={securityWarnings}
+            section={activeSection}
+            sectionIndex={activeSectionIndex}
+            isAttemptActive={view === 'attempt' && !needsFullscreen && !activeViolation && !isForceSubmitted}
+            allowCalculator={selectedTest.settings?.allowCalculator || false}
+            allowVirtualKeyboard={
+              selectedTest.settings?.allowVirtualKeyboard || false
+            }
+            minTimeBeforeSubmit={
+              selectedTest.settings?.minTimeBeforeSubmit || 0
+            }
           onAttemptStateChange={(status, requiresReview) => {
              if (status === 'finalizing') {
                 setView(requiresReview ? 'requires-review' : 'finalizing');
@@ -517,37 +651,52 @@ if (view === 'resume-fullscreen' && selectedTest) {
              }
           }}
           onBackToSections={() => setView('sections')}
-          onSectionCompleted={(sectionId) => {
+          onSectionCompleted={async (sectionId) => {
             const nextCompleted = completedSectionIds.includes(sectionId)
               ? completedSectionIds
               : [...completedSectionIds, sectionId];
 
             setCompletedSectionIds(nextCompleted);
 
+            if (activeAttemptId) {
+              try {
+                const details = await getTestAttemptDetails(activeAttemptId);
+                if (details?.sections) {
+                  const mappedSections = details.sections.map((s: any) => ({
+                    sectionId: s.sectionId?.toString?.() || s.sectionId,
+                    title: s.title,
+                    type: s.type,
+                    order: s.order,
+                    status: s.status,
+                    isEditable: s.isEditable,
+                  }));
+                  setAttemptSections(mappedSections);
+                }
+              } catch (e) {
+                console.error('Failed to reload attempt sections', e);
+              }
+            }
+
             if (nextCompleted.length === selectedTest.sections.length) {
               setView('feedback');
               return;
             }
 
-            // If the global timer has expired, force to feedback instead of allowing next section
-            if (attemptExpiresAt) {
-              const expiresMs = new Date(attemptExpiresAt).getTime();
-              // Allow a small grace period for execution delay
-              if (Date.now() >= expiresMs - 2000) {
-                if (!hasAutoSubmittedGlobal.current) {
-                  hasAutoSubmittedGlobal.current = true;
-                  forceSubmitTestAttempt(activeAttemptId!).then(res => {
-                    if (res.status === 'finalizing') {
-                       setView(res.requiresReview ? 'requires-review' : 'finalizing');
-                    } else {
-                       setView('report');
-                    }
-                  }).catch(console.error);
-                } else {
-                   setView('finalizing');
-                }
-                return;
+            // If the active test timer has reached 0, force to feedback instead of allowing next section
+            if (remainingSeconds !== null && remainingSeconds <= 0) {
+              if (!hasAutoSubmittedGlobal.current) {
+                hasAutoSubmittedGlobal.current = true;
+                forceSubmitTestAttempt(activeAttemptId!).then(res => {
+                  if (res.status === 'finalizing') {
+                     setView(res.requiresReview ? 'requires-review' : 'finalizing');
+                  } else {
+                     setView('report');
+                  }
+                }).catch(console.error);
+              } else {
+                 setView('finalizing');
               }
+              return;
             }
 
             setEnabledSectionIndex((prev) => {
@@ -558,11 +707,10 @@ if (view === 'resume-fullscreen' && selectedTest) {
             setView('sections');
           }}
         />
-)}
-          </TestSecurityShell>
-
-        );
-
+          )}
+        </TestSecurityShell>
+      </div>
+    );
   }
 
   if (view === 'feedback') {
@@ -573,26 +721,27 @@ if (view === 'resume-fullscreen' && selectedTest) {
         onSubmit={async (payload) => {
           if (!selectedTest || !activeAttemptId) return;
 
-          await submitTestFeedback(activeAttemptId, payload);
+          try {
+            await submitTestFeedback(activeAttemptId, payload);
+          } catch (e) {
+            console.error('Failed to submit feedback', e);
+          }
 
           setAttemptedTestIds((prev) =>
             prev.includes(selectedTest._id) ? prev : [...prev, selectedTest._id]
           );
 
-          setRedirectCountdown(3);
-
-          const interval = setInterval(() => {
-            setRedirectCountdown((prev) => {
-              if (!prev || prev <= 1) {
-              clearInterval(interval);
-              setRedirectCountdown(null);
-              window.location.href = '/dashboard';
-              return null;
-              }
-
-              return prev - 1;
-            });
-          }, 1000);
+          try {
+            const res = await forceSubmitTestAttempt(activeAttemptId);
+            if (res.status === 'finalizing') {
+              setView(res.requiresReview ? 'requires-review' : 'finalizing');
+            } else {
+              setView('report');
+            }
+          } catch (e) {
+            console.error('Failed to trigger final submission', e);
+            setView('finalizing');
+          }
         }}
       />
     );
@@ -761,17 +910,17 @@ if (view === 'resume-fullscreen' && selectedTest) {
                       handleAttempt(test);
                     }
                   }}
-                  className={`rounded-xl px-5 py-3 text-sm font-bold ${
+                  className={`rounded-xl px-5 py-3 text-sm font-bold transition-all ${
                     isAttempted
-                      ? 'border border-sky-500/30 bg-sky-500/10 text-sky-300'
+                      ? 'border border-sky-500/30 bg-sky-500/10 text-sky-300 hover:bg-sky-500/20'
                       : isFinalizing
                       ? 'border border-gray-500/30 bg-gray-500/10 text-gray-300 opacity-60 cursor-not-allowed'
                       : isInProgress
-                      ? 'border border-emerald-500/30 bg-emerald-500/10 text-emerald-300'
-                      : 'bg-[var(--orange)] text-white'
+                      ? 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-900/30'
+                      : 'bg-[var(--orange)] hover:bg-[#e04f18] text-white'
                   }`}
                 >
-                  {isAttempted ? 'Review' : isFinalizing ? 'Finalizing...' : isInProgress ? 'Resume' : 'Attempt'}
+                  {isAttempted ? 'Review Test' : isFinalizing ? 'Finalizing...' : isInProgress ? 'Resume Test' : 'Attempt Test'}
                 </button>
                 </div>
                 </div>

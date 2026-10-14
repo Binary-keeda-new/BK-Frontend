@@ -10,6 +10,9 @@ export type TestSettings = {
   noMinimize: boolean;
   noDevTools: boolean;
   noLostFocus: boolean;
+  noBackNavigation: boolean;
+  noRightClick: boolean;
+  maxSecurityViolations: number;
   navigationMode: 'free' | 'sequential';
   minTimeBeforeSubmit: number;
   deadline: string;
@@ -33,6 +36,8 @@ const toggleItems: { key: keyof TestSettings; label: string }[] = [
   { key: 'noMinimize', label: 'No Minimize' },
   { key: 'noDevTools', label: 'No Dev Tools' },
   { key: 'noLostFocus', label: 'No Lost Focus' },
+  { key: 'noBackNavigation', label: 'Detect Back / Navigation Attempts' },
+  { key: 'noRightClick', label: 'Disable Right Click' },
 ];
 
 export default function TestSettingsCard({ settings, onChange }: Props) {
@@ -82,7 +87,24 @@ export default function TestSettingsCard({ settings, onChange }: Props) {
       <div className="mt-5 grid gap-4 md:grid-cols-2">
         <div>
           <label className="mb-2 block text-sm font-semibold text-[var(--clr-text)]">
-            Navigation
+            Maximum Allowed Violations
+          </label>
+          <input
+            type="number"
+            min={1}
+            value={settings.maxSecurityViolations ?? 5}
+            onChange={(e) => update('maxSecurityViolations', Math.max(1, Number(e.target.value)))}
+            placeholder="Default: 5"
+            className="w-full rounded-2xl bg-[var(--clr-surface2)] px-4 py-3 text-sm text-[var(--clr-text)] outline-none ring-1 ring-white/10"
+          />
+          <p className="mt-1 text-xs text-[var(--clr-text2)]">
+            The test is automatically submitted when this number of counted security violations is reached.
+          </p>
+        </div>
+
+        <div>
+          <label className="mb-2 block text-sm font-semibold text-[var(--clr-text)]">
+            Navigation Mode
           </label>
           <select
             value={settings.navigationMode}

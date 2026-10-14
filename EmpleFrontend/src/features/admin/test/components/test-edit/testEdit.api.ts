@@ -27,7 +27,7 @@ export const getCodingProblems = () => {
     success: boolean;
     message: string;
     data: CodingProblemOption[];
-  }>('/api/v1/admin/coding-problems', {
+  }>('/api/v1/coding-problems', {
     method: 'GET',
   });
 };

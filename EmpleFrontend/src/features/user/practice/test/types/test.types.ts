@@ -128,6 +128,9 @@ export type UserTestSettings = {
   noMinimize?: boolean;
   noDevTools?: boolean;
   noLostFocus?: boolean;
+  noBackNavigation?: boolean;
+  noRightClick?: boolean;
+  maxSecurityViolations?: number;
   navigationMode?: 'free' | 'sequential';
   minTimeBeforeSubmit?: number;
   deadline?: string;

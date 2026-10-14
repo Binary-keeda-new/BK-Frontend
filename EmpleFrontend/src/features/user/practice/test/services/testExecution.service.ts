@@ -1,5 +1,8 @@
 import { apiRequest } from '@/shared/utils/api';
-import type { ExecutionResponseData } from '../../../coding/services/executionService';
+import {
+  normalizeExecutionResult,
+  type ExecutionResponseData,
+} from '../../../coding/services/executionService';
 
 export type TestCodingSubmissionStatus =
   | 'queued'
@@ -38,10 +41,10 @@ export const runTestCode = async (
   sectionId: string,
   problemId: string,
   payload: RunTestCodePayload
-) => {
+): Promise<ExecutionResponseData> => {
   const result = await apiRequest<{
     success: boolean;
-    data: ExecutionResponseData;
+    data: any;
     message?: string;
   }>(
     `/api/v1/test-attempts/${attemptId}/sections/${sectionId}/coding/${problemId}/run`,
@@ -51,7 +54,7 @@ export const runTestCode = async (
     }
   );
 
-  return result.data;
+  return normalizeExecutionResult(result.data);
 };
 
 type SubmitTestCodePayload = {

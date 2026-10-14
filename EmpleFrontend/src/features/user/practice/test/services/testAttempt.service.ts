@@ -24,6 +24,7 @@ export type TestSectionAttemptData = {
   duration: number;
   numberOfQuestions: number;
   questions: TestSectionQuestion[];
+  codingProblems?: any[];
   answerRevision?: number;
   answers: {
     questionId: string;
@@ -64,15 +65,30 @@ export const submitTestSectionAttempt = async (
   answers: TestSectionAnswerPayload[] = [],
   codingSubmissions: CodingSubmissionPayload[] = []
 ) => {
-  const payloadAnswers = answers.length > 0 ? answers : codingSubmissions;
+  let bodyPayload: unknown[];
+
+  if (codingSubmissions && codingSubmissions.length > 0) {
+    bodyPayload = codingSubmissions.map(s => ({
+      problemId: s.problemId,
+      submissionId: s.submissionId || '',
+    }));
+  } else if (answers && answers.length > 0) {
+    bodyPayload = answers
+      .filter(a => Boolean(a.questionId))
+      .map(a => ({
+        questionId: a.questionId,
+        selectedOptions: a.selectedOptions || [],
+        timeTakenSeconds: typeof a.timeTakenSeconds === 'number' ? a.timeTakenSeconds : 0,
+      }));
+  } else {
+    bodyPayload = [];
+  }
 
   const result = await apiRequest<ApiResponse<unknown>>(
     `/api/v1/test-attempts/${attemptId}/sections/${sectionId}/submit`,
     {
       method: 'POST',
-      body: JSON.stringify({
-        answers: payloadAnswers,
-      }),
+      body: JSON.stringify(bodyPayload),
     }
   );
 
@@ -124,7 +140,9 @@ export const saveTestSectionAnswers = async (
 export type SecurityViolationResponse = {
   violationCount: number;
   maxViolations?: number;
+  warningsLeft?: number;
   forceSubmitted: boolean;
+  forceSubmitReason?: string;
   status: import('../types/test.types').TestAttemptStatus;
   requiresReview?: boolean;
 };
@@ -142,3 +160,56 @@ export const reportTestSecurityViolation = async (
   );
   return result.data;
 };
+
+export type HeartbeatPayload = {
+  activeSectionId?: string | null;
+  activeQuestionId?: string | null;
+  activeQuestionIndex?: number;
+  isPaused?: boolean;
+};
+
+export type HeartbeatResponse = {
+  status: import('../types/test.types').TestAttemptStatus;
+  remainingSeconds: number;
+  isTimerActive?: boolean;
+  isTerminated?: boolean;
+  forceSubmitReason?: string;
+};
+
+export const syncTimerHeartbeat = async (
+  attemptId: string,
+  payload: HeartbeatPayload
+) => {
+  const result = await apiRequest<ApiResponse<HeartbeatResponse>>(
+    `/api/v1/test-attempts/${attemptId}/heartbeat`,
+    {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    }
+  );
+  return result.data;
+};
+
+export type ResumeTimerResponse = {
+  success: boolean;
+  canResume: boolean;
+  remainingSeconds: number;
+  activeSectionId?: string | null;
+  activeQuestionId?: string | null;
+  activeQuestionIndex?: number;
+  violationCount: number;
+  maxViolations: number;
+  warningsLeft: number;
+  status?: import('../types/test.types').TestAttemptStatus;
+  forceSubmitReason?: string;
+};
+
+export const resumeAttemptTimer = async (attemptId: string) => {
+  const result = await apiRequest<ApiResponse<ResumeTimerResponse>>(
+    `/api/v1/test-attempts/${attemptId}/resume`,
+    {
+      method: 'POST',
+    }
+  );
+  return result.data;
+};
